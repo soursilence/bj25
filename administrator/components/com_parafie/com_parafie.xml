@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
+<install type="component" version="2.5.0">
+	<name>parafie</name>
+	<!-- The following elements are optional and free of formatting conttraints -->
+	<creationDate>2010</creationDate>
+	<author>t</author>
+
+	<license>GNU/GPL</license>
+	<!--  The version string is recorded in the components table -->
+	<version>2.5.0</version>
+	<!-- The description is optional and defaults to the name -->
+	  
+	<files>
+		<filename>index.html</filename>
+		<filename>parafie.php</filename>
+	</files>
+	<administration>
+	
+	
+
+
+
+	</administration>	 
+
+</install>

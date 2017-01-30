@@ -1,0 +1,42 @@
+@charset "utf-8";
+/* CSS Document */
+
+.text_zwykly
+{  color:#666666;
+font-family: Segoe UI , Segoe UI Light ,Tahoma,Verdana;
+font-size:13px; 
+text-decoration:none;
+text-align:justify;
+line-height:16px;
+}
+
+
+.podtytul
+{  color:#666666;
+font-family: Segoe UI , Segoe UI Light ,Tahoma,Verdana;
+font-size:14px; 
+text-align:center;
+text-decoration:none;
+font-weight:bold;
+}
+
+.tytul_paragrafu
+{  color:#0099FF;
+font-family: Segoe UI , Segoe UI Light ,Tahoma,Verdana;
+font-size:16px; 
+text-align:left;
+text-decoration:none;
+font-weight:bold;
+display:block;
+}
+
+.kursywa 
+{  color:#666666;
+font-family: Segoe UI , Segoe UI Light ,Tahoma,Verdana;
+font-size:14px; 
+text-decoration:none;
+font-style:italic;
+
+
+}
+

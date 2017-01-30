@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 1.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.5/template-install.dtd">
+<install version="1.5" type="template">
+	<name>bazylianie</name>
+	<creationDate>2010-02-20</creationDate>
+	<author>Blueroom</author>
+	<authorEmail>info@blueroom.pl</authorEmail>
+	<authorUrl>http://www.blueroom.pl</authorUrl>
+	<copyright></copyright>
+	<license>GNU/GPL</license>
+	<version>1.0.1</version>
+	<description>TPL_bazylianie</description>
+	<files>
+		<filename>index.php</filename>
+		<filename>templateDetails.xml</filename>
+		<filename>template_thumbnail.png</filename>
+		<filename>img/bazylianie_core.png</filename>
+		<filename>img/bazylianie_cored.png</filename>
+		<filename>img/bckgrnd.jpg</filename>
+		<filename>img/biblioteka.png</filename>
+		<filename>img/button_comments.jpg</filename>
+		<filename>img/button_more.jpg</filename>
+		<filename>img/button_readmore.jpg</filename>
+		<filename>img/button_readmore_blue.jpg</filename>
+		<filename>img/calendar.jpg</filename>
+		<filename>img/dzieci.png</filename>
+		<filename>img/footer_left.png</filename>
+		<filename>img/footer_left_left.png</filename>
+		<filename>img/footer_left_right.png</filename>
+		<filename>img/footer_right_left.png</filename>
+		<filename>img/footer_right_right.png</filename>
+		<filename>img/index.html</filename>
+		<filename>img/logo.jpg</filename>
+		<filename>img/logo_old.jpg</filename>
+		<filename>img/logo_older.jpg</filename>
+		<filename>img/menu_uk.jpg</filename>
+		<filename>img/mlodziez.png</filename>
+		<filename>img/modlitewnik.png</filename>
+		<filename>img/myparish.jpg</filename>
+		<filename>img/news_win_top.png</filename>
+		<filename>img/option.png</filename>
+		<filename>img/options_active.jpg</filename>
+		<filename>img/options_active_ua.jpg</filename>
+		<filename>img/options_idle.jpg</filename>
+		<filename>img/search_btn.jpg</filename>
+		<filename>img/search_btn.png</filename>
+		<filename>img/section_1_bottom.png</filename>
+		<filename>img/section_1_repeater.png</filename>
+		<filename>img/section_1_top-clean.png</filename>
+		<filename>img/section_1_top.png</filename>
+		<filename>img/sidebar_section_bottom.png</filename>
+		<filename>img/sidebar_section_repeater.png</filename>
+		<filename>img/sidebar_section_top.png</filename>
+		<filename>img/spacer.gif</filename>
+		<filename>img/theme_bottom.png</filename>
+		<filename>img/theme_middle.png</filename>
+		<filename>img/theme_midle.png</filename>
+		<filename>img/theme_repeater.png</filename>
+		<filename>img/theme_top.png</filename>
+		<filename>img/_gallery_thumb_01.jpg</filename>
+		<filename>img/_gallery_thumb_02.jpg</filename>
+		<filename>img/_gallery_thumb_03.jpg</filename>
+		<filename>img/_news_pic1.jpg</filename>
+		<filename>img/_news_pic2.jpg</filename>
+		<filename>img/_news_pic3.jpg</filename>
+		<filename>img/_promo_news.png</filename>
+		<filename>img/_promo_news2.jpg</filename>
+		<filename>css/index.html</filename>
+		<filename>css/template.css</filename>
+		<filename>css/common.css</filename>
+		<filename>css/footer.css</filename>
+		<filename>css/nav.css</filename>
+	</files>
+	<positions>
+		<position>breadcrumb</position>
+		<position>left</position>
+		<position>right</position>
+		<position>top</position>
+		<position>kalendarz</position>
+		<position>topmenu</position>
+		<position>button_menu</position>
+		<position>slider</position>
+		<position>breadcrumb</position>
+		<position>user1</position>
+		<position>user2</position>
+		<position>user3</position>
+		<position>user4</position>
+		<position>footer</position>
+		<position>debug</position>
+		<position>syndicate</position>
+		<position>theme1</position>
+		<position>theme2</position>
+		<position>theme3</position>
+		<position>theme4</position>
+		<position>theme5</position>
+		<position>theme6</position>
+		<position>theme7</position>
+		<position>theme8</position>
+		<position>themeswieci</position>
+		<position>themebiskupi</position>
+		<position>themewladzepl</position>
+		<position>themewladze</position>
+		<position>themeklasztorypl</position>
+		<position>themeklasztory</position>
+		<position>themeozakonie</position>
+	</positions>
+	<params>
+		<param name="stylwygladu" type="list" default="jesien" label="Styl" description="Styl wyglądu serwisu na różne Święta i pory roku">
+			<option value="lato">Lato</option>
+			<option value="jesien">Jesień</option>
+			<option value="zima">Zima</option>
+			<option value="wiosna">wiosna</option>
+			<option value="post">post</option>
+			<option value="wielkanoc">Wielkanoc</option>
+			<option value="boze_narodzenie">Boże Narodzenie</option>
+			<option value="czarnobialy">Czarno-biały</option>
+		</param>
+	</params>
+</install>

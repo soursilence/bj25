@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* Bazylianie CSS Document */
+
+/*FOOTER*/
+
+#footer {width:1000px; height:42px; position: relative; top: 10px; margin-bottom:5px; margin-left:auto; margin-right:auto; display: block; clear: both; }
+#footer .ll{width:15px; height:37px; background-image:url(../img/footer_left_left.png); display:block; float:left; }
+#footer .l{	width:265px;	height:37px;	background-color:#012734;	display:block;	float:left;	text-align: center;}
+#footer .lr{width:15px; height:37px; background-image:url(../img/footer_left_right.png); display:block; float:left;}
+#footer .rl{width:15px; height:37px; background-image:url(../img/footer_right_left.png); display:block; float:left; margin-left:5px;}
+#footer .r{width:670px; height:37px; background-color:#FCD201; display:block; float:left;text-align: center}
+#footer .rr{width:15px; height:37px; background-image:url(../img/footer_right_right.png); display:block; float:left;}
+
+#footer a{}
+#footer a:link, #footer a:visited{text-decoration:none; color:#A38E2A; margin-top:12px; margin-left:20px; display:block; float:left;}
+#footer a:hover{text-decoration:underline; color:#7E6F21; margin-top:12px; margin-left:20px; display:inline; display:block; float:left;}
+
+#webolution {width:100px; height:30px; display:block; float:left; margin-top:97px; margin-left:14px; color:#FFF; text-align:center;}
+#webolution a:link, #webolution a:visited { width:100px; height:30px; display:block; text-decoration:none; background-color:#CA0002; color:#CCC;}
+#webolution a:hover {text-decoration:none; color:#CA0002; background-color:#FFF;}
+#footer a.oldserwis:link, #footer a.oldserwis:hover,#footer a.oldserwis:visited {float:right; display:block; width:168px; height:37px; background-image:url(../img/footer.jpg); margin-top:0px; margin-left:0px;}

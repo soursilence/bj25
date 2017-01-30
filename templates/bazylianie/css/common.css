@@ -1,0 +1,62 @@
+@charset "utf-8";
+/* Bazylianie CSS Document */
+/*COMMON*/
+body {	background-color: #fff;	background-image:url(../img/bckgrnd.jpg); background-repeat:repeat-x; background-position:top; font-family:Segoe, Calibri, Verdana, Arial; font-size:11px; margin:0px; }
+a {border:none;}
+a:link {border:none;}
+a:visited {border:none;}
+a:hover {border:none;}
+
+.blog_more {font-size:14px;}
+.pagenav {font-size:14px;}
+
+.img {border:none;}
+.img-center {width:auto; height:auto; display:block; margin:5px auto; text-align:center;}
+.img-border {}
+.bold {font-weight:bold; color:#405E7B;}
+.bolderlittlebigger {font-weight:bold; font-size:medium; color:#405E7B;}
+.bolderbigger {font-weight:bold; font-size:larger; color:#405E7B;}
+
+.link a:link, .link a:visited  {color:#F90; text-decoration:none; padding:0px 9px 0px 0px;}
+.link a:visited  {background-repeat:no-repeat; background-position:right;}
+
+#wszystko { width:1000px; margin: 0 auto;  position: relative;}
+#container {width:1000px;float: left;}
+#container_index {width:1000px; margin-left:auto; margin-right:auto; }
+#container_news{width:1000px; margin-left:auto; margin-right:auto; }
+
+h1{display:block; padding:3px 0px 3px 15px; background-color:#39C; border-left:10px solid #036; color:#FFF;}
+h4{display:block; padding:7px 0px 7px 15px; background-color:#fff; border-left:15px solid #39C; color:#000; font-size:12px; position:relative; top:-15px; height:auto;}
+
+.top span {font-size:15px; font-weight:normal;margin-left:20px; display:inline; color:#091E25; font-family:"Segoe UI","Segoe UI Light",Arial,Helvetica; text-shadow:0 1px 0 #CCCCCC; }
+
+/* Newsletter */
+
+.mainnewsletter #name {margin-left:18px;}
+
+
+.normalsublayout div {margin-left:10px; margin-top:3px;}
+
+/*Sonda */
+
+
+.moduletable h3 {width:280px; height:28px; display:block; float:left; background-image:url(../img/sidebar_section_top.png); background-repeat:no-repeat; background-position:top;  text-decoration:none; font-weight:normal; font-family:"Segoe UI", "Segoe UI Light", Arial, Helvetica; font-size:16px; text-shadow: 0 1px 0 #CCC; float:left;padding-left:10px; color:#091E25; margin-bottom:0px; margin-top:0px; }
+
+.poll label {color:#003366; font-size:12px;font-family:"Segoe UI", "Segoe UI Light", Arial, Helvetica; line-height:2;}
+.poll {width:280px; float:left;}
+.poll thead {color:#171513; font-size:14px; display:block; margin:12px 5px 3px 5px; font-weight:bold;}
+
+
+/*Szeryfowe czcionki*/
+.serif{
+font-family:Times New Roman,Times,serif;
+font-size:14pt;
+margin:0 0 5px;
+text-align:justify;
+text-indent:2em;
+color:#3D4033;
+}
+
+#breadcrumb{width:1000px; height:12px; margin:10px 0px; font-family:"Segoe UI", "Segoe UI Light", Tahoma, Verdana; font-size:10px; color:#CCC; border-left:12px solid #D9E0EC; padding-left:5px;}
+#breadcrumb a, #breadcrumb a:link, #breadcrumb a:visited {text-decoration:none; color:#D9E0EC;}
+#breadcrumb a:hover{text-decoration:underline; color:#CCC;}

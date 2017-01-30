@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="2.5" method="upgrade">
+   <name>Polish Language Pack</name>
+   <packagename>pl-PL</packagename>
+   <version>2.5.28.1</version>
+   <creationDate>2014-12-31</creationDate>
+   <author>Polskie Centrum Joomla!</author>
+   <authorEmail>zwiastun@joomla.pl</authorEmail>
+   <authorUrl>www.joomla.pl</authorUrl>
+	<copyright>(C) 2005 - 2014 Open Source Matters. All right reserved.</copyright>
+	<copyright>(C) 2005 - 2014 Fundacja PCJ Otwarte Źródła. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+   <url></url>
+   <packager>Polskie Centrum Joomla!</packager>
+   <packagerurl>www.joomla.pl</packagerurl>
+   <description>
+    <![CDATA[
+
+<p><span style="font-weight: normal">Polskie Centrum Joomla zapewnia społeczności kompletne tłumaczenia Joomla!.<br />
+      Ich przygotowanie kosztuje wiele czasu i pracy.</span></p>
+      
+      <h2>Wspieramy Cię, więc wesprzyj nas<br /><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZL442C5WE8FT2">
+            Przekaż darowiznę przez PayPal
+          </a></h2>	
+	<p>&nbsp;</p>
+        <h3 style="margin:0;">Nie korzystasz z PayPal?<br /><a href="http://fundacja.joomla.pl/pomagaj?id=62">Zobacz tutaj</a></h3>
+    <p>jak możesz wsprzeć Fundację PCJ Otwarte Źródła</p>
+	<p>&nbsp;</p>
+  <h3>Kompletny pakiet języka polskiego dla Joomla! pl-PL wersja 2.5.28.1</h3>
+    <h4>Uwagi o wydaniu</h4>
+    <p>Zainstalowano lub uaktualniono:</p>
+    <ul>
+      <li>pliki języka polskiego witryny dla Joomla 2.5.28</li>
+      <li>pliki języka polskiego zaplecza dla Joomla 2.5.28</li>
+      <li>pliki języka polskiego dla edytora TinyMCE 3.5.2</li>
+    </ul>
+  </div>
+  <h3>Jeśli jest to Twoja pierwsza instalacja języka polskiego w tym Joomla!:</h3>
+    <ul>
+      <li>przejdź na stronę <a href="index.php?option=com_languages">Extensions/Language Manager</a> i ustaw język polski jako domyślny język witryny (na karcie <i>Installed Site</i>) oraz jako domyślny język zaplecza (na karcie <i>Installed - Administrator</i>, </li>
+      <li>przejdź na stronę <a href="index.php?option=com_plugins&amp;view=plugins&amp;filter_search=TinyMCE">dodatku 'Edytor - TinyMCE'</a> i ustaw parametr Kod języka ('Kod języka' = pl) albo ustaw 'Automatyczne wykrywanie języka' na 'Tak' pod warunkiem, że masz zainstalowane pakiety językowe TinyMCE wszystkich języków używanych w Joomla!</li>
+    </ul>
+
+	]]>
+   </description>
+   <files>
+     <file type="language" client="site" id="pl-PL">site_pl-PL.zip</file>
+      <file type="language" client="administrator" id="pl-PL">admin_pl-PL.zip</file>	  
+	  <file type="file" client="site" id="TinyMCE_pl-PL">pl-PL_TinyMCE_3.5.2.1.zip</file>
+   </files>
+    <updateservers>
+        <server type="collection" priority="1" name="Accredited Joomla! Translations">http://update.joomla.org/language/translationlist.xml</server>
+    </updateservers>
+</extension>

