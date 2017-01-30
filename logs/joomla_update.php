@@ -191,3 +191,30 @@
 2017-01-30T15:52:43+00:00	INFO ::1	update	Deleting removed files and folders.
 2017-01-30T15:56:11+00:00	INFO ::1	update	Cleaning up after installation.
 2017-01-30T15:56:11+00:00	INFO ::1	update	Update to version 3.5.1 is complete.
+2017-01-30T16:31:28+00:00	INFO ::1	update	Update started by user Administrator (62). Old version is 3.5.1.
+2017-01-30T16:31:28+00:00	INFO ::1	update	Downloading update file from https://downloads.joomla.org/cms/joomla3/3-6-5/Joomla_3.6.5-Stable-Update_Package.zip.
+2017-01-30T16:31:32+00:00	INFO ::1	update	File Joomla_3.6.5-Stable-Update_Package.zip successfully downloaded.
+2017-01-30T16:31:32+00:00	INFO ::1	update	Starting installation of new version.
+2017-01-30T16:37:36+00:00	INFO ::1	update	Aktualizacja rozpoczęta przed użytkownika Administrator (62). Starsza wersja to 3.5.1.
+2017-01-30T16:37:36+00:00	INFO ::1	update	Plik Joomla_3.6.5-Stable-Update_Package.zip pomyślnie usunięty.
+2017-01-30T16:37:36+00:00	INFO ::1	update	Rozpoczynanie instalacji nowej wersji.
+2017-01-30T16:37:49+00:00	INFO ::1	update	Kończenie instalacji
+2017-01-30T16:37:49+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-04-01. Tekst zapytania: UPDATE `#__update_sites` SET `name` = 'Joomla! Core' WHERE `name` = 'Joomla Core.
+2017-01-30T16:37:49+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-04-01. Tekst zapytania: UPDATE `#__update_sites` SET `name` = 'Joomla! Extension Directory' WHERE `name`.
+2017-01-30T16:37:49+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-04-01. Tekst zapytania: UPDATE `#__update_sites` SET `location` = 'https://update.joomla.org/core/list.x.
+2017-01-30T16:37:49+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-04-01. Tekst zapytania: UPDATE `#__update_sites` SET `location` = 'https://update.joomla.org/jed/list.xm.
+2017-01-30T16:37:49+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-04-01. Tekst zapytania: UPDATE `#__update_sites` SET `location` = 'https://update.joomla.org/language/tr.
+2017-01-30T16:37:49+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-04-01. Tekst zapytania: UPDATE `#__update_sites` SET `location` = 'https://update.joomla.org/core/extens.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-04-06. Tekst zapytania: ALTER TABLE `#__redirect_links` MODIFY `new_url` VARCHAR(2048);.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-04-08. Tekst zapytania: INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-04-08. Tekst zapytania: UPDATE `#__update_sites_extensions` SET `extension_id` = 802 WHERE `update_site_.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-04-09. Tekst zapytania: ALTER TABLE `#__menu_types` ADD COLUMN `asset_id` INT(11) NOT NULL AFTER `id`;.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-05-06. Tekst zapytania: DELETE FROM `#__extensions` WHERE `type` = 'library' AND `element` = 'simplepie'.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-05-06. Tekst zapytania: INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-06-01. Tekst zapytania: UPDATE `#__extensions` SET `protected` = 1, `enabled` = 1  WHERE `name` = 'com_a.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.0-2016-06-05. Tekst zapytania: ALTER TABLE `#__languages` ADD COLUMN `asset_id` INT(11) NOT NULL AFTER `lang_id.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.3-2016-08-15. Tekst zapytania: ALTER TABLE `#__newsfeeds` MODIFY `link` VARCHAR(2048) NOT NULL;.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Wykonanie zapytań z pliku 3.6.3-2016-08-16. Tekst zapytania: INSERT INTO `#__postinstall_messages` (`extension_id`, `title_key`, `description.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Usuwanie niepotrzebnych plików i folderów.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Czyszczenie po instalacji.
+2017-01-30T16:38:04+00:00	INFO ::1	update	Aktualizacja do wersji 3.6.5 zakończona.

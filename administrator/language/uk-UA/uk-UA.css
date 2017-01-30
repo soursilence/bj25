@@ -1,55 +1,33 @@
-/**
- *
- * Fix Back-end for Russian or Ukrainian language
- *
- * @author Denys Nosov, Sergey Litvinov
- * @copyright Copyright (C) 2011 Denys Nosov, Sergey Litvinov. All rights reserved.
- * @license GNU General Public License version 2 or later; see LICENSE.txt
- *
- */
+/*
+*
+* Fix Back-end for Ukrainian language
+*
+* @author Denys Nosov
+* @copyright Copyright (C) 2011-2016 Denys Nosov. All rights reserved.
+* @license GNU General Public License version 2 or later; see LICENSE.txt
+*
+*/
 
 /* Field label widths - short label */
-fieldset.adminform label,
-fieldset.panelform label,
-fieldset.adminform span.faux-label,
-div.current label, div.current span.faux-label {
-	min-width: 10%;
-	max-width: 30%;
-	width: 30%;
+
+.control-group .control-label {
+	min-width: 15%;
+	max-width: 25%;
+	width: 24%;
 	padding: 0 5px 0 0;
 }
 
-div.current fieldset.radio label {
-	width: 95px;
-	max-width: 40%;
+#status .btn-toolbar .pull-right p:before{
+	content: "© 2016 Joomla! Україна";
+	margin-right: 6px;
 }
 
-div.current select {
-	margin-top: 10px;
-	margin-bottom: 5px;
+input.cke_dialog_ui_input_text, input.cke_dialog_ui_input_password, textarea.cke_dialog_ui_input_textarea {
+	box-sizing: content-box !important;
+	width: 95% !important;
 }
 
-#rules label, #rules span.faux-label {
-	min-width: 150px;
-}
-
-#module-sliders fieldset.radio label, #module-sliders fieldset.radio span.faux-label {
-	min-width: 70px;
-	max-width: 40%;
-	width: auto;
-}
-
-/* Module description */
-.mod-desc {
-	overflow: hidden;
-}
-
-/* Offline message */
-
-#jform_display_offline_message label {
- min-width: 300px;
-}
-
-#jform_display_offline_message1, #jform_display_offline_message2{
- clear: left;
+.break-word {
+    word-break: inherit !important;
+    word-wrap: inherit !important;
 }
