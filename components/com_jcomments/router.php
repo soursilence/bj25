@@ -2,19 +2,20 @@
 /**
  * JComments - Joomla Comment System
  *
- * Router (Translates an internal Joomla URL to a humanly readable URL)
- *
- * @version 2.3
+ * @version 3.0
  * @package JComments
  * @author Sergey M. Litvinov (smart@joomlatune.ru)
- * @copyright (C) 2006-2012 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
  * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
- *
- **/
+ */
+
+defined('_JEXEC') or die;
 
 /**
- * @param	array	$query	A named array
- * @return	array
+ * Router (Translates an internal Joomla URL to a humanly readable URL)
+ *
+ * @param    array $query    A named array
+ * @return    array
  */
 function JCommentsBuildRoute(& $query)
 {
@@ -88,6 +89,7 @@ function JCommentsBuildRoute(& $query)
 	if (isset($query['tmpl'])) {
 		unset($query['tmpl']);
 	}
+
 	if (isset($query['format'])) {
 		unset($query['format']);
 	}
@@ -96,7 +98,7 @@ function JCommentsBuildRoute(& $query)
 }
 
 /**
- * @param	array	$segments	A named array
+ * @param    array $segments    A named array
  * @return  array
  */
 function JCommentsParseRoute($segments)

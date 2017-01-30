@@ -1,38 +1,46 @@
 <?php
 /**
+ * JComments - Joomla Comment System
+ *
+ * @version 3.0
+ * @package JComments
+ * @author Sergey M. Litvinov (smart@joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
+ */
+
+defined('_JEXEC') or die;
+
+/**
  * JComments blacklist table
  */
-class JCommentsTableBlacklist extends JoomlaTuneDBTable
+class JCommentsTableBlacklist extends JTable
 {
-	/** @var int Primary key */
-	var $id = null;
-	/** @var string */
-	var $ip = null;
-	/** @var int */
-	var $userid = null;
-	/** @var datetime */
-	var $created = 0;
-	/** @var int */
-	var $created_by = null;
-	/** @var datetime */
-	var $expire = 0;
-	/** @var string */
-	var $reason = null;
-	/** @var string */
-	var $notes = null;
-	/** @var boolean */
-	var $checked_out = 0;
-	/** @var datetime */
-	var $checked_out_time = 0;
-	/** @var string */
-	var $editor = '';
-
-	/**
-	 * @param JDatabase $db A database connector object
-	 * @return void
-	 */
-	function JCommentsTableBlacklist(&$db)
+	public function __construct(&$_db)
 	{
-		parent::__construct('#__jcomments_blacklist', 'id', $db);
+		parent::__construct('#__jcomments_blacklist', 'id', $_db);
+	}
+
+	public function check()
+	{
+		if ($this->ip == $_SERVER['REMOTE_ADDR']) {
+			$this->setError(JText::_('A_BLACKLIST_ERROR_YOU_CAN_NOT_BAN_YOUR_IP'));
+
+			return false;
+		}
+
+		return true;
+	}
+
+	public function store($updateNulls = false)
+	{
+		if (empty($this->id)) {
+			$this->created_by = (int) JFactory::getUser()->id;
+			$this->created = JFactory::getDate()->toSql();
+		}
+
+		parent::store($updateNulls);
+
+		return true;
 	}
 }

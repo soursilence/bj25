@@ -1,32 +1,23 @@
 <?php
 /**
+ * JComments - Joomla Comment System
+ *
+ * @version 3.0
+ * @package JComments
+ * @author Sergey M. Litvinov (smart@joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
+ */
+
+defined('_JEXEC') or die;
+
+/**
  * JComments report table
  */
-class JCommentsTableReport extends JoomlaTuneDBTable
+class JCommentsTableReport extends JTable
 {
-	/** @var int Primary key */
-	var $id = null;
-	/** @var int */
-	var $commentid = null;
-	/** @var int */
-	var $userid = null;
-	/** @var string */
-	var $name = null;
-	/** @var string */
-	var $reason = null;
-	/** @var string */
-	var $ip = null;
-	/** @var datetime */
-	var $date = null;
-	/** @var int */
-	var $status = null;
-
-	/**
-	 * @param JDatabase $db A database connector object
-	 * @return void
-	 */
-	function JCommentsTableReport(&$db)
+	public function __construct(&$_db)
 	{
-		parent::__construct('#__jcomments_reports', 'id', $db);
+		parent::__construct('#__jcomments_reports', 'id', $_db);
 	}
 }

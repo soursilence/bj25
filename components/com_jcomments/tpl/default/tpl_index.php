@@ -1,13 +1,20 @@
 <?php
+/**
+ * JComments - Joomla Comment System
+ *
+ * @version 3.0
+ * @package JComments
+ * @author Sergey M. Litvinov (smart@joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
+ */
 
-(defined('_VALID_MOS') OR defined('_JEXEC')) or die;
+defined('_JEXEC') or die;
 
-/*
-*
-* Main template for JComments. Don't change it without serious reasons ;)
-* Then creating new template you can copy this file to new template's dir without changes
-*
-*/
+/**
+ * Main template for JComments. Don't change it without serious reasons ;)
+ * Then creating new template you can copy this file to new template's dir without changes
+ */
 class jtt_tpl_index extends JoomlaTuneTemplate
 {
 	function render() 
@@ -24,7 +31,7 @@ class jtt_tpl_index extends JoomlaTuneTemplate
 		if ($comments != '' || $form != '' || $this->getVar('comments-anticache')) {
 			// include comments css (only if we are in administor's panel)
 			if ($this->getVar('comments-css', 0) == 1) {
-				include_once (JCOMMENTS_HELPERS.DS.'system.php');
+				include_once (JCOMMENTS_HELPERS.'/system.php');
 ?>
 <link href="<?php echo JCommentsSystemPluginHelper::getCSS(); ?>" rel="stylesheet" type="text/css" />
 <?php
@@ -89,4 +96,3 @@ jcomments.setAntiCache(<?php echo $aca;?>,<?php echo $acp;?>,<?php echo $acf;?>)
 		}
 	}
 }
-?>

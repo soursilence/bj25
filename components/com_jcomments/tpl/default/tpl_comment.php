@@ -1,11 +1,18 @@
 <?php
-
-(defined('_VALID_MOS') OR defined('_JEXEC')) or die;
-
-/*
+/**
+ * JComments - Joomla Comment System
  *
+ * @version 3.0
+ * @package JComments
+ * @author Sergey M. Litvinov (smart@joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
+ */
+
+defined('_JEXEC') or die;
+
+/**
  * Comment item template. Results of rendering used in tpl_list.php
- *
  */
 class jtt_tpl_comment extends JoomlaTuneTemplate
 {
@@ -23,7 +30,7 @@ class jtt_tpl_comment extends JoomlaTuneTemplate
 			} else {
 				// return all comment item
 ?>
-<div class="rbox"><div class="rbox_tr"><div class="rbox_tl"><div class="rbox_t">&nbsp;</div></div></div><div class="rbox_m">
+<div class="rbox">
 <?php
 
 				$comment_number = $this->getVar('comment-number', 1);
@@ -57,6 +64,13 @@ class jtt_tpl_comment extends JoomlaTuneTemplate
 				} else {
 ?>
 <span class="comment-author"><?php echo $comment->author?></span>
+<?php
+				}
+?>
+<?php
+				if (($this->getVar('comment-show-email') > 0) && ($comment->email != '')) {
+?>
+<a class="comment-email" href="mailto:<?php echo $comment->email; ?>"><?php echo $comment->email; ?></a>
 <?php
 				}
 ?>
@@ -104,7 +118,7 @@ class jtt_tpl_comment extends JoomlaTuneTemplate
 				// show frontend moderation panel
 				$this->getCommentAdministratorPanel( $comment );
 ?>
-</div><div class="rbox_br"><div class="rbox_bl"><div class="rbox_b">&nbsp;</div></div></div></div>
+</div>
 <?php
 			}
 		}
@@ -208,4 +222,3 @@ class jtt_tpl_comment extends JoomlaTuneTemplate
 <?php
 	}
 }
-?>

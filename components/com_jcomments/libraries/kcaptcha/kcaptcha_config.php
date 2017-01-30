@@ -1,4 +1,7 @@
 <?php
+
+defined('_JEXEC') or die;
+
 $alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
 $allowed_symbols = "23456789abcdeghkmnpqsuvxyz";
 $fontsdir = 'fonts';	

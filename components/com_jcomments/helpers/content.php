@@ -2,20 +2,18 @@
 /**
  * JComments - Joomla Comment System
  *
- * Service functions for JComments content plugins
- *
- * @version 2.3
+ * @version 3.0
  * @package JComments
  * @author Sergey M. Litvinov (smart@joomlatune.ru)
- * @copyright (C) 2006-2012 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
  * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
- *
- **/
+ */
+
+defined('_JEXEC') or die;
 
 /**
  * JComments Content Plugin Helper
  * 
- * @package JComments
  */
 class JCommentsContentPluginHelper
 {
@@ -72,10 +70,10 @@ class JCommentsContentPluginHelper
 	public static function processForeignTags( &$row, $removeTags = false, $fromText = true )
 	{
 		if (false == $removeTags) {
-			$patterns = array('#\{(moscomment|mxc|jomcomment|easycomments)\}#is', '#\{\!jomcomment\}#is', '#\{mxc\:\:closed\}#is');
+			$patterns = array('#\{(jomcomment|easycomments|KomentoEnable)\}#is', '#\{(\!jomcomment|KomentoDisable)\}#is', '#\{KomentoLock\}#is');
 			$replacements = array('{jcomments on}', '{jcomments off}', '{jcomments lock}');
 		} else {
-			$patterns = array('#\{(moscomment|mxc|msc::closed|!jomcomment|jomcomment|easycomments)\}#is');
+			$patterns = array('#\{(jomcomment|easycomments|KomentoEnable|KomentoDisable|KomentoLock)\}#is');
 			$replacements = array('');
 		}
 		
@@ -148,4 +146,3 @@ class JCommentsContentPluginHelper
 		return ($categories == '*' || ($categories != '' && in_array($id, $ids)));
 	}
 }
-?>

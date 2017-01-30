@@ -2,16 +2,18 @@
 /**
  * JComments - Joomla Comment System
  *
- * JComments model
- *
- * @version 2.3
+ * @version 3.0
  * @package JComments
  * @author Sergey M. Litvinov (smart@joomlatune.ru)
- * @copyright (C) 2006-2012 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
  * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
- *
- **/
+ */
 
+defined('_JEXEC') or die;
+
+/**
+ * JComments model
+ */
 class JCommentsModel
 {
 	/**
@@ -28,7 +30,7 @@ class JCommentsModel
 		$key = md5(serialize($options));
 
 		if (!isset($cache[$key]) || $noCache == true) {
-			$db = JCommentsFactory::getDBO();
+			$db = JFactory::getDbo();
 			$db->setQuery(self::_getCommentsCountQuery($options));
 			$cache[$key] = (int) $db->loadResult();
 		}
@@ -48,7 +50,7 @@ class JCommentsModel
 			$options['orderBy'] = self::_getDefaultOrder();
 		}
 
-		$db = JCommentsFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$pagination = isset($options['pagination']) ? $options['pagination'] : '';
 
@@ -85,7 +87,7 @@ class JCommentsModel
 	{
 		$comment = null;
 
-		$db = JCommentsFactory::getDBO();
+		$db = JFactory::getDbo();
 		$config = JCommentsFactory::getConfig();
 
 		$options['object_id'] = (int) $object_id;
@@ -116,12 +118,12 @@ class JCommentsModel
 	{
 		if (is_array($ids)) {
 			if (count($ids)) {
-				$db = JCommentsFactory::getDBO();
+				$db = JFactory::getDbo();
 				$db->setQuery("SELECT DISTINCT object_group, object_id FROM #__jcomments WHERE parent IN (" . implode(',', $ids) . ")");
 				$objects = $db->loadObjectList();
 
 				if (count($objects)) {
-					require_once (JCOMMENTS_LIBRARIES . DS . 'joomlatune' . DS . 'tree.php');
+					require_once (JCOMMENTS_LIBRARIES . '/joomlatune/tree.php');
 
 					$descendants = array();
 
@@ -148,13 +150,13 @@ class JCommentsModel
 				$ids = implode(',', $ids);
 
 				$db->setQuery("DELETE FROM #__jcomments WHERE id IN (" . $ids . ")");
-				$db->query();
+				$db->execute();
 
 				$db->setQuery("DELETE FROM #__jcomments_votes WHERE commentid IN (" . $ids . ")");
-				$db->query();
+				$db->execute();
 
 				$db->setQuery("DELETE FROM #__jcomments_reports WHERE commentid IN (" . $ids . ")");
-				$db->query();
+				$db->execute();
 			}
 		}
 	}
@@ -164,21 +166,28 @@ class JCommentsModel
 		$object_group = trim($object_group);
 		$oids = is_array($object_id) ? implode(',', $object_id) : $object_id;
 
-		$db = JCommentsFactory::getDBO();
+		$db = JFactory::getDbo();
+
 		$query = "SELECT id FROM #__jcomments "
 				. "\n WHERE object_group = " . $db->Quote($object_group)
 				. "\n AND object_id IN (" . $oids . ")";
 		$db->setQuery($query);
-		$cids = $db->loadResultArray();
+		$cids = $db->loadColumn();
 
 		JCommentsModel::deleteCommentsByIds($cids);
+
+		$query = "DELETE FROM #__jcomments_objects "
+			. " WHERE object_group = " . $db->Quote($object_group)
+			. " AND object_id = " . $db->Quote($object_id);
+		$db->setQuery($query);
+		$db->execute();
 
 		return true;
 	}
 
 	protected static function _getCommentsCountQuery(&$options)
 	{
-		$db = JCommentsFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$object_id = @$options['object_id'];
 		$object_group = @$options['object_group'];
@@ -232,7 +241,7 @@ class JCommentsModel
 	protected static function _getCommentsQuery(&$options)
 	{
 		$acl = JCommentsFactory::getACL();
-		$db = JCommentsFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$object_id = @$options['object_id'];
 		$object_group = @$options['object_group'];
@@ -323,7 +332,7 @@ class JCommentsModel
 		$config = JCommentsFactory::getConfig();
 
 		if ($config->get('template_view') == 'tree') {
-			switch($config->getInt('tree_order')) {
+			switch($config->getInt('comments_tree_order')) {
 				case 2:
 					$result = 'threadDate DESC, c.date ASC';
 					break;
@@ -335,11 +344,9 @@ class JCommentsModel
 					break;
 			}
 		} else {
-			$result = 'c.date ' . $config->get('comments_order');
+			$result = 'c.date ' . $config->get('comments_list_order');
 		}
 
 		return $result;
 	}
 }
-
-?>

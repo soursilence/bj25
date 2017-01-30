@@ -6,15 +6,11 @@
  * @version 1.0
  * @package JoomlaTune.Framework
  * @author Sergey M. Litvinov (smart@joomlatune.ru)
- * @copyright (C) 2006-2012 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
  * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
- *
- **/
+ */
 
-// define directory separator short constant
-if (!defined('DS')) {
-	define('DS', DIRECTORY_SEPARATOR);
-}
+defined('_JEXEC') or die;
 
 /**
  * JoomlaTune base template class
@@ -113,7 +109,7 @@ class JoomlaTuneTemplateRender
 		$this->_templates = array();
 
 		//set root template directory
-		$this->setRoot(dirname(__FILE__) . DS . 'tpl');
+		$this->setRoot(dirname(__FILE__) . '/tpl');
 	}
 
 	/**
@@ -142,7 +138,7 @@ class JoomlaTuneTemplateRender
 	 */
 	function setRoot($path)
 	{
-		$this->_root = $path ? $path : dirname(__FILE__) . DS . 'tpl';
+		$this->_root = $path ? $path : dirname(__FILE__) . '/tpl';
 	}
 
 	/**
@@ -205,10 +201,10 @@ class JoomlaTuneTemplateRender
 	 */
 	function load($template)
 	{
-		$templateFileName = $this->getRoot() . DS . $template . '.php';
+		$templateFileName = $this->getRoot() . '/' . $template . '.php';
 
 		if (!is_file($templateFileName)) {
-			$templateFileName = $this->getDefaultRoot() . DS . $template . '.php';
+			$templateFileName = $this->getDefaultRoot() . '/' . $template . '.php';
 		}
 
 		if (is_file($templateFileName)) {
@@ -224,7 +220,7 @@ class JoomlaTuneTemplateRender
 			}
 
 			$tmpl = new $templateClass;
-			if (!is_a($tmpl, 'JoomlaTuneTemplate')) {
+			if (!($tmpl instanceof JoomlaTuneTemplate)) {
 				unset($tmpl);
 				$this->raiseError('Incorrect template: ' . $template);
 				return false;
@@ -389,4 +385,3 @@ class JoomlaTuneTemplateRender
 		die('JoomlaTuneTemplateError: ' . $message);
 	}
 }
-?>

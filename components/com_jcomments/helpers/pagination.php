@@ -2,19 +2,18 @@
 /**
  * JComments - Joomla Comment System
  * 
- * @version 2.2
+ * @version 3.0
  * @package JComments
  * @subpackage Helpers
  * @author Sergey M. Litvinov (smart@joomlatune.ru)
- * @copyright (C) 2006-2012 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
  * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
- *
- **/
+ */
+
+defined('_JEXEC') or die;
 
 /**
  * JComments Pagination Helper
- * 
- * @package JComments
  */
 class JCommentsPagination {
 
@@ -32,7 +31,7 @@ class JCommentsPagination {
 
 		$this->commentsPerPage = $config->getInt('comments_per_page');
 		$this->commentsPageLimit = $config->getInt('comments_page_limit');
-		$this->commentsOrder = $config->get('comments_order');
+		$this->commentsOrder = $config->get('comments_list_order');
 
 		if ($this->commentsPerPage > 0) {
 			$this->setCommentsCount(JComments::getCommentsCount($object_id, $object_group));
@@ -114,4 +113,3 @@ class JCommentsPagination {
 		}
 	}
 }
-?>

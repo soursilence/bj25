@@ -37,7 +37,7 @@ KEY `idx_checkout` (`checked_out`),
 KEY `idx_object` (`object_id`, `object_group`, `published`, `date`),
 KEY `idx_path` (`path`, `level`),
 KEY `idx_thread` (`thread_id`)
-) CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__jcomments_settings` (
 `component` VARCHAR(50) NOT NULL DEFAULT '',
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `#__jcomments_settings` (
 `name` VARCHAR(50) NOT NULL DEFAULT '',
 `value` TEXT NOT NULL DEFAULT '',
 PRIMARY KEY  (`component`, `lang`, `name`)
-) CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__jcomments_votes` (
 `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -55,8 +55,9 @@ CREATE TABLE IF NOT EXISTS `#__jcomments_votes` (
 `date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 `value` TINYINT(1) NOT NULL,
 PRIMARY KEY  (`id`),
-KEY `idx_comment`(`commentid`,`userid`)
-) CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+KEY `idx_comment`(`commentid`,`userid`),
+KEY `idx_user` (`userid`, `date`)
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__jcomments_subscriptions` (
 `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -69,12 +70,14 @@ CREATE TABLE IF NOT EXISTS `#__jcomments_subscriptions` (
 `hash` VARCHAR(255) NOT NULL DEFAULT '',
 `published` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 `source` VARCHAR(255) NOT NULL DEFAULT '',
+`checked_out` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+`checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 PRIMARY KEY (`id`),
 KEY `idx_object` (`object_id`, `object_group`),
 KEY `idx_lang` (`lang`),
 KEY `idx_source` (`source`),
 KEY `idx_hash` (`hash`)
-) CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__jcomments_version` (
 `version` VARCHAR(16) NOT NULL DEFAULT '',
@@ -82,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `#__jcomments_version` (
 `installed` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 `updated` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY  (`version`)
-) CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__jcomments_custom_bbcodes` (
 `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -103,8 +106,10 @@ CREATE TABLE IF NOT EXISTS `#__jcomments_custom_bbcodes` (
 `button_enabled` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 `ordering` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 `published` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+`checked_out` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+`checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY  (`id`)
-) CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__jcomments_reports` (
 `id` INT(11) UNSIGNED NOT NULL auto_increment,
@@ -116,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `#__jcomments_reports` (
 `reason` TINYTEXT  NOT NULL,
 `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 PRIMARY KEY  (`id`)
-) CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__jcomments_blacklist` (
 `id` INT(11) UNSIGNED NOT NULL auto_increment,
@@ -133,19 +138,49 @@ CREATE TABLE IF NOT EXISTS `#__jcomments_blacklist` (
 PRIMARY KEY  (`id`),
 KEY `idx_checkout` (`checked_out`),
 KEY `idx_ip` (`ip`)
-) CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__jcomments_objects` (
 `id` INT(11) UNSIGNED NOT NULL auto_increment,
 `object_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 `object_group` VARCHAR(255) NOT NULL DEFAULT '',
+`category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 `lang` VARCHAR(20) NOT NULL DEFAULT '',
 `title` VARCHAR(255) NOT NULL DEFAULT '',
-`link` VARCHAR(255) NOT NULL DEFAULT '',
+`link` text NOT NULL DEFAULT '',
 `access` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
 `userid` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 `expired` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
 `modified` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 PRIMARY KEY  (`id`),
 KEY `idx_object` (`object_id`, `object_group`, `lang`)
-) CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__jcomments_mailq` (
+`id` int(11) NOT NULL auto_increment,
+`name` varchar(255) NOT NULL,
+`email` varchar(255) NOT NULL,
+`subject` text NOT NULL,
+`body` text NOT NULL,
+`created` datetime NOT NULL,
+`attempts` tinyint(1) NOT NULL DEFAULT '0',
+`priority` tinyint(1) NOT NULL DEFAULT '0',
+`session_id` VARCHAR(200) DEFAULT NULL,
+PRIMARY KEY  (`id`),
+KEY `idx_priority` (`priority`),
+KEY `idx_attempts` (`attempts`)
+) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__jcomments_smilies` (
+`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+`code` varchar(39) NOT NULL DEFAULT '',
+`alias` varchar(39) NOT NULL DEFAULT '',
+`image` varchar(255) NOT NULL,
+`name` varchar(255) NOT NULL,
+`published` tinyint(1) NOT NULL DEFAULT '0',
+`ordering` int(11) unsigned NOT NULL DEFAULT '0',
+`checked_out` int(11) unsigned NOT NULL DEFAULT '0',
+`checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+PRIMARY KEY (`id`),
+KEY `idx_checkout` (`checked_out`)
+) DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;

@@ -1,5 +1,7 @@
 <?php
 
+defined('_JEXEC') or die;
+
 # KCAPTCHA PROJECT VERSION 1.2.6
 
 # Automatic test to tell computers and humans apart

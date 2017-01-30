@@ -1,52 +1,39 @@
 <?php
 /**
+ * JComments - Joomla Comment System
+ *
+ * @version 3.0
+ * @package JComments
+ * @author Sergey M. Litvinov (smart@joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
+ */
+
+defined('_JEXEC') or die;
+
+/**
  * JComments CustomBBCodes table
  */
-class JCommentsTableCustomBBCode extends JoomlaTuneDBTable
+class JCommentsTableCustomBBCode extends JTable
 {
-	/** @var int Primary key */
-	var $id = null;
-	/** @var string */
-	var $name = null;
-	/** @var string */
-	var $pattern = null;
-	/** @var string */
-	var $replacement_html = null;
-	/** @var string */
-	var $replacement_text = null;
-	/** @var string */
-	var $simple_pattern = null;
-	/** @var string */
-	var $simple_replacement_html = null;
-	/** @var string */
-	var $simple_replacement_text = null;
-	/** @var string */
-	var $button_acl = null;
-	/** @var string */
-	var $button_open_tag = null;
-	/** @var string */
-	var $button_close_tag = null;
-	/** @var string */
-	var $button_title = null;
-	/** @var string */
-	var $button_prompt = null;
-	/** @var string */
-	var $button_image = null;
-	/** @var string */
-	var $button_css = null;
-	/** @var boolean */
-	var $button_enabled = null;
-	/** @var int */
-	var $ordering = null;
-	/** @var boolean */
-	var $published = null;
-
-	/**
-	 * @param JDatabase $db A database connector object
-	 * @return void
-	 */
-	function JCommentsTableCustomBBCode(&$db)
+	public function __construct(&$_db)
 	{
-		parent::__construct('#__jcomments_custom_bbcodes', 'id', $db);
+		parent::__construct('#__jcomments_custom_bbcodes', 'id', $_db);
+	}
+
+	public function check()
+	{
+		if (empty($this->ordering)) {
+			$this->ordering = self::getNextOrder();
+		}
+
+		return true;
+	}
+
+	public function store($updateNulls = false)
+	{
+		parent::store($updateNulls);
+
+		return true;
 	}
 }
