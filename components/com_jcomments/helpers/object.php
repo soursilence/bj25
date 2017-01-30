@@ -2,21 +2,20 @@
 /**
  * JComments - Joomla Comment System
  * 
- * @version 2.3
+ * @version 3.0
  * @package JComments
  * @author Sergey M. Litvinov (smart@joomlatune.ru)
- * @copyright (C) 2006-2012 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
  * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
- *
- **/
+ */
+
+defined('_JEXEC') or die;
 
 require_once (JCOMMENTS_MODELS.'/object.php');
 require_once (JCOMMENTS_CLASSES.'/objectinfo.php');
 
 /**
  * JComments objects frontend helper
- * 
- * @package JComments
  */
 class JCommentsObjectHelper
 {
@@ -78,7 +77,7 @@ class JCommentsObjectHelper
 		// get object information via plugins
 		if (!isset($plugins[$object_group])) {
 			ob_start();
-			include_once (JCOMMENTS_BASE.'/plugins/'.$object_group.'.plugin.php');
+			include_once (JCOMMENTS_SITE.'/plugins/'.$object_group.'.plugin.php');
 			ob_end_clean();
 
 			$className = 'jc_' . $object_group;
@@ -117,13 +116,13 @@ class JCommentsObjectHelper
 		$object = JCommentsModelObject::getObjectInfo($object_id, $object_group, $language);
 
 		if ($object !== false) {
-			// use object infromation stored in database
+			// use object information stored in database
 			$info = new JCommentsObjectInfo($object);
 		} else {
 			// get object information via plugins
 			$info = self::_loadObjectInfo($object_id, $object_group, $language);
 			if (!JCommentsModelObject::IsEmpty($info)) {
-				$app = JCommentsFactory::getApplication();
+				$app = JFactory::getApplication();
 				if (!$app->isAdmin()) {
 					// insert object information
 					JCommentsModelObject::setObjectInfo(0, $info);
@@ -155,7 +154,7 @@ class JCommentsObjectHelper
 
 		if (!isset($info[$key])) {
 			if ($useCache) {
-				$cache = JCommentsFactory::getCache('com_jcomments_objects_'.strtolower($object_group), 'callback');
+				$cache = JFactory::getCache('com_jcomments_objects_'.strtolower($object_group), 'callback');
 				$info[$key] = $cache->get(array('JCommentsObjectHelper', 'fetchObjectInfo'), array($object_id, $object_group, $language));
 			} else {
 				$info[$key] = self::fetchObjectInfo($object_id, $object_group, $language);
@@ -180,7 +179,7 @@ class JCommentsObjectHelper
 			$language = JCommentsMultilingual::getLanguage();
 		}
 
-		$app = JCommentsFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// try to load object information from database
 		$object = JCommentsModelObject::getObjectInfo($object_id, $object_group, $language);
@@ -205,34 +204,10 @@ class JCommentsObjectHelper
 
 			if ($cleanCache) {
 				// clean cache for given object group
-				$cache = JCommentsFactory::getCache('com_jcomments_objects_'.strtolower($object_group));
+				$cache = JFactory::getCache('com_jcomments_objects_'.strtolower($object_group));
 				$cache->clean();
 			}
 		}
 		return $info;
 	}
 }
-
-/**
- * JComments objects backend helper
- *
- * @package JComments
- * @subpackage Helpers
- */
-class JCommentsBackendObjectHelper extends JCommentsObjectHelper
-{
-	/**
-	 * Returns URI for given object
-	 *
-	 * @param int $object_id
-	 * @param string $object_group
-	 * @param string $language
-	 * @return string
-	 */
-	public static function getLink( $object_id, $object_group = 'com_content', $language = null )
-	{
-		$app = JCommentsFactory::getApplication();
-		return $app->getCfg('live_site') . '/' . JCOMMENTS_INDEX . '?option=com_jcomments&task=go2object&object_id=' . $object_id . '&object_group=' . $object_group . '&lang=' . $language . (JCOMMENTS_JVERSION == '1.0' ? '&no_html=1' : '&tmpl=raw');
-	}
-}
-?>

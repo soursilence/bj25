@@ -2,17 +2,14 @@
 /**
  * JComments - Joomla Comment System
  *
- * Frontend event handler
- *
- * @version 2.3
+ * @version 3.0
  * @package JComments
  * @author Sergey M. Litvinov (smart@joomlatune.ru)
- * @copyright (C) 2006-2012 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
  * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
- *
- **/
+ */
 
-(defined('_VALID_MOS') OR defined('_JEXEC')) or die;
+defined('_JEXEC') or die;
 
 ob_start();
 
@@ -20,63 +17,24 @@ if (!defined('JOOMLATUNE_AJAX')) {
 	require_once (JCOMMENTS_LIBRARIES.'/joomlatune/ajax.php');
 }
 
+if ((version_compare(phpversion(), '5.1.0') >= 0)) {
+	date_default_timezone_set('UTC');
+}
+
+JTable::addIncludePath(JCOMMENTS_TABLES);
+
+/**
+ * Frontend event handler
+ */
 class JCommentsAJAX
 {
-	public static function convertEncoding( $value )
-	{
-		$iso = explode('=', _ISO);
-		$charset = strtolower($iso[1]);
-
-		if (($charset != 'utf-8')
-		&& (is_file(JCOMMENTS_LIBRARIES.'/convert/maps/'.$charset))) {
-			if (!defined('CONVERT_TABLES_DIR')) {
-				require_once(JCOMMENTS_LIBRARIES.'/convert/utf8.class.php');
-			}
-
-			$encoding = JCommentsUtf8::getInstance($charset);
-			$needEntities = false;
-
-			if (is_array($value)) {
-				$newArray = array();
-				foreach ($value as $k => $v) {
-					if (is_array($v)) {
-						$newArray[$k] = self::convertEncoding($v);
-					} else {
-						if ($v != '') {
-							if ($needEntities === true) {
-								$newArray[$k] = $encoding->utf8_to_entities($v);
-							} else {
-								$newArray[$k] = JCommentsText::isUTF8($v) ? $encoding->utf8ToStr($v) : $v;
-								if ($encoding->encodingFailed($newArray[$k])) {
-									$newArray[$k] = $encoding->utf8_to_entities($v);
-									$needEntities = true;
-								}
-							}
-						}
-					}
-				}
-				return $newArray;
-			} else if ($value != '') {
-				$text = $value;
-				if (JCommentsText::isUTF8($value)) {
-					$text = $encoding->utf8ToStr($value);
-					if ($encoding->encodingFailed($text)) {
-						$text = $encoding->utf8_to_entities($value);
-					}
-				}
-				return $text;
-			}
-		}
-		return $value;
-	}
-
 	public static function prepareValues( &$values )
 	{
 		foreach ($values as $k => $v) {
 			if ($k == 'comment') {
 				// strip all HTML except [code]
 				$m = array();
-				preg_match_all('#(\[code\=?([a-z0-9]*?)\].*\[\/code\])#isU' . JCOMMENTS_PCRE_UTF8, trim($v), $m);
+				preg_match_all('#(\[code\=?([a-z0-9]*?)\].*\[\/code\])#isUu', trim($v), $m);
 
 				$tmp = array();
 				$key = '';
@@ -84,7 +42,7 @@ class JCommentsAJAX
 				foreach ($m[1] as $code) {
 					$key = '{' . md5($code.$key). '}';
 					$tmp[$key] = $code;
-					$v = preg_replace('#' . preg_quote($code, '#') . "#isU" . JCOMMENTS_PCRE_UTF8, $key, $v);
+					$v = preg_replace('#' . preg_quote($code, '#') . '#isUu', $key, $v);
 				}
 
 				$v = trim(strip_tags($v));
@@ -98,9 +56,9 @@ class JCommentsAJAX
 				foreach ($tmp as $key => $code) {
 					if (get_magic_quotes_gpc() == 1) {
 						$code = str_replace('\"', '"', $code);
-						$code = str_replace("\'", "'", $code);
+						$code = str_replace('\'', "'", $code);
 					}
-					$v = preg_replace('#' . preg_quote($key, '#') . "#isU" . JCOMMENTS_PCRE_UTF8, $code, $v);
+					$v = preg_replace('#' . preg_quote($key, '#') . '#isUu', $code, $v);
 				}
 				unset($tmp, $m);
 				$values[$k] = $v;
@@ -115,12 +73,7 @@ class JCommentsAJAX
 			}
 		}
 
-		// for Joomla 1.5 change encoding is not needed
-		if (JCOMMENTS_JVERSION == '1.0') {
-			return self::convertEncoding($values);
-		} else {
-			return $values;
-		}
+		return $values;
 	}
 
 	public static function escapeMessage($message)
@@ -172,9 +125,8 @@ class JCommentsAJAX
 			return self::reportComment();
 		} else {
 			$response = JCommentsFactory::getAjaxResponse();
-			$db = JCommentsFactory::getDBO();
 
-			$comment = new JCommentsTableComment($db);
+			$comment = JTable::getInstance('Comment', 'JCommentsTable');
 			if ($comment->load($id)) {
 				$form = JComments::getCommentsReportForm($id, $comment->object_id, $comment->object_group);
 				$response->addAssign($target, 'innerHTML', $form);
@@ -189,7 +141,7 @@ class JCommentsAJAX
 			JCommentsSecurity::notAuth();
 		}
 
-		$user = JCommentsFactory::getUser();
+		$user = JFactory::getUser();
 		$acl = JCommentsFactory::getACL();
 		$config = JCommentsFactory::getConfig();
 		$response = JCommentsFactory::getAjaxResponse();
@@ -277,7 +229,7 @@ class JCommentsAJAX
 					$captchaEngine = $config->get('captcha_engine', 'kcaptcha');
 
 					if ($captchaEngine == 'kcaptcha') {
-						require_once( JCOMMENTS_BASE.DS.'jcomments.captcha.php' );
+						require_once( JCOMMENTS_SITE.'/jcomments.captcha.php' );
 
 						if (!JCommentsCaptcha::check($values['captcha_refid'])) {
 							self::showErrorMessage(JText::_('ERROR_CAPTCHA'), 'captcha');
@@ -286,7 +238,7 @@ class JCommentsAJAX
 							return $response;
 						}
 					} else {
-						$result = JCommentsEvent::trigger('onJCommentsCaptchaVerify', array($values['captcha_refid'], &$response));
+						$result = JCommentsEventHelper::trigger('onJCommentsCaptchaVerify', array($values['captcha_refid'], &$response));
 						// if all plugins returns false
 						if (!in_array(true, $result, true)) {
 							self::showErrorMessage(JText::_('ERROR_CAPTCHA'));
@@ -295,11 +247,11 @@ class JCommentsAJAX
 					}
 				}
 
-				$db = JCommentsFactory::getDBO();
+				$db = JFactory::getDbo();
 
 				// small fix (by default $my has empty 'name' and 'email' field)
 				if ($user->id) {
-					$currentUser = JCommentsFactory::getUser($user->id);
+					$currentUser = JFactory::getUser($user->id);
 					$user->name = $currentUser->name;
 					$user->username = $currentUser->username;
 					$user->email = $currentUser->email;
@@ -310,7 +262,8 @@ class JCommentsAJAX
 					$values['name'] = 'Guest'; // JText::_('Guest');
 				}
 
-				$comment = new JCommentsTableComment($db);
+				$comment = JTable::getInstance('Comment', 'JCommentsTable');
+
 				$comment->id = 0;
 				$comment->name = $user->id ? $user->name : preg_replace("/[\'\"\>\<\(\)\[\]]?+/i", '', $values['name']);
 				$comment->username = $user->id ? $user->username : $comment->name;
@@ -372,17 +325,17 @@ class JCommentsAJAX
 				$comment->ip = $userIP;
 				$comment->userid = $user->id ? $user->id : 0;
 				$comment->published = $acl->check('autopublish');
-				$comment->date = JCommentsFactory::getDate();
+				$comment->date = JFactory::getDate()->toSql();
 
 				$query = "SELECT COUNT(*) "
 						. "\nFROM #__jcomments "
-						. "\nWHERE comment = '" . $db->getEscaped($comment->comment) . "'"
-						. "\n  AND ip = '" . $db->getEscaped($comment->ip) . "'"
-						. "\n  AND name = '" . $db->getEscaped($comment->name) . "'"
+						. "\nWHERE comment = '" . $db->escape($comment->comment) . "'"
+						. "\n  AND ip = '" . $db->escape($comment->ip) . "'"
+						. "\n  AND name = '" . $db->escape($comment->name) . "'"
 						. "\n  AND userid = '" . $comment->userid . "'"
 						. "\n  AND object_id = " . $comment->object_id
 						. "\n  AND parent = " . $comment->parent
-						. "\n  AND object_group = '" . $db->getEscaped($comment->object_group) . "'"
+						. "\n  AND object_group = '" . $db->escape($comment->object_group) . "'"
 						. (JCommentsMultilingual::isEnabled() ? "\nAND lang = '" . JCommentsMultilingual::getLanguage() . "'" : "")
 						;
 				$db->setQuery($query);
@@ -390,7 +343,7 @@ class JCommentsAJAX
 
 				// if duplicates is not found
 				if ($found == 0) {
-					$result = JCommentsEvent::trigger('onJCommentsCommentBeforeAdd', array(&$comment));
+					$result = JCommentsEventHelper::trigger('onJCommentsCommentBeforeAdd', array(&$comment));
 
 					if (in_array(false, $result, true)) {
 						return $response;
@@ -398,7 +351,7 @@ class JCommentsAJAX
 
 					// save comments subscription
 					if ($values['subscribe']) {
-						require_once (JCOMMENTS_BASE.DS.'jcomments.subscription.php');
+						require_once (JCOMMENTS_SITE.'/jcomments.subscription.php');
 						$manager = JCommentsSubscriptionManager::getInstance();
 						$manager->subscribe($comment->object_id, $comment->object_group, $comment->userid, $comment->email, $comment->name, $comment->lang);
 					}
@@ -454,7 +407,7 @@ class JCommentsAJAX
 					// store/update information about commented object
 					JCommentsObjectHelper::storeObjectInfo($comment->object_id, $comment->object_group, $comment->lang);
 
-					JCommentsEvent::trigger('onJCommentsCommentAfterAdd', array(&$comment));
+					JCommentsEventHelper::trigger('onJCommentsCommentAfterAdd', array(&$comment));
 
 					// send notification to administrators
 					if ($config->getInt('enable_notification') == 1) {
@@ -480,8 +433,8 @@ class JCommentsAJAX
 								if ($count > 1) {
 									$html = JComments::getCommentListItem($comment);
 									$html = JCommentsText::jsEscape($html);
-									$mode = ($config->getInt('tree_order') == 1
-											|| ($config->getInt('tree_order') == 2 && $comment->parent > 0)) ? 'b' : 'a';
+									$mode = ($config->getInt('comments_tree_order') == 1
+											|| ($config->getInt('comments_tree_order') == 2 && $comment->parent > 0)) ? 'b' : 'a';
 									$response->addScript("jcomments.updateTree('$html','$comment->parent','$mode');");
 								} else {
 									$html = JComments::getCommentsTree($comment->object_id, $comment->object_group);
@@ -495,7 +448,7 @@ class JCommentsAJAX
 									$html = JComments::getCommentListItem($comment);
 									$html = JCommentsText::jsEscape($html);
 
-									if ($config->get('comments_order') == 'DESC') {
+									if ($config->get('comments_list_order') == 'DESC') {
 										$response->addScript("jcomments.updateList('$html','p');");
 									} else {
 										$response->addScript("jcomments.updateList('$html','a');");
@@ -508,7 +461,7 @@ class JCommentsAJAX
 								}
 
 								// scroll to first comment
-								if ($config->get('comments_order') == 'DESC') {
+								if ($config->get('comments_list_order') == 'DESC') {
 									$response->addScript("jcomments.scrollToList();");
 								}
 							}
@@ -522,7 +475,7 @@ class JCommentsAJAX
 					$response->addScript("jcomments.clear('comment');");
 
 					if ($acl->check('enable_captcha') == 1 && $config->get('captcha_engine', 'kcaptcha') == 'kcaptcha') {
-						require_once( JCOMMENTS_BASE.DS.'jcomments.captcha.php' );
+						require_once( JCOMMENTS_SITE.'/jcomments.captcha.php' );
 						JCommentsCaptcha::destroy();
 						$response->addScript("jcomments.clear('captcha');");
 					}
@@ -550,11 +503,10 @@ class JCommentsAJAX
 		}
 
 		$acl = JCommentsFactory::getACL();
-		$db = JCommentsFactory::getDBO();
 		$config = JCommentsFactory::getConfig();
 		$response = JCommentsFactory::getAjaxResponse();
 
-		$comment = new JCommentsTableComment($db);
+		$comment = JTable::getInstance('Comment', 'JCommentsTable');
 
 		if ($comment->load((int) $id)) {
 			if ($acl->isLocked($comment)) {
@@ -564,15 +516,7 @@ class JCommentsAJAX
 				$object_id = $comment->object_id;
 				$object_group = $comment->object_group;
 
-				$currentPage = 1;
-
-				if ($config->get('template_view') != 'tree' && $config->getInt('comments_per_page') > 0) {
-					require_once (JCOMMENTS_HELPERS.DS.'pagination.php');
-					$pagination = new JCommentsPagination($object_id, $object_group);
-					$currentPage = $pagination->getCommentPage($object_id, $object_group, $id);
-				}
-
-				$result = JCommentsEvent::trigger('onJCommentsCommentBeforeDelete', array(&$comment));
+				$result = JCommentsEventHelper::trigger('onJCommentsCommentBeforeDelete', array(&$comment));
 
 				if (!in_array(false, $result, true)) {
 					if ($config->getInt('delete_mode') == 0) {
@@ -588,7 +532,10 @@ class JCommentsAJAX
 						} else {
 							if ($count > 0) {
 								if ($config->getInt('comments_per_page') > 0) {
+									require_once (JCOMMENTS_HELPERS.'/pagination.php');
+									$pagination = new JCommentsPagination($object_id, $object_group);
 									$pagination->setCommentsCount($count);
+									$currentPage = $pagination->getCommentPage($object_id, $object_group, $id);
 									$currentPage = min($currentPage, $pagination->getTotalPages());
 
 									$html = JComments::getCommentsList($object_id, $object_group, $currentPage);
@@ -607,7 +554,7 @@ class JCommentsAJAX
 						$response->addScript("jcomments.updateComment(" . $comment->id . ", '$html');");
 					}
 
-					JCommentsEvent::trigger('onJCommentsCommentAfterDelete', array(&$comment));
+					JCommentsEventHelper::trigger('onJCommentsCommentAfterDelete', array(&$comment));
 				}
 			} else {
 				$response->addAlert(JText::_('ERROR_CANT_DELETE'));
@@ -623,10 +570,9 @@ class JCommentsAJAX
 		}
 
 		$acl = JCommentsFactory::getACL();
-		$db = JCommentsFactory::getDBO();
 		$response = JCommentsFactory::getAjaxResponse();
 
-		$comment = new JCommentsTableComment($db);
+		$comment = JTable::getInstance('Comment', 'JCommentsTable');
 
 		if ($comment->load((int) $id)) {
 			if ($acl->isLocked($comment)) {
@@ -638,11 +584,11 @@ class JCommentsAJAX
 				$page = JComments::getCommentPage($object_id, $object_group, $comment->id);
 				$comment->published = !$comment->published;
 
-				$result = JCommentsEvent::trigger('onJCommentsCommentBeforePublish', array(&$comment));
+				$result = JCommentsEventHelper::trigger('onJCommentsCommentBeforePublish', array(&$comment));
 
 				if (!in_array(false, $result, true)) {
 					if ($comment->store()) {
-						JCommentsEvent::trigger('onJCommentsCommentAfterPublish', array(&$comment));
+						JCommentsEventHelper::trigger('onJCommentsCommentAfterPublish', array(&$comment));
 						if ($comment->published) {
 							JComments::sendToSubscribers($comment, true);
 						}
@@ -662,9 +608,8 @@ class JCommentsAJAX
 			JCommentsSecurity::notAuth();
 		}
 
-		$db = JCommentsFactory::getDBO();
 		$response = JCommentsFactory::getAjaxResponse();
-		$comment = new JCommentsTableComment($db);
+		$comment = JTable::getInstance('Comment', 'JCommentsTable');
 
 		if ($comment->load((int) $id)) {
 			$acl = JCommentsFactory::getACL();
@@ -682,10 +627,9 @@ class JCommentsAJAX
 			JCommentsSecurity::notAuth();
 		}
 
-		$user = JCommentsFactory::getUser();
-		$db = JCommentsFactory::getDBO();
+		$user = JFactory::getUser();
 		$response = JCommentsFactory::getAjaxResponse();
-		$comment = new JCommentsTableComment($db);
+		$comment = JTable::getInstance('Comment', 'JCommentsTable');
 
 		if ($comment->load((int) $id)) {
 			$acl = JCommentsFactory::getACL();
@@ -719,12 +663,11 @@ class JCommentsAJAX
 			JCommentsSecurity::notAuth();
 		}
 
-		$db = JCommentsFactory::getDBO();
 		$config = JCommentsFactory::getConfig();
 
 		$response = JCommentsFactory::getAjaxResponse();
 		$values = self::prepareValues($_POST);
-		$comment = new JCommentsTableComment($db);
+		$comment = JTable::getInstance('Comment', 'JCommentsTable');
 		$id = (int) $values['id'];
 
 		if ($comment->load($id)) {
@@ -736,7 +679,7 @@ class JCommentsAJAX
 				} else if (($config->getInt('comment_maxlength') != 0)
 					&& ($acl->check('enable_comment_length_check') == 1)
 					&& (JCommentsText::strlen($values['comment']) > $config->getInt('comment_maxlength'))) {
-					self::showErrorMessage(JText::_('ERROR_TOO_LONG_COMMENT'), 'comment');
+					self::showErrorMessage(JText::_('ERROR_YOUR_COMMENT_IS_TOO_LONG'), 'comment');
 				} else if (($config->getInt('comment_minlength') != 0)
 					&& ($acl->check('enable_comment_length_check') == 1)
 					&& (JCommentsText::strlen($values['comment']) < $config->getInt('comment_minlength'))) {
@@ -759,7 +702,7 @@ class JCommentsAJAX
 						$comment->homepage = '';
 					}
 
-					$result = JCommentsEvent::trigger('onJCommentsCommentBeforeChange', array(&$comment));
+					$result = JCommentsEventHelper::trigger('onJCommentsCommentBeforeChange', array(&$comment));
 
 					if (in_array(false, $result, true)) {
 						return $response;
@@ -768,7 +711,7 @@ class JCommentsAJAX
 					$comment->store();
 					$comment->checkin();
 
-					JCommentsEvent::trigger('onJCommentsCommentAfterChange', array(&$comment));
+					JCommentsEventHelper::trigger('onJCommentsCommentAfterChange', array(&$comment));
 
 					if ($config->getInt('enable_notification') == 1) {
 						if ($config->check('notification_type', 1) == true) {
@@ -791,11 +734,10 @@ class JCommentsAJAX
 			JCommentsSecurity::notAuth();
 		}
 
-		$db = JCommentsFactory::getDBO();
 		$acl = JCommentsFactory::getACL();
 		$config = JCommentsFactory::getConfig();
 		$response = JCommentsFactory::getAjaxResponse();
-		$comment = new JCommentsTableComment($db);
+		$comment = JTable::getInstance('Comment', 'JCommentsTable');
 
 		if ($comment->load((int) $id)) {
 			$comment_name = JComments::getCommentAuthorName($comment);
@@ -826,8 +768,9 @@ class JCommentsAJAX
 					$response->addAssign('comments-form-link', 'innerHTML', $form);
 				}
 
+				$comment_name = JCommentsText::jsEscape($comment_name);
 				$comment_text = JCommentsText::jsEscape($comment_text);
-				$text = "[quote name=\"" . $comment_name . "\"]" . $comment_text . "[/quote]\\n";
+				$text = '[quote name="' . $comment_name . '"]' . $comment_text . '[/quote]\n';
 				$response->addScript("jcomments.insertText('" . $text . "');");
 			} else {
 				$response->addAlert(JText::_('ERROR_NOTHING_TO_QUOTE'));
@@ -867,9 +810,8 @@ class JCommentsAJAX
 	{
 		$response = JCommentsFactory::getAjaxResponse();
 		$acl = JCommentsFactory::getACL();
-		$db = JCommentsFactory::getDBO();
 		$config = JCommentsFactory::getConfig();
-		$comment = new JCommentsTableComment($db);
+		$comment = JTable::getInstance('Comment', 'JCommentsTable');
 
 		if ($comment->load((int) $id) && ($acl->canPublish($comment) || $comment->published)) {
 			if ($config->get('template_view') == 'tree') {
@@ -887,12 +829,9 @@ class JCommentsAJAX
 
 	public static function jump2email($id, $hash)
 	{
-		$db = JCommentsFactory::getDBO();
 		$response = JCommentsFactory::getAjaxResponse();
-		$comment = new JCommentsTableComment($db);
-
-		$hash = strip_tags($hash);
-		$hash = preg_replace('#[\(\)\'\"]#is', '', $hash);
+		$comment = JTable::getInstance('Comment', 'JCommentsTable');
+		$hash = preg_replace('#[\(\)\'\"]#is', '', strip_tags($hash));
 
 		if ((strlen($hash) == 32) && ($comment->load( (int) $id))) {
 			$matches = array();
@@ -908,11 +847,11 @@ class JCommentsAJAX
 
 	public static function subscribeUser($object_id, $object_group)
 	{
-		$user = JCommentsFactory::getUser();
+		$user = JFactory::getUser();
 		$response = JCommentsFactory::getAjaxResponse();
 
 		if ($user->id) {
-			require_once (JCOMMENTS_BASE.DS.'jcomments.subscription.php');
+			require_once (JCOMMENTS_SITE.'/jcomments.subscription.php');
 
 			$manager = JCommentsSubscriptionManager::getInstance();
 			$result = $manager->subscribe($object_id, $object_group, $user->id);
@@ -931,11 +870,11 @@ class JCommentsAJAX
 
 	public static function unsubscribeUser($object_id, $object_group)
 	{
-		$user = JCommentsFactory::getUser();
+		$user = JFactory::getUser();
 		$response = JCommentsFactory::getAjaxResponse();
 
 		if ($user->id) {
-			require_once (JCOMMENTS_BASE.DS.'jcomments.subscription.php');
+			require_once (JCOMMENTS_SITE.'/jcomments.subscription.php');
 
 			$manager = JCommentsSubscriptionManager::getInstance();
 			$result = $manager->unsubscribe($object_id, $object_group, $user->id);
@@ -953,7 +892,7 @@ class JCommentsAJAX
 	public static function voteComment($id, $value)
 	{
 		$acl = JCommentsFactory::getACL();
-		$db = JCommentsFactory::getDBO();
+		$db = JFactory::getDbo();
 		$response = JCommentsFactory::getAjaxResponse();
 
 		$id = (int) $id;
@@ -973,12 +912,12 @@ class JCommentsAJAX
 		$voted = $db->loadResult();
 
 		if ($voted == 0) {
-			$comment = new JCommentsTableComment($db);
+			$comment = JTable::getInstance('Comment', 'JCommentsTable');
 
 			if ($comment->load($id)) {
 				if ($acl->canVote($comment)) {
 
-					$result = JCommentsEvent::trigger('onJCommentsCommentBeforeVote', array(&$comment, &$value));
+					$result = JCommentsEventHelper::trigger('onJCommentsCommentBeforeVote', array(&$comment, &$value));
 
 					if (!in_array(false, $result, true)) {
 
@@ -990,11 +929,11 @@ class JCommentsAJAX
 						$comment->store();
 
 						$query = "INSERT INTO `#__jcomments_votes`(`commentid`,`userid`,`ip`,`date`,`value`)"
-							. "VALUES('".$comment->id."', '".$acl->getUserId()."','".$db->getEscaped($ip)."', now(), ".$value.")";
+							. "VALUES('".$comment->id."', '".$acl->getUserId()."','".$db->escape($ip)."', now(), ".$value.")";
 						$db->setQuery($query);
-						$db->query();
+						$db->execute();
 
-						JCommentsEvent::trigger('onJCommentsCommentAfterVote', array(&$comment, $value));
+						JCommentsEventHelper::trigger('onJCommentsCommentAfterVote', array(&$comment, $value));
 					}
 
 					$tmpl = JCommentsFactory::getTemplate();
@@ -1024,7 +963,7 @@ class JCommentsAJAX
 		}
 
 		$acl = JCommentsFactory::getACL();
-		$db = JCommentsFactory::getDBO();
+		$db = JFactory::getDbo();
 		$config = JCommentsFactory::getConfig();
 		$response = JCommentsFactory::getAjaxResponse();
 		$values = self::prepareValues( $_POST );
@@ -1058,11 +997,11 @@ class JCommentsAJAX
 			$db->setQuery('SELECT COUNT(*) FROM `#__jcomments_reports` WHERE commentid = ' . $id);
 			$reported = $db->loadResult();
 			if ($reported < $maxReportsPerComment || $maxReportsPerComment == 0) {
-				$comment = new JCommentsTableComment($db);
+				$comment = JTable::getInstance('Comment', 'JCommentsTable');
 				if ($comment->load($id)) {
 					if ($acl->canReport($comment)) {
 						if ($acl->getUserId()) {
-							$user = JCommentsFactory::getUser();
+							$user = JFactory::getUser();
 							$name = $user->name;
 						} else {
 							if (empty($name)) {
@@ -1070,22 +1009,20 @@ class JCommentsAJAX
 							}
 						}
 
-						require_once (JCOMMENTS_TABLES.'/report.php');
-
-						$report = new JCommentsTableReport($db);
+						$report = JTable::getInstance('Report', 'JCommentsTable');
 						$report->commentid = $comment->id;
-						$report->date = JCommentsFactory::getDate();
+						$report->date = JFactory::getDate()->toSql();
 						$report->userid = $acl->getUserId();
 						$report->ip = $ip;
 						$report->name = $name;
 						$report->reason = $reason;
 
 						$html = '';
-						$result = JCommentsEvent::trigger('onJCommentsCommentBeforeReport', array(&$comment, &$report));
+						$result = JCommentsEventHelper::trigger('onJCommentsCommentBeforeReport', array(&$comment, &$report));
 
 						if (!in_array(false, $result, true)) {
 							if ($report->store()) {
-								JCommentsEvent::trigger('onJCommentsCommentAfterReport', array(&$comment, $report));
+								JCommentsEventHelper::trigger('onJCommentsCommentAfterReport', array(&$comment, $report));
 
 								if ($config->getInt('enable_notification') == 1) {
 									if ($config->check('notification_type', 2)) {
@@ -1133,8 +1070,8 @@ class JCommentsAJAX
 			$config = JCommentsFactory::getConfig();
 			if ($config->getInt('enable_blacklist') == 1) {
 				$id = (int) $id;
-				$db = JCommentsFactory::getDBO();
-				$comment = new JCommentsTableComment($db);
+
+				$comment = JTable::getInstance('Comment', 'JCommentsTable');
 				if ($comment->load($id)) {
 					// we will not ban own IP ;)
 					if ($comment->ip != $acl->getUserIP()) {
@@ -1143,18 +1080,16 @@ class JCommentsAJAX
 						// check if this IP already banned
 						if (JCommentsSecurity::checkBlacklist($options)) {
 
-							$result = JCommentsEvent::trigger('onJCommentsUserBeforeBan', array(&$comment, &$options));
+							$result = JCommentsEventHelper::trigger('onJCommentsUserBeforeBan', array(&$comment, &$options));
 
 							if (!in_array(false, $result, true)) {
-								require_once(JCOMMENTS_TABLES.'/blacklist.php');
-
-								$blacklist = new JCommentsTableBlacklist($db);
+								$blacklist = JTable::getInstance('Blacklist', 'JCommentsTable');
 								$blacklist->ip = $comment->ip;
-								$blacklist->created = JCommentsFactory::getDate();
+								$blacklist->created = JFactory::getDate()->toSql();
 								$blacklist->created_by = $acl->getUserId();
 
 								if ($blacklist->store()) {
-									JCommentsEvent::trigger('onJCommentsUserAfterBan', array(&$comment, $options));
+									JCommentsEventHelper::trigger('onJCommentsUserAfterBan', array(&$comment, $options));
 									self::showInfoMessage(JText::_('SUCCESSFULLY_BANNED'), 'comment-item-' . $id);
 								}
 							}
@@ -1170,31 +1105,36 @@ class JCommentsAJAX
 		return $response;
 	}
 
-	public static function RefreshObjects($hash, $step = 0, $object_group = '', $lang = '')
+	public static function refreshObjectsAjax()
 	{
-		if (JCommentsSecurity::badRequest() == 1) {
-			JCommentsSecurity::notAuth();
-		}
+		$app = JFactory::getApplication();
 
-		$response = JCommentsFactory::getAjaxResponse();
-		$app = JCommentsFactory::getApplication();
+		$hash = $app->input->post->get('hash', '');
+		$step = $app->input->post->getInt('step');
+		$lang = $app->input->post->get('lang', '');
 
 		$count = 50;
 
 		if ($hash === md5($app->getCfg('secret'))) {
-			$db = JCommentsFactory::getDBO();
+			$db = JFactory::getDBO();
 
 			if ($step == 0) {
-				$db->setQuery('DELETE FROM #__jcomments_objects WHERE 1=1');
-				$db->query();
+				if ($app->getCfg('caching') != 0) {
+					// clean cache for all object groups
+					$db->setQuery('SELECT DISTINCT object_group FROM #__jcomments_objects');
+					$rows = $db->loadColumn();
+					foreach ($rows as $row) {
+						$cache = JFactory::getCache('com_jcomments_objects_'.strtolower($row));
+						$cache->clean();
+					}
+				}
+
+				$db->setQuery('TRUNCATE TABLE #__jcomments_objects');
+				$db->execute();
 			}
 
 			$where = array();
 			$where[] = 'IFNULL(c.lang, "") <> ""';
-
-			if (!empty($object_group)) {
-				$where[] = 'c.object_group = ' . $db->Quote($object_group);
-			}
 
 			// count objects without information
 			$query = "SELECT COUNT(DISTINCT c.object_id, c.object_group, c.lang)"	
@@ -1203,67 +1143,72 @@ class JCommentsAJAX
 				;
 
 			$db->setQuery($query);
-			$objectsCount = (int) $db->loadResult();
+			$total = (int) $db->loadResult();
 
-			$where[] = 'NOT EXISTS (SELECT o.id FROM #__jcomments_objects AS o WHERE o.object_id = c.object_id AND o.object_group = c.object_group AND o.lang = c.lang)';
+			$count = 0;
 
-			// get list of first objects without information
-			$query = "SELECT DISTINCT c.object_id, c.object_group, c.lang"	
-				. " FROM #__jcomments AS c"
-				. (count($where) ? ("\nWHERE " . implode(' AND ', $where)) : "")
-				. " ORDER BY c.object_group, c.lang"
-				;
+			if ($total > 0) {
+				$where[] = 'NOT EXISTS (SELECT o.id FROM #__jcomments_objects AS o WHERE o.object_id = c.object_id AND o.object_group = c.object_group AND o.lang = c.lang)';
 
-			$db->setQuery($query, 0, $count);
-			$rows = $db->loadObjectList();
+				// get list of first objects without information
+				$query = "SELECT DISTINCT c.object_id, c.object_group, c.lang"	
+					. " FROM #__jcomments AS c"
+					. (count($where) ? ("\nWHERE " . implode(' AND ', $where)) : "")
+					. " ORDER BY c.object_group, c.lang"
+					;
 
-			$i = 0;
-			$multilanguage = JCommentsMultilingual::isEnabled();
+				$db->setQuery($query, 0, $count);
+				$rows = $db->loadObjectList();
 
-			$nextLanguage = $lang;
-			if (count($rows)) {
-				foreach ($rows as $row) {
-					if ($nextLanguage != $row->lang && $multilanguage) {
-						$nextLanguage = $row->lang;
-						break;
-					}
+				$i = 0;
+				$multilanguage = JCommentsMultilingual::isEnabled();
 
-					// retrieve and store object information
-					JCommentsObjectHelper::storeObjectInfo($row->object_id, $row->object_group, $row->lang, false, true);
-					$i++;
-				}
-			}
-
-			$objectsRefreshed = 0;
-
-			if ($i > 0) {
-				$db->setQuery("SELECT COUNT(*) FROM #__jcomments_objects");
-				$objectsRefreshed = (int) $db->loadResult();
-				$response->addScript("JCommentsRefreshObjectsProgress($objectsRefreshed, $objectsCount);");
-			}
-
-			if (($objectsCount > $objectsRefreshed) && ($i > 0 || $lang != $nextLanguage)) {
-				// we need continue refresh
-				$step++;
-				$response->addScript("JCommentsRefreshObjectsAJAX('$hash', '$step', '', '$nextLanguage');");
-			} else {
-				$response->addScript("JCommentsRefreshObjectsProgress($objectsCount, $objectsCount);");
-				if ($app->getCfg('caching')) {
-					// clean cache for all object groups
-					$db->setQuery('SELECT DISTINCT object_group FROM #__jcomments_objects');
-					$rows = $db->loadResultArray();
+				$nextLanguage = $lang;
+				if (count($rows)) {
 					foreach ($rows as $row) {
-						$cache = JCommentsFactory::getCache('com_jcomments_objects_'.strtolower($row));
-						$cache->clean();
+						if ($nextLanguage != $row->lang && $multilanguage) {
+							$nextLanguage = $row->lang;
+							break;
+						}
+
+						// retrieve and store object information
+						JCommentsObjectHelper::storeObjectInfo($row->object_id, $row->object_group, $row->lang, false, true);
+						$i++;
 					}
 				}
+
+				if ($i > 0) {
+					$db->setQuery("SELECT COUNT(*) FROM #__jcomments_objects");
+					$count = (int) $db->loadResult();
+				}
+		
+				$percent = ceil(($count / $total) * 100);
+				$percent = min($percent, 100);
+			} else {
+				$percent = 100;
 			}
+
+			$step++;
+
+			$lang_codes = JLanguageHelper::getLanguages('lang_code');
+			$language_sef = isset($lang_codes[$nextLanguage]) ? $lang_codes[$nextLanguage]->sef : $nextLanguage;
+
+			$data = array('count' => $count,
+					  'total' => $total,
+					  'percent' => $percent,
+					  'step' => $step,
+					  'hash' => $hash,
+					  'object_group' => null,
+					  'lang' => $nextLanguage,
+					  'lang_sef' => $language_sef,
+			);
+
+			echo json_encode($data);
 		}
 
-		return $response;
+		$app->close();
 	}
 }
 
 $result = ob_get_contents();
 ob_end_clean();
-?>

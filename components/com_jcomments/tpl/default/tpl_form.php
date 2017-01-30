@@ -1,12 +1,19 @@
 <?php
+/**
+ * JComments - Joomla Comment System
+ *
+ * @version 3.0
+ * @package JComments
+ * @author Sergey M. Litvinov (smart@joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
+ */
 
-(defined('_VALID_MOS') OR defined('_JEXEC')) or die;
+defined('_JEXEC') or die;
 
-/*
-*
-* Comments form template
-*
-*/
+/**
+ * Comments form template
+ */
 class jtt_tpl_form extends JoomlaTuneTemplate
 {
 	function render() 
@@ -26,7 +33,7 @@ class jtt_tpl_form extends JoomlaTuneTemplate
 
 	/*
 	 *
-	 * Displays full comments form (with smiles, bbcodes and other stuff)
+	 * Displays full comments form (with smilies, bbcodes and other stuff)
 	 * 
 	 */
 	function getCommentsFormFull()
@@ -34,8 +41,12 @@ class jtt_tpl_form extends JoomlaTuneTemplate
 		$object_id = $this->getVar('comment-object_id');
 		$object_group = $this->getVar('comment-object_group');
 
-		$htmlBeforeForm = $this->getVar('comments-form-html-before');
-		$htmlAfterForm = $this->getVar('comments-form-html-after');
+		$htmlBeforeForm = $this->getVar('comments-html-before-form');
+		$htmlAfterForm = $this->getVar('comments-html-after-form');
+
+		$htmlFormPrepend = $this->getVar('comments-form-html-prepend');
+		$htmlFormAppend = $this->getVar('comments-form-html-append');
+
 ?>
 <h4><?php echo JText::_('FORM_HEADER'); ?></h4>
 <?php
@@ -48,6 +59,9 @@ class jtt_tpl_form extends JoomlaTuneTemplate
 <?php echo $htmlBeforeForm; ?>
 <a id="addcomments" href="#addcomments"></a>
 <form id="comments-form" name="comments-form" action="javascript:void(null);">
+<?php
+		$this->getFormFields($htmlFormPrepend);
+?>
 <?php
 		if ($this->getVar( 'comments-form-user-name', 1) == 1) {
 			$text = ($this->getVar('comments-form-user-name-required', 1) == 0) ? JText::_('FORM_NAME') : JText::_('FORM_NAME_REQUIRED');
@@ -128,6 +142,9 @@ class jtt_tpl_form extends JoomlaTuneTemplate
 <?php
 			}
 		}
+?>
+<?php
+		$this->getFormFields($htmlFormAppend);
 ?>
 <div id="comments-form-buttons">
 	<div class="btn" id="comments-form-send"><div><a href="#" tabindex="7" onclick="jcomments.saveComment();return false;" title="<?php echo JText::_('FORM_SEND_HINT'); ?>"><?php echo JText::_('FORM_SEND'); ?></a></div></div>
@@ -261,5 +278,35 @@ else {if (typeof window.onload=='function'){var oldload=window.onload;window.onl
 <?php
 		}
 	}
-}
+
+	function getFormFields($fields)
+	{
+	        if (!empty($fields)) {
+			$fields = is_array($fields) ? $fields : array($fields);
+		
+			foreach($fields as $field) {
+
+				$labelElement = '';
+				$inputElement = '';
+
+				if (is_array($field)) {
+					$labelElement = isset($field['label']) ? $field['label'] : '';
+					$inputElement = isset($field['input']) ? $field['input'] : '';
+				} else {
+					$inputElement = $field;					
+				}
+
+				if (!empty($inputElement)) {
 ?>
+<p>
+	<span>
+		<?php echo $inputElement; ?>
+		<?php echo $labelElement; ?>
+	</span>
+</p>
+<?php
+	                       	}
+			}
+                }
+	}
+}

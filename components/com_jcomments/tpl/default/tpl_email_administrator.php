@@ -1,11 +1,19 @@
 <?php
-
-(defined('_VALID_MOS') OR defined('_JEXEC')) or die;
-
-/*
+/**
+ * JComments - Joomla Comment System
  *
+ * @version 3.0
+ * @package JComments
+ * @author Sergey M. Litvinov (smart@joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
+ */
+
+
+defined('_JEXEC') or die;
+
+/**
  * E-mail notification for administrators
- *
  */
 class jtt_tpl_email_administrator extends JoomlaTuneTemplate
 {
@@ -23,7 +31,7 @@ class jtt_tpl_email_administrator extends JoomlaTuneTemplate
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta content="text/html; charset=<?php echo $this->getVar('charset'); ?>" http-equiv="content-type" />
+  <meta content="text/html; charset=utf-8" http-equiv="content-type" />
   <meta name="Generator" content="JComments" />
 </head>
 <body>
@@ -90,4 +98,3 @@ class jtt_tpl_email_administrator extends JoomlaTuneTemplate
 		return '<a href="' . $link . '" title="' . $title . '" target="_blank">' . $title . '</a>';
 	}
 }
-?>

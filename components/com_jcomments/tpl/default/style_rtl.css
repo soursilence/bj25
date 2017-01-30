@@ -35,10 +35,11 @@
 /* Comment form */
 div.comments-policy {text-align: right;margin: 5px 20px 5px 0; margin-right: 20px !important;margin-left: 0 !important;}
 #comments-inline-edit #comments-form-error {margin-right: 5px !important;margin-left: 5px;}
-#comments-form, #comments-form p, #comments-report-form, #comments-report-form p, #comments-form span, #comments-form .counter {text-align: right;}
-#comments-form p, #comments-form #comments-form-buttons, #comments-form #comments-form-error, #comments-form #comments-form-captcha-holder {margin-right: 20px !important;}
+#comments-form, #comments-form p, #comments-report-form, #comments-report-form p, #comments-form span, #comments-form .counter {text-align: right;font-family: Tahoma, Verdana , Arial, Sans-Serif;}
+#comments-form p, #comments-form #comments-form-buttons, #comments-form #comments-form-error, #comments-form #comments-form-captcha-holder {margin-right: 20px !important;font-family: Tahoma, Verdana , Arial, Sans-Serif;}
 #comments-form .grippie {background-position: left -10px !important;}
 #comments-form .grippie span, #comments-form .btn, #comments-report-form .btn {float: right;}
+#comments-form textarea{font-family: Tahoma, Verdana , Arial, Sans-Serif;}
 #comments-form-message {padding: 5px 25px 5px 5px; background-position: right 50% !important;}
 #comments-form span.captcha {padding: 0 12px 0 0; background-position: right 50% !important;}
 #comments-footer {text-align: left;}
@@ -55,4 +56,3 @@ div.comments-policy {text-align: right;margin: 5px 20px 5px 0; margin-right: 20p
 #jc .custombbcode {margin: 0 0 0 2px;}
 /* Rounded comments */
 #jc .rbox div {text-align: right;}
-#jc .rbox_m {padding: 0 16px;}

@@ -1,11 +1,18 @@
 <?php
-
-(defined('_VALID_MOS') OR defined('_JEXEC')) or die;
-
-/*
+/**
+ * JComments - Joomla Comment System
  *
+ * @version 3.0
+ * @package JComments
+ * @author Sergey M. Litvinov (smart@joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
+ */
+
+defined('_JEXEC') or die;
+
+/**
  * Template for links (Readmore and Add comment) attached to content items on frontpage and blogs
- *
  */
 class jtt_tpl_links extends JoomlaTuneTemplate
 {
@@ -21,9 +28,9 @@ class jtt_tpl_links extends JoomlaTuneTemplate
 
 
 			if (!isset($content->hits)) {
-				$dbo = JCommentsFactory::getDBO();
-				$dbo->setQuery('SELECT hits FROM #__content WHERE id = ' . intval($content->id));
-				$cnt = (int) $dbo->loadResult();
+				$db = JFactory::getDbo();
+				$db->setQuery('SELECT hits FROM #__content WHERE id = ' . (int) $content->id);
+				$cnt = (int) $db->loadResult();
 			} else {
 				$cnt = (int) $content->hits;
 			}
@@ -84,4 +91,3 @@ class jtt_tpl_links extends JoomlaTuneTemplate
 		}
 	}
 }
-?>

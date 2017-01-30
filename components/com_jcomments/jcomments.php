@@ -2,73 +2,55 @@
 /**
  * JComments - Joomla Comment System
  *
- * Frontend event handler
- *
- * @version 2.3
+ * @version 3.0
  * @package JComments
  * @author Sergey M. Litvinov (smart@joomlatune.ru)
- * @copyright (C) 2006-2012 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
  * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
- *
- **/
+ */
 
-(defined('_VALID_MOS') OR defined('_JEXEC')) or die;
-
-if (!defined('DS')) {
-	define('DS', DIRECTORY_SEPARATOR);
-}
+defined('_JEXEC') or die;
 
 ob_start();
 
-require_once (dirname(__FILE__).DS.'jcomments.legacy.php');
-
-if (!defined('JCOMMENTS_ENCODING')) {
-	DEFINE('JCOMMENTS_ENCODING', strtolower(preg_replace('/charset=/', '', _ISO)));
-	if (JCOMMENTS_ENCODING == 'utf-8') {
-		// pattern strings are treated as UTF-8
-		DEFINE('JCOMMENTS_PCRE_UTF8', 'u');
-	} else {
-		DEFINE('JCOMMENTS_PCRE_UTF8', '');
-	}
-}
+require_once(dirname(__FILE__) . '/jcomments.legacy.php');
 
 // regular expression for links
-DEFINE('_JC_REGEXP_LINK', '#(^|\s|\>|\()((http://|https://|news://|ftp://|www.)\w+[^\s\<\>\"\']+)#i' . JCOMMENTS_PCRE_UTF8);
-DEFINE('_JC_REGEXP_EMAIL', '#([\w\.\-]+)@(\w+[\w\.\-]*\.\w{2,4})#i' . JCOMMENTS_PCRE_UTF8);
-DEFINE('_JC_REGEXP_EMAIL2', '#^([_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-z0-9-]+)*(\.[a-z]{2,4})$#i' . JCOMMENTS_PCRE_UTF8);
+DEFINE('_JC_REGEXP_LINK', '#(^|\s|\>|\()((http://|https://|news://|ftp://|www.)\w+[^\s\<\>\"\'\)]+)#iu');
+DEFINE('_JC_REGEXP_EMAIL', '#([\w\.\-]+)@(\w+[\w\.\-]*\.\w{2,4})#iu');
+DEFINE('_JC_REGEXP_EMAIL2', '#^([_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-z0-9-]+)*(\.[a-z]{2,4})$#iu');
 
-require_once (JCOMMENTS_BASE.'/jcomments.config.php');
-require_once (JCOMMENTS_BASE.'/jcomments.class.php');
-require_once (JCOMMENTS_MODELS.'/jcomments.php');
-require_once (JCOMMENTS_HELPERS.'/object.php');
-require_once (JCOMMENTS_HELPERS.'/event.php');
+require_once(JCOMMENTS_SITE . '/jcomments.class.php');
+require_once(JCOMMENTS_MODELS . '/jcomments.php');
 ob_end_clean();
 
-$jc_task = JCommentsInput::getVar('task', '');
+$app = JFactory::getApplication();
 
-switch(trim($jc_task)) {
+$jc_task = $app->input->get('task', '');
+
+switch (trim($jc_task)) {
 	case 'captcha':
 		$config = JCommentsFactory::getConfig();
 		$captchaEngine = $config->get('captcha_engine', 'kcaptcha');
-		if ($captchaEngine == 'kcaptcha' || $config->getInt('enable_mambots') == 0) {
-			require_once (JCOMMENTS_BASE.'/jcomments.captcha.php');
+		if ($captchaEngine == 'kcaptcha' || $config->getInt('enable_plugins') == 0) {
+			require_once(JCOMMENTS_SITE . '/jcomments.captcha.php');
 			JCommentsCaptcha::image();
 		} else {
-			if ($config->getInt('enable_mambots') == 1) {
-				JCommentsEvent::trigger('onJCommentsCaptchaImage');
+			if ($config->getInt('enable_plugins') == 1) {
+				JCommentsEventHelper::trigger('onJCommentsCaptchaImage');
 			}
 		}
 		break;
 	case 'rss':
-		require_once (JCOMMENTS_BASE.'/jcomments.rss.php');
+		require_once(JCOMMENTS_SITE . '/jcomments.rss.php');
 		JCommentsRSS::showObjectComments();
 		break;
 	case 'rss_full':
-		require_once (JCOMMENTS_BASE.'/jcomments.rss.php');
+		require_once(JCOMMENTS_SITE . '/jcomments.rss.php');
 		JCommentsRSS::showAllComments();
 		break;
 	case 'rss_user':
-		require_once (JCOMMENTS_BASE.'/jcomments.rss.php');
+		require_once(JCOMMENTS_SITE . '/jcomments.rss.php');
 		JCommentsRSS::showUserComments();
 		break;
 	case 'unsubscribe':
@@ -77,35 +59,36 @@ switch(trim($jc_task)) {
 	case 'cmd':
 		JComments::executeCmd();
 		break;
-	case 'go2object':
-		JComments::redirectToObject();
+	case 'notifications-cron':
+		$limit = $app->input->getInt('limit', 10);
+		$secret = trim($app->input->get('secret', ''));
+
+		if ($secret == $app->getCfg('secret')) {
+			JCommentsNotificationHelper::send($limit);
+		}
 		break;
+
+	case 'refreshObjectsAjax':
+		require_once(JCOMMENTS_SITE . '/jcomments.ajax.php');
+		JCommentsAJAX::refreshObjectsAjax();
+		exit;
+		break;
+
 	default:
-		$jc_option = JCommentsInput::getVar('option', '');
-		$jc_ajax = JCommentsInput::getVar('jtxf', '');
-		$app = JCommentsFactory::getApplication('site');
+		$jc_option = $app->input->get('option', '');
+		$jc_ajax = $app->input->get('jtxf', '');
 
 		if ($jc_option == 'com_jcomments' && $jc_ajax == '' && !$app->isAdmin()) {
 
-			$_Itemid = (int) JCommentsInput::getVar('Itemid');
-			$_tmpl = JCommentsInput::getVar('tmpl');
+			$_Itemid = $app->input->getInt('Itemid');
+			$_tmpl = $app->input->get('tmpl');
 
 			if ($_Itemid !== 0 && $_tmpl !== 'component') {
-				if (JCOMMENTS_JVERSION == '1.5') {
-					$params = JComponentHelper::getParams('com_jcomments');
-				} elseif (JCOMMENTS_JVERSION == '1.7') {
-					$params = $app->getParams();
-				} else {
-					$menu = $app->get('menu');
-					if ($menu != null) {
-						$params = new mosParameters($menu->params);
-					} else {
-						$params = new mosParameters('');
-					}
-				}
+				// $params = JComponentHelper::getParams('com_jcomments');
+				$params = $app->getParams();
 
 				$object_group = $params->get('object_group');
-				$object_id = (int) $params->get('object_id', 0);
+				$object_id = (int)$params->get('object_id', 0);
 
 				if ($object_id != 0 && $object_group != '') {
 
@@ -113,15 +96,21 @@ switch(trim($jc_task)) {
 						JComments::loadAlternateLanguage($params->get('language_suffix'));
 					}
 
-					$keywords = $params->get('keywords');
-					$description = $params->get('description');
-					$pageTitle = $params->get('page_title');
+					$keywords = $params->get('menu-meta_keywords');
+					$description = $params->get('menu-meta_description');
+					$title = $params->get('page_title');
 
-					$document = JCommentsFactory::getDocument();
-					
-					if ($pageTitle != '') {
-						$document->setTitle($pageTitle);
+					$document = JFactory::getDocument();
+
+					if (empty($title)) {
+						$title = $app->getCfg('sitename');
+					} elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
+						$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+					} elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+						$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 					}
+
+					$document->setTitle($title);
 
 					if ($keywords) {
 						$document->setMetaData('keywords', $keywords);
@@ -133,22 +122,22 @@ switch(trim($jc_task)) {
 
 					echo JComments::show($object_id, $object_group);
 				} else {
-					JCommentsRedirect($app->getCfg('live_site').'/index.php');
+					JFactory::getApplication()->redirect(JRoute::_('index.php'));
 				}
 			} else {
-				JCommentsRedirect($app->getCfg('live_site').'/index.php');
+				JFactory::getApplication()->redirect(JRoute::_('index.php'));
 			}
 		}
 		break;
 }
 
 if (isset($_REQUEST['jtxf'])) {
-	require_once (JCOMMENTS_BASE.'/jcomments.ajax.php');
+	require_once(JCOMMENTS_SITE . '/jcomments.ajax.php');
 
 	JComments::loadAlternateLanguage();
 
 	$jtx = new JoomlaTuneAjax();
-	$jtx->setCharEncoding(JCOMMENTS_ENCODING);
+	$jtx->setCharEncoding('utf-8');
 	$jtx->registerFunction(array('JCommentsAddComment', 'JCommentsAJAX', 'addComment'));
 	$jtx->registerFunction(array('JCommentsDeleteComment', 'JCommentsAJAX', 'deleteComment'));
 	$jtx->registerFunction(array('JCommentsEditComment', 'JCommentsAJAX', 'editComment'));
@@ -166,10 +155,12 @@ if (isset($_REQUEST['jtxf'])) {
 	$jtx->registerFunction(array('JCommentsSubscribe', 'JCommentsAJAX', 'subscribeUser'));
 	$jtx->registerFunction(array('JCommentsUnsubscribe', 'JCommentsAJAX', 'unsubscribeUser'));
 	$jtx->registerFunction(array('JCommentsBanIP', 'JCommentsAJAX', 'BanIP'));
-	$jtx->registerFunction(array('JCommentsRefreshObjects', 'JCommentsAJAX', 'RefreshObjects'));
 	$jtx->processRequests();
 }
 
+/**
+ * Frontend event handler
+ */
 class JComments
 {
 	/*
@@ -177,50 +168,48 @@ class JComments
 	 *
 	 * @return string
 	 */
-	public static function show( $object_id, $object_group = 'com_content', $object_title = '' )
+	public static function show($object_id, $object_group = 'com_content', $object_title = '')
 	{
 		// only one copy of JComments per page is allowed
 		if (defined('JCOMMENTS_SHOW')) {
 			return '';
 		}
 
-		$app = JCommentsFactory::getApplication('site');
+		$app = JFactory::getApplication('site');
 		$object_group = JCommentsSecurity::clearObjectGroup($object_group);
 
 		if ($object_group == '' || !isset($object_id) || $object_id == '') {
 			return '';
 		}
 
-		$object_id = (int) $object_id;
+		$object_id = (int)$object_id;
 		$object_title = trim($object_title);
 
 		$acl = JCommentsFactory::getACL();
 		$config = JCommentsFactory::getConfig();
-		$document = JCommentsFactory::getDocument();
+		$document = JFactory::getDocument();
 
 		$tmpl = JCommentsFactory::getTemplate($object_id, $object_group);
 		$tmpl->load('tpl_index');
 
 		if (!defined('JCOMMENTS_CSS')) {
-			include_once (JCOMMENTS_HELPERS.DS.'system.php');
+			include_once(JCOMMENTS_HELPERS . '/system.php');
 			if ($app->isAdmin()) {
 				$tmpl->addVar('tpl_index', 'comments-css', 1);
 			} else {
 				$document->addStyleSheet(JCommentsSystemPluginHelper::getCSS());
-				if (JCOMMENTS_JVERSION != '1.0') {
-					$language = JFactory::getLanguage();
-					if ($language->isRTL()) {
-						$rtlCSS = JCommentsSystemPluginHelper::getCSS(true);
-						if ($rtlCSS != '') {
-							$document->addStyleSheet($rtlCSS);
-						}
+				$language = JFactory::getLanguage();
+				if ($language->isRTL()) {
+					$rtlCSS = JCommentsSystemPluginHelper::getCSS(true);
+					if ($rtlCSS != '') {
+						$document->addStyleSheet($rtlCSS);
 					}
 				}
 			}
 		}
 
 		if (!defined('JCOMMENTS_JS')) {
-			include_once (JCOMMENTS_HELPERS.DS.'system.php');
+			include_once(JCOMMENTS_HELPERS . '/system.php');
 			$document->addScript(JCommentsSystemPluginHelper::getCoreJS());
 			define('JCOMMENTS_JS', 1);
 
@@ -250,17 +239,16 @@ class JComments
 		if ($config->getInt('enable_rss') == 1) {
 			if ($document->getType() == 'html') {
 				$link = JCommentsFactory::getLink('rss', $object_id, $object_group);
-				$title = (JCOMMENTS_JVERSION == '1.0') ? htmlspecialchars($object_title) : htmlspecialchars($object_title, ENT_COMPAT, 'UTF-8');
+				$title = htmlspecialchars($object_title, ENT_COMPAT, 'UTF-8');
 				$attribs = array('type' => 'application/rss+xml', 'title' => $title);
 				$document->addHeadLink($link, 'alternate', 'rel', $attribs);
 			}
 		}
 
-		$cacheEnabled = intval($app->getCfg('caching')) == 1;
+		$cacheEnabled = intval($app->getCfg('caching')) != 0;
 
 		if ($cacheEnabled == 0) {
-			$jrecache = $app->getCfg('absolute_path').DS.'components'.DS.'com_jrecache'.DS.'jrecache.config.php';
-
+			$jrecache = JPATH_ROOT . '/components/com_jrecache/jrecache.config.php';
 			if (is_file($jrecache)) {
 				$cfg = new _JRECache_Config();
 				$cacheEnabled = $cacheEnabled && $cfg->enable_cache;
@@ -275,19 +263,29 @@ class JComments
 
 		if (!$cacheEnabled || $load_cached_comments === 1) {
 			if ($config->get('template_view') == 'tree') {
-				$tmpl->addVar('tpl_index', 'comments-list', $commentsCount > 0 ? JComments::getCommentsTree($object_id, $object_group) : '');
+				$tmpl->addVar('tpl_index', 'comments-list',
+					$commentsCount > 0 ? JComments::getCommentsTree($object_id, $object_group) : '');
 			} else {
-				$tmpl->addVar('tpl_index', 'comments-list', $commentsCount > 0 ? JComments::getCommentsList($object_id, $object_group) : '');
+				$tmpl->addVar('tpl_index', 'comments-list',
+					$commentsCount > 0 ? JComments::getCommentsList($object_id, $object_group) : '');
 			}
 		}
 
 		$needScrollToComment = ($cacheEnabled || ($config->getInt('comments_per_page') > 0)) && $commentsCount > 0;
-		$tmpl->addVar('tpl_index', 'comments-gotocomment', (int) $needScrollToComment);
+		$tmpl->addVar('tpl_index', 'comments-gotocomment', (int)$needScrollToComment);
 		$tmpl->addVar('tpl_index', 'comments-form', JComments::getCommentsForm($object_id, $object_group, $showForm));
 		$tmpl->addVar('tpl_index', 'comments-form-position', $config->getInt('form_position'));
 
 		$result = $tmpl->renderTemplate('tpl_index');
 		$tmpl->freeAllTemplates();
+
+		// send notifications
+		srand((float)microtime() * 10000000);
+		$randValue = intval(rand(0, 100));
+
+		if ($randValue <= 30) {
+			JCommentsNotificationHelper::send();
+		}
 
 		define('JCOMMENTS_SHOW', 1);
 
@@ -297,8 +295,9 @@ class JComments
 	public static function loadAlternateLanguage($languageSuffix = '')
 	{
 		if ($languageSuffix == '') {
-			$languageSuffix = JCommentsInput::getVar('lsfx', '');
+			$languageSuffix = JFactory::getApplication()->input->get('lsfx', '');
 		}
+
 		if ($languageSuffix != '') {
 			$config = JCommentsFactory::getConfig();
 			$config->set('lsfx', $languageSuffix);
@@ -308,20 +307,20 @@ class JComments
 		}
 	}
 
-	public static function getCommentsForm( $object_id, $object_group, $showForm = true )
+	public static function getCommentsForm($object_id, $object_group, $showForm = true)
 	{
-		$object_id = (int) $object_id;
+		$object_id = (int)$object_id;
 		$object_group = trim($object_group);
 
 		$tmpl = JCommentsFactory::getTemplate($object_id, $object_group);
 		$tmpl->load('tpl_form');
 
-		$user = JCommentsFactory::getUser();
+		$user = JFactory::getUser();
 		$acl = JCommentsFactory::getACL();
 		$config = JCommentsFactory::getConfig();
 
 		if ($acl->canComment()) {
-			if ($config->getInt('comments_locked') == 1 ) {
+			if ($config->getInt('comments_locked') == 1) {
 				$message = $config->get('message_locked');
 
 				if ($message != '') {
@@ -344,7 +343,7 @@ class JComments
 			if ($acl->check('enable_captcha') == 1) {
 				$captchaEngine = $config->get('captcha_engine', 'kcaptcha');
 				if ($captchaEngine != 'kcaptcha') {
-					JCommentsEvent::trigger('onJCommentsCaptchaJavaScript');
+					JCommentsEventHelper::trigger('onJCommentsCaptchaJavaScript');
 				}
 			}
 
@@ -359,12 +358,28 @@ class JComments
 				}
 			}
 
-			if ($config->getInt('enable_mambots') == 1) {
-				$htmlBeforeForm = JCommentsEvent::trigger('onJCommentsFormBeforeDisplay');
-				$htmlAfterForm = JCommentsEvent::trigger('onJCommentsFormAfterDisplay');
+			if ($config->getInt('enable_plugins') == 1) {
 
-				$tmpl->addVar('tpl_form', 'comments-form-html-before', implode("\n", $htmlBeforeForm));
-				$tmpl->addVar('tpl_form', 'comments-form-html-after', implode("\n", $htmlAfterForm));
+				$htmlBeforeForm = JCommentsEventHelper::trigger('onJCommentsFormBeforeDisplay', array($object_id, $object_group));
+				$htmlAfterForm = JCommentsEventHelper::trigger('onJCommentsFormAfterDisplay', array($object_id, $object_group));
+
+				$htmlBeforeForm = implode("\n", $htmlBeforeForm);
+				$htmlAfterForm = implode("\n", $htmlAfterForm);
+
+				// show HTML before or after form element
+				$tmpl->addVar('tpl_form', 'comments-html-before-form', $htmlBeforeForm);
+				$tmpl->addVar('tpl_form', 'comments-html-after-form', $htmlAfterForm);
+
+				// backward compatibility
+				$tmpl->addVar('tpl_form', 'comments-form-html-before', $htmlBeforeForm);
+				$tmpl->addVar('tpl_form', 'comments-form-html-after', $htmlAfterForm);
+
+				// prepend or append HTML code inside form element
+				$htmlFormPrepend = JCommentsEventHelper::trigger('onJCommentsFormPrepend', array($object_id, $object_group));
+				$htmlFormAppend = JCommentsEventHelper::trigger('onJCommentsFormAppend', array($object_id, $object_group));
+
+				$tmpl->addVar('tpl_form', 'comments-form-html-prepend', $htmlFormPrepend);
+				$tmpl->addVar('tpl_form', 'comments-form-html-append', $htmlFormAppend);
 			}
 
 			$policy = $config->get('message_policy_post');
@@ -378,15 +393,15 @@ class JComments
 			}
 
 			if ($user->id) {
-				$currentUser = JCommentsFactory::getUser($user->id);
+				$currentUser = JFactory::getUser($user->id);
 				$user->name = $currentUser->name;
 				unset($currentUser);
 			}
 
 			$tmpl->addObject('tpl_form', 'user', $user);
 
-			if ($config->getInt('enable_smiles') == 1 && is_array($config->get('smiles'))) {
-				$tmpl->addVar('tpl_form', 'comment-form-smiles', $config->get('smiles'));
+			if ($config->getInt('enable_smilies') == 1) {
+				$tmpl->addVar('tpl_form', 'comment-form-smiles', JCommentsFactory::getSmilies()->getList());
 			}
 
 			$bbcode = JCommentsFactory::getBBCode();
@@ -401,18 +416,19 @@ class JComments
 			if ($config->getInt('enable_custom_bbcode')) {
 				$customBBCode = JCommentsFactory::getCustomBBCode();
 				if ($customBBCode->enabled()) {
-					$tmpl->addVar('tpl_form', 'comments-form-custombbcodes', $customBBCode->codes);
+					$tmpl->addVar('tpl_form', 'comments-form-custombbcodes', $customBBCode->getList());
 				}
 			}
 
 			$username_maxlength = $config->getInt('username_maxlength');
-			if ( $username_maxlength <= 0 || $username_maxlength > 255 ) {
+			if ($username_maxlength <= 0 || $username_maxlength > 255) {
 				$username_maxlength = 255;
 			}
 			$tmpl->addVar('tpl_form', 'comment-name-maxlength', $username_maxlength);
 
 			if (($config->getInt('show_commentlength') == 1)
-			&& ($acl->check('enable_comment_length_check'))) {
+				&& ($acl->check('enable_comment_length_check'))
+			) {
 				$tmpl->addVar('tpl_form', 'comments-form-showlength-counter', 1);
 				$tmpl->addVar('tpl_form', 'comment-maxlength', $config->getInt('comment_maxlength'));
 			} else {
@@ -426,8 +442,8 @@ class JComments
 				if ($captchaEngine == 'kcaptcha') {
 					// TODO
 				} else {
-					if ($config->getInt('enable_mambots') == 1) {
-						$captchaHTML = JCommentsEvent::trigger('onJCommentsCaptchaDisplay');
+					if ($config->getInt('enable_plugins') == 1) {
+						$captchaHTML = JCommentsEventHelper::trigger('onJCommentsCaptchaDisplay');
 						$tmpl->addVar('tpl_form', 'comments-form-captcha-html', implode("\n", $captchaHTML));
 					}
 				}
@@ -436,12 +452,12 @@ class JComments
 			$canSubscribe = $acl->check('enable_subscribe');
 
 			if ($user->id && $canSubscribe) {
-				require_once (JCOMMENTS_BASE.'/jcomments.subscription.php');
+				require_once(JCOMMENTS_SITE . '/jcomments.subscription.php');
 				$manager = JCommentsSubscriptionManager::getInstance();
 				$canSubscribe = $canSubscribe && (!$manager->isSubscribed($object_id, $object_group, $user->id));
 			}
 
-			$tmpl->addVar('tpl_form', 'comments-form-subscribe', (int) $canSubscribe);
+			$tmpl->addVar('tpl_form', 'comments-form-subscribe', (int)$canSubscribe);
 			$tmpl->addVar('tpl_form', 'comments-form-email-required', 0);
 
 			switch ($config->getInt('author_name')) {
@@ -496,7 +512,7 @@ class JComments
 
 			$tmpl->addVar('tpl_form', 'comments-form-homepage-required', 0);
 
-			switch($config->getInt('author_homepage')) {
+			switch ($config->getInt('author_homepage')) {
 				case 5:
 					if (!$user->id) {
 						$tmpl->addVar('tpl_form', 'comments-form-homepage-required', 0);
@@ -534,7 +550,7 @@ class JComments
 
 			$tmpl->addVar('tpl_form', 'comments-form-title-required', 0);
 
-			switch($config->getInt('comment_title')) {
+			switch ($config->getInt('comment_title')) {
 				case 3:
 					$tmpl->addVar('tpl_form', 'comments-form-title-required', 1);
 					$tmpl->addVar('tpl_form', 'comments-form-title', 1);
@@ -554,7 +570,9 @@ class JComments
 			$result = str_replace('name="captcha-refid"', 'name="captcha_refid"', $result);
 
 			if ($user->id) {
-				$result = str_replace('</form>', '<div><input type="hidden" name="userid" value="'.$user->id.'" /></div></form>', $result);
+				$result = str_replace('</form>',
+					'<div><input type="hidden" name="userid" value="' . $user->id . '" /></div></form>',
+					$result);
 			}
 
 			return $result;
@@ -579,25 +597,26 @@ class JComments
 		}
 	}
 
-	public static function getCommentsReportForm( $id, $object_id, $object_group )
+	public static function getCommentsReportForm($id, $object_id, $object_group)
 	{
-		$id = (int) $id;
+		$id = (int)$id;
 
-		$user = JCommentsFactory::getUser();
+		$user = JFactory::getUser();
 		$tmpl = JCommentsFactory::getTemplate($object_id, $object_group);
 		$tmpl->load('tpl_report_form');
 		$tmpl->addVar('tpl_report_form', 'comment-id', $id);
 		$tmpl->addVar('tpl_report_form', 'isGuest', $user->id ? 0 : 1);
 		$result = $tmpl->renderTemplate('tpl_report_form');
+
 		return $result;
 	}
 
-	public static function getCommentsList( $object_id, $object_group = 'com_content', $page = 0 )
+	public static function getCommentsList($object_id, $object_group = 'com_content', $page = 0)
 	{
-		$object_id = (int) $object_id;
-		$object_group = trim( $object_group );
+		$object_id = (int)$object_id;
+		$object_group = trim($object_group);
 
-		$user = JCommentsFactory::getUser();
+		$user = JFactory::getUser();
 		$acl = JCommentsFactory::getACL();
 		$config = JCommentsFactory::getConfig();
 
@@ -618,9 +637,9 @@ class JComments
 			$options['votes'] = $config->getInt('enable_voting');
 
 			if ($comments_per_page > 0) {
-				$page = (int) $page;
+				$page = (int)$page;
 
-				require_once (JCOMMENTS_HELPERS.DS.'pagination.php');
+				require_once(JCOMMENTS_HELPERS . '/pagination.php');
 				$pagination = new JCommentsPagination($object_id, $object_group);
 				$pagination->setCurrentPage($page);
 
@@ -646,19 +665,19 @@ class JComments
 
 			$isLocked = ($config->getInt('comments_locked', 0) == 1);
 
-			$tmpl->addVar( 'tpl_list', 'comments-refresh', intval(!$isLocked));
-			$tmpl->addVar( 'tpl_list', 'comments-rss', intval($config->getInt('enable_rss') && !$isLocked));
-			$tmpl->addVar( 'tpl_list', 'comments-can-subscribe', intval($user->id && $acl->check('enable_subscribe') && !$isLocked));
-			$tmpl->addVar( 'tpl_list', 'comments-count', count($rows));
+			$tmpl->addVar('tpl_list', 'comments-refresh', intval(!$isLocked));
+			$tmpl->addVar('tpl_list', 'comments-rss', intval($config->getInt('enable_rss') && !$isLocked));
+			$tmpl->addVar('tpl_list', 'comments-can-subscribe', intval($user->id && $acl->check('enable_subscribe') && !$isLocked));
+			$tmpl->addVar('tpl_list', 'comments-count', count($rows));
 
 			if ($user->id && $acl->check('enable_subscribe')) {
-				require_once (JCOMMENTS_BASE.DS.'jcomments.subscription.php');
+				require_once(JCOMMENTS_SITE . '/jcomments.subscription.php');
 				$manager = JCommentsSubscriptionManager::getInstance();
 				$isSubscribed = $manager->isSubscribed($object_id, $object_group, $user->id);
-				$tmpl->addVar( 'tpl_list', 'comments-user-subscribed', $isSubscribed);
+				$tmpl->addVar('tpl_list', 'comments-user-subscribed', $isSubscribed);
 			}
 
-			if ($config->get('comments_order') == 'DESC') {
+			if ($config->get('comments_list_order') == 'DESC') {
 				if ($comments_per_page > 0) {
 					$i = $total - ($comments_per_page * ($page > 0 ? $page - 1 : 0));
 				} else {
@@ -668,16 +687,16 @@ class JComments
 				$i = $limitstart + 1;
 			}
 
-			JCommentsEvent::trigger('onJCommentsCommentsPrepare', array(&$rows));
+			JCommentsEventHelper::trigger('onJCommentsCommentsPrepare', array(&$rows));
 
 			if ($acl->check('enable_gravatar')) {
-				JCommentsEvent::trigger('onPrepareAvatars', array(&$rows));
+				JCommentsEventHelper::trigger('onPrepareAvatars', array(&$rows));
 			}
 
 			$items = array();
 
 			foreach ($rows as $row) {
-				// run autocensor, replace quotes, smiles and other pre-view processing
+				// run autocensor, replace quotes, smilies and other pre-view processing
 				JComments::prepareComment($row);
 
 				// setup toolbar
@@ -709,7 +728,7 @@ class JComments
 				} else {
 					$tmpl->addVar('tpl_comment', 'comment-number', $i);
 
-					if ($config->get('comments_order') == 'DESC') {
+					if ($config->get('comments_list_order') == 'DESC') {
 						$i--;
 					} else {
 						$i++;
@@ -741,15 +760,16 @@ class JComments
 			}
 			unset($rows);
 		}
+
 		return $tmpl->renderTemplate('tpl_list');
 	}
 
-	public static function getCommentsTree( $object_id, $object_group = 'com_content', $page = 0 )
+	public static function getCommentsTree($object_id, $object_group = 'com_content', $page = 0)
 	{
-		$object_id = (int) $object_id;
+		$object_id = (int)$object_id;
 		$object_group = trim($object_group);
 
-		$user = JCommentsFactory::getUser();
+		$user = JFactory::getUser();
 		$acl = JCommentsFactory::getACL();
 		$config = JCommentsFactory::getConfig();
 
@@ -779,13 +799,13 @@ class JComments
 
 			$isLocked = ($config->getInt('comments_locked', 0) == 1);
 
-			$tmpl->addVar( 'tpl_tree', 'comments-refresh', intval(!$isLocked));
-			$tmpl->addVar( 'tpl_tree', 'comments-rss', intval($config->getInt('enable_rss') && !$isLocked));
-			$tmpl->addVar( 'tpl_tree', 'comments-can-subscribe', intval($user->id && $acl->check('enable_subscribe') && !$isLocked));
-			$tmpl->addVar( 'tpl_tree', 'comments-count', count($rows));
+			$tmpl->addVar('tpl_tree', 'comments-refresh', intval(!$isLocked));
+			$tmpl->addVar('tpl_tree', 'comments-rss', intval($config->getInt('enable_rss') && !$isLocked));
+			$tmpl->addVar('tpl_tree', 'comments-can-subscribe', intval($user->id && $acl->check('enable_subscribe') && !$isLocked));
+			$tmpl->addVar('tpl_tree', 'comments-count', count($rows));
 
 			if ($user->id && $acl->check('enable_subscribe')) {
-				require_once (JCOMMENTS_BASE.DS.'jcomments.subscription.php');
+				require_once(JCOMMENTS_SITE . '/jcomments.subscription.php');
 				$manager = JCommentsSubscriptionManager::getInstance();
 				$isSubscribed = $manager->isSubscribed($object_id, $object_group, $user->id);
 				$tmpl->addVar('tpl_tree', 'comments-user-subscribed', $isSubscribed);
@@ -793,19 +813,19 @@ class JComments
 
 			$i = 1;
 
-			JCommentsEvent::trigger('onJCommentsCommentsPrepare', array(&$rows));
+			JCommentsEventHelper::trigger('onJCommentsCommentsPrepare', array(&$rows));
 
 			if ($acl->check('enable_gravatar')) {
-				JCommentsEvent::trigger('onPrepareAvatars', array(&$rows));
+				JCommentsEventHelper::trigger('onPrepareAvatars', array(&$rows));
 			}
 
-			require_once (JCOMMENTS_LIBRARIES.DS.'joomlatune'.DS.'tree.php');
+			require_once(JCOMMENTS_LIBRARIES . '/joomlatune/tree.php');
 
 			$tree = new JoomlaTuneTree($rows);
 			$items = $tree->get();
 
 			foreach ($rows as $row) {
-				// run autocensor, replace quotes, smiles and other pre-view processing
+				// run autocensor, replace quotes, smilies and other pre-view processing
 				JComments::prepareComment($row);
 
 				// setup toolbar
@@ -842,7 +862,8 @@ class JComments
 
 			unset($rows);
 		}
-		return $tmpl->renderTemplate( 'tpl_tree' );
+
+		return $tmpl->renderTemplate('tpl_tree');
 	}
 
 	public static function getCommentItem(&$comment)
@@ -851,10 +872,10 @@ class JComments
 		$config = JCommentsFactory::getConfig();
 
 		if ($acl->check('enable_gravatar')) {
-			JCommentsEvent::trigger('onPrepareAvatar', array(&$comment));
+			JCommentsEventHelper::trigger('onPrepareAvatar', array(&$comment));
 		}
 
-		// run autocensor, replace quotes, smiles and other pre-view processing
+		// run autocensor, replace quotes, smilies and other pre-view processing
 		JComments::prepareComment($comment);
 
 		$tmpl = JCommentsFactory::getTemplate($comment->object_id, $comment->object_group);
@@ -890,9 +911,10 @@ class JComments
 		return $tmpl->renderTemplate('tpl_comment');
 	}
 
-	public static function getCommentListItem( &$comment )
+	public static function getCommentListItem(&$comment)
 	{
-		$total = JComments::getCommentsCount($comment->object_id, $comment->object_group, 'parent = ' . $comment->parent);
+		$total = JComments::getCommentsCount($comment->object_id, $comment->object_group,
+			'parent = ' . $comment->parent);
 
 		$tmpl = JCommentsFactory::getTemplate($comment->object_id, $comment->object_group);
 		$tmpl->load('tpl_list');
@@ -904,238 +926,64 @@ class JComments
 	}
 
 	/**
-	 * @param  $comment JCommentsTableComment
-	 * @param boolean $isNew
+	 * Sends notification about new/updated comment to administrators
+	 *
+	 * @param JCommentsTableComment $comment The comment object
+	 * @param boolean $isNew True if the comment is new
 	 * @return void
 	 */
-	public static function sendNotification( &$comment, $isNew = true)
+	public static function sendNotification(&$comment, $isNew = true)
 	{
-		$app = JCommentsFactory::getApplication('site');
-		$user = JCommentsFactory::getUser();
-		$config = JCommentsFactory::getConfig();
+		$data = array();
+		$data['comment'] = clone $comment;
 
-		if ($config->get('notification_email') != '') {
-
-			$objectInfo = JCommentsObjectHelper::getObjectInfo($comment->object_id, $comment->object_group, $comment->lang);
-
-			if ($comment->title != '') {
-				$comment->title = JCommentsText::censor($comment->title);
-			}
-
-			$commentText = $comment->comment;
-
-			$bbcode = JCommentsFactory::getBBCode();
-			$txt = JCommentsText::censor($comment->comment);
-			$txt = $bbcode->replace($txt);
-
-			if ($config->getInt('enable_custom_bbcode')) {
-				$customBBCode = JCommentsFactory::getCustomBBCode();
-				// TODO: add control for replacement mode from CustomBBCode parameters
-				$txt = $customBBCode->replace($txt, true);
-			}
-
-			$comment->comment = trim(preg_replace('/(\s){2,}/i', '\\1', $txt));
-			$comment->author = JComments::getCommentAuthorName($comment);
-
-			$tmpl = JCommentsFactory::getTemplate($comment->object_id, $comment->object_group);
-			$tmpl->load('tpl_email_administrator');
-			$tmpl->addVar('tpl_email_administrator', 'notification-type', 'admin');
-			$tmpl->addVar('tpl_email_administrator', 'comment-isnew', ($isNew) ? 1 : 0);
-			$tmpl->addVar('tpl_email_administrator', 'comment-object_title', $objectInfo->title);
-			$tmpl->addVar('tpl_email_administrator', 'comment-object_link', JCommentsFactory::getAbsLink($objectInfo->link));
-			$tmpl->addVar('tpl_email_administrator', 'quick-moderation', $config->getInt('enable_quick_moderation'));
-			$tmpl->addVar('tpl_email_administrator', 'enable-blacklist', $config->getInt('enable_blacklist'));
-			$tmpl->addObject('tpl_email_administrator', 'comment', $comment);
-			$message = $tmpl->renderTemplate('tpl_email_administrator');
-			$tmpl->freeTemplate('tpl_email_administrator');
-
-			if ($isNew) {
-				$subject = JText::sprintf('NOTIFICATION_SUBJECT_NEW', $objectInfo->title);
-			} else {
-				$subject = JText::sprintf('NOTIFICATION_SUBJECT_UPDATED', $objectInfo->title);
-			}
-
-			if (isset($subject) && isset($message)) {
-				$emails = explode(',', $config->get('notification_email'));
-				$mailFrom = $app->getCfg('mailfrom');
-				$fromName = $app->getCfg('fromname');
-
-				foreach ($emails as $email) {
-					$email = trim($email);
-
-					// don't send notification to message author
-					if ($user->email != $email) {
-						JCommentsMail::send($mailFrom, $fromName, $email, $subject, $message, true);
-					}
-				}
-			}
-			unset($emails, $objectInfo);
-
-			$comment->comment = $commentText;
-		}
-	}
-
-	public static function sendReport( &$comment, $name, $reason = '')
-	{
-		$app = JCommentsFactory::getApplication('site');
-		$user = JCommentsFactory::getUser();
-		$config = JCommentsFactory::getConfig();
-
-		if ($config->get('notification_email') != '') {
-
-			$objectInfo = JCommentsObjectHelper::getObjectInfo($comment->object_id, $comment->object_group, $comment->lang);
-
-			$commentText  = $comment->comment;
-
-			$bbcode = JCommentsFactory::getBBCode();
-			$txt = JCommentsText::censor($comment->comment);
-			$txt = $bbcode->replace($txt);
-
-			if ($config->getInt('enable_custom_bbcode')) {
-				$customBBCode = JCommentsFactory::getCustomBBCode();
-				// TODO: add control for replacement mode from CustomBBCode parameters
-				$txt = $customBBCode->replace($txt, true);
-			}
-
-			$comment->comment = trim(preg_replace('/(\s){2,}/i', '\\1', $txt));
-			$comment->author = JComments::getCommentAuthorName($comment);
-
-			$tmpl = JCommentsFactory::getTemplate($comment->object_id, $comment->object_group);
-			$tmpl->load('tpl_email_report');
-			$tmpl->addVar('tpl_email_report', 'comment-object_title', $objectInfo->title);
-			$tmpl->addVar('tpl_email_report', 'comment-object_link', JCommentsFactory::getAbsLink($objectInfo->link));
-			$tmpl->addVar('tpl_email_report', 'report-name', $name);
-			$tmpl->addVar('tpl_email_report', 'report-reason', $reason);
-			$tmpl->addVar('tpl_email_report', 'quick-moderation', $config->getInt('enable_quick_moderation'));
-			$tmpl->addVar('tpl_email_report', 'enable-blacklist', $config->getInt('enable_blacklist'));
-			$tmpl->addObject('tpl_email_report', 'comment', $comment);
-
-			$message = $tmpl->renderTemplate('tpl_email_report');
-
-			$tmpl->freeTemplate('tpl_email_report');
-
-			$subject = JText::sprintf('REPORT_NOTIFICATION_SUBJECT', $comment->author);
-
-			if (isset($subject) && isset($message)) {
-				$emails = explode(',', $config->get('notification_email'));
-
-				$mailFrom = $app->getCfg('mailfrom');
-				$fromName = $app->getCfg('fromname');
-
-				foreach ($emails as $email) {
-					$email = trim((string) $email);
-
-					// don't send notification to message author
-					if ($user->email != $email) {
-						JCommentsMail::send($mailFrom, $fromName, $email, $subject, $message, true);
-					}
-				}
-			}
-			unset($emails, $objectInfo);
-
-			$comment->comment = $commentText;
-		}
+		JCommentsNotificationHelper::push($data, $isNew ? 'moderate-new' : 'moderate-update');
 	}
 
 	/**
-	 * @param  $comment JCommentsTableComment
-	 * @param boolean $isNew
-	 * @return
+	 * Sends user's report to administrators
+	 *
+	 * @param JCommentsTableComment $comment The comment object
+	 * @param string $name The reporter's name
+	 * @param string $reason The report description
+	 * @return void
 	 */
-	public static function sendToSubscribers( &$comment, $isNew = true)
+	public static function sendReport(&$comment, $name, $reason = '')
 	{
-		if (!$comment->published) {
-			return;
-		}
+		$data = array();
+		$data['comment'] = clone $comment;
+		$data['report-name'] = $name;
+		$data['report-reason'] = $reason;
 
-		$app = JCommentsFactory::getApplication('site');
-		$dbo = JCommentsFactory::getDBO();
-		$config = JCommentsFactory::getConfig();
+		JCommentsNotificationHelper::push($data, 'report');
+	}
 
-		$query = "SELECT DISTINCTROW js.`name`, js.`email`, js.`hash` "
-			. "\n , jo.title AS object_title, jo.link AS object_link, jo.access AS object_access"
-			. "\nFROM #__jcomments_subscriptions AS js"
-			. "\nJOIN #__jcomments_objects AS jo ON js.object_id = jo.object_id AND js.object_group = jo.object_group"
-			. "\nWHERE js.`object_group` = " . $dbo->Quote($comment->object_group)
-			. "\nAND js.`object_id` = " . intval($comment->object_id)
-			. "\nAND js.`published` = 1 "
-			. (JCommentsMultilingual::isEnabled() ? "\nAND js.`lang` = " . $dbo->Quote($comment->lang) : '')
-			. (JCommentsMultilingual::isEnabled() ? "\nAND jo.`lang` = " . $dbo->Quote($comment->lang) : '')
-			. "\nAND js.`email` <> '" . $dbo->getEscaped($comment->email) . "'"
-			. ($comment->userid ? "\nAND js.`userid` <> " . $comment->userid : '')
-			;
-		$dbo->setQuery( $query );
-		$rows = $dbo->loadObjectList();
+	/**
+	 * Sends notification about new or updated comment to subscribers
+	 *
+	 * @param JCommentsTableComment $comment The comment object
+	 * @param boolean $isNew True if the comment is new
+	 * @return void
+	 */
+	public static function sendToSubscribers(&$comment, $isNew = true)
+	{
+		if ($comment->published) {
+			$data = array();
+			$data['comment'] = clone $comment;
 
-		if (count($rows)) {
-			// getting object's information (title and link)
-			$object_title = empty($rows[0]->object_title) ? JCommentsObjectHelper::getTitle($comment->object_id, $comment->object_group, $comment->lang) : $rows[0]->object_title;
-			$object_link = empty($rows[0]->object_link) ? JCommentsObjectHelper::getLink($comment->object_id, $comment->object_group, $comment->lang) : $rows[0]->object_link;
-			$object_link = JCommentsFactory::getAbsLink($object_link);
-
-			if ($comment->title != '') {
-				$comment->title = JCommentsText::censor($comment->title);
-			}
-
-			$commentText = $comment->comment;
-
-			$bbcode = JCommentsFactory::getBBCode();
-			$txt = JCommentsText::censor($comment->comment);
-			$txt = $bbcode->replace($txt);
-
-			if ($config->getInt('enable_custom_bbcode')) {
-				$customBBCode = JCommentsFactory::getCustomBBCode();
-				// TODO: add control for replacement mode from CustomBBCode parameters
-				$txt = $customBBCode->replace($txt, true);
-			}
-
-			$comment->comment = trim(preg_replace('/(\s){2,}/i', '\\1', $txt));
-			$comment->author = JComments::getCommentAuthorName($comment);
-
-			$tmpl = JCommentsFactory::getTemplate($comment->object_id, $comment->object_group);
-			$tmpl->load('tpl_email');
-			$tmpl->addVar('tpl_email', 'notification-type', 'subscription');
-			$tmpl->addVar('tpl_email', 'comment-isnew', ($isNew) ? 1 : 0);
-			$tmpl->addVar('tpl_email', 'comment-object_title', $object_title);
-			$tmpl->addVar('tpl_email', 'comment-object_link', $object_link);
-			$tmpl->addObject('tpl_email', 'comment', $comment);
-
-			if ($isNew) {
-				$subject = JText::sprintf('NOTIFICATION_SUBJECT_NEW', $object_title);
-			} else {
-				$subject = JText::sprintf('NOTIFICATION_SUBJECT_UPDATED', $object_title);
-			}
-
-			if (isset($subject)) {
-				$mailFrom = $app->getCfg('mailfrom');
-				$fromName = $app->getCfg('fromname');
-
-				foreach ($rows as $row) {
-					$tmpl->addVar('tpl_email', 'hash', $row->hash);
-					$message = $tmpl->renderTemplate('tpl_email');
-
-					JCommentsMail::send($mailFrom, $fromName, $row->email, $subject, $message, true);
-				}
-			}
-
-			$tmpl->freeTemplate('tpl_email');
-
-			unset($rows);
-
-			$comment->comment = $commentText;
+			JCommentsNotificationHelper::push($data, $isNew ? 'comment-new' : 'comment-update');
 		}
 	}
 
-	public static function prepareComment( &$comment )
+	public static function prepareComment(&$comment)
 	{
 		if (isset($comment->_skip_prepare) && $comment->_skip_prepare == 1) {
 			return;
 		}
 
-		JCommentsEvent::trigger('onJCommentsCommentBeforePrepare', array(&$comment));
+		JCommentsEventHelper::trigger('onJCommentsCommentBeforePrepare', array(&$comment));
 
 		$config = JCommentsFactory::getConfig();
-		$bbcode = JCommentsFactory::getBBCode();
 		$acl = JCommentsFactory::getACL();
 
 		// run autocensor
@@ -1160,11 +1008,10 @@ class JComments
 		}
 
 		// replace BBCode tags
-		$comment->comment = $bbcode->replace($comment->comment);
+		$comment->comment = JCommentsFactory::getBBCode()->replace($comment->comment);
 
 		if ($config->getInt('enable_custom_bbcode')) {
-			$customBBCode = JCommentsFactory::getCustomBBCode();
-			$comment->comment = $customBBCode->replace($comment->comment);
+			$comment->comment = JCommentsFactory::getCustomBBCode()->replace($comment->comment);
 		}
 
 		// fix long words problem
@@ -1189,10 +1036,9 @@ class JComments
 			}
 		}
 
-		// replace smile codes with images
-		if ($config->get('enable_smiles') == '1') {
-			$smiles = JCommentsFactory::getSmiles();
-			$comment->comment = $smiles->replace($comment->comment);
+		// replace smilies' codes with images
+		if ($config->get('enable_smilies') == '1') {
+			$comment->comment = JCommentsFactory::getSmilies()->replace($comment->comment);
 		}
 
 		$comment->author = JComments::getCommentAuthorName($comment);
@@ -1201,38 +1047,39 @@ class JComments
 		$comment->gravatar = md5(strtolower($comment->email));
 
 		if (empty($comment->avatar)) {
-			$comment->avatar = '<img src="http://www.gravatar.com/avatar.php?gravatar_id='. $comment->gravatar .'&amp;default=' . urlencode(JCommentsFactory::getLink('noavatar')) . '" alt="'.htmlspecialchars($comment->author).'" />';
+			$comment->avatar = '<img src="http://www.gravatar.com/avatar/' . $comment->gravatar . '?d=' . urlencode(JCommentsFactory::getLink('noavatar')) . '" alt="' . htmlspecialchars($comment->author) . '" />';
 		}
 
-		JCommentsEvent::trigger('onJCommentsCommentAfterPrepare', array(&$comment));
+		JCommentsEventHelper::trigger('onJCommentsCommentAfterPrepare', array(&$comment));
 	}
 
-	public static function maskEmail( $id, $text )
+	public static function maskEmail($id, $text)
 	{
-		$id = (int) $id;
+		$id = (int)$id;
 
 		if ($id) {
-			$GLOBALS['JCOMMENTS_COMMENTID'] = $id;
-			$text = preg_replace_callback(_JC_REGEXP_EMAIL, array('JComments', 'maskEmailReplacer'), $text);
+			$image = str_replace('/administrator', '', JURI::root()) . 'components/com_jcomments/images/email.png';
+
+			$matches = array();
+			$count = preg_match_all(_JC_REGEXP_EMAIL, $text, $matches);
+			for ($i = 0; $i < $count; $i++) {
+				$html = '<span onclick="jcomments.jump2email(' . $id . ', \'' . md5($matches[0][$i]) . '\');" class="email">';
+				$html .= $matches[1][$i] . '<img src="' . $image . '" alt="@" />' . $matches[2][$i];
+				$html .= '</span>';
+				$text = str_replace($matches[0][$i], $html, $text);
+			}
 		}
+
 		return $text;
 	}
 
-	public static function maskEmailReplacer( &$matches )
+	public static function urlProcessor(&$matches)
 	{
-		$app = JCommentsFactory::getApplication('site');
-		return "<span onclick=\"jcomments.jump2email(" . $GLOBALS['JCOMMENTS_COMMENTID'] . ", '" . md5($matches[0]) . "');\" class=\"email\" onmouseover=\"this.className='emailactive';\" onmouseout=\"this.className='email';\">" . $matches[1] . "<img src=\"" . $app->getCfg('live_site') . "/components/com_jcomments/images/email.png\" border=\"0\" alt=\"@\" />" . $matches[2] . "</span>";
-	}
-
-	public static function urlProcessor( &$matches )
-	{
-		$app = JCommentsFactory::getApplication('site');
-
 		$link = $matches[2];
 		$link_suffix = '';
 
 		while (preg_match('#[\,\.]+#', $link[strlen($link) - 1])) {
-			$sl = strlen($link)-1;
+			$sl = strlen($link) - 1;
 			$link_suffix .= $link[$sl];
 			$link = substr($link, 0, $sl);
 		}
@@ -1284,10 +1131,11 @@ class JComments
 			}
 		}
 
-		if (strpos($link, $app->getCfg('live_site')) === false) {
-			return $matches[1]."<a href=\"".((substr($link, 0, 3)=='www') ? "http://" : "").$link."\" target=\"_blank\" rel=\"external nofollow\">$link_text</a>" . $link_suffix;
+		$liveSite = trim(str_replace(JURI::root(true), '', str_replace('/administrator', '', JURI::root())), '/');
+		if (strpos($link, $liveSite) === false) {
+			return $matches[1] . "<a href=\"" . ((substr($link, 0, 3) == 'www') ? "http://" : "") . $link . "\" target=\"_blank\" rel=\"external nofollow\">$link_text</a>" . $link_suffix;
 		} else {
-			return $matches[1]."<a href=\"$link\" target=\"_blank\">$link_text</a>" . $link_suffix;
+			return $matches[1] . "<a href=\"$link\" target=\"_blank\">$link_text</a>" . $link_suffix;
 		}
 	}
 
@@ -1295,16 +1143,17 @@ class JComments
 	{
 		$config = JCommentsFactory::getConfig();
 		if ($config->getInt('comments_per_page') > 0) {
-			require_once (JCOMMENTS_HELPERS.DS.'pagination.php');
+			require_once(JCOMMENTS_HELPERS . '/pagination.php');
 			$pagination = new JCommentsPagination($object_id, $object_group);
 			$this_page = $pagination->getCommentPage($object_id, $object_group, $comment_id);
 		} else {
 			$this_page = 0;
 		}
+
 		return $this_page;
 	}
 
-	public static function getCommentAuthorName( $comment )
+	public static function getCommentAuthorName($comment)
 	{
 		$name = '';
 
@@ -1316,52 +1165,58 @@ class JComments
 				$name = $comment->name ? $comment->name : 'Guest'; // JText::_('Guest');
 			}
 		}
+
 		return $name;
 	}
 
 	public static function unsubscribe()
 	{
-		$app = JCommentsFactory::getApplication('site');
-		$hash = JCommentsInput::getVar('hash','');
+		$app = JFactory::getApplication('site');
+		$hash = $app->input->get('hash', '');
 		$hash = preg_replace('#[^A-Z0-9]#i', '', $hash);
 
 		if ($hash) {
-			require_once (JCOMMENTS_BASE.DS.'jcomments.subscription.php');
+			require_once(JCOMMENTS_SITE . '/jcomments.subscription.php');
 			$manager = JCommentsSubscriptionManager::getInstance();
+			$subscription = $manager->getSubscriptionByHash($hash);
 			$result = $manager->unsubscribeByHash($hash);
 			if ($result) {
-				JCommentsRedirect($app->getCfg('live_site') . '/index.php', JText::_('SUCCESSFULLY_UNSUBSCRIBED'));
+				$link = JCommentsObjectHelper::getLink($subscription->object_id, $subscription->object_group, $subscription->lang);
+				if (empty($link)) {
+					$link = JRoute::_('index.php');
+				}
+
+				$app->redirect($link, JText::_('SUCCESSFULLY_UNSUBSCRIBED'));
 			}
 		}
 
 		header('HTTP/1.0 404 Not Found');
-		if (JCOMMENTS_JVERSION != '1.0') {
-			$message = JCOMMENTS_JVERSION == '1.5' ? 'Resource Not Found' : 'JGLOBAL_RESOURCE_NOT_FOUND';
-			JError::raiseError(404, $message);
-		}
+		JError::raiseError(404, 'JGLOBAL_RESOURCE_NOT_FOUND');
 		exit(404);
 	}
 
 	public static function executeCmd()
 	{
-		$app = JCommentsFactory::getApplication('site');
-		$cmd = strtolower(JCommentsInput::getVar('cmd', ''));
-		$hash = JCommentsInput::getVar('hash', '');
-		$id = (int) JCommentsInput::getVar('id', 0);
+		$app = JFactory::getApplication('site');
+		$cmd = strtolower($app->input->get('cmd', ''));
+		$hash = $app->input->get('hash', '');
+		$id = $app->input->getInt('id', 0);
 
 		$message = '';
-		$link = $app->getCfg('live_site') . '/index.php';
+		$link = str_replace('/administrator', '', JURI::root()) . 'index.php';
 
 		$checkHash = JCommentsFactory::getCmdHash($cmd, $id);
+
 		if ($hash == $checkHash) {
 			$config = JCommentsFactory::getConfig();
 			if ($config->getInt('enable_quick_moderation') == 1) {
-				$db = JCommentsFactory::getDBO();
-				$comment = new JCommentsTableComment($db);
+				JTable::addIncludePath(JCOMMENTS_TABLES);
+
+				$comment = JTable::getInstance('Comment', 'JCommentsTable');
 				if ($comment->load($id)) {
 					$link = JCommentsObjectHelper::getLink($comment->object_id, $comment->object_group, $comment->lang);
 					$link = str_replace('&amp;', '&', $link);
-					switch($cmd) {
+					switch ($cmd) {
 						case 'publish':
 							$comment->published = 1;
 							$comment->store();
@@ -1404,12 +1259,8 @@ class JComments
 
 									// check if this IP already banned
 									if (JCommentsSecurity::checkBlacklist($options)) {
-										require_once(JCOMMENTS_TABLES.'/blacklist.php');
-										
-										$blacklist = new JCommentsTableBlacklist($db);
+										$blacklist = JTable::getInstance('Blacklist', 'JCommentsTable');
 										$blacklist->ip = $comment->ip;
-										$blacklist->created = JCommentsFactory::getDate();
-										$blacklist->created_by = $acl->getUserId();
 										$blacklist->store();
 										$message = JText::_('SUCCESSFULLY_BANNED');
 									} else {
@@ -1421,6 +1272,8 @@ class JComments
 							}
 							break;
 					}
+
+					JCommentsNotificationHelper::send();
 				} else {
 					$message = JText::_('ERROR_NOT_FOUND');
 				}
@@ -1429,36 +1282,17 @@ class JComments
 			}
 		} else {
 			$message = JText::_('ERROR_QUICK_MODERATION_INCORRECT_HASH');
-		}	
-		JCommentsRedirect($link, $message);
-	}
-
-	public static function redirectToObject()
-	{
-		$app = JCommentsFactory::getApplication('site');
-		$object_id = (int) JCommentsInput::getVar('object_id', 0);
-		$object_group = trim(strip_tags(JCommentsInput::getVar('object_group', 'com_content')));
-		$lang = trim(strip_tags(JCommentsInput::getVar('lang')));
-
-		if ($object_id != 0 && $object_group != '') {
-			$link = JCommentsObjectHelper::getLink($object_id, $object_group, $lang);
-			$link = str_replace('amp;', '', $link);
-			if ($link == '') {
-				$link = $app->getCfg('live_site');
-			}
-		} else {
-			$link = $app->getCfg('live_site');
 		}
-		JCommentsRedirect($link);
+
+		$app->redirect($link, $message);
 	}
 
-
-	public static function getCommentsCount( $object_id, $object_group = 'com_content', $filter = '' )
+	public static function getCommentsCount($object_id, $object_group = 'com_content', $filter = '')
 	{
 		$acl = JCommentsFactory::getACL();
 
 		$options = array();
-		$options['object_id'] = (int) $object_id;
+		$options['object_id'] = (int)$object_id;
 		$options['object_group'] = trim($object_group);
 		$options['published'] = $acl->canPublish() || $acl->canPublishForObject($object_id, $object_group) ? null : 1;
 		$options['filter'] = $filter;
@@ -1468,11 +1302,10 @@ class JComments
 
 	/*
 	 * @see JComments::show()
-	 * @deprecated As of version 2.0.0
+	 * @deprecated Use JComments::show() instead
 	 */
-	public static function showComments( $object_id, $object_group = 'com_content', $object_title = '' )
+	public static function showComments($object_id, $object_group = 'com_content', $object_title = '')
 	{
 		return JComments::show($object_id, $object_group, $object_title);
 	}
 }
-?>

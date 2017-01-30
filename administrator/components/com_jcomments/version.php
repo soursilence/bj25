@@ -1,20 +1,32 @@
 <?php
+/**
+ * JComments - Joomla Comment System
+ *
+ * @version 3.0
+ * @package JComments
+ * @author Sergey M. Litvinov (smart@joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
+ */
+
+defined('_JEXEC') or die;
+
 class JCommentsVersion
 {
 	/** @var string Product */
 	var $PRODUCT = 'JComments';
 	/** @var int Main Release Level */
-	var $RELEASE = '2.3';
+	var $RELEASE = '3.0';
 	/** @var int Sub Release Level */
-	var $DEV_LEVEL = '0';
+	var $DEV_LEVEL = '5';
 	/** @var string Development Status */
 	var $DEV_STATUS = '';
 	/** @var int Build Number */
 	var $BUILD = '';
 	/** @var string Date */
-	var $RELDATE = '20/02/2012';
+	var $RELDATE = '01/08/2014';
 	/** @var string Time */
-	var $RELTIME = '23:10';
+	var $RELTIME = '11:19';
 	/** @var string Timezone */
 	var $RELTZ = 'GMT+2';
 
@@ -50,4 +62,3 @@ class JCommentsVersion
 		return $this->RELDATE;
 	}
 }
-?>

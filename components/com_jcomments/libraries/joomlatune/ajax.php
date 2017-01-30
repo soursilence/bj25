@@ -5,9 +5,11 @@
  * @version 1.0
  * @package JoomlaTune.Framework
  * @author Sergey M. Litvinov (smart@joomlatune.ru)
- * @copyright (C) 2006-2012 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
  * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
- **/
+ */
+
+defined('_JEXEC') or die;
 
 // Check for double include
 if (!defined ('JOOMLATUNE_AJAX'))
@@ -303,4 +305,3 @@ if (!defined ('JOOMLATUNE_AJAX'))
 		}
 	}
 } // end of double include check
-?>

@@ -1,9 +1,21 @@
 <?php
 /**
+ * JComments - Joomla Comment System
+ *
+ * @version 3.0
+ * @package JComments
+ * @author Sergey M. Litvinov (smart@joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
+ */
+
+defined('_JEXEC') or die;
+
+/**
  * JComments subscriptions table
  *
  */
-class JCommentsTableSubscription extends JoomlaTuneDBTable
+class JCommentsTableSubscription extends JTable
 {
 	/** @var int Primary key */
 	var $id = null;
@@ -24,21 +36,33 @@ class JCommentsTableSubscription extends JoomlaTuneDBTable
 	/** @var boolean */
 	var $published = null;
 
-	/**
-	 * @param  JDatabase $db A database connector object
-	 * @return void
-	 */
-	function JCommentsTableSubscription(&$db)
+	public function __construct(&$_db)
 	{
-		parent::__construct('#__jcomments_subscriptions', 'id', $db);
+		parent::__construct('#__jcomments_subscriptions', 'id', $_db);
 	}
 
 	function store($updateNulls = false)
 	{
 		if ($this->userid != 0 && empty($this->email)) {
-			$user = JCommentsFactory::getUser($this->userid);
+			$user = JFactory::getUser($this->userid);
 			$this->email = $user->email;
-			unset($user);
+		}
+
+		if ($this->userid == 0 && !empty($this->email)) {
+			$db = JFactory::getDBO();
+
+			$query = $db->getQuery(true);
+			$query->select('*');
+			$query->from($db->quoteName('#__users'));
+			$query->where($db->quoteName('email') . ' = ' . $db->Quote($db->escape($this->email, true)));
+			$db->setQuery($query);
+
+			$users = $db->loadObjectList();
+
+			if (count($users)) {
+				$this->userid = $users[0]->id;
+				$this->name = $users[0]->name;
+			}
 		}
 
 		if (empty($this->lang)) {

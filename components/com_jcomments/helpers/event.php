@@ -2,19 +2,19 @@
 /**
  * JComments - Joomla Comment System
  *
- * @version 2.3
+ * @version 3.0
  * @package JComments
  * @author Sergey M. Litvinov (smart@joomlatune.ru)
- * @copyright (C) 2006-2012 by Sergey M. Litvinov (http://www.joomlatune.ru)
+ * @copyright (C) 2006-2013 by Sergey M. Litvinov (http://www.joomlatune.ru)
  * @license GNU/GPL: http://www.gnu.org/copyleft/gpl.html
- *
- **/
+ */
+
+defined('_JEXEC') or die;
 
 /**
- * JComments Event Handler
- * 
- **/
-class JCommentsEvent
+ * JComments Event Helper
+ */
+class JCommentsEventHelper
 {
 	/**
 	 * Triggers an event by dispatching arguments to all observers that handle
@@ -26,20 +26,24 @@ class JCommentsEvent
 	 */
 	public static function trigger($event, $args = null)
 	{
-		static $pluginsLoaded = false;
+		static $initialised = false;
 
 		$result = array();
-		$config = JCommentsFactory::getConfig();
-		if ($config->getInt('enable_mambots') == 1) {
-			if (!$pluginsLoaded) {
+
+		if (JCommentsFactory::getConfig()->getInt('enable_plugins') == 1) {
+			if (!$initialised) {
 				JPluginHelper::importPlugin('jcomments');
-				$pluginsLoaded = true;
+				$initialised = true;
 			}
 
-			$dispatcher = JDispatcher::getInstance();
+			if (version_compare(JVERSION, '3.0', 'ge')) {
+				$dispatcher = JEventDispatcher::getInstance();
+			} else {
+				$dispatcher = JDispatcher::getInstance();
+			}
+
 			$result = $dispatcher->trigger($event, $args);
 		}
 		return $result;
 	}
 }
-?>
