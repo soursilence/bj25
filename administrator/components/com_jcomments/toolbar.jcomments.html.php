@@ -74,7 +74,7 @@ class JCommentsToolbarButtonHelper
 			echo "<td><a class=\"toolbar\" style=\"width: auto;\" href=\"#\" onclick=\"jcbackend.popup('index3.php?option=com_jcomments&task=refresh.objects','refresh', function(){window.location.reload();});\"><img src=\"components/com_jcomments/assets/icon-32-refresh.png\" alt=\"\" /><br />$text</a></td>";
 		} else {
 			$bar = JToolBar::getInstance('toolbar');
-			$bar->addButtonPath(JPATH_COMPONENT.DS.'classes'.DS.'button');
+			$bar->addButtonPath(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.'button');
 			$bar->appendButton('JCommentsPopup', 'refresh', 'A_REFRESH_OBJECTS_INFO', 'index.php?option=com_jcomments&amp;task=refresh.objects&amp;tmpl=component', 'window.location.reload();');
 		}
 	}

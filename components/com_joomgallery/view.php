@@ -75,7 +75,7 @@ class JoomGalleryView extends JView
     $this->_user      = JFactory::getUser();
     $this->_doc       = JFactory::getDocument();
 
-    JHTML::addIncludePath(JPATH_COMPONENT.DS.'helpers'.DS.'html');
+    JHTML::addIncludePath(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
 
     // If we are just displaying an image we don't need anything else
     if(JRequest::getCmd('format') == 'raw' || JRequest::getCmd('format') == 'jpg' || JRequest::getCmd('format') == 'json' || JRequest::getCmd('format') == 'feed')
@@ -90,7 +90,7 @@ class JoomGalleryView extends JView
     $this->_doc->addStyleSheet($this->_ambit->getStyleSheet('joomgallery.css'));
 
     // Add invidual CSS file if it exists
-    if(file_exists(JPATH_ROOT.DS.'media'.DS.'joomgallery'.DS.'css'.DS.'joom_local.css'))
+    if(file_exists(JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'joom_local.css'))
     {
       $this->_doc->addStyleSheet($this->_ambit->getStyleSheet('joom_local.css'));
     }

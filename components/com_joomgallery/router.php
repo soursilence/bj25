@@ -27,7 +27,7 @@ function JoomGalleryBuildRoute(&$query)
 
   if(!defined('_JOOM_OPTION'))
   {
-    require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_joomgallery'.DS.'includes'.DS.'defines.php';
+    require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'defines.php';
   }
 
   if(isset($query['view']) && $query['view'] == 'toplist')
@@ -148,7 +148,7 @@ function JoomGalleryBuildRoute(&$query)
   {
     unset($query['view']);
 
-    JLoader::register('JoomRouting', JPATH_ROOT.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'routing.php');
+    JLoader::register('JoomRouting', JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'routing.php');
     if(isset($query['Itemid']) && $Itemid = JoomRouting::checkItemid($query['Itemid']))
     {
       $query['Itemid'] = $Itemid;
@@ -158,8 +158,8 @@ function JoomGalleryBuildRoute(&$query)
   if(isset($query['view']) && $query['view'] == 'image')
   {
     $sef_image = 0;
-    //require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_joomgallery'.DS.'helpers'.DS.'config.php';
-    //JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_joomgallery'.DS.'tables');
+    //require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'config.php';
+    //JTable::addIncludePath(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'tables');
     //$config = JoomFactory::getConfig();
     //if($config->get('jg_image_sef'))
     if(!$sef_image)
@@ -373,8 +373,8 @@ function JoomGalleryBuildRoute(&$query)
  */
 function JoomGalleryParseRoute($segments)
 {
-  require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_joomgallery'.DS.'includes'.DS.'defines.php';
-  JLoader::register('JoomRouting', JPATH_ROOT.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'routing.php');
+  require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'defines.php';
+  JLoader::register('JoomRouting', JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'routing.php');
 
   $vars = array();
 

@@ -11,4 +11,4 @@
 **   at administrator/components/com_joomgallery/LICENSE.TXT                            **
 \****************************************************************************************/
 
-require JPATH_COMPONENT.DS.'views'.DS.'image'.DS.'view.raw.php';
+require JPATH_COMPONENT.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'image'.DIRECTORY_SEPARATOR.'view.raw.php';

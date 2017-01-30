@@ -27,20 +27,20 @@ function com_install()
 
 		$version = new JVersion();
 		if (version_compare('1.6.0', $version->getShortVersion()) > 0) {
-			require_once (dirname(__FILE__).DS.'install'.DS.'helpers'.DS.'language.php');
+			require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'language.php');
 			JCommentsInstallerLanguageHelper::convertLanguages15();
 		}
 	} else {
 		global $mainframe;
 
-		$componentPath = $mainframe->getCfg('absolute_path').DS.'components'.DS.'com_jcomments';
-		require_once ($componentPath.DS.'libraries'.DS.'joomlatune'.DS.'filesystem.php');
-		require_once ($componentPath.DS.'jcomments.legacy.php');
-		require_once (dirname(__FILE__).DS.'install'.DS.'helpers'.DS.'installer.php');
+		$componentPath = $mainframe->getCfg('absolute_path').DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jcomments';
+		require_once ($componentPath.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'joomlatune'.DIRECTORY_SEPARATOR.'filesystem.php');
+		require_once ($componentPath.DIRECTORY_SEPARATOR.'jcomments.legacy.php');
+		require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'installer.php');
 		JCommentsInstallerHelper::extractJCommentsLibraryConvert();
 
-		if (is_file($componentPath.DS.'libraries'.DS.'convert'.DS.'utf8.class.php')) {
-			require_once (dirname(__FILE__).DS.'install'.DS.'helpers'.DS.'language.php');
+		if (is_file($componentPath.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'convert'.DIRECTORY_SEPARATOR.'utf8.class.php')) {
+			require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'language.php');
 			JCommentsInstallerLanguageHelper::convertLanguages10();
 		}
 		$url = $mainframe->getCfg('live_site') . '/administrator/index2.php?option=com_jcomments&task=postinstall';

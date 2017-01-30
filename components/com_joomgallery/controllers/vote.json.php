@@ -45,7 +45,7 @@ class JoomGalleryControllerVote extends JoomGalleryController
     else
     {
       // HTML for updating the rating
-      JHtml::addIncludePath(JPATH_COMPONENT.DS.'helpers'.DS.'html');
+      JHtml::addIncludePath(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
       $response['rating'] = JHtml::_('joomgallery.rating', $model->getRating(), true, 'jg_starrating_detail', 'hasHintAjaxVote');
       
       // Set CSS tooltip class in case of star rating

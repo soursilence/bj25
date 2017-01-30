@@ -411,7 +411,7 @@ class JoomGalleryModelImages extends JoomGalleryModel
       $recreated = array();
     }
 
-    require_once JPATH_COMPONENT.DS.'helpers'.DS.'refresher.php';
+    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
 
     $refresher = new JoomRefresher(array('controller' => 'images', 'task' => 'recreate', 'remaining' => count($cids), 'start' => JRequest::getBool('cid')));
 

@@ -29,7 +29,7 @@ class modMojaparafiaHelper
 	  {
 	    $dane['m'][$m->id]= $m->title;
 	    //$querya = "SELECT title,id FROM #__content WHERE catid=".$mp." and state = 1 ORDER BY mask asc, publish_up desc limit 3";
-	    $querya = "SELECT title,id FROM #__content WHERE catid=".$mp." and state = 1 and publish_up<= '".date('Y-m-d h:i:s')."' ORDER BY mask asc, publish_up desc limit 3";
+	    $querya = "SELECT title,id FROM #__content WHERE catid=".$mp." and state = 1 and publish_up<= '".date('Y-m-d h:i:s')."' ORDER BY  publish_up desc limit 3";
 	    $db->setQuery($querya);
 	    $ra = $db->loadObjectList();
 	    foreach ($ra as $ma)

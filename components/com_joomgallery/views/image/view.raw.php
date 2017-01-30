@@ -110,7 +110,7 @@ class JoomGalleryViewImage extends JoomGalleryView
           $username = $this->_config->get('jg_realname') ? $this->_user->get('name') : $this->_user->get('username');
         }
 
-        require_once JPATH_COMPONENT.DS.'helpers'.DS.'messenger.php';
+        require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php';
         $messenger    = new JoomMessenger();
         $message      = array(
                               'subject'   => JText::_('COM_JOOMGALLERY_MESSAGE_NEW_DOWNLOAD_SUBJECT'),

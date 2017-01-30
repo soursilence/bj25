@@ -189,3 +189,5 @@
 2017-01-30T15:52:43+00:00	INFO ::1	update	Ran query from file 3.5.1-2016-03-25. Query text: ALTER TABLE `#__user_keys` MODIFY `user_id` varchar(150) NOT NULL;.
 2017-01-30T15:52:43+00:00	INFO ::1	update	Ran query from file 3.5.1-2016-03-29. Query text: UPDATE `#__utf8_conversion` SET `converted` = 0  WHERE (SELECT COUNT(*) FROM `#_.
 2017-01-30T15:52:43+00:00	INFO ::1	update	Deleting removed files and folders.
+2017-01-30T15:56:11+00:00	INFO ::1	update	Cleaning up after installation.
+2017-01-30T15:56:11+00:00	INFO ::1	update	Update to version 3.5.1 is complete.

@@ -15,7 +15,7 @@
 (defined('_VALID_MOS') OR defined('_JEXEC')) or die;
 
 if (defined('JPATH_ROOT') && defined('JPATH_LIBRARIES')) {
-	include_once (JPATH_ROOT.DS.'components'.DS.'com_jcomments'.DS.'jcomments.legacy.php');
+	include_once (JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jcomments'.DIRECTORY_SEPARATOR.'jcomments.legacy.php');
 	require_once (JApplicationHelper::getPath('toolbar_html'));
 	$task = JRequest::getCmd('task');
 } else {
@@ -23,7 +23,7 @@ if (defined('JPATH_ROOT') && defined('JPATH_LIBRARIES')) {
 		define('DS', DIRECTORY_SEPARATOR);
 	}
 	global $mainframe;
-	require_once ($mainframe->getCfg('absolute_path').DS.'components'.DS.'com_jcomments'.DS.'jcomments.legacy.php');
+	require_once ($mainframe->getCfg('absolute_path').DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jcomments'.DIRECTORY_SEPARATOR.'jcomments.legacy.php');
 	require_once ($mainframe->getPath('toolbar_html'));
 	require_once ($mainframe->getPath('toolbar_default'));
 	$task = mosGetParam($_REQUEST, 'task');

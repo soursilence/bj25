@@ -50,7 +50,7 @@ class JoomGalleryControllerCssedit extends JoomGalleryController
     // Set view
     JRequest::setVar('view', 'cssedit');
 
-    $this->file = JPATH_ROOT.DS.'media'.DS.'joomgallery'.DS.'css'.DS.'joom_local.css';
+    $this->file = JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'joom_local.css';
 
     // Register task
     $this->registerTask('apply', 'save');

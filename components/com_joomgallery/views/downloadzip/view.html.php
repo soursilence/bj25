@@ -67,7 +67,7 @@ class JoomGalleryViewDownloadzip extends JoomGalleryView
 
     $zipname = $this->_mainframe->getUserState('joom.favourites.zipname');
 
-    if(!$zipname || !file_exists(JPath::clean(JPATH_ROOT.DS.$zipname)))
+    if(!$zipname || !file_exists(JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$zipname)))
     {
       $this->_mainframe->redirect(JRoute::_('index.php?view=favourites', false), JText::_('COM_JOOMGALLERY_DOWNLOADZIP_ZIPFILE_NOT_FOUND'), 'error');
     }

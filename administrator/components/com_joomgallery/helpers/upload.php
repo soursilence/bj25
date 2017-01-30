@@ -343,7 +343,7 @@ class JoomUpload extends JObject
       // Message about new image
       if($this->_site)
       {
-        require_once JPATH_COMPONENT.DS.'helpers'.DS.'messenger.php';
+        require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php';
         $messenger  = new JoomMessenger();
         $message    = array(
                               'from'      => $this->_user->get('id'),
@@ -377,7 +377,7 @@ class JoomUpload extends JObject
       return !$this->debug;
     }
 
-    JHTML::addIncludePath(JPATH_COMPONENT.DS.'helpers'.DS.'html');
+    JHTML::addIncludePath(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
 ?>
     <p>
       <?php echo JHTML::_('joomgallery.icon', 'arrow.png', 'arrow'); ?>
@@ -426,7 +426,7 @@ class JoomUpload extends JObject
     }
 
     // Load the refresher in order to initialise it right now at the beginning
-    require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'refresher.php';
+    require_once JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
     $refresher = new JoomRefresher();
 
     // Check existence of temp directory
@@ -474,7 +474,7 @@ class JoomUpload extends JObject
       // Move uploaded file to a new directory with original name
       // because the uploaded archive is saved like php8900.tmp and JArchive
       // needs a valid extension
-      $zipfile = $extractdir.DS.$zippack['name'];
+      $zipfile = $extractdir.DIRECTORY_SEPARATOR.$zippack['name'];
       JFile::upload($zippack['tmp_name'], $zipfile);
 
       // Extract archive to new directory, JArchive chooses the right adapter
@@ -730,7 +730,7 @@ class JoomUpload extends JObject
     // Message about new images
     if($this->_site && $counter)
     {
-      require_once(JPATH_COMPONENT.DS.'helpers'.DS.'messenger.php');
+      require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php');
       $messenger  = new JoomMessenger();
       $message    = array(
                             'from'      => $this->_user->get('id'),
@@ -758,7 +758,7 @@ class JoomUpload extends JObject
       return !$this->debug;
     }
 
-    JHTML::addIncludePath(JPATH_COMPONENT.DS.'helpers'.DS.'html');
+    JHTML::addIncludePath(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
 ?>
     <p>
       <?php echo JHTML::_('joomgallery.icon', 'arrow.png', 'arrow'); ?>
@@ -1125,7 +1125,7 @@ class JoomUpload extends JObject
     }
 
     // Load the refresher
-    require_once JPATH_COMPONENT.DS.'helpers'.DS.'refresher.php';
+    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
     $refresher = new JoomRefresher(array('remaining' => count($ftpfiles), 'start' => JRequest::getBool('ftpfiles')));
 
     $this->_debugoutput .= '<p></p>';

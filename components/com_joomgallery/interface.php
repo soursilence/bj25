@@ -87,15 +87,15 @@ class JoomInterface
   public function JoomInterface()
   {
     // Load JoomGallery defines
-    require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_joomgallery'.DS.'includes'.DS.'defines.php';
+    require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'defines.php';
     // Register some classes
-    JLoader::register('JoomConfig', JPATH_ADMINISTRATOR.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'config.php');
-    JLoader::register('JoomHelper', JPATH_ROOT.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'helper.php');
-    JLoader::register('JoomAmbit',  JPATH_ROOT.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'ambit.php');
+    JLoader::register('JoomConfig', JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'config.php');
+    JLoader::register('JoomHelper', JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'helper.php');
+    JLoader::register('JoomAmbit',  JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'ambit.php');
     // Add include path for JoomGallery tables
-    JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS._JOOM_OPTION.DS.'tables');
+    JTable::addIncludePath(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'tables');
     // Add include path for JoomGallery HTML functions
-    JHTML::addIncludePath(JPATH_ROOT.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'html');
+    JHTML::addIncludePath(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
 
     $this->_mainframe = JFactory::getApplication();
     $this->_db        = JFactory::getDBO();
@@ -416,7 +416,7 @@ class JoomInterface
     $document->addStyleSheet($this->_ambit->getStyleSheet('joomgallery.css'));
 
     // Add invidual CSS file if it exists
-    if(file_exists(JPATH_ROOT.DS.'media'.DS.'joomgallery'.DS.'css'.DS.'joom_local.css'))
+    if(file_exists(JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'joom_local.css'))
     {
       $document->addStyleSheet($this->_ambit->getStyleSheet('joom_local.css'));
     }
@@ -1426,7 +1426,7 @@ class JoomInterface
   public function createCategory($obj)
   {
     jimport('joomla.filesystem.file');
-    JLoader::register('JoomFile', JPATH_ADMINISTRATOR.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'file.php');
+    JLoader::register('JoomFile', JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'file.php');
 
     $row = JTable::getInstance('joomgallerycategories', 'Table');
     $row->bind($obj);
@@ -1494,9 +1494,9 @@ class JoomInterface
     }
 
     // Create necessary folders and files
-    $origpath   = JPATH_ROOT.DS.$this->_jg_config->get('jg_pathoriginalimages').$row->catpath;
-    $imgpath    = JPATH_ROOT.DS.$this->_jg_config->get('jg_pathimages').$row->catpath;
-    $thumbpath  = JPATH_ROOT.DS.$this->_jg_config->get('jg_paththumbs').$row->catpath;
+    $origpath   = JPATH_ROOT.DIRECTORY_SEPARATOR.$this->_jg_config->get('jg_pathoriginalimages').$row->catpath;
+    $imgpath    = JPATH_ROOT.DIRECTORY_SEPARATOR.$this->_jg_config->get('jg_pathimages').$row->catpath;
+    $thumbpath  = JPATH_ROOT.DIRECTORY_SEPARATOR.$this->_jg_config->get('jg_paththumbs').$row->catpath;
     $result     = array();
     $result[]   = JFolder::create($origpath);
     $result[]   = JoomFile::copyIndexHtml($origpath);

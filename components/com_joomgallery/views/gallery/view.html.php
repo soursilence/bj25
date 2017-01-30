@@ -97,7 +97,7 @@ class JoomGalleryViewGallery extends JoomGalleryView
     $limitstart = ($page - 1) * $catperpage;
     JRequest::setVar('limitstart', $limitstart);
 
-    require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'pagination.php';
+    require_once JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'pagination.php';
     $this->pagination = new JoomPagination($totalcategories, $limitstart, $catperpage, '', 'gallery');
 
     if($totalpages > 1 && $total != 0)

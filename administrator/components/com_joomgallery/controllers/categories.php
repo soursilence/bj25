@@ -214,7 +214,7 @@ class JoomGalleryControllerCategories extends JoomGalleryController
       return;
     }
 
-    require_once JPATH_COMPONENT.DS.'helpers'.DS.'refresher.php';
+    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
 
     $refresher = new JoomRefresher(array('msg' => true));
 

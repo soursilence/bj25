@@ -12,7 +12,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-include_once (dirname(__FILE__).DS.'/ja_vars.php');
+include_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'/ja_vars.php');
 
 ?>
 
@@ -81,7 +81,7 @@ include_once (dirname(__FILE__).DS.'/ja_vars.php');
 
 <!-- BEGIN: HEADER -->
 <div id="ja-headerwrap">
-	<div id="ja-header" class="clearfix" style="background: url(<?php echo $tmpTools->templateurl(); ?>/images/header/<?php echo $tmpTools->getRandomImage(dirname(__FILE__).DS.'images/header'); ?>) no-repeat top <?php if($this->direction == 'rtl') echo 'left'; else echo 'right';?>;">
+	<div id="ja-header" class="clearfix" style="background: url(<?php echo $tmpTools->templateurl(); ?>/images/header/<?php echo $tmpTools->getRandomImage(dirname(__FILE__).DIRECTORY_SEPARATOR.'images/header'); ?>) no-repeat top <?php if($this->direction == 'rtl') echo 'left'; else echo 'right';?>;">
 
 	<div class="ja-headermask">&nbsp;</div>
 

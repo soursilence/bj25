@@ -14,8 +14,8 @@
 
 (defined('_VALID_MOS') OR defined('_JEXEC')) or die;
 
-require_once (dirname(__FILE__).DS.'install'.DS.'helpers'.DS.'installer.php');
-require_once (dirname(__FILE__).DS.'install'.DS.'helpers'.DS.'database.php');
+require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'installer.php');
+require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'database.php');
 
 class JCommentsInstaller
 {
@@ -30,7 +30,7 @@ class JCommentsInstaller
 
 		// create database tables
 		if (JCOMMENTS_JVERSION == '1.0') {
-			$sql = dirname(__FILE__).DS.'install'.DS.'sql'.DS.'install.mysql.nonutf8.sql';
+			$sql = dirname(__FILE__).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.'install.mysql.nonutf8.sql';
 			JCommentsInstaller::executeSQL($sql);
 
 			// collation synchronization (for MySQL 4.1.2 or higher)
@@ -45,25 +45,25 @@ class JCommentsInstaller
 			@ob_start();
 
 			if ($config->getValue('config.legacy')) {
-				$installSQL = dirname(__FILE__).DS.'install'.DS.'sql'.DS.'install.mysql.utf8.sql';
+				$installSQL = dirname(__FILE__).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.'install.mysql.utf8.sql';
 				JCommentsInstaller::executeSQL($installSQL);
 			}
 
 			jimport('joomla.filesystem.folder');
 			jimport('joomla.filesystem.file');
 
-			$jomSocialRuleSrc = dirname(__FILE__).DS.'install'.DS.'xml'.DS.'jomsocial_rule.xm';
-			$jomSocialRuleDst = JCOMMENTS_BASE.DS.'jomsocial_rule.xml';
+			$jomSocialRuleSrc = dirname(__FILE__).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'xml'.DIRECTORY_SEPARATOR.'jomsocial_rule.xm';
+			$jomSocialRuleDst = JCOMMENTS_BASE.DIRECTORY_SEPARATOR.'jomsocial_rule.xml';
 			if (!is_file($jomSocialRuleDst)) {
 				JFile::copy($jomSocialRuleSrc, $jomSocialRuleDst);
 			}
 
-			if (is_dir(JCOMMENTS_BASE.DS.'languages')) {
-				JFolder::delete(JCOMMENTS_BASE.DS.'languages');
+			if (is_dir(JCOMMENTS_BASE.DIRECTORY_SEPARATOR.'languages')) {
+				JFolder::delete(JCOMMENTS_BASE.DIRECTORY_SEPARATOR.'languages');
 			}
 			
-			if (is_file(JCOMMENTS_BASE.DS.'plugins'.DS.'plugins.zip')) {
-				JFile::delete(JCOMMENTS_BASE.DS.'plugins'.DS.'plugins.zip');
+			if (is_file(JCOMMENTS_BASE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'plugins.zip')) {
+				JFile::delete(JCOMMENTS_BASE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'plugins.zip');
 			}
 
 			@ob_end_clean();
@@ -73,9 +73,9 @@ class JCommentsInstaller
 			$app->setUserState('com_installer.redirect_url', '');
 		}
 
-		$jxml10 = dirname(__FILE__).DS.'jcomments10.xml';
-		$jxml15 = dirname(__FILE__).DS.'jcomments15.xml';
-		$jxml = dirname(__FILE__).DS.'jcomments.xml';
+		$jxml10 = dirname(__FILE__).DIRECTORY_SEPARATOR.'jcomments10.xml';
+		$jxml15 = dirname(__FILE__).DIRECTORY_SEPARATOR.'jcomments15.xml';
+		$jxml = dirname(__FILE__).DIRECTORY_SEPARATOR.'jcomments.xml';
 
 		if (is_file($jxml10)) {
 			@rename($jxml10, $jxml);
@@ -97,11 +97,11 @@ class JCommentsInstaller
 		if (JCOMMENTS_JVERSION != '1.7') {
 			// remove files from previous version
 			$files = array(
-					 dirname(__FILE__).DS.'admin.jcomments.subcription.php'
-					 , dirname(__FILE__).DS.'table'.DS.'custombbcodes.php'
-					 , JCOMMENTS_BASE.DS.'model'.DS.'index.html'
-					 , JCOMMENTS_BASE.DS.'model'.DS.'jcomments.php'
-					 , JCOMMENTS_BASE.DS.'model'
+					 dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.subcription.php'
+					 , dirname(__FILE__).DIRECTORY_SEPARATOR.'table'.DIRECTORY_SEPARATOR.'custombbcodes.php'
+					 , JCOMMENTS_BASE.DIRECTORY_SEPARATOR.'model'.DIRECTORY_SEPARATOR.'index.html'
+					 , JCOMMENTS_BASE.DIRECTORY_SEPARATOR.'model'.DIRECTORY_SEPARATOR.'jcomments.php'
+					 , JCOMMENTS_BASE.DIRECTORY_SEPARATOR.'model'
 					 );
 			foreach ($files as $file) {
 				if (is_file($file)) {
@@ -116,7 +116,7 @@ class JCommentsInstaller
 		$db->setQuery('SELECT `version` FROM `#__jcomments_version`');
 		$version = $db->loadResult();
 
-		require_once(dirname(__FILE__).DS.'version.php');
+		require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'version.php');
 		$jcommentsVersion = new JCommentsVersion();
 		$currentVersion = $jcommentsVersion->getVersion();
 		$currentDate = date('Y-m-d H:i:s');
@@ -183,26 +183,26 @@ class JCommentsInstaller
 
 		// Fix component menu icon
 		if (JCOMMENTS_JVERSION == '1.0') {
-			$menuiconpath = $app->getCfg('absolute_path').DS.'includes'.DS.'js'.DS.'ThemeOffice';
+			$menuiconpath = $app->getCfg('absolute_path').DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.'ThemeOffice';
 			$adminIconsPath = '../administrator/components/com_jcomments/assets';
 
 			if (is_writable($menuiconpath)) {
-				$currentIconsPath = dirname(__FILE__).DS.'images';
+				$currentIconsPath = dirname(__FILE__).DIRECTORY_SEPARATOR.'images';
 
 				ob_start();
-				$res1 = @copy($currentIconsPath.DS.'icon-16-jcomments.png', $menuiconpath.DS.'icon-16-jcomments.png');
-				$res2 = @copy($currentIconsPath.DS.'icon-16-import.png', $menuiconpath.DS.'icon-16-import.png');
-				$res3 = @copy($currentIconsPath.DS.'icon-16-settings.png', $menuiconpath.DS.'icon-16-settings.png');
-				$res4 = @copy($currentIconsPath.DS.'icon-16-smiles.png', $menuiconpath.DS.'icon-16-smiles.png');
-				$res5 = @copy($currentIconsPath.DS.'icon-16-comments.png', $menuiconpath.DS.'icon-16-comments.png');
-				$res6 = @copy($currentIconsPath.DS.'icon-16-subscriptions.png', $menuiconpath.DS.'icon-16-subscriptions.png');
-				$res7 = @copy($currentIconsPath.DS.'icon-16-custombbcodes.png', $menuiconpath.DS.'icon-16-custombbcodes.png');
-				$res8 = @copy($currentIconsPath.DS.'icon-16-blacklist.png', $menuiconpath.DS.'icon-16-blacklist.png');
+				$res1 = @copy($currentIconsPath.DIRECTORY_SEPARATOR.'icon-16-jcomments.png', $menuiconpath.DIRECTORY_SEPARATOR.'icon-16-jcomments.png');
+				$res2 = @copy($currentIconsPath.DIRECTORY_SEPARATOR.'icon-16-import.png', $menuiconpath.DIRECTORY_SEPARATOR.'icon-16-import.png');
+				$res3 = @copy($currentIconsPath.DIRECTORY_SEPARATOR.'icon-16-settings.png', $menuiconpath.DIRECTORY_SEPARATOR.'icon-16-settings.png');
+				$res4 = @copy($currentIconsPath.DIRECTORY_SEPARATOR.'icon-16-smiles.png', $menuiconpath.DIRECTORY_SEPARATOR.'icon-16-smiles.png');
+				$res5 = @copy($currentIconsPath.DIRECTORY_SEPARATOR.'icon-16-comments.png', $menuiconpath.DIRECTORY_SEPARATOR.'icon-16-comments.png');
+				$res6 = @copy($currentIconsPath.DIRECTORY_SEPARATOR.'icon-16-subscriptions.png', $menuiconpath.DIRECTORY_SEPARATOR.'icon-16-subscriptions.png');
+				$res7 = @copy($currentIconsPath.DIRECTORY_SEPARATOR.'icon-16-custombbcodes.png', $menuiconpath.DIRECTORY_SEPARATOR.'icon-16-custombbcodes.png');
+				$res8 = @copy($currentIconsPath.DIRECTORY_SEPARATOR.'icon-16-blacklist.png', $menuiconpath.DIRECTORY_SEPARATOR.'icon-16-blacklist.png');
 				ob_end_clean();
 
 				$result = $res1 && $res2 && $res3 && $res4 && $res5 && $res6 && $res7 && $res8;
 
-				if ($result && is_file($menuiconpath.DS.'jcomments16x16.png')) {
+				if ($result && is_file($menuiconpath.DIRECTORY_SEPARATOR.'jcomments16x16.png')) {
 					$adminIconsPath = 'js/ThemeOffice';
 				}
 			}
@@ -258,7 +258,7 @@ class JCommentsInstaller
 		$paramsList = $db->loadObjectList('name');
 
 		if (count($paramsList) == 0) {
-			$defaultSettings = dirname(__FILE__).DS.'install'.DS.'sql'.DS.'settings.sql';
+			$defaultSettings = dirname(__FILE__).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.'settings.sql';
 			JCommentsInstaller::executeSQL($defaultSettings);
 		} else {
 			JCommentsInstaller::checkParam($paramsList, 'delete_mode', '0');
@@ -284,7 +284,7 @@ class JCommentsInstaller
 
 		JCommentsInstallerHelper::fixUsergroups();
 
-		$joomfish = $app->getCfg('absolute_path').DS.'components'.DS.'com_joomfish'.DS.'joomfish.php';
+		$joomfish = $app->getCfg('absolute_path').DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomfish'.DIRECTORY_SEPARATOR.'joomfish.php';
 		if (is_file($joomfish) || JCommentsMultilingual::isEnabled()) {
 			JCommentsInstaller::upgradeLanguages();
 		}
@@ -292,7 +292,7 @@ class JCommentsInstaller
 		$db->setQuery("SELECT COUNT(*) FROM `#__jcomments_custom_bbcodes`;");
 		$cnt = $db->loadResult();
 		if ($cnt == 0) {
-			$sql = dirname(__FILE__).DS.'install'.DS.'sql'.DS.'custom_bbcodes.sql';
+			$sql = dirname(__FILE__).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.'custom_bbcodes.sql';
 			JCommentsInstaller::executeSQL($sql);
 		}
 		JCommentsInstallerHelper::fixCustomBBCodeACL();
@@ -417,7 +417,7 @@ class HTML_JCommentsInstaller
 	function showInstallLog()
 	{
 		$app = JCommentsFactory::getApplication('administrator');
-		require_once(dirname(__FILE__).DS.'version.php');
+		require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'version.php');
 		$version = new JCommentsVersion();
 
 		if ((version_compare(phpversion(), '5.1.0') >= 0)) {

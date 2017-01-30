@@ -37,13 +37,13 @@ class JFormFieldJoomCategory extends JFormField
    */
   protected function getInput()
   {
-    require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_joomgallery'.DS.'includes'.DS.'defines.php';
-    JLoader::register('JoomExtensions', JPATH_ADMINISTRATOR.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'extensions.php');
-    JLoader::register('JoomHelper', JPATH_BASE.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'helper.php');
-    JLoader::register('JoomConfig', JPATH_BASE.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'config.php');
-    JLoader::register('JoomAmbit', JPATH_BASE.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'ambit.php');
-    JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS._JOOM_OPTION.DS.'tables');
-    JHTML::addIncludePath(JPATH_BASE.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'html');
+    require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'defines.php';
+    JLoader::register('JoomExtensions', JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'extensions.php');
+    JLoader::register('JoomHelper', JPATH_BASE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'helper.php');
+    JLoader::register('JoomConfig', JPATH_BASE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'config.php');
+    JLoader::register('JoomAmbit', JPATH_BASE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'ambit.php');
+    JTable::addIncludePath(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'tables');
+    JHTML::addIncludePath(JPATH_BASE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
 
     $class = $this->element['class'] ? (string) $this->element['class'] : '';
     if($this->element['required'] && $this->element['required'] == true && strpos($class, 'required') === false)

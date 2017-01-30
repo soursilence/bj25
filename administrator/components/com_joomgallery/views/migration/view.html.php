@@ -35,7 +35,7 @@ class JoomGalleryViewMigration extends JoomGalleryView
     JToolbarHelper::custom('cpanel', 'options.png', 'options.png', 'COM_JOOMGALLERY_COMMON_TOOLBAR_CPANEL', false);
     JToolbarHelper::spacer();
 
-    $files = JFolder::files(JPATH_COMPONENT.DS.'helpers'.DS.'migration', '.php$', false, true);
+    $files = JFolder::files(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'migration', '.php$', false, true);
 
     $this->assignRef('files', $files);
 

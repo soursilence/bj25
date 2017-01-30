@@ -12,7 +12,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-include_once (dirname(__FILE__).DS.'/ja_templatetools.php');
+include_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'/ja_templatetools.php');
 
 $tmpTools = new JA_Tools($this);
 

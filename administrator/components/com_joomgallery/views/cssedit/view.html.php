@@ -35,7 +35,7 @@ class JoomGalleryViewCssedit extends JoomGalleryView
   {
     jimport('joomla.filesystem.file');
 
-    $path   = JPATH_ROOT.DS.'media'.DS.'joomgallery'.DS.'css'.DS;
+    $path   = JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'css'.DS;
     $title  = JText::_('COM_JOOMGALLERY_CSSMAN_CSS_MANAGER');
     if(JFile::exists($path.'joom_local.css'))
     {

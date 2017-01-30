@@ -103,7 +103,7 @@ abstract class JoomMigration
 
     $this->logfilename = 'migration.'.$this->migration.'.php';
 
-    require_once JPATH_COMPONENT.DS.'helpers'.DS.'refresher.php';
+    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
 
     $this->refresher = new JoomRefresher(array('task' => 'migrate&migration='.$this->migration));
 

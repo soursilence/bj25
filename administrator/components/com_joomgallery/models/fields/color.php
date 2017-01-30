@@ -29,7 +29,7 @@ class JFormFieldColor extends JFormFieldText
   protected function getInput()
   {
     // Add path to JoomGallery admin helpers
-    JHTML::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_joomgallery'.DS.'helpers'.DS.'html');
+    JHTML::addIncludePath(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
 
     // Get the values from XML
     $stylesheet = $this->element['stylesheet'] ? (string) $this->element['stylesheet'] : 'default';

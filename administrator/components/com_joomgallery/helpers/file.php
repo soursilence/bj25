@@ -742,8 +742,8 @@ class JoomFile
   {
     jimport('joomla.filesystem.file');
 
-    $src  = JPATH_ROOT.DS.'media'.DS.'joomgallery'.DS.'index.html';
-    $dest = JPath::clean($folder.DS.'index.html');
+    $src  = JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'index.html';
+    $dest = JPath::clean($folder.DIRECTORY_SEPARATOR.'index.html');
 
     return JFile::copy($src, $dest);
   }

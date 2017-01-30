@@ -171,125 +171,125 @@ if ($option == 'com_jcomments') {
 				break;
 
 			case "about":
-				require_once (dirname(__FILE__).DS.'admin.jcomments.installer.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.installer.php');
 				JCommentsAdmin::showAbout();
 				break;
 			case "import":
 				JCommentsAdmin::checkPhpVersion();
-				require_once (dirname(__FILE__).DS.'admin.jcomments.migration.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.migration.php');
 				JCommentsMigrationTool::showImport();
 				break;
 			case "postinstall":
 				JCommentsAdmin::checkPhpVersion();
-				require_once (dirname(__FILE__).DS.'admin.jcomments.installer.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.installer.php');
 				JCommentsInstaller::postInstall();
 				break;
 
 			case 'subscriptions':
 				JCommentsAdmin::checkPhpVersion();
-				require_once (dirname(__FILE__).DS.'admin.jcomments.subscription.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.subscription.php');
 				JCommentsAdminSubscriptionManager::show();
 				break;
 			case 'subscription.publish':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.subscription.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.subscription.php');
 				JCommentsAdminSubscriptionManager::publish(1);
 				break;
 			case 'subscription.unpublish':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.subscription.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.subscription.php');
 				JCommentsAdminSubscriptionManager::publish(0);
 				break;
 			case 'subscription.new':
 			case 'subscription.edit':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.subscription.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.subscription.php');
 				JCommentsAdminSubscriptionManager::edit();
 				break;
 			case 'subscription.apply':
 			case 'subscription.save':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.subscription.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.subscription.php');
 				JCommentsAdminSubscriptionManager::save();
 				break;
 			case 'subscription.remove':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.subscription.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.subscription.php');
 				JCommentsAdminSubscriptionManager::remove();
 				break;
 			case 'subscription.cancel':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.subscription.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.subscription.php');
 				JCommentsAdminSubscriptionManager::cancel();
 				break;
 
 			case 'custombbcodes':
 				JCommentsAdmin::checkPhpVersion();
-				require_once (dirname(__FILE__).DS.'admin.jcomments.custombbcodes.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.custombbcodes.php');
 				JCommentsACustomBBCodes::show();
 				break;
 			case 'custombbcodes.publish':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.custombbcodes.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.custombbcodes.php');
 				JCommentsACustomBBCodes::publish(1);
 				break;
 			case 'custombbcodes.unpublish':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.custombbcodes.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.custombbcodes.php');
 				JCommentsACustomBBCodes::publish(0);
 				break;
 			case 'custombbcodes.enable_button':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.custombbcodes.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.custombbcodes.php');
 				JCommentsACustomBBCodes::enableButton(1);
 				break;
 			case 'custombbcodes.disable_button':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.custombbcodes.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.custombbcodes.php');
 				JCommentsACustomBBCodes::enableButton(0);
 				break;
 			case 'custombbcodes.new':
 			case 'custombbcodes.edit':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.custombbcodes.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.custombbcodes.php');
 				JCommentsACustomBBCodes::edit();
 				break;
 			case 'custombbcodes.apply':
 			case 'custombbcodes.save':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.custombbcodes.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.custombbcodes.php');
 				JCommentsACustomBBCodes::save();
 				break;
 			case 'custombbcodes.remove':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.custombbcodes.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.custombbcodes.php');
 				JCommentsACustomBBCodes::remove();
 				break;
 			case 'custombbcodes.copy':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.custombbcodes.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.custombbcodes.php');
 				JCommentsACustomBBCodes::copy();
 				break;
 			case 'custombbcodes.orderup':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.custombbcodes.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.custombbcodes.php');
 				JCommentsACustomBBCodes::order(-1);
 				break;
 			case 'custombbcodes.orderdown':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.custombbcodes.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.custombbcodes.php');
 				JCommentsACustomBBCodes::order(1);
 				break;
 			case 'custombbcodes.cancel':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.custombbcodes.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.custombbcodes.php');
 				JCommentsACustomBBCodes::cancel();
 				break;
 
 			case 'blacklist':
 				JCommentsAdmin::checkPhpVersion();
-				require_once (dirname(__FILE__).DS.'admin.jcomments.blacklist.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.blacklist.php');
 				JCommentsAdminBlacklistManager::show();
 				break;
 			case 'blacklist.new':
 			case 'blacklist.edit':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.blacklist.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.blacklist.php');
 				JCommentsAdminBlacklistManager::edit();
 				break;
 			case 'blacklist.apply':
 			case 'blacklist.save':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.blacklist.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.blacklist.php');
 				JCommentsAdminBlacklistManager::save();
 				break;
 			case 'blacklist.remove':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.blacklist.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.blacklist.php');
 				JCommentsAdminBlacklistManager::remove();
 				break;
 			case 'blacklist.cancel':
-				require_once (dirname(__FILE__).DS.'admin.jcomments.blacklist.php');
+				require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'admin.jcomments.blacklist.php');
 				JCommentsAdminBlacklistManager::cancel();
 				break;
 
@@ -754,7 +754,7 @@ class JCommentsAdmin
 		require_once (JCOMMENTS_LIBRARIES.'/joomlatune/filesystem.php');
 
 		// path to images directory
-		$path = JCOMMENTS_BASE.DS.'tpl'.DS;
+		$path = JCOMMENTS_BASE.DIRECTORY_SEPARATOR.'tpl'.DS;
 		$items = JoomlaTuneFS::readDirectory($path);
 		$templates = array();
 

@@ -42,7 +42,7 @@ if (JCOMMENTS_JVERSION == '1.0') {
 		}
 	}
 } else {
-	JLoader::register('JPaneTabs',  JPATH_LIBRARIES.DS.'joomla'.DS.'html'.DS.'pane.php');
+	JLoader::register('JPaneTabs',  JPATH_LIBRARIES.DIRECTORY_SEPARATOR.'joomla'.DIRECTORY_SEPARATOR.'html'.DIRECTORY_SEPARATOR.'pane.php');
 
 	if (!class_exists('JCommentsTabs')) {
 		class JCommentsTabs extends JPaneTabs

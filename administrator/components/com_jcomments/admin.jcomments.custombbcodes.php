@@ -296,7 +296,7 @@ class HTML_JCommentsACustomBBCodes
 	{
 		$app = JCommentsFactory::getApplication('administrator');
 
-		include_once (JCOMMENTS_HELPERS.DS.'system.php');
+		include_once (JCOMMENTS_HELPERS.DIRECTORY_SEPARATOR.'system.php');
 		$link = JCommentsSystemPluginHelper::getCSS();
 
 		if (JCOMMENTS_JVERSION == '1.0') {

@@ -559,7 +559,7 @@ class TableJoomgalleryConfig extends JTable
    */
   public function fixPath($path)
   {
-    if(!JFolder::exists(JPATH_ROOT.DS.$path))
+    if(!JFolder::exists(JPATH_ROOT.DIRECTORY_SEPARATOR.$path))
     {
       // We assume that it's an absolute path,
       // so trim '/' and '\' only on the right side and append one DS

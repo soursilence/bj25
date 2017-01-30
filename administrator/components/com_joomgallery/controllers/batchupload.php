@@ -64,7 +64,7 @@ class JoomGalleryControllerBatchupload extends JoomGalleryController
    */
   public function upload()
   {
-    require_once JPATH_COMPONENT.DS.'helpers'.DS.'upload.php';
+    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'upload.php';
     $uploader = new JoomUpload();
     if($uploader->upload(JRequest::getCmd('type', 'batch')))
     {

@@ -205,7 +205,7 @@ class JoomGalleryModelNametags extends JoomGalleryModel
       $name     = $this->_config->get('jg_realname') ? $user->get('name') : $user->get('username');
       $by_name  = $this->_config->get('jg_realname') ? $this->_user->get('name') : $this->_user->get('username');
 
-      require_once(JPATH_COMPONENT.DS.'helpers'.DS.'messenger.php');
+      require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php');
       $messenger  = new JoomMessenger();
 
       // General Message

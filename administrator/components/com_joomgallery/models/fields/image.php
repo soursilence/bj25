@@ -37,7 +37,7 @@ class JFormFieldImage extends JFormField
    */
   protected function getInput()
   {
-    require_once(JPATH_BASE.DS.'components'.DS.'com_joomgallery'.DS.'includes'.DS.'defines.php');
+    require_once(JPATH_BASE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'defines.php');
 
     $db       = JFactory::getDBO();
     $doc      = JFactory::getDocument();
@@ -77,7 +77,7 @@ class JFormFieldImage extends JFormField
       $class .= 'validate-'.(string) $this->element['validate'];
     }
 
-    JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_joomgallery'.DS.'tables');
+    JTable::addIncludePath(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'tables');
     $img = JTable::getInstance('joomgalleryimages', 'Table');
     if($this->value)
     {

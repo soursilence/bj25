@@ -766,7 +766,7 @@ class JoomGalleryModelFavourites extends JoomGalleryModel
     if($this->_config->get('jg_msg_zipdownload'))
     {
       $imagefiles = implode(",\n", $files);
-      require_once JPATH_COMPONENT.DS.'helpers'.DS.'messenger.php';
+      require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php';
       $messenger    = new JoomMessenger();
       $message      = array(
                             'subject'   => JText::_('COM_JOOMGALLERY_MESSAGE_NEW_ZIPDOWNLOAD_SUBJECT'),

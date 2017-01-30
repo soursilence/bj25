@@ -652,7 +652,7 @@ class JoomGalleryModelDetail extends JoomGalleryModel
       $language = JFactory::getLanguage();
       $language->load('com_joomgallery.exif');
 
-      require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'includes'.DS.'exifarray.php');
+      require_once(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'exifarray.php');
 
       $ii = 0;
 
@@ -1042,7 +1042,7 @@ class JoomGalleryModelDetail extends JoomGalleryModel
       $language = JFactory::getLanguage();
       $language->load('com_joomgallery.iptc');
 
-      require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'includes'.DS.'iptcarray.php');
+      require_once(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'iptcarray.php');
 
       $ii = 0;
 

@@ -1006,7 +1006,7 @@ joom_local.css.README umbenennen und anpassen
 
     // Save the file
     jimport('joomla.filesystem.file');
-    $css_settings_file = JPATH_ROOT.DS.'media'.DS.'joomgallery'.DS.'css'.DS.$this->getStyleSheetName($this->id);
+    $css_settings_file = JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.$this->getStyleSheetName($this->id);
     if(!JFile::write($css_settings_file, $css_settings))
     {
       return false;
@@ -1041,7 +1041,7 @@ joom_local.css.README umbenennen und anpassen
     }
 
     jimport('joomla.filesystem.file');
-    $css_settings_file = JPATH_ROOT.DS.'media'.DS.'joomgallery'.DS.'css'.DS.$this->getStyleSheetName($id);
+    $css_settings_file = JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.$this->getStyleSheetName($id);
     if(!JFile::delete($css_settings_file))
     {
       return false;

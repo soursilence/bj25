@@ -154,7 +154,7 @@ class JoomAmbit extends JObject
 
     $this->_external['thumb'] = false;
     $this->thumb_url  = JURI::root().$config->get('jg_paththumbs');
-    $this->thumb_path = JPath::clean(JPATH_ROOT.DS.$config->get('jg_paththumbs'));
+    $this->thumb_path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_paththumbs'));
     if(!JFolder::exists($this->thumb_path))
     {
       $this->_external['thumb'] = true;
@@ -164,7 +164,7 @@ class JoomAmbit extends JObject
 
     $this->_external['img'] = false;
     $this->img_url    = JURI::root().$config->get('jg_pathimages');
-    $this->img_path   = JPath::clean(JPATH_ROOT.DS.$config->get('jg_pathimages'));
+    $this->img_path   = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_pathimages'));
     if(!JFolder::exists($this->img_path))
     {
       $this->_external['img'] = true;
@@ -174,7 +174,7 @@ class JoomAmbit extends JObject
 
     $this->_external['orig'] = false;
     $this->orig_url   = JURI::root().$config->get('jg_pathoriginalimages');
-    $this->orig_path  = JPath::clean(JPATH_ROOT.DS.$config->get('jg_pathoriginalimages'));
+    $this->orig_path  = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_pathoriginalimages'));
     if(!JFolder::exists($this->orig_path))
     {
       $this->_external['orig'] = true;
@@ -182,17 +182,17 @@ class JoomAmbit extends JObject
       $this->orig_path  = JPath::clean($config->get('jg_pathoriginalimages'));
     }
 
-    $this->temp_path  = JPath::clean(JPATH_ROOT.DS.$config->get('jg_pathtemp'));
+    $this->temp_path  = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_pathtemp'));
     if(!JFolder::exists($this->temp_path))
     {
       $this->temp_path  = JPath::clean($config->get('jg_pathtemp'));
     }
-    $this->ftp_path = JPath::clean(JPATH_ROOT.DS.$config->get('jg_pathftpupload'));
+    $this->ftp_path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_pathftpupload'));
     if(!JFolder::exists($this->ftp_path))
     {
       $this->ftp_path = JPath::clean($config->get('jg_pathftpupload'));
     }
-    $this->wtm_path = JPath::clean(JPATH_ROOT.DS.$config->get('jg_wmpath'));
+    $this->wtm_path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_wmpath'));
     if(!JFolder::exists($this->wtm_path))
     {
       $this->wtm_path = JPath::clean($config->get('jg_wmpath'));

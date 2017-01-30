@@ -47,7 +47,7 @@ class JoomGalleryModelSend2Friend extends JoomGalleryModel
       return false;
     }
 
-    require_once JPATH_COMPONENT.DS.'helpers'.DS.'messenger.php';
+    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php';
 
     $send2friendname  = JRequest::getVar('send2friendname', '', 'post');
     $send2friendemail = JRequest::getVar('send2friendemail', '', 'post');

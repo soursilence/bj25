@@ -88,7 +88,7 @@ class JoomGalleryView extends JView
 
     JoomHelper::addSubmenu();
 
-    JHTML::addIncludePath(JPATH_COMPONENT.DS.'helpers'.DS.'html');
+    JHTML::addIncludePath(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
 
     // Check for available updates
     if(!$checked = $this->_mainframe->getUserState('joom.update.checked'))

@@ -33,7 +33,7 @@ class JoomGalleryControllerMigration extends JoomGalleryController
     parent::__construct();
 
     // Require the migration helper class
-    require_once JPATH_COMPONENT.DS.'helpers'.DS.'migration.php';
+    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'migration.php';
 
     // Set view
     JRequest::setVar('view', 'migration');
@@ -57,13 +57,13 @@ class JoomGalleryControllerMigration extends JoomGalleryController
     $migration = JRequest::getCmd('migration', '');
     $task      = JRequest::getCmd('task');
 
-    if(!JFile::exists(JPATH_COMPONENT.DS.'helpers'.DS.'migration'.DS.'migrate'.$migration.'.php'))
+    if(!JFile::exists(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'migration'.DIRECTORY_SEPARATOR.'migrate'.$migration.'.php'))
     {
       $this->setRedirect('index.php?option='._JOOM_OPTION.'&controller=migration');
       return false;
     }
 
-    require_once JPATH_COMPONENT.DS.'helpers'.DS.'migration'.DS.'migrate'.$migration.'.php';
+    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'migration'.DIRECTORY_SEPARATOR.'migrate'.$migration.'.php';
     $classname    = 'JoomMigrate_'.$migration;
     $migrateclass = new $classname();
     $migrateclass->$task();

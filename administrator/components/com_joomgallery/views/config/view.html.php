@@ -166,7 +166,7 @@ class JoomGalleryViewConfig extends JoomGalleryView
     {
       $write_pathwm = $unwriteable;
     }
-    if(is_file($this->getPath('wtm').DS.$this->_config->get('jg_wmfile')))
+    if(is_file($this->getPath('wtm').DIRECTORY_SEPARATOR.$this->_config->get('jg_wmfile')))
     {
       $wmfilemsg = '<span style="color:#080;">'
         . JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_FILE_EXIST') .
@@ -180,7 +180,7 @@ class JoomGalleryViewConfig extends JoomGalleryView
     }
 
     // Check whether CSS file (joom_settings.css) is writeable
-    if(is_writeable(JPATH_ROOT.DS.'media'.DS.'joomgallery'.DS.'css'.DS.$this->_config->getStyleSheetName()))
+    if(is_writeable(JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.$this->_config->getStyleSheetName()))
     {
       $cssfilemsg = '<div style="color:#080; text-align:center;">['.JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_CSS_CONFIGURATION_WRITEABLE').']</div>';
     }
@@ -198,7 +198,7 @@ class JoomGalleryViewConfig extends JoomGalleryView
     }
 
     // Exif
-    require_once JPATH_COMPONENT.DS.'includes'.DS.'exifarray.php';
+    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'exifarray.php';
 
     $ifdotags   = explode(',', $this->_config->get('jg_ifdotags'));
     $subifdtags = explode(',', $this->_config->get('jg_subifdtags'));
@@ -211,7 +211,7 @@ class JoomGalleryViewConfig extends JoomGalleryView
     );
 
     // IPTC
-    require_once JPATH_COMPONENT.DS.'includes'.DS.'iptcarray.php';
+    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'iptcarray.php';
 
     $iptctags   = explode(',', $this->_config->get('jg_iptctags'));
 
@@ -281,42 +281,42 @@ class JoomGalleryViewConfig extends JoomGalleryView
     switch($type)
     {
       case 'thumb':
-        $path = JPath::clean(JPATH_ROOT.DS.$this->_config->get('jg_paththumbs'));
+        $path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$this->_config->get('jg_paththumbs'));
         if(!JFolder::exists($path))
         {
           $path = JPath::clean($this->_config->get('jg_paththumbs'));
         }
         break;
       case 'img':
-        $path = JPath::clean(JPATH_ROOT.DS.$this->_config->get('jg_pathimages'));
+        $path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$this->_config->get('jg_pathimages'));
         if(!JFolder::exists($path))
         {
           $path = JPath::clean($this->_config->get('jg_pathimages'));
         }
         break;
       case 'orig':
-        $path = JPath::clean(JPATH_ROOT.DS.$this->_config->get('jg_pathoriginalimages'));
+        $path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$this->_config->get('jg_pathoriginalimages'));
         if(!JFolder::exists($path))
         {
           $path = JPath::clean($this->_config->get('jg_pathoriginalimages'));
         }
         break;
       case 'ftp':
-        $path = JPath::clean(JPATH_ROOT.DS.$this->_config->get('jg_pathftpupload'));
+        $path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$this->_config->get('jg_pathftpupload'));
         if(!JFolder::exists($path))
         {
           $path = JPath::clean($this->_config->get('jg_pathftpupload'));
         }
         break;
       case 'temp':
-        $path = JPath::clean(JPATH_ROOT.DS.$this->_config->get('jg_pathtemp'));
+        $path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$this->_config->get('jg_pathtemp'));
         if(!JFolder::exists($path))
         {
           $path = JPath::clean($this->_config->get('jg_pathtemp'));
         }
         break;
       default:
-        $path = JPath::clean(JPATH_ROOT.DS.$this->_config->get('jg_wmpath'));
+        $path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$this->_config->get('jg_wmpath'));
         if(!JFolder::exists($path))
         {
           $path = JPath::clean($this->_config->get('jg_wmpath'));

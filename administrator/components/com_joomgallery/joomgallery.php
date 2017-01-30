@@ -21,8 +21,8 @@ if(version_compare(JVERSION, '3.0', 'ge'))
 }
 
 // Require the base controller and the defines
-require_once(JPATH_COMPONENT.DS.'controller.php');
-require_once(JPATH_COMPONENT.DS.'includes'.DS.'defines.php');
+require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'controller.php');
+require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'defines.php');
 
 // Access check
 if(!JFactory::getUser()->authorise('core.manage', _JOOM_OPTION))
@@ -37,7 +37,7 @@ JPluginHelper::importPlugin('joomgallery');
 if($controller = JRequest::getCmd('controller', 'control'))
 {
   $format = JRequest::getCmd('format', 'html');
-  $path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.(($format != 'html') ?  '.'.$format : '').'.php';
+  $path = JPATH_COMPONENT.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$controller.(($format != 'html') ?  '.'.$format : '').'.php';
   if(file_exists($path))
   {
     require_once $path;
@@ -49,14 +49,14 @@ if($controller = JRequest::getCmd('controller', 'control'))
 }
 
 // Register some classes
-JLoader::register('JoomGalleryModel', JPATH_COMPONENT.DS.'model.php');
-JLoader::register('JoomGalleryView',  JPATH_COMPONENT.DS.'view.php');
-JLoader::register('JoomExtensions',   JPATH_COMPONENT.DS.'helpers'.DS.'extensions.php');
-JLoader::register('JoomHelper',       JPATH_COMPONENT.DS.'helpers'.DS.'helper.php');
-JLoader::register('JoomConfig',       JPATH_COMPONENT.DS.'helpers'.DS.'config.php');
-JLoader::register('JoomAmbit',        JPATH_COMPONENT.DS.'helpers'.DS.'ambit.php');
-JLoader::register('JoomFile',         JPATH_COMPONENT.DS.'helpers'.DS.'file.php');
-JTable::addIncludePath(               JPATH_COMPONENT.DS.'tables');
+JLoader::register('JoomGalleryModel', JPATH_COMPONENT.DIRECTORY_SEPARATOR.'model.php');
+JLoader::register('JoomGalleryView',  JPATH_COMPONENT.DIRECTORY_SEPARATOR.'view.php');
+JLoader::register('JoomExtensions',   JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'extensions.php');
+JLoader::register('JoomHelper',       JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'helper.php');
+JLoader::register('JoomConfig',       JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'config.php');
+JLoader::register('JoomAmbit',        JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'ambit.php');
+JLoader::register('JoomFile',         JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'file.php');
+JTable::addIncludePath(               JPATH_COMPONENT.DIRECTORY_SEPARATOR.'tables');
 
 // Create the controller
 $classname  = 'JoomGalleryController'.$controller;

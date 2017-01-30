@@ -403,7 +403,7 @@ class JoomConfig extends JObject
     {
       if($id == 'admin')
       {
-        require_once JPATH_ADMINISTRATOR.DS.'components'.DS._JOOM_OPTION.DS.'helpers'.DS.'adminconfig.php';
+        require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'adminconfig.php';
         $config = new JoomAdminConfig();
       }
       else

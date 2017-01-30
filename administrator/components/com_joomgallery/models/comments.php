@@ -343,7 +343,7 @@ class JoomGalleryModelComments extends JoomGalleryModel
     // Message about new comment to image owner
     if($column == 'approved' && $publish && $this->_config->get('jg_msg_comment_toowner'))
     {
-      require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'messenger.php');
+      require_once(JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php');
       $messenger  = new JoomMessenger();
 
       foreach($cid as $id)

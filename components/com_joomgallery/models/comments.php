@@ -191,7 +191,7 @@ class JoomGalleryModelComments extends JoomGalleryModel
         $row = $this->getTable('joomgalleryimages');
         $row->load($this->_id);
 
-        require_once(JPATH_COMPONENT.DS.'helpers'.DS.'messenger.php');
+        require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php');
         $messenger  = new JoomMessenger();
         $message    = array(
                             'from'      => $this->_user->get('id'),
@@ -207,7 +207,7 @@ class JoomGalleryModelComments extends JoomGalleryModel
       $approved = 0;
 
       // Message about new comment
-      require_once(JPATH_COMPONENT.DS.'helpers'.DS.'messenger.php');
+      require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php');
       $messenger  = new JoomMessenger();
 
       $message    = array(

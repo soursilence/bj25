@@ -130,7 +130,7 @@ class JoomGalleryControllerMaintenance extends JoomGalleryController
       return;
     }
 
-    require_once JPATH_COMPONENT.DS.'helpers'.DS.'refresher.php';
+    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
 
     $refresher = new JoomRefresher();
 
@@ -800,7 +800,7 @@ class JoomGalleryControllerMaintenance extends JoomGalleryController
 
     $task   = JRequest::getCmd('task');
 
-    require_once JPATH_COMPONENT.DS.'helpers'.DS.'refresher.php';
+    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
 
     // The model will redirect, too.
     $model->$task();

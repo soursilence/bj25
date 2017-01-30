@@ -16,8 +16,8 @@
 
 // include legacy class
 if (defined('JPATH_ROOT')) {
-	include_once (JPATH_ROOT.DS.'components'.DS.'com_jcomments'.DS.'jcomments.legacy.php');
-	include_once (JPATH_ROOT.DS.'components'.DS.'com_jcomments'.DS.'jcomments.class.php');
+	include_once (JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jcomments'.DIRECTORY_SEPARATOR.'jcomments.legacy.php');
+	include_once (JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jcomments'.DIRECTORY_SEPARATOR.'jcomments.class.php');
 	$language = JFactory::getLanguage();
 	$language->load('com_jcomments');
 } else {
@@ -25,15 +25,15 @@ if (defined('JPATH_ROOT')) {
 		define('DS', DIRECTORY_SEPARATOR);
 	}
 	global $mainframe;
-	include_once ($mainframe->getCfg('absolute_path').DS.'components'.DS.'com_jcomments'.DS.'jcomments.legacy.php');
-	include_once ($mainframe->getCfg('absolute_path').DS.'components'.DS.'com_jcomments'.DS.'jcomments.class.php');
+	include_once ($mainframe->getCfg('absolute_path').DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jcomments'.DIRECTORY_SEPARATOR.'jcomments.legacy.php');
+	include_once ($mainframe->getCfg('absolute_path').DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jcomments'.DIRECTORY_SEPARATOR.'jcomments.class.php');
 }
 
-include_once (dirname(__FILE__).DS.'install'.DS.'helpers'.DS.'installer.php');
+include_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'installer.php');
 
 function com_uninstall()
 {
-	require_once(dirname(__FILE__).DS.'version.php');
+	require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'version.php');
 	$version = new JCommentsVersion();
 ?>
 <style type="text/css">

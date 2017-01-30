@@ -40,7 +40,7 @@ class JoomGalleryControllerUpload extends JController
       jexit();
     }
 
-    require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'upload.php';
+    require_once JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'upload.php';
     $uploader = new JoomUpload();
     if($uploader->upload($type))
     {
@@ -99,7 +99,7 @@ class JoomGalleryControllerUpload extends JController
     // Send a message if setted in configuration manager
     if($this->_config->get('jg_msg_upload_type') != 0)
     {
-      require_once(JPATH_COMPONENT.DS.'helpers'.DS.'messenger.php');
+      require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php');
       $this->_user      = & JFactory::getUser();
       $counter    = $this->_mainframe->getUserState('joom.upload.java.counter', 0);
       $messenger  = new JoomMessenger();

@@ -228,7 +228,7 @@ class JoomGalleryViewMini extends JoomGalleryView
 
     JRequest::setVar('limit', $limit);
 
-    require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'pagination.php';
+    require_once JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'pagination.php';
     $onclick = 'javascript:ajaxRequest(\'index.php?option='._JOOM_OPTION.'&view=mini&format=json\', %u); return false;';
     $this->pagination = new JoomPagination($totalimages, $limitstart, $limit, '', null, $onclick);
 

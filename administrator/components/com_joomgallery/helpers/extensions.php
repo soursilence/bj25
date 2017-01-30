@@ -239,7 +239,7 @@ class JoomExtensions
 
       if($version_from_xml)
       {
-        $xml_file = JPATH_ADMINISTRATOR . DS . 'components' .DS. 'com_joomgallery' .DS .'joomgallery.xml';
+        $xml_file = JPATH_ADMINISTRATOR . DS . 'components' .DIRECTORY_SEPARATOR. 'com_joomgallery' .DS .'joomgallery.xml';
         if(file_exists($xml_file))
         {
           $xml = JFactory::getXMLParser('simple');
@@ -310,10 +310,10 @@ class JoomExtensions
     }
 
     // Copy an index.html into the created folder if there isn't already one
-    if(!JFile::exists($folder.DS.'index.html'))
+    if(!JFile::exists($folder.DIRECTORY_SEPARATOR.'index.html'))
     {
-      $src  = JPATH_ROOT.DS.'media'.DS.'joomgallery'.DS.'index.html';
-      $dest = $folder.DS.'index.html';
+      $src  = JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'index.html';
+      $dest = $folder.DIRECTORY_SEPARATOR.'index.html';
 
       JFile::copy($src, $dest);
     }
