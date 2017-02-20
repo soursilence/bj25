@@ -49,7 +49,7 @@ $orderby = " ORDER BY a.ordering desc ";
 			' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug,'.
 			' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(":", cc.id, cc.alias) ELSE cc.id END as catslug,'.
 			' CHAR_LENGTH( a.`fulltext` ) AS readmore,' .
-			' u.name AS author, u.usertype,'.
+			' u.name AS author, '.
 //			g.name AS groups,
 ' u.email as author_email, cc.title AS category, 
 			cc.lft AS cc_ordering, a.ordering AS a_ordering'.
@@ -149,7 +149,7 @@ if($limit!=0) $orderby .= " Limit $limit ";
 			' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug,'.
 			' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(":", cc.id, cc.alias) ELSE cc.id END as catslug,'.
 			' CHAR_LENGTH( a.`fulltext` ) AS readmore,' .
-			' u.name AS author, u.usertype,'.
+			' u.name AS author,'.
 //			g.name AS groups,
 ' u.email as author_email, cc.title AS category, 
 			cc.lft AS cc_ordering, a.ordering AS a_ordering'.
