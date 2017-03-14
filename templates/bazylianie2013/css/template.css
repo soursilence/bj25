@@ -251,7 +251,7 @@ font-style:italic;
 	#sidebar_section .newsletter .half{width:100%; display:block; float:left; text-align:center;}
 	#sidebar_section .newsletter .input{border:1px solid #036; margin:7px 5px 7px 20px; float:left; display:block; height:16px; color:#FFC90F; font-size:12px;}
 	#sidebar_section .newsletter .ok{border:1px solid #FFC90F; margin:7px 5px 15px 5px; float:left; display:block; background-color:#FFC; cursor:pointer; }
-/ * #sidebar_section .newsletter .ok{border:1px solid #666; margin:7px 5px 15px 5px; float:left; display:block; background-color:#ccc; cursor:pointer; } */
+/* #sidebar_section .newsletter .ok{border:1px solid #666; margin:7px 5px 15px 5px; float:left; display:block; background-color:#ccc; cursor:pointer; } */
 
 	/*survey*/
 	#sidebar_section .survey{width:290px; height:226px; display:block; float:left;}
