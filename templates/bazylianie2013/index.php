@@ -18,74 +18,75 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" >
 <head>
 <meta name="google-site-verification" content="aBPgHZiY8AJX1JKMAZuzLGIXzpXy_5lwnTY3JocpYtk" />
-<script type="text/javascript" src="includes/js/jquery.js"></script>
-<script type="text/javascript" src="includes/js/jqueryslidemenu.js"></script>
+
+<link rel="stylesheet" href="<?php echo JURI::root(); ?>media/system/css/bootstrap.min.css" />
+<script type="text/javascript" src="<?php echo JURI::root(); ?>media/system/js/jquery.min.js"></script>
+<script src="<?php echo JURI::root(); ?>media/system/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo JURI::root(); ?>templates/bazylianie2013/js/all.js"></script>
 <script type="text/javascript">
-var ile = 3;
-var ktory = 1;
-jQuery.noConflict();
-		//jquery stuff
-		(function($) {
-			
-		
-
-  $(document).ready(
-    function()
-    { 
-	       //$(".thickbox").colorbox();
-
-      $("#searchfield").click(function(){
-        if($(this).attr("value")=="Пошук")
-         $(this).attr("value", "");
-      });
-      $("#subscriber_email").click(function(){
-        if($(this).attr("value")=="Ваш e-майл")
-         $(this).attr("value", "");
-      });
-      var ta = "Шановний читачy - ви побачите перекладену версію сторінки, згенеровану Google Translate. Редактори Bazylianie.pl не є відповідальні за якість перекладу.\n\nDrogi czytelniku – za moment zobaczysz wersję strony przetłumaczoną przez automat Google Translate. Redakcja Bazylianie.pl nie odpowiada za jakość tłumaczenia.\n\nDear visitor. You are about to translate our site with Google Translate service. Translation is automatic and we are not responsible for its quality. ";
-      $(".atranslate").click(function(){
-        var okno=window.confirm(ta)
-	if (okno)
-          return true;
-        else
-          return false;
-      });
-      $(".options").mouseover(function(){
-        $("#top_canv").css({'display': 'block'});
-      });
-      $(".options").mouseout(function(){
-        $("#top_canv").css({'display': 'none'});
-      });
-      $(".minigalerialink").mouseover(function(){
-        $("#minigaleriamf").attr("href", $(this).attr("href"));
-        $("#minigaleriamf").children("img").attr("src", $(this).children("img").attr("src"));
-      });
-      $(".next").click(function(){
-      if(ktory<ile)
-      ktory++;
-      else
-      ktory=1;
-        $(".minig_it").children().css("display", "none").filter(function (index) {
-                  return index == (ktory-1);
-                })
-            .css("display", "block");
-            
-        return false;
-      });
-      $(".prev").click(function(){
-
-      if(ktory==1)
-      ktory = ile;
-      else
-      ktory--;
-        $(".minig_it").children().css("display", "none").filter(function (index) {
-                  return index == (ktory-1);
-                })
-            .css("display", "block");
-        return false;
-      });
-    }
-  );       })(jQuery);      
+//var ile = 3;
+//var ktory = 1;
+//jQuery.noConflict();
+//		(function($) {
+//			
+//		
+//
+//  $(document).ready(
+//    function()
+//    { 
+//
+//      $("#searchfield").click(function(){
+//        if($(this).attr("value")=="Пошук")
+//         $(this).attr("value", "");
+//      });
+//      $("#subscriber_email").click(function(){
+//        if($(this).attr("value")=="Ваш e-майл")
+//         $(this).attr("value", "");
+//      });
+//      var ta = "Шановний читачy - ви побачите перекладену версію сторінки, згенеровану Google Translate. Редактори Bazylianie.pl не є відповідальні за якість перекладу.\n\nDrogi czytelniku – za moment zobaczysz wersję strony przetłumaczoną przez automat Google Translate. Redakcja Bazylianie.pl nie odpowiada za jakość tłumaczenia.\n\nDear visitor. You are about to translate our site with Google Translate service. Translation is automatic and we are not responsible for its quality. ";
+//      $(".atranslate").click(function(){
+//        var okno=window.confirm(ta)
+//	if (okno)
+//          return true;
+//        else
+//          return false;
+//      });
+//      $(".options").mouseover(function(){
+//        $("#top_canv").css({'display': 'block'});
+//      });
+//      $(".options").mouseout(function(){
+//        $("#top_canv").css({'display': 'none'});
+//      });
+//      $(".minigalerialink").mouseover(function(){
+//        $("#minigaleriamf").attr("href", $(this).attr("href"));
+//        $("#minigaleriamf").children("img").attr("src", $(this).children("img").attr("src"));
+//      });
+//      $(".next").click(function(){
+//      if(ktory<ile)
+//      ktory++;
+//      else
+//      ktory=1;
+//        $(".minig_it").children().css("display", "none").filter(function (index) {
+//                  return index == (ktory-1);
+//                })
+//            .css("display", "block");
+//            
+//        return false;
+//      });
+//      $(".prev").click(function(){
+//
+//      if(ktory==1)
+//      ktory = ile;
+//      else
+//      ktory--;
+//        $(".minig_it").children().css("display", "none").filter(function (index) {
+//                  return index == (ktory-1);
+//                })
+//            .css("display", "block");
+//        return false;
+//      });
+//    }
+//  );       })(jQuery);      
 </script>
 <jdoc:include type="head" />
 
@@ -117,10 +118,39 @@ body { behavior: url(<?php echo $this->baseurl ?>/templates/bazylianie/css/ie6al
 
 </head>
 <body>
-<div id="wszystko">
+<div class="container">
 <!-- start CONTAINER section -->
-<div id="container_index" class="index">
+<!--<div id="container_index" class="index">-->
+                <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <h2><a href="<?php echo JURI::root(); ?>"><img style="width:178px; height:64px; " src="templates/bazylianie2013/img/logo.png" alt="Bazylianie"></a></h2>
+                </div>
+            </div>
+            <div class="row navbar navbar-inverse">
+
+                <div class="col-md-10 col-lg-9">
+                    <jdoc:include type="modules" name="topmenu" style="rounded" />
+                </div>
+                <div class="col-md-2 col-lg-3 hidden-sm">
+                    <div class="input-group search-input-group">
+                        <div class="search_form">
+                            <form action="" method="get"  id="form1">
+                                <span id="search">
+                                    <input name="searchword" id="searchfield" type="text" class="form-control" size="10" accesskey="s" tabindex="1" value=""  placeholder="Szukaj" />
+                                    <input type="hidden" name="ordering" value="newest" /><input type="hidden" name="searchphrase" value="any" /><input type="hidden" name="option" value="com_search" />
+                                </span>
+                                <!--            <button type="button" class="btn btn-default">
+                                          <span class="glyphicon glyphicon-search"></span> Szukaj
+                                        </button>-->
+                                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true" id="search_button_span"></span></button>
+                            </form>
+                        </div>    </div>
+
+                </div>
+            </div>
+    
 <!-- start TOP section -->
+<?php /*
 <div class="top">
 	    <!-- start LOGO section -->
      <div class="logo">
@@ -150,7 +180,10 @@ body { behavior: url(<?php echo $this->baseurl ?>/templates/bazylianie/css/ie6al
     	</div><!-- end SEARCH section -->
 			
 	    </div><!-- end NAVIGATION section -->
-  </div><!-- end TOP section -->
+  </div>
+ */ ?><!-- end TOP section -->
+ <div class="container">
+     <div class="row"> 
   <?php if($this->countModules('kalendarz')) : ?>
 	  <!-- start CALENDAR section-->
 <div id="calendarium">
@@ -170,15 +203,15 @@ body { behavior: url(<?php echo $this->baseurl ?>/templates/bazylianie/css/ie6al
         <jdoc:include type="modules" name="promo" />
 
         
-          
-  
-
-
-    <div id="main"><!-- start MAIN section -->
+     </div>   
+<div class="row">  
+<div class="col-md-9 ">
+<!-- start MAIN section -->
         <div id="topnews"><!-- start TOPNEWS section -->
             <jdoc:include type="component" />
       </div><!-- end TOPNEWS section -->
-
+      </div>
+    <div class="col-md-3 ">
       <div id="sidebar">
         <div id="sidebar_section_all">
 		<jdoc:include type="modules" name="button_menu" style="rounded" />                
@@ -188,7 +221,7 @@ body { behavior: url(<?php echo $this->baseurl ?>/templates/bazylianie/css/ie6al
 
     </div>
 </div><!-- END CONTAINER section -->	 
- 
+ <div class="row"> 
     <div id="footer"><!-- start FOOTER section -->
     	<!--<div class="ll">
         </div>
@@ -218,14 +251,12 @@ body { behavior: url(<?php echo $this->baseurl ?>/templates/bazylianie/css/ie6al
             <a href="?option=com_content&view=article&Itemid=2&id=726">
             	Політика приватності
             </a>
-<a href="http://old.bazylianie.pl" target="_blank">
-            	 Старa сторінкa
-            </a>
+
                    </div>
       
     </div><!-- END FOOTER section -->
 
-
+ </div>
 
 <jdoc:include type="modules" name="debug" />
 </div>

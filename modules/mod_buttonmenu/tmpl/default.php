@@ -3,7 +3,8 @@
 * Plik: tmpl/default.php
 */
 defined('_JEXEC') or die ('brak dostępu');
-?><div  class="buttons"><!-- start BUTTONS class -->
+?>
+<div class="col-md-3"><div  class="buttons"><!-- start BUTTONS class -->
 <ul id="<?php echo $params->get('prefixid'); ?>">
 <?php
 foreach ($men as $m)
@@ -14,4 +15,5 @@ foreach ($men as $m)
 }
 ?>
 </ul>
-        </div><!-- end BUTTONS class -->     
+        </div>
+</div><!-- end BUTTONS class -->     

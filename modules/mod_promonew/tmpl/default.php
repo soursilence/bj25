@@ -3,8 +3,9 @@
 * Plik: tmpl/default.php
 */
 defined('_JEXEC') or die ('brak dostępu');?>
+<div class="col-md-9">
 <div class="promo_new"><!-- start PROMO class -->
-  <a href="?option=com_content&view=article&id=<?php echo $params->get('idcont'); ?>" target="_self"><div style="width: 678px; heiht: 250px;">
+  <a href="?option=com_content&view=article&id=<?php echo $params->get('idcont'); ?>" target="_self"><div style="heiht: 250px;">
 <?php
 //foreach ($res as $re){
   //$tytul = $re->title;
@@ -19,4 +20,4 @@ defined('_JEXEC') or die ('brak dostępu');?>
 <?php //} ?>
   </div>   </a>
 </div><!-- end PROMO class -->
-
+</div>
