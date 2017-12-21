@@ -88,3 +88,6 @@
 #more_yellow a:hover,  .readmore-link:hover{ width:144px; height:25px; display:block; text-decoration:none; border:none; margin:0px; background-image:url(../img/button_readmore.jpg);  background-repeat:no-repeat;background-position: 0 -25px; float:left;  overflow:hidden; padding:0px; }
 .more2 #more_yellow a:hover {background-color:#ffffff;}
 .jwDisqusListingCounterLink { margin-left: 10px !important;}
+
+.pagination ul{list-style: none; }
+.pagination li{display: inline; margin-left: 5px; margin-right: 5px;}
