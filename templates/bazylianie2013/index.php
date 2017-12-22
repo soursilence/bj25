@@ -136,7 +136,7 @@ body { behavior: url(<?php echo $this->baseurl ?>/templates/bazylianie/css/ie6al
                         <div class="search_form">
                             <form action="" method="get"  id="form1">
                                 <span id="search">
-                                    <input name="searchword" id="searchfield" type="text" class="form-control" size="10" accesskey="s" tabindex="1" value=""  placeholder="Szukaj" />
+                                    <input name="searchword" id="searchfield" type="text" class="form-control" size="10" accesskey="s" tabindex="1" value=""  placeholder="Пошук" />
                                     <input type="hidden" name="ordering" value="newest" /><input type="hidden" name="searchphrase" value="any" /><input type="hidden" name="option" value="com_search" />
                                 </span>
                                 <!--            <button type="button" class="btn btn-default">
