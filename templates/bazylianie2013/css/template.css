@@ -23,7 +23,7 @@
 #topnews .text, .blog article p, .item-page p {display:block; float: left; text-decoration:none; font-family:"Segoe UI", "Segoe UI Light", Tahoma, Verdana; font-size:13px; text-align:justify; padding:0px 7px 2px 14px; line-height:16px; margin:5px 10px 0px 0px; color:#666;}
 #topnews .repeater{ float:left; display:block;}
 #topnews .sepaparate{width:90%; height:7px; float:left; display:block;}
-
+#topnews img { max-width: 96%;}
 
 .buttons{ height:250px; margin-bottom: 10px; margin-left:8px; float:left; display:block}
 #buttonmenu_ { list-style-type: none; margin: 0; padding: 0; }
