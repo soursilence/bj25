@@ -19,7 +19,7 @@
 <?php endif; ?>
   <div class="jg_subcat">
 <?php if($this->_config->get('jg_showsubcathead')): ?>
-    <div class="sectiontableheader">
+    <div class="well well-small jg-header">
 <?php if($this->params->get('show_feed_icon')): ?>
       <div class="jg_feed_icon">
         <a href="<?php echo $this->params->get('feed_url'); ?>"<?php echo JHTML::_('joomgallery.tip', 'COM_JOOMGALLERY_CATEGORY_FEED_SUBCATEGORIES_TIPTEXT', 'COM_JOOMGALLERY_CATEGORY_FEED_TIPCAPTION', true); ?>>
@@ -27,6 +27,14 @@
         </a>
       </div>
 <?php $this->params->set('show_feed_icon', 0);
+      endif;
+      if($this->params->get('show_upload_icon')): ?>
+      <div class="jg_upload_icon">
+        <a href="<?php echo JRoute::_('index.php?view=mini&format=raw&upload_category='.$this->category->cid); ?>" class="modal<?php echo JHtml::_('joomgallery.tip', 'COM_JOOMGALLERY_COMMON_UPLOAD_ICON_TIPTEXT', 'COM_JOOMGALLERY_COMMON_UPLOAD_ICON_TIPCAPTION'); ?>" rel="{handler: 'iframe', size: {x: 620, y: 550}}">
+          <?php echo JHtml::_('joomgallery.icon', 'add.png', 'COM_JOOMGALLERY_COMMON_UPLOAD_ICON_TIPCAPTION'); ?>
+        </a>
+      </div>
+<?php $this->params->set('show_upload_icon', 0);
       endif; ?>
       <?php echo JText::_('COM_JOOMGALLERY_COMMON_SUBCATEGORIES'); ?>
     </div>
@@ -36,7 +44,7 @@
       $index     = 0;
       $this->i   = 0;
       for($row_count = 0; $row_count < $num_rows; $row_count++): ?>
-    <div class="jg_row sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+    <div class="jg_row jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
 <?php   for($col_count = 0; ($col_count < $this->_config->get('jg_colsubcat')) && ($index < $cat_count); $col_count++):
           $row = $this->categories[$index]; ?>
       <div class="<?php echo $row->gallerycontainer; ?>">
@@ -61,6 +69,11 @@
 <?php     if(in_array($row->access, $this->_user->getAuthorisedViewLevels())): ?>
               <a href="<?php echo $row->link; ?>">
                 <?php echo $this->escape($row->name); ?></a>
+<?php       if($row->password && $this->_config->get('jg_showrestrictedhint')): ?>
+              <span<?php echo JHtml::_('joomgallery.tip', JText::_('COM_JOOMGALLERY_COMMON_CATEGORY_PASSWORD_PROTECTED_TIPTEXT'), JText::_('COM_JOOMGALLERY_COMMON_CATEGORY_PASSWORD_PROTECTED'), true); ?>>
+                <?php echo JHtml::_('joomgallery.icon', 'key.png', 'COM_JOOMGALLERY_COMMON_CATEGORY_PASSWORD_PROTECTED'); ?>
+              </span>
+<?php       endif; ?>
 <?php     else: ?>
               <span class="jg_no_access<?php echo JHTML::_('joomgallery.tip', JText::_('COM_JOOMGALLERY_COMMON_TIP_YOU_NOT_ACCESS_THIS_CATEGORY'), $this->escape($row->name), false, false); ?>">
                 <?php echo $this->escape($row->name); ?>
@@ -68,7 +81,7 @@
               </span>
 <?php     endif; ?>
             </li>
-<?php     if(in_array($row->access, $this->_user->getAuthorisedViewLevels())):
+<?php     if(in_array($row->access, $this->_user->getAuthorisedViewLevels()) && (!$row->password || in_array($row->cid, $this->_mainframe->getUserState('joom.unlockedCategories', array(0))))):
             if($this->_config->get('jg_showtotalsubcatimages') || $row->isnew): ?>
           <li>
 <?php       if($this->_config->get('jg_showtotalsubcatimages')): ?>
@@ -109,6 +122,12 @@
                 <?php echo JHTML::_('joomgallery.icon', 'basket_put_gr.png', 'COM_JOOMGALLERY_COMMON_DOWNLOADZIP_ADD_IMAGES_TIPCAPTION'); ?>
               </span>
 <?php       endif; ?>
+            </li>
+<?php     endif;
+          if(isset($row->show_upload_icon) && $row->show_upload_icon): ?>
+            <li>
+              <a href="<?php echo JRoute::_('index.php?view=mini&format=raw&upload_category='.$row->cid); ?>" class="modal<?php echo JHtml::_('joomgallery.tip', 'COM_JOOMGALLERY_COMMON_UPLOAD_ICON_TIPTEXT', 'COM_JOOMGALLERY_COMMON_UPLOAD_ICON_TIPCAPTION'); ?>" rel="{handler: 'iframe', size: {x: 620, y: 550}}">
+                <?php echo JHtml::_('joomgallery.icon', 'add.png', 'COM_JOOMGALLERY_COMMON_UPLOAD_ICON_TIPCAPTION'); ?></a>
             </li>
 <?php     endif; ?>
           </ul>

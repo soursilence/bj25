@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/joomgallery.php $
-// $Id: joomgallery.php 3865 2012-09-15 14:40:47Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/joomgallery.php $
+// $Id: joomgallery.php 4325 2013-09-03 21:00:28Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -13,9 +13,9 @@
 
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
-if(version_compare(JVERSION, '3.0', 'ge'))
+if(version_compare(JVERSION, '4.0', 'ge') || version_compare(JVERSION, '3.0', 'lt'))
 {
-  return JError::raiseWarning(500, JText::_('JoomGallery 2.1 is not compatible with Joomla! 3. Please update to a newer version of JoomGallery once it is available.'));
+  return JError::raiseWarning(500, 'JoomGallery 3.x is only compatible to Joomla! 3.x');
 }
 
 // Require the defines
@@ -35,10 +35,10 @@ JTable::addIncludePath(               JPATH_COMPONENT_ADMINISTRATOR.'/tables');
 
 // Create the controller
 jimport('joomla.application.component.controller');
-$controller = JController::getInstance('JoomGallery');
+$controller = JControllerLegacy::getInstance('JoomGallery');
 
 // Perform the request task
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(JFactory::getApplication()->input->get('task'));
 
 // Redirect if set by the controller
 $controller->redirect();

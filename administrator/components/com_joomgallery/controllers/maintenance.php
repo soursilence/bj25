@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/controllers/maintenance.php $
-// $Id: maintenance.php 3831 2012-08-07 10:10:28Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/controllers/maintenance.php $
+// $Id: maintenance.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -130,7 +130,7 @@ class JoomGalleryControllerMaintenance extends JoomGalleryController
       return;
     }
 
-    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
+    require_once JPATH_COMPONENT.'/helpers/refresher.php';
 
     $refresher = new JoomRefresher();
 
@@ -800,7 +800,7 @@ class JoomGalleryControllerMaintenance extends JoomGalleryController
 
     $task   = JRequest::getCmd('task');
 
-    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
+    require_once JPATH_COMPONENT.'/helpers/refresher.php';
 
     // The model will redirect, too.
     $model->$task();

@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/models/configs.php $
-// $Id: configs.php 3651 2012-02-19 14:36:46Z mab $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/configs.php $
+// $Id: configs.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -38,6 +38,15 @@ class JoomGalleryModelConfigs extends JoomGalleryModel
   var $_total = null;
 
   /**
+   * Configs data array (holding all config rows, but
+   * only with the most important information)
+   *
+   * @access  protected
+   * @var     array
+   */
+  var $_allconfigs = null;
+
+  /**
    * Constructor
    *
    * @param   array An optional associative array of configuration settings
@@ -57,10 +66,10 @@ class JoomGalleryModelConfigs extends JoomGalleryModel
   }
 
   /**
-   * Retrieves the data of the categories
+   * Retrieves the data of the config rows
    *
    * @access  public
-   * @return  array   Array of objects containing the categories data from the database
+   * @return  array   Array of objects containing the config rows from the database
    * @since   2.0
    */
   function getConfigs()
@@ -133,6 +142,37 @@ class JoomGalleryModelConfigs extends JoomGalleryModel
   }
 
   /**
+   * Retrieves the most important data of each of the config rows
+   *
+   * @access  public
+   * @return  array   Array of objects containing the config rows from the database
+   * @since   2.1
+   */
+  function getAllConfigs()
+  {
+    // Let's load the data if it doesn't already exist
+    if(empty($this->_allconfigs))
+    {
+      // Create a new query object
+      $query = $this->_db->getQuery(true);
+
+      // Select the required fields from the table
+      $query->select('c.id, c.group_id, c.ordering')
+            ->from(_JOOM_TABLE_CONFIG.' AS c');
+
+      // Join over the user groups
+      $query->select('g.title')
+            ->leftJoin('#__usergroups AS g ON g.id = c.group_id');
+
+      $this->_db->setQuery($query);
+
+      $this->_allconfigs = $this->_db->loadObjectList();
+    }
+
+    return $this->_allconfigs;
+  }
+
+  /**
    * Method to get all available usergroups for which there isn't a config row yet
    *
    * @return  array Array of all available usergroups without an existing config row
@@ -140,7 +180,7 @@ class JoomGalleryModelConfigs extends JoomGalleryModel
    */
   public function getUsergroups()
   {
-    $configs = $this->getConfigs();
+    $configs = $this->getAllConfigs();
 
     $group_ids = array();
     foreach($configs as $config)
@@ -170,7 +210,7 @@ class JoomGalleryModelConfigs extends JoomGalleryModel
 
     foreach($options as $key => $option)
     {
-			$option->text = str_repeat('- ', $option->level).$option ->text;
+			$option->text = str_repeat('- ', $option->level).$option->text;
 		}
 
     return $options;
@@ -376,13 +416,13 @@ class JoomGalleryModelConfigs extends JoomGalleryModel
       }
       else
       {
-        $search = $this->_db->Quote('%'.$this->_db->getEscaped($search, true).'%');
+        $search = $this->_db->Quote('%'.$this->_db->escape($search, true).'%');
         $query->where('LOWER(g.title) LIKE '.$search);
       }
     }
 
     // Add the order clause
-    $query->order($this->_db->getEscaped($this->getState('list.ordering', 'c.ordering')).' '.$this->_db->getEscaped($this->getState('list.direction', 'ASC')));
+    $query->order($this->_db->escape($this->getState('list.ordering', 'c.ordering')).' '.$this->_db->escape($this->getState('list.direction', 'ASC')));
 
     return $query;
   }
@@ -432,7 +472,7 @@ class JoomGalleryModelConfigs extends JoomGalleryModel
 
     try
     {
-      $ids = $this->_db->loadResultArray();
+      $ids = $this->_db->loadColumn();
     }
     catch(DatabaseException $e)
     {

@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/tables/joomgallerycategories.php $
-// $Id: joomgallerycategories.php 4276 2013-05-23 11:05:11Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/tables/joomgallerycategories.php $
+// $Id: joomgallerycategories.php 4350 2014-01-18 15:16:40Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -24,37 +24,43 @@ jimport('joomla.database.tablenested');
 class TableJoomgalleryCategories extends JTableNested
 {
   /** @var int Primary key */
-  public $cid           = null;
+  public $cid               = null;
   /** @var int */
-  public $asset_id      = null;
+  public $asset_id          = null;
   /** @var int */
-  public $owner         = 0;
+  public $owner             = 0;
   /** @var string */
-  public $name          = null;
+  public $name              = null;
   /** @var string */
-  public $alias         = null;
+  public $alias             = null;
   /** @var string */
-  public $description   = null;
+  public $description       = null;
   /** @var string */
-  public $access        = 0;
+  public $access            = 0;
   /** @var int */
-  public $published     = 0;
+  public $published         = 0;
   /** @var int */
-  public $hidden        = 0;
+  public $hidden            = 0;
   /** @var int */
-  public $in_hidden     = 0;
+  public $in_hidden         = 0;
+  /** @var string */
+  public $password          = '';
   /** @var int */
-  public $thumbnail     = 0;
+  public $thumbnail         = 0;
   /** @var int */
-  public $img_position  = -1;
+  public $img_position      = -1;
   /** @var string */
-  public $catpath       = null;
+  public $catpath           = null;
   /** @var string */
-  public $params        = null;
+  public $params            = null;
   /** @var string */
-  public $metakey       = null;
+  public $metakey           = null;
   /** @var string */
-  public $metadesc      = null;
+  public $metadesc          = null;
+  /** @var int */
+  public $exclude_toplists  = 0;
+  /** @var int */
+  public $exclude_search    = 0;
 
   /**
    * Helper variable for checking whether
@@ -78,7 +84,7 @@ class TableJoomgalleryCategories extends JTableNested
    * @param   object  $db A database connector object
    * @since   1.5.5
    */
-  public function TableJoomgalleryCategories(&$db)
+  public function __construct($db)
   {
     parent::__construct(_JOOM_TABLE_CATEGORIES, 'cid', $db);
   }
@@ -189,8 +195,7 @@ class TableJoomgalleryCategories extends JTableNested
           else
           {
             $datenow = JFactory::getDate();
-            // TODO $datenow->toFormat deprecated, JDATE::format() instead
-            $segments[] = $datenow->toFormat('%Y-%m-%d-%H-%M-%S');
+            $segments[] = $datenow->format('Y-m-d-H-i-s');
           }
         }
         $this->alias = implode('/', $segments);
@@ -210,8 +215,7 @@ class TableJoomgalleryCategories extends JTableNested
         else
         {
           $datenow    = JFactory::getDate();
-          // TODO $datenow->toFormat deprecated, JDATE::format() instead
-          $segments[] = $datenow->toFormat('%Y-%m-%d-%H-%M-%S');
+          $segments[] = $datenow->format('Y-m-d-H-i-s');
         }
       }
       $this->alias = implode('/', $segments);
@@ -220,8 +224,7 @@ class TableJoomgalleryCategories extends JTableNested
     if(trim(str_replace('-', '', $this->alias)) == '' && !empty($this->catpath))
     {
       $datenow      = JFactory::getDate();
-      // TODO $datenow->toFormat deprecated, JDATE::format() instead
-      $this->alias  = $datenow->toFormat('%Y-%m-%d-%H-%M-%S');
+      $this->alias  = $datenow->format('Y-m-d-H-i-s');
     }
 
     // clean up keywords -- eliminate extra spaces between phrases
@@ -354,7 +357,7 @@ class TableJoomgalleryCategories extends JTableNested
    * @return  int      The parent asset id for the category
    * @since   2.0
    */
-  protected function _getAssetParentId($table = null, $id = null)
+  protected function _getAssetParentId(JTable $table = null, $id = null)
   {
     // Get the database object
     $db = $this->getDbo();

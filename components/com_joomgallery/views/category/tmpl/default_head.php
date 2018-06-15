@@ -1,7 +1,7 @@
 <?php defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
   <div class="jg_category">
 <?php if($this->_config->get('jg_showcathead')): ?>
-    <div class="sectiontableheader">
+    <div class="well well-small jg-header">
 <?php if($this->params->get('show_feed_icon')): ?>
       <div class="jg_feed_icon">
         <a href="<?php echo $this->params->get('feed_url'); ?>"<?php echo JHTML::_('joomgallery.tip', 'COM_JOOMGALLERY_CATEGORY_FEED_TIPTEXT', 'COM_JOOMGALLERY_CATEGORY_FEED_TIPCAPTION', true); ?>>
@@ -31,7 +31,15 @@
         </span>
 <?php   endif; ?>
       </div>
-<?php endif; ?>
+<?php endif;
+      if($this->params->get('show_upload_icon')): ?>
+      <div class="jg_upload_icon">
+        <a href="<?php echo JRoute::_('index.php?view=mini&format=raw&upload_category='.$this->category->cid); ?>" class="modal<?php echo JHtml::_('joomgallery.tip', 'COM_JOOMGALLERY_COMMON_UPLOAD_ICON_TIPTEXT', 'COM_JOOMGALLERY_COMMON_UPLOAD_ICON_TIPCAPTION'); ?>" rel="{handler: 'iframe', size: {x: 620, y: 550}}">
+          <?php echo JHtml::_('joomgallery.icon', 'add.png', 'COM_JOOMGALLERY_COMMON_UPLOAD_ICON_TIPCAPTION'); ?>
+        </a>
+      </div>
+<?php $this->params->set('show_upload_icon', 0);
+      endif; ?>
       <?php echo $this->category->name; ?>
     </div>
 <?php endif;

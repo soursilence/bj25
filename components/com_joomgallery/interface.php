@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/interface.php $
-// $Id: interface.php 4347 2013-11-21 23:38:11Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/interface.php $
+// $Id: interface.php 4408 2014-07-12 08:24:56Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -84,18 +84,18 @@ class JoomInterface
    * @return  void
    * @since   1.5.5
    */
-  public function JoomInterface()
+  public function __construct()
   {
     // Load JoomGallery defines
-    require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'defines.php';
+    require_once JPATH_ADMINISTRATOR.'/components/com_joomgallery/includes/defines.php';
     // Register some classes
-    JLoader::register('JoomConfig', JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'config.php');
-    JLoader::register('JoomHelper', JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'helper.php');
-    JLoader::register('JoomAmbit',  JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'ambit.php');
+    JLoader::register('JoomConfig', JPATH_ADMINISTRATOR.'/components/'._JOOM_OPTION.'/helpers/config.php');
+    JLoader::register('JoomHelper', JPATH_ROOT.'/components/'._JOOM_OPTION.'/helpers/helper.php');
+    JLoader::register('JoomAmbit',  JPATH_ROOT.'/components/'._JOOM_OPTION.'/helpers/ambit.php');
     // Add include path for JoomGallery tables
-    JTable::addIncludePath(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'tables');
+    JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/'._JOOM_OPTION.'/tables');
     // Add include path for JoomGallery HTML functions
-    JHTML::addIncludePath(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
+    JHtml::addIncludePath(JPATH_ADMINISTRATOR.'/components/'._JOOM_OPTION.'/helpers/html');
 
     $this->_mainframe = JFactory::getApplication();
     $this->_db        = JFactory::getDBO();
@@ -112,6 +112,7 @@ class JoomInterface
 
     // Set some default values for options given in global JG config (may be overridden)
     $this->_config['showhits']        = $this->_jg_config->get('jg_showhits');
+    $this->_config['showdownloads']   = $this->_jg_config->get('jg_showdownloads');
     $this->_config['showpicasnew']    = $this->_jg_config->get('jg_showpicasnew');
     $this->_config['showtitle']       = $this->_jg_config->get('jg_showtitle');
     $this->_config['showauthor']      = $this->_jg_config->get('jg_showauthor');
@@ -148,7 +149,7 @@ class JoomInterface
   {
     foreach($config as $key => $value)
     {
-      $config[$key] = $this->_db->getEscaped($value);
+      $config[$key] = $this->_db->escape($value);
     }
     // Merge new array into existing one, overwriting if needed:
     $this->_config = array_merge($this->_config, $config);
@@ -165,7 +166,7 @@ class JoomInterface
    */
   public function addConfig($key, $value = '')
   {
-    $this->_config[$key] = $this->_db->getEscaped($value);
+    $this->_config[$key] = $this->_db->escape($value);
   }
 
   /**
@@ -200,7 +201,7 @@ class JoomInterface
       }
       elseif($key == 'categoryfilter')
       {
-        $catids = trim($this->_db->getEscaped($this->_config['categoryfilter']));
+        $catids = trim($this->_db->escape($this->_config['categoryfilter']));
         if($catids != '')
         {
           return 'jg.catid IN ('.$catids.')';
@@ -277,7 +278,7 @@ class JoomInterface
    */
   public function getGalleryVersion()
   {
-    return '2.1';
+    return '3.3';
   }
 
   /**
@@ -369,7 +370,10 @@ class JoomInterface
     $router->setVar('Itemid', $this->getJoomId(false));
 
     $link = JHTML::_('joomgallery.openimage', $this->_config['openimage'], $img, $type, $this->getConfig('group'));
-    $link .= '" title="'.htmlspecialchars($img->imgtitle, ENT_COMPAT, 'UTF-8');
+    if($title = JHtml::_('joomgallery.getTitleforATag', $img, false))
+    {
+      $link .= '" title="'.$title;
+    }
 
     // Reset vars 'option' and 'Itemid'
     // if the preserved values are null delete the var formerly setted
@@ -415,8 +419,14 @@ class JoomInterface
     // Add the main CSS file
     $document->addStyleSheet($this->_ambit->getStyleSheet('joomgallery.css'));
 
-    // Add invidual CSS file if it exists
-    if(file_exists(JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'joom_local.css'))
+    // Add the RTL CSS file if an RTL language is used
+    if(JFactory::getLanguage()->isRTL())
+    {
+      $document->addStyleSheet($this->_ambit->getStyleSheet('joomgallery_rtl.css'));
+    }
+
+    // Add individual CSS file if it exists
+    if(file_exists(JPATH_ROOT.'/media/joomgallery/css/joom_local.css'))
     {
       $document->addStyleSheet($this->_ambit->getStyleSheet('joom_local.css'));
     }
@@ -464,7 +474,10 @@ class JoomInterface
         else
         {
           $link = JHTML::_('joomgallery.openimage', $this->_config['openimage'], $obj, $type, $this->getConfig('group'));
-          $link .= '" title="'.htmlspecialchars($obj->imgtitle, ENT_COMPAT, 'UTF-8');
+          if($title = JHtml::_('joomgallery.getTitleforATag', $obj, false))
+          {
+            $link .= '" title="'.$title;
+          }
         }
 
         $output .= '  <a href="'.$link.'" class="jg_catelem_photo">';
@@ -555,7 +568,10 @@ class JoomInterface
         else
         {
           $link = JHTML::_('joomgallery.openimage', $this->_config['openimage'], $obj, $type, $this->getConfig('group'));
-          $link .= '" title="'.htmlspecialchars($obj->imgtitle, ENT_COMPAT, 'UTF-8');
+          if($title = JHtml::_('joomgallery.getTitleforATag', $obj, false))
+          {
+            $link .= '" title="'.$title;
+          }
         }
 
         $output .= '  <a href="'.$link.'" class="jg_catelem_photo">';
@@ -676,7 +692,6 @@ class JoomInterface
       else
       {
         $output .= JText::sprintf('COM_JOOMGALLERY_COMMON_CATEGORY_VAR',$obj->cattitle);
-        $output .= $obj->cattitle;
       }
       $output .= "  </li>";
     }
@@ -684,6 +699,10 @@ class JoomInterface
     if($this->getConfig('showhits'))
     {
       $output .= "  <li>".JText::sprintf('COM_JOOMGALLERY_COMMON_HITS_VAR', $obj->hits)."</li>";
+    }
+    if($this->getConfig('showdownloads'))
+    {
+      $output .= "  <li>".JText::sprintf('COM_JOOMGALLERY_COMMON_DOWNLOADS_VAR', $obj->downloads)."</li>";
     }
     if($this->getConfig('showrate'))
     {
@@ -777,7 +796,7 @@ class JoomInterface
 
     $return     = '';
     //$return    .= "\n".'<div class="gallerytab">'."\n";
-    $return    .= '<div class="jg_row sectiontableentry2">';
+    $return    .= '<div class="jg_row jg_row1">';
     $rowcount   = 0;
     $itemcount  = 0;
 
@@ -785,13 +804,13 @@ class JoomInterface
     {
       if(($itemcount % $numcols == 0) && ($itemcount != 0))
       {
-          $return .='</div><div class="jg_row sectiontableentry'.($rowcount % 2 + 1).'">'."\n";
+          $return .='</div><div class="jg_row jg_row'.($rowcount % 2 + 1).'">'."\n";
           $rowcount++;
       }
 
       $return .= '<div class="jg_element_cat" style="width:'.$elem_width.'%">'."\n";
       $type = 'img';
-      if(   $this->getConfig('openimage') > 0
+      if(   (!is_numeric($this->getConfig('openimage')) || $this->getConfig('openimage') > 0)
         &&  ($this->getJConfig('jg_lightboxbigpic') || $this->getConfig('type') == 'img' || $this->getConfig('type') == 'orig')
         &&  file_exists($this->_ambit->getImg('orig_path', $row))
         )
@@ -1071,7 +1090,7 @@ class JoomInterface
     }
 
     $query->select('jg.id, jg.catid, jg.imgthumbname, jg.imgfilename, jg.owner, jg.imgauthor,
-                    jg.imgdate, jg.imgtitle, jg.imgtext, jg.hits, jg.imgvotes,
+                    jg.imgdate, jg.imgtitle, jg.imgtext, jg.hits, jg.downloads, jg.imgvotes,
                     '.JoomHelper::getSQLRatingClause('jg').' AS rating,
                     jgc.name AS cattitle, jgc.catpath AS catpath')
           ->from(_JOOM_TABLE_NAMESHIELDS.' AS jgn')
@@ -1175,7 +1194,7 @@ class JoomInterface
     $query = $this->_db->getQuery(true)
           ->select('jg.id, jgco.cmttext, jgco.cmtdate, jgco.userid AS cmtuserid')
           ->select('jg.catid, jg.imgthumbname, jg.imgfilename, jg.owner, jg.imgauthor,
-                    jg.imgdate, jg.imgtitle, jg.imgtext, jg.hits, jg.imgvotes,
+                    jg.imgdate, jg.imgtitle, jg.imgtext, jg.hits, jg.downloads, jg.imgvotes,
                     '.JoomHelper::getSQLRatingClause('jg').' AS rating,
                     jgc.name AS cattitle, jgc.catpath AS catpath')
           ->from(_JOOM_TABLE_COMMENTS.' AS jgco')
@@ -1233,7 +1252,7 @@ class JoomInterface
     }
 
     $query->select('jg.id, jg.catid, jg.imgthumbname, jg.imgfilename, jg.owner, jg.imgauthor,
-                    jg.imgdate, jg.imgtitle, jg.imgtext, jg.hits, jg.imgvotes,
+                    jg.imgdate, jg.imgtitle, jg.imgtext, jg.hits, jg.downloads, jg.imgvotes,
                     '.JoomHelper::getSQLRatingClause('jg').' AS rating,
                     jgc.name AS cattitle, jgc.catpath AS catpath')
           ->from(_JOOM_TABLE_IMAGES.' AS jg')
@@ -1426,7 +1445,7 @@ class JoomInterface
   public function createCategory($obj)
   {
     jimport('joomla.filesystem.file');
-    JLoader::register('JoomFile', JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'file.php');
+    JLoader::register('JoomFile', JPATH_ADMINISTRATOR.'/components/'._JOOM_OPTION.'/helpers/file.php');
 
     $row = JTable::getInstance('joomgallerycategories', 'Table');
     $row->bind($obj);
@@ -1494,9 +1513,9 @@ class JoomInterface
     }
 
     // Create necessary folders and files
-    $origpath   = JPATH_ROOT.DIRECTORY_SEPARATOR.$this->_jg_config->get('jg_pathoriginalimages').$row->catpath;
-    $imgpath    = JPATH_ROOT.DIRECTORY_SEPARATOR.$this->_jg_config->get('jg_pathimages').$row->catpath;
-    $thumbpath  = JPATH_ROOT.DIRECTORY_SEPARATOR.$this->_jg_config->get('jg_paththumbs').$row->catpath;
+    $origpath   = JPATH_ROOT.'/'.$this->_jg_config->get('jg_pathoriginalimages').$row->catpath;
+    $imgpath    = JPATH_ROOT.'/'.$this->_jg_config->get('jg_pathimages').$row->catpath;
+    $thumbpath  = JPATH_ROOT.'/'.$this->_jg_config->get('jg_paththumbs').$row->catpath;
     $result     = array();
     $result[]   = JFolder::create($origpath);
     $result[]   = JoomFile::copyIndexHtml($origpath);

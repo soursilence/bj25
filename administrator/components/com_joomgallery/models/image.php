@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/models/image.php $
-// $Id: image.php 4218 2013-04-21 17:22:10Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/image.php $
+// $Id: image.php 4362 2014-02-24 19:09:23Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -232,7 +232,7 @@ class JoomGalleryModelImage extends JoomGalleryModel
     }
     else
     {
-      // No validation in case of e.g. 'editimage' view
+      // No validation in case of e.g. 'editimages' view
       $validate = false;
     }
     if(is_null($params))
@@ -307,7 +307,7 @@ class JoomGalleryModelImage extends JoomGalleryModel
     // Bind the rules
     if(isset($data['rules']))
     {
-      $rules = new JRules($data['rules']);
+      $rules = new JAccessRules($data['rules']);
       $row->setRules($rules);
     }
 
@@ -340,7 +340,7 @@ class JoomGalleryModelImage extends JoomGalleryModel
 
       // Set date of image
       $date = JFactory::getDate();
-      $row->imgdate = $date->toMySQL();
+      $row->imgdate = $date->toSQL();
 
       // Make sure the record is valid
       if(!$row->check())
@@ -406,10 +406,17 @@ class JoomGalleryModelImage extends JoomGalleryModel
         return false;
       }
     }
+
     // Clear hits if 'clearhits' is checked
     if(isset($data['clearhits']) && $data['clearhits'])
     {
       $row->hits = 0;
+    }
+
+    // Clear downloads if 'cleardownloads' is checked
+    if(isset($data['cleardownloads']) && $data['cleardownloads'])
+    {
+      $row->downloads = 0;
     }
 
     // Upload and handle new image files
@@ -545,7 +552,7 @@ class JoomGalleryModelImage extends JoomGalleryModel
       $row->reorder('catid = '.$catid_old);
     }
 
-    $this->_mainframe->triggerEvent('onContentAfterSave', array(_JOOM_OPTION.'.image', &$row, false));
+    $this->_mainframe->triggerEvent('onContentAfterSave', array(_JOOM_OPTION.'.image'.(!$validate ? '.batch' : ''), &$row, false));
 
     return $row->id;
   }

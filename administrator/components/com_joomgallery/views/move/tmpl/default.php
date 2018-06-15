@@ -1,55 +1,53 @@
-<?php
-
-defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
-<form action="index.php" method="post" name="adminForm" >
-  <table cellpadding="4" cellspacing="0" border="0" width="100%">
-    <tr>
-      <td align="center">
-        <b><?php echo JText::_('COM_JOOMGALLERY_IMGMAN_MOVE_IMAGE_TO_CATEGORY'); ?></b><?php echo $this->lists['cats']; ?>
-      </td>
-    </tr>
-  </table>
-  <table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist">
-    <tr>
-      <td align="left" valign="top" width="20%">
-        <strong>
-          <?php echo JText::_('COM_JOOMGALLERY_IMGMAN_IMAGES_TO_MOVE'); ?>
-        </strong>
-      </td>
-    </tr>
-  </table>
-  <table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist">
-    <tr>
-      <th width="24"></th>
-      <th class="title" width="40%">
-        <?php echo JText::_('COM_JOOMGALLERY_COMMON_TITLE'); ?>
-      </th>
-      <th align="left">
-        <?php echo JText::_('COM_JOOMGALLERY_IMGMAN_PREVIOUS_CATEGORY'); ?>
-      </th>
-    </tr>
-<?php foreach($this->items as $row): ?>
-    <tr>
-      <td>
-        <img src="<?php echo $this->_ambit->getImg('thumb_url', $row); ?>" border="0" width="24" height="24" alt="Thumb" />
-      </td>
-      <td align="left">
-        <?php echo $row->imgtitle; ?>
-        <input type="hidden" name="cid[]" value="<?php echo $row->id; ?>" />
-      </td>
-      <td align="left">
-        <?php echo JHTML::_('joomgallery.categorypath', $row->catid, true); ?>
-      </td>
-    </tr>
+<?php defined('_JEXEC') or die;
+JHtml::_('bootstrap.tooltip');
+JHtml::_('formbehavior.chosen', 'select');
+?>
+<form class="form-horizontal" action="<?php echo JRoute::_('index.php?option='._JOOM_OPTION.'&controller=images'); ?>" method="post" id="adminForm" name="adminForm" >
+  <div class="control-group">
+    <div class="control-label">
+      <label for="catid">
+        <strong><?php echo JText::_('COM_JOOMGALLERY_IMGMAN_MOVE_IMAGE_TO_CATEGORY'); ?></strong>
+      </label>
+    </div>
+    <div class="controls">
+      <?php echo $this->lists['cats']; ?>
+    </div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="nowrap" colspan="3">
+          <strong><?php echo JText::_('COM_JOOMGALLERY_IMGMAN_IMAGES_TO_MOVE'); ?></strong>
+        </th>
+      </tr>
+      <tr>
+        <th width="25" class="center hidden-phone"></th>
+        <th width="40%" class="nowrap">
+          <?php echo JText::_('COM_JOOMGALLERY_COMMON_TITLE'); ?>
+        </th>
+        <th class="nowrap">
+          <?php echo JText::_('COM_JOOMGALLERY_IMGMAN_PREVIOUS_CATEGORY'); ?>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+<?php foreach($this->items as $i => $item): ?>
+      <tr class="row<?php echo $i % 2; ?>">
+        <td class="center hidden-phone">
+          <?php echo JHTML::_('joomgallery.minithumbimg', $item, 'jg_minithumb', null, false); ?>
+        </td>
+        <td>
+          <?php echo $item->imgtitle; ?>
+          <input type="hidden" name="cid[]" value="<?php echo $item->id; ?>" />
+        </td>
+        <td>
+          <?php echo JHtml::_('joomgallery.categorypath', $item->catid); ?>
+        </td>
+      </tr>
 <?php endforeach; ?>
-    <tr>
-      <th align="center" colspan="3">
-      </th>
-    </tr>
+    </tbody>
   </table>
   <div>
-    <input type="hidden" name="option" value="<?php echo _JOOM_OPTION; ?>" />
-    <input type="hidden" name="controller" value="images" />
     <input type="hidden" name="task" value="savemove" />
     <input type="hidden" name="boxchecked" value="1" />
   </div>

@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/models/comments.php $
-// $Id: comments.php 4215 2013-04-20 14:26:43Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/comments.php $
+// $Id: comments.php 4175 2013-04-05 11:13:27Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -191,7 +191,7 @@ class JoomGalleryModelComments extends JoomGalleryModel
         $row = $this->getTable('joomgalleryimages');
         $row->load($this->_id);
 
-        require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php');
+        require_once(JPATH_COMPONENT.'/helpers/messenger.php');
         $messenger  = new JoomMessenger();
         $message    = array(
                             'from'      => $this->_user->get('id'),
@@ -207,7 +207,7 @@ class JoomGalleryModelComments extends JoomGalleryModel
       $approved = 0;
 
       // Message about new comment
-      require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php');
+      require_once(JPATH_COMPONENT.'/helpers/messenger.php');
       $messenger  = new JoomMessenger();
 
       $message    = array(
@@ -228,7 +228,7 @@ class JoomGalleryModelComments extends JoomGalleryModel
     $row->userid    = $this->_user->get('id');
     $row->cmtname   = $name;
     $row->cmttext   = $text;
-    $row->cmtdate   = $date->toMySQL();
+    $row->cmtdate   = $date->toSQL();
     $row->published = 1;
     $row->approved  = $approved;
 

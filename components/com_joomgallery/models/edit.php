@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/models/edit.php $
-// $Id: edit.php 4218 2013-04-21 17:22:10Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/edit.php $
+// $Id: edit.php 2015-04-10 $
 /****************************************************************************************\
-**   JoomGallery  2                                                                     **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -47,9 +47,11 @@ class JoomGalleryModelEdit extends JoomGalleryModel
   {
     parent::__construct();
 
-    $array = JRequest::getVar('id',  0, '', 'array');
-
-    $this->setId((int)$array[0]);
+    // Additional security check for unregistered users
+    if(!$this->_user->get('id') && !$this->_config->get('jg_unregistered_permissions'))
+    {
+      throw new Exception(JText::_('COM_JOOMGALLERY_COMMON_MSG_YOU_ARE_NOT_LOGGED'));
+    }
   }
 
   /**
@@ -83,7 +85,7 @@ class JoomGalleryModelEdit extends JoomGalleryModel
     {
       // Check whether we are allowed to edit the image
       $asset = _JOOM_OPTION.'.image.'.$this->_id;
-      if(!$this->_user->authorise('core.edit', $asset) && (!$this->_user->authorise('core.edit.own', $asset) || $this->_image->owner != $this->_user->get('id')))
+      if(!$this->_user->authorise('core.edit', $asset) && (!$this->_user->authorise('core.edit.own', $asset) || !$this->_image->owner || $this->_image->owner != $this->_user->get('id')))
       {
         $this->_mainframe->redirect(JRoute::_('index.php?option=com_joomgallery&view=gallery', false), JText::_('COM_JOOMGALLERY_COMMON_MSG_NOT_ALLOWED_TO_EDIT_IMAGE'), 'notice');
       }
@@ -130,13 +132,13 @@ class JoomGalleryModelEdit extends JoomGalleryModel
    * @return  mixed   A JForm object on success, false on failure
    * @since   2.0
    */
-  public function getForm($data = array())
+  public function getForm($data = array(), $formName = 'edit')
   {
     JForm::addFormPath(JPATH_COMPONENT.'/models/forms');
     JForm::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR.'/models/fields');
     JForm::addRulePath(JPATH_COMPONENT_ADMINISTRATOR.'/models/rules');
 
-    $form = JForm::getInstance(_JOOM_OPTION.'.edit', 'edit');
+    $form = JForm::getInstance(_JOOM_OPTION.'.'.$formName, $formName);
     if(empty($form))
     {
       return false;
@@ -158,6 +160,14 @@ class JoomGalleryModelEdit extends JoomGalleryModel
 
       // Unset the data of fields which we aren't allowed to change
       $form->setFieldAttribute('published', 'filter', 'unset');
+    }
+    
+    if(!$this->_config->get('jg_edit_metadata'))
+    {
+      $form->setFieldAttribute('metakey', 'disabled', 'true');
+      $form->setFieldAttribute('metakey', 'filter', 'unset');
+      $form->setFieldAttribute('metadesc', 'disabled', 'true');
+      $form->setFieldAttribute('metadesc', 'filter', 'unset');
     }
 
     return $form;
@@ -403,6 +413,67 @@ class JoomGalleryModelEdit extends JoomGalleryModel
   }
 
   /**
+   * Method to store an edited image from the quick edit form
+   *
+   * @param   int   ID of the image to edit
+   * @param   array Associative array of image data to store
+   * @return  boolean True on success
+   * @since   3.3
+   */
+  public function quickEdit($id, $data)
+  {
+    $row = $this->getTable('joomgalleryimages');
+
+    // Check for validation errors
+    $form = $this->getForm($data, 'quickedit');
+    $data = $this->_validate($form, $data);
+    if($data === false)
+    {
+      throw new RuntimeException($this->getError());
+    }
+
+    // Check whether it is an existing image
+    $id = (int) $id;
+    if(!$id)
+    {
+      throw new RuntimeException(JText::_('COM_JOOMGALLERY_COMMON_NO_IMAGE_SPECIFIED'));
+    }
+
+    // Load image data from the database
+    $row->load($id);
+
+    // Check whether we are allowed to edit it
+    $asset = _JOOM_OPTION.'.image.'.$id;
+    if(!$this->_user->authorise('core.edit', $asset) && (!$this->_user->authorise('core.edit.own', $asset) || !$row->owner || $row->owner != $this->_user->get('id')))
+    {
+      throw new RuntimeException(JText::_('COM_JOOMGALLERY_COMMON_MSG_NOT_ALLOWED_TO_EDIT_IMAGE'));
+    }
+
+    // Bind the form fields to the images table
+    if(!$row->bind($data))
+    {
+      throw new RuntimeException($row->getError());
+    }
+
+    // Make sure the record is valid
+    if(!$row->check())
+    {
+      throw new RuntimeException($row->getError());
+    }
+
+    // Store the entry to the database
+    if(!$row->store())
+    {
+      throw new RuntimeException($row->getError());
+    }
+
+    // Successfully stored image
+    $this->_mainframe->triggerEvent('onContentAfterSave', array(_JOOM_OPTION.'.image.quick', &$row, false));
+
+    return true;
+  }
+
+  /**
    * Method to delete an image
    *
    * @return  boolean  True on success, false otherwise
@@ -419,9 +490,7 @@ class JoomGalleryModelEdit extends JoomGalleryModel
     // Check whether we are allowed to delete this image
     if(!$this->_user->authorise('core.delete', _JOOM_OPTION.'.image.'.$row->id))
     {
-      $this->setError(JText::_('COM_JOOMGALLERY_IMAGE_MSG_DELETE_NOT_PERMITTED'));
-
-      return false;
+      throw new RuntimeException(JText::_('COM_JOOMGALLERY_IMAGE_MSG_DELETE_NOT_PERMITTED'));
     }
 
     // Database query to check if there are other images which this
@@ -451,10 +520,8 @@ class JoomGalleryModelEdit extends JoomGalleryModel
       $thumb = $this->_ambit->getImg('thumb_path', $row);
       if(!JFile::delete($thumb))
       {
-        // If thumbnail is not deleteable set an error message and abort
-        $this->setError(JText::sprintf('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_THUMB', $thumb));
-
-        return false;
+        // If thumbnail is not deletable set an error message
+        JLog::add(JText::sprintf('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_THUMB', $thumb), JLog::WARNING, 'jerror');
       }
     }
 
@@ -465,10 +532,8 @@ class JoomGalleryModelEdit extends JoomGalleryModel
       $img = $this->_ambit->getImg('img_path', $row);
       if(!JFile::delete($img))
       {
-        // If detail is not deleteable set an error message and abort
-        $this->setError(JText::sprintf('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_IMAGE', $img));
-
-        return false;
+        // If detail is not deletable set an error message
+        JLog::add(JText::sprintf('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_IMAGE', $img), JLog::WARNING, 'jerror');
       }
       // Original exists?
       $orig = $this->_ambit->getImg('orig_path', $row);
@@ -477,10 +542,8 @@ class JoomGalleryModelEdit extends JoomGalleryModel
         // Delete it
         if(!JFile::delete($orig))
         {
-          // If original is not deleteable set an error message and abort
-          $this->setError(JText::sprintf('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_ORIG', $orig));
-
-          return false;
+          // If original is not deletable set an error message
+          JLog::add(JText::sprintf('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_ORIG', $orig), JLog::WARNING, 'jerror');
         }
       }
     }
@@ -492,7 +555,7 @@ class JoomGalleryModelEdit extends JoomGalleryModel
     $this->_db->setQuery($query);
     if(!$this->_db->query())
     {
-      JError::raiseWarning(100, JText::sprintf('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_COMMENTS', $this->_id));
+      JLog::add(JText::sprintf('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_COMMENTS', $this->_id), JLog::WARNING, 'jerror');
     }
 
     // Delete the corresponding database entries of the name tags
@@ -502,15 +565,23 @@ class JoomGalleryModelEdit extends JoomGalleryModel
     $this->_db->setQuery($query);
     if(!$this->_db->query())
     {
-      JError::raiseWarning(100, JText::sprintf('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_NAMETAGS', $this->_id));
+      JLog::add(JText::sprintf('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_NAMETAGS', $this->_id), JLog::WARNING, 'jerror');
+    }
+
+    // Delete the corresponding database entries of the Votes
+    $query->clear();
+    $query->delete(_JOOM_TABLE_VOTES)
+          ->where('picid = '.$this->_id);
+    $this->_db->setQuery($query);
+    if(!$this->_db->query())
+    {
+      JLog::add(JText::_('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_VOTES'), JLog::WARNING, 'jerror');
     }
 
     // Delete the database entry of the image
     if(!$row->delete())
     {
-      $this->setError(JText::sprintf('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_IMAGE_DATA', $this->_id));
-
-      return false;
+      throw new RuntimeException(JText::sprintf('COM_JOOMGALLERY_EDITIMAGE_MSG_COULD_NOT_DELETE_IMAGE_DATA', $this->_id));
     }
 
     // Image successfully deleted

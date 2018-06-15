@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/helpers/migration.php $
-// $Id: migration.php 4107 2013-02-22 13:58:02Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/migration.php $
+// $Id: migration.php 4278 2013-05-25 23:58:54Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2011  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -24,50 +24,65 @@ abstract class JoomMigration
   /**
    * The name of the log file
    *
-   * @var string
+   * @var   string
+   * @since 1.5.5
    */
   protected $logfilename;
 
   /**
    * JDatabase object
    *
-   * @var object
+   * @var   object
+   * @since 1.5.5
    */
   protected $_db;
 
   /**
    * JDatabase object for external database
    *
-   * @var object
+   * @var   object
+   * @since 2.0
    */
   protected $_db2;
 
   /**
    * JApplication object
    *
-   * @var object
+   * @var   object
+   * @since 1.5.5
    */
   protected $_mainframe;
 
   /**
    * JoomConfig object
    *
-   * @var object
+   * @var   object
+   * @since 1.5.5
    */
   protected $_config;
 
   /**
    * JoomAmbit object
    *
-   * @var object
+   * @var   object
+   * @since 1.5.5
    */
   protected $_ambit;
+
+  /**
+   * Determines whether this script is executed from the command line
+   *
+   * @var   boolean
+   * @since 3.2
+   */
+  protected $isCli;
 
   /**
    * The name of the migration
    * (should be unique)
    *
-   * @var string
+   * @var   string
+   * @since 1.5.5
    */
   protected $migration;
 
@@ -75,18 +90,37 @@ abstract class JoomMigration
    * The new ID of a category
    * which original ID was 1
    *
-   * @var int
+   * @var   int
+   * @since 2.0
    */
-  protected $new_catid;
+  protected $newCatid;
 
   /**
    * Determines whether the gallery
    * from which we are migrating uses
    * another database
    *
-   * @var boolean
+   * @var   boolean
+   * @since 2.0
    */
-  protected $other_database = false;
+  protected $otherDatabase = false;
+
+  /**
+   * Determines whether images should be copied instead of moved
+   *
+   * @var   boolean
+   * @since 3.1
+   */
+  protected $copyImages = false;
+
+  /**
+   * Determines whether image and category owner IDs should
+   * be checked for existence during migration
+   *
+   * @var   boolean
+   * @since 3.1
+   */
+  protected $checkOwner = false;
 
   /**
    * Constructor
@@ -103,44 +137,94 @@ abstract class JoomMigration
 
     $this->logfilename = 'migration.'.$this->migration.'.php';
 
-    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
+    require_once JPATH_COMPONENT.'/helpers/refresher.php';
 
     $this->refresher = new JoomRefresher(array('task' => 'migrate&migration='.$this->migration));
 
-    JLog::addLogger(array('text_file' => $this->logfilename, 'text_entry_format' => '{DATETIME}	{PRIORITY}	{MESSAGE}'), JLog::ALL, array('migration'.$this->migration));
+    JLog::addLogger(array('text_file' => $this->logfilename, 'text_entry_format' => '{DATETIME}  {PRIORITY}  {MESSAGE}'), JLog::ALL, array('migration'.$this->migration));
 
-    $this->new_catid = $this->_mainframe->getUserState('joom.migration.data.new_catid', 1);
+    $this->newCatid = $this->_mainframe->getUserState('joom.migration.internal.new_catid', 1);
+
+    $this->copyImages = $this->getStateFromRequest('copy_images', 'copy_images', $this->copyImages, 'boolean');
+    $this->checkOwner = $this->getStateFromRequest('check_owner', 'check_owner', $this->checkOwner, 'boolean');
+
+    $this->isCli      = $this->getStateFromRequest('is_cli', 'is_cli', $this->isCli, 'boolean');
+
+    // Connect to second database if necessary
+    $db = $this->getStateFromRequest('db2', 'db', array(), 'array');
+    if(JArrayHelper::getValue($db, 'enabled', false, 'boolean'))
+    {
+      $driver   = JArrayHelper::getValue($db, 'db_type', 'mysqli', 'string');
+      $host     = JArrayHelper::getValue($db, 'db_host', 'localhost', 'string');
+      $name     = JArrayHelper::getValue($db, 'db_name', '', 'string');
+      $user     = JArrayHelper::getValue($db, 'db_user', '', 'string');
+      $password = JArrayHelper::getValue($db, 'db_pass', '', 'string');
+      $prefix   = $this->getStateFromRequest('prefix', 'prefix', '', 'cmd');
+      if(!$prefix)
+      {
+        $prefix   = JArrayHelper::getValue($db, 'prefix', '', 'cmd');
+        $this->setState('prefix', $prefix);
+      }
+
+      $options	= array ('driver' => $driver, 'host' => $host, 'user' => $user, 'password' => $password, 'database' => $name, 'prefix' => $prefix);
+
+      $this->_db2 = JDatabaseDriver::getInstance($options);
+
+      $this->otherDatabase = true;
+    }
+    else
+    {
+      $this->_db2 = $this->_db;
+    }
   }
 
   /**
-   * Opens the logfile and puts first comments into it.
+   * Opens the log file and puts first comments into it.
    *
-   * @return  void
+   * @return  boolean True on success, false if errors occurred.
    * @since   1.5.0
    */
   public function start()
   {
-    $this->_mainframe->setUserState('joom.migration.data', null);
+    $this->_mainframe->setUserState('joom.migration.internal', null);
     $this->writeLogfile('Migration Step started');
     $this->writeLogfile('max. execution time: '.@ini_get('max_execution_time').' seconds');
-    $this->writeLogfile('calculated refresh time: '.(@ini_get('max_execution_time') * 0.8).' seconds');
+    $this->writeLogfile('calculated refresh time: '.$this->refresher->getMaxTime().' seconds');
     $this->writeLogfile('*****************************');
-    $this->doMigration();
-    $this->end();
+
+    try
+    {
+      $this->doMigration();
+    }
+    catch(Exception $e)
+    {
+      $this->setError($e->getMessage());
+    }
+
+    return $this->end();
   }
 
   /**
    * Continues the migration
    *
-   * @return  void
+   * @return  boolean True on success, false if errors occurred.
    * since    2.0
    */
   public function migrate()
   {
     $this->writeLogfile('*****************************');
     $this->writeLogfile('Migration Step started');
-    $this->doMigration();
-    $this->end();
+
+    try
+    {
+      $this->doMigration();
+    }
+    catch(Exception $e)
+    {
+      $this->setError($e->getMessage());
+    }
+
+    return $this->end();
   }
 
   /**
@@ -157,51 +241,60 @@ abstract class JoomMigration
   /**
    * Make a redirect to continue/end migration
    *
-   * @param   string  $action Redirect to continue or end
+   * @param   string  $task Name of the task to continue with after the refresh
    * @return  void
    * @since   1.5.0
    */
-  protected function refresh($action = '')
+  protected function refresh($task = null)
   {
-    $msg      = '';
-    $msgType  = '';
-    if($action != 'exit')
-    {
-      $this->writeLogfile('Refresh to continue the migration');
-      $this->refresher->refresh();
-    }
-    else
-    {
-      $errors = $this->_mainframe->getUserState('joom.migration.data.errors');
-      if($errors)
-      {
-        $this->writeLogfile('Errors recognized: '.$errors);
-        $msg      = 'There were '.$errors.' error(s) during migration. Please have a look at the logfile.';
-        $msgType  = 'error';
-      }
-      else
-      {
-        $msg      = 'Migration successfully ended';
-      }
+    $this->_mainframe->setUserState('joom.migration.internal.task', $task);
 
-      $this->writeLogfile('Migration ended');
+    if($this->isCli)
+    {
+      // If executed from the command line it is not necessary to refresh
+      return;
     }
 
-    $this->refresher->refresh(null, 'display', $msg, $msgType);
+    $this->writeLogfile('Refresh to continue the migration');
+    $this->refresher->refresh();
   }
 
   /**
-   * Puts last comments into the logfile,
+   * Puts last comments into the log file,
    * closes it and sets redirect with report of success.
    *
-   * @return  void
+   * @return  boolean True on success, false if errors occurred.
    * @since   1.5.0
    */
   protected function end()
   {
     $this->writeLogfile('end of migration - exiting');
     $this->writeLogfile('*****************************');
-    $this->refresh('exit');
+
+    $msgType = 'message';
+    $success = true;
+    $errors = $this->_mainframe->getUserState('joom.migration.internal.errors');
+    if($errors)
+    {
+      $this->writeLogfile('Errors recognized: '.$errors);
+      $msg      = 'There were '.$errors.' error(s) during migration. Please have a look at the log file.';
+      $msgType  = 'error';
+      $success = false;
+    }
+    else
+    {
+      $msg      = 'Migration successfully ended';
+    }
+
+    $this->writeLogfile('Migration ended');
+
+    if(!$this->isCli)
+    {
+      // Refreshing is only necessary if not executed from the command line
+      $this->refresher->refresh(null, 'display', $msg, $msgType);
+    }
+
+    return $success;
   }
 
   /**
@@ -227,7 +320,7 @@ abstract class JoomMigration
    */
   protected function setError($msg = null, $db = false)
   {
-    $error_counter = $this->_mainframe->getUserState('joom.migration.data.errors');
+    $error_counter = $this->_mainframe->getUserState('joom.migration.internal.errors');
     if(is_null($error_counter))
     {
       $error_counter = 1;
@@ -237,7 +330,7 @@ abstract class JoomMigration
       $error_counter++;
     }
 
-    $this->_mainframe->setUserState('joom.migration.data.errors', $error_counter);
+    $this->_mainframe->setUserState('joom.migration.internal.errors', $error_counter);
 
     if(!is_null($msg))
     {
@@ -252,6 +345,164 @@ abstract class JoomMigration
         $this->writeLogfile('DB error: '.$msg, JLog::ERROR);
       }
     }
+  }
+
+  /**
+   * Returns the current task of the migration.
+   *
+   * Please use this function and @see setTask(string) for managing different steps during the migration
+   *
+   * @param   string  $default  The default task to return if there isn't any task stored in the session
+   * @return  The current task of the migration
+   * @since   3.1
+   */
+  protected function getTask($default = null)
+  {
+    return $this->_mainframe->getUserState('joom.migration.internal.task', $default);
+  }
+
+  /**
+   * Sets the current task of the migration in the session.
+   *
+   * Please use this function and @see getTask() for managing different steps during the migration
+   *
+   * @param   string  $task The task name to set
+   * @return  The previous task if one existed
+   * @since   3.1
+   */
+  protected function setTask($task)
+  {
+    return $this->_mainframe->setUserState('joom.migration.internal.task', $task);
+  }
+
+  /**
+   * Returns a custom state stored in the session
+   *
+   * Please use this function and @see setState(string, mixed) for storing different states across site refreshes
+   *
+   * @param   string  $key      Name of the state to retrieve
+   * @param   mixed   $default  The default state to return if it isn't stored in the session
+   * @return  The requested state
+   * @since   3.1
+   */
+  protected function getState($key, $default = null)
+  {
+    return $this->_mainframe->getUserState('joom.migration.data.'.$this->migration.'.'.$key, $default);
+  }
+
+  /**
+   * Sets a custom state in the session.
+   *
+   * Please use this function and @see getState(string, mixed) for storing different states across site refreshes
+   *
+   * @param   string  $key  Name of the state to set
+   * @param   mixed   $task The state to set
+   * @return  The previous state if one existed
+   * @since   3.1
+   */
+  protected function setState($key, $state)
+  {
+    return $this->_mainframe->setUserState('joom.migration.data.'.$this->migration.'.'.$key, $state);
+  }
+
+  /**
+   * Gets the value of a state, first looking in the request for it
+   *
+   * Please use this function, @see getState(string, mixed) and @see setState(string, mixed) for storing different states across site refreshes
+   *
+   * @param   string  $key      The name of the state
+   * @param   string  $request  The name of the variable passed in a request
+   * @param   string  $default  The default value for the variable if not found
+   * @param   string  $type     Filter for the variable, for valid values see {@link JFilterInput::clean()}
+   * @return  The requested state
+   * @since   3.1
+   */
+  public function getStateFromRequest($key, $request, $default = null, $type = 'none')
+  {
+    $cur_state = $this->getState($key, $default);
+    $new_state = $this->_mainframe->input->get($request, null, $type);
+
+    // Save the new value only if it was set in this request
+    if($new_state !== null)
+    {
+      $this->setState($key, $new_state);
+    }
+    else
+    {
+      $new_state = $cur_state;
+    }
+
+    return $new_state;
+  }
+
+  /**
+   * Renders the form for configuring a migration using an XML file
+   * which has the same name than the migration script
+   *
+   * @return  string  HTML of the rendered form
+   * @since   3.1
+   */
+  public function getForm()
+  {
+    // Try to load language file of the migration script
+    JFactory::getLanguage()->load('com_joomgallery.migrate'.$this->migration);
+
+    // Prepare display data
+    $displayData = new stdClass();
+    $displayData->url = JRoute::_('index.php?option='._JOOM_OPTION.'&controller=migration&task=check');
+    $displayData->migration = $this->migration;
+    $displayData->fields = array();
+    $displayData->description = '';
+
+    JForm::addFormPath(JPATH_COMPONENT.'/helpers/migration/');
+    JForm::addFormPath(JPATH_COMPONENT.'/models/forms');
+    JForm::addFieldPath(JPATH_COMPONENT.'/models/fields');
+
+    // Try to load additional form fields
+    try
+    {
+      $form = JForm::getInstance(_JOOM_OPTION.'.migrate.'.$this->migration, 'migrate'.$this->migration);
+
+      // Check for form field with name 'database' which means that fields for
+      // the connection to a second database should be displayed
+      $form->setFieldAttribute('database', 'id', 'database_'.$this->migration);
+      if($databaseField = $form->getField('database'))
+      {
+        // Render the field now because it adds other form fields to the form
+        // which has to happen afore all the fields are retrieved for displaying
+        $databaseField->input;
+      }
+
+      $data = $this->_mainframe->getUserState('joom.migration.data.'.$this->migration, new stdClass());
+      $data->check_owner = (int) $this->checkOwner;
+      $data->copy_images = (int) $this->copyImages;
+      $data->database = $this->otherDatabase;
+      $data->db = array();
+      $db = (array) $this->getState('db2', array());
+      $data->db['enabled'] = $data->database;
+      $data->db['db_type'] = JArrayHelper::getValue($db, 'db_type', 'mysqli', 'string');
+      $data->db['db_host'] = JArrayHelper::getValue($db, 'db_host', 'localhost', 'string');
+      $data->db['db_user'] = JArrayHelper::getValue($db, 'db_user', '', 'string');
+      $data->db['db_pass'] = JArrayHelper::getValue($db, 'db_pass', '', 'string');
+      $data->db['db_name'] = JArrayHelper::getValue($db, 'db_name', '', 'string');
+      $data->db['prefix'] = $this->getState('prefix');
+      $form->bind($data);
+
+      $displayData->fields = $form->getGroup('');
+      if(count($fieldsets = $form->getFieldsets()) && isset(reset($fieldsets)->description))
+      {
+        $displayData->description = JText::_(reset($fieldsets)->description);
+      }
+    }
+    catch(Exception $e)
+    {
+      // Simply don't add any fields if there is no valid form
+    }
+
+    // Render the form
+    $layout = new JLayoutFile('joomgallery.migration.form', JPATH_COMPONENT.'/layouts');
+
+    return $layout->render($displayData);
   }
 
   /**
@@ -276,30 +527,31 @@ abstract class JoomMigration
       {
         if($min_version || $max_version)
         {
-          $xml = JFactory::getXMLParser('simple');
-          $xml->loadFile($xml_file);
+          $xml = simplexml_load_file($xml_file);
 
-          $version_tag  = $xml->document->getElementByPath('version');
-          $version      = $version_tag->data();
-          if($min_version)
+          if(isset($xml->version))
           {
-            $comparision_min = version_compare($version, $min_version, '>=');
-          }
-          else
-          {
-            $comparision_min = true;
-          }
-          if($max_version)
-          {
-            $comparision_max = version_compare($version, $max_version, '<=');
-          }
-          else
-          {
-            $comparision_max = true;
-          }
-          if(!$comparision_min || !$comparision_max)
-          {
-            return JText::_('COM_JOOMGALLERY_MIGMAN_WRONG_VERSION');
+            $version = (string) $xml->version;
+            if($min_version)
+            {
+              $comparision_min = version_compare($version, $min_version, '>=');
+            }
+            else
+            {
+              $comparision_min = true;
+            }
+            if($max_version)
+            {
+              $comparision_max = version_compare($version, $max_version, '<=');
+            }
+            else
+            {
+              $comparision_max = true;
+            }
+            if(!$comparision_min || !$comparision_max)
+            {
+              return JText::_('COM_JOOMGALLERY_MIGMAN_WRONG_VERSION');
+            }
           }
         }
       }
@@ -307,28 +559,14 @@ abstract class JoomMigration
 
     // Check whether site is offline
     $sitestatus = $this->_mainframe->getCfg('offline');
-?>
-<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist">
-  <tr>
-    <th colspan="3" align="center">
-      <?php echo JText::_('COM_JOOMGALLERY_MIGMAN_RESULTS'); ?>
-    </th>
-  </tr>
-  <tr>
-    <td colspan="3">
-      <h4><?php echo JText::_('COM_JOOMGALLERY_MIGMAN_SITESTATUS'); ?></h4>
-    </td>
-  </tr>
-  <tr>
-    <td width="80%"><?php echo JText::_('COM_JOOMGALLERY_MIGMAN_SITE_OFFLINE'); ?></td>
-    <td width="10%" class="center">
-      <?php echo $sitestatus ? JHTML::_('jgrid.published', true, 0, '', false) : '&nbsp;'; ?>
-    </td>
-    <td class="center">
-      <?php echo !$sitestatus ? JHTML::_('jgrid.published', false, 0, '', false) : '&nbsp;'; ?>
-    </td>
-  </tr>
-<?php
+    $displayData = new stdClass();
+    $displayData->title = JText::_('COM_JOOMGALLERY_MIGMAN_SITESTATUS');
+    $displayData->checks = array();
+    $displayData->checks[] = array('title' => JText::_('COM_JOOMGALLERY_MIGMAN_SITE_OFFLINE'), 'state' => $sitestatus == 1);
+
+    $layout = new JLayoutFile('joomgallery.migration.checksection', JPATH_COMPONENT.'/layouts');
+    echo $layout->render($displayData);
+
     return $sitestatus == 1;
   }
 
@@ -346,90 +584,81 @@ abstract class JoomMigration
                         $this->_ambit->get('orig_path'),
                         $this->_ambit->get('thumb_path'));
     $dirs = array_merge($dirs, $joom_dirs);
-?>
-  <tr>
-    <td colspan="3">
-      <h4><?php echo JText::_('COM_JOOMGALLERY_MIGMAN_DIRECTORIES'); ?></h4>
-    </td>
-  </tr>
-<?php $ready = true;
-      foreach($dirs as $dir): ?>
-  <tr>
-    <td><?php echo $dir; ?></td>
-    <td class="center">
-<?php   if(is_dir($dir)): ?>
-      <?php echo JHTML::_('jgrid.published', true, 0, '', false); ?>
-    </td>
-    <td>
-<?php   else: ?>
-    </td>
-    <td class="center">
-      <?php echo JHTML::_('jgrid.published', false, 0, '', false);
-          $ready = false; ?>
-<?php   endif; ?>
-    </td>
-  </tr>
-<?php endforeach;
-
-      // Check log directory and log file
-      $log_dir = JPath::clean($this->_mainframe->getCfg('log_path')); ?>
-  <tr>
-    <td><?php echo JText::sprintf('COM_JOOMGALLERY_MIGMAN_LOG_DIRECTORY', $log_dir); ?>
-<?php $error  = false;
-      $message = '';
-      if(is_dir($log_dir))
+    $ready = true;
+    $displayData = new stdClass;
+    $displayData->title = JText::_('COM_JOOMGALLERY_MIGMAN_DIRECTORIES');
+    $displayData->checks = array();
+    foreach($dirs as $dir)
+    {
+      $directory = array();
+      $directory['title'] = $dir;
+      $directory['state'] = true;
+      if(!is_dir($dir))
       {
-        $log_file = JPath::clean($log_dir.'/'.$this->logfilename);
-        if(is_file($log_file))
+        $ready = false;
+        $directory['state'] = false;
+      }
+
+      $displayData->checks[] = $directory;
+    }
+
+    // Check log directory and log file
+    $log_dir  = JPath::clean($this->_mainframe->getCfg('log_path'));
+    $check    = array('title' => JText::sprintf('COM_JOOMGALLERY_MIGMAN_LOG_DIRECTORY', $log_dir));
+    $error    = false;
+    $message  = '';
+    if(is_dir($log_dir))
+    {
+      $log_file = JPath::clean($log_dir.'/'.$this->logfilename);
+      if(is_file($log_file))
+      {
+        if(is_writable($log_file))
         {
-          if(is_writable($log_file))
-          {
-            $message = JText::sprintf('COM_JOOMGALLERY_MIGMAN_LOG_FILE_IS_WRITABLE', $this->logfilename);
-          }
-          else
-          {
-            $error = true;
-            $message = JText::sprintf('COM_JOOMGALLERY_MIGMAN_LOG_FILE_IS_NOT_WRITABLE', $this->logfilename);
-          }
+          $message = JText::sprintf('COM_JOOMGALLERY_MIGMAN_LOG_FILE_IS_WRITABLE', $this->logfilename);
         }
         else
         {
-          if(is_writable($log_dir))
-          {
-            $message = JText::sprintf('COM_JOOMGALLERY_MIGMAN_LOG_FILE_WILL_BE_CREATED', $this->logfilename);
-          }
-          else
-          {
-            $error = true;
-            $message = JText::_('COM_JOOMGALLERY_MIGMAN_LOG_FILE_IS_NOT_WRITABLE');
-          }
+          $error = true;
+          $message = JText::sprintf('COM_JOOMGALLERY_MIGMAN_LOG_FILE_IS_NOT_WRITABLE', $this->logfilename);
         }
       }
       else
       {
-        $error = true;
+        if(is_writable($log_dir))
+        {
+          $message = JText::sprintf('COM_JOOMGALLERY_MIGMAN_LOG_FILE_WILL_BE_CREATED', $this->logfilename);
+        }
+        else
+        {
+          $error = true;
+          $message = JText::_('COM_JOOMGALLERY_MIGMAN_LOG_FILE_IS_NOT_WRITABLE');
+        }
       }
-      if($error && $message): ?>
-      <span style="color:#f30; font-weight:bold;"><?php echo $message; ?></span>
-<?php elseif(!$error): ?>
-      <span style="color:#080; font-weight:bold;"><?php echo $message; ?></span>
-<?php endif; ?>
-    </td>
-    <td class="center">
-<?php   if(!$error): ?>
-      <?php echo JHTML::_('jgrid.published', true, 0, '', false); ?>
-    </td>
-    <td>
-<?php   else: ?>
-    </td>
-    <td class="center">
-      <?php echo JHTML::_('jgrid.published', false, 0, '', false);
-          $ready = false; ?>
-<?php   endif; ?>
-    </td>
-  </tr>
-<?php
-    return $ready;
+    }
+    else
+    {
+      $error = true;
+    }
+
+    if($error && $message)
+    {
+      $check['title'] .= ' <span style="color:#f30; font-weight:bold;">'.$message.'</span>';
+    }
+    else
+    {
+      if(!$error)
+      {
+        $check['title'] .= ' <span style="color:#080; font-weight:bold;">'.$message.'</span>';
+      }
+    }
+
+    $check['state'] = !$error;
+    $displayData->checks[] = $check;
+
+    $layout = new JLayoutFile('joomgallery.migration.checksection', JPATH_COMPONENT.'/layouts');
+    echo $layout->render($displayData);
+
+    return $ready && !$error;
   }
 
   /**
@@ -440,16 +669,13 @@ abstract class JoomMigration
    * @since   1.5.0
    */
   protected function checkTables($tables = array())
-  { ?>
-  <tr>
-    <td colspan="3">
-      <h4><?php echo JText::_('COM_JOOMGALLERY_MIGMAN_DATABASETABLES'); ?></h4>
-    </td>
-  </tr>
-<?php
+  {
+    $displayData = new stdClass();
+    $displayData->title = JText::_('COM_JOOMGALLERY_MIGMAN_DATABASETABLES');
+
     $ready = false;
 
-    if(!$this->other_database || is_null($this->_db2))
+    if(!$this->otherDatabase || is_null($this->_db2))
     {
       $db = $this->_db;
     }
@@ -458,57 +684,39 @@ abstract class JoomMigration
       $db = $this->_db2;
     }
 
+    $displayData->checks = array();
     foreach($tables as $table)
     {
-      $query = 'SELECT COUNT(*) FROM ' . $table;
-      $db->setQuery($query);
-      $count = $db->loadResult();
-      if(!is_null($count))
+      $check = array();
+
+      try
       {
+        $query = $db->getQuery(true)
+              ->select('COUNT(*)')
+              ->from($table);
+        $db->setQuery($query);
+        
+        $count = $db->loadResult();
+
         if($count == 0)
-        { ?>
-        <tr>
-          <td>
-            <?php echo $table; ?>: <span style="color:#080; font-size:12px; font-weight:bold;"><?php echo JText::_('COM_JOOMGALLERY_MIGMAN_EMPTY'); ?></span>
-          </td>
-          <td class="center">
-            <?php echo JHTML::_('jgrid.published', true, 0, '', false); ?>
-          </td>
-          <td>
-            &nbsp;
-          </td>
-        </tr>
-<?php   }
+        {
+          $check['title'] = $table.': <span style="color:#080; font-size:12px; font-weight:bold;">'.JText::_('COM_JOOMGALLERY_MIGMAN_EMPTY').'</span>';
+          $check['state'] = true;
+        }
         else
         {
-          $ready = true; ?>
-        <tr>
-          <td>
-            <?php echo $table; ?>: <span style="color:#080; font-weight:bold;"><?php echo $count .' '.JText::_('COM_JOOMGALLERY_MIGMAN_ROWS'); ?></span>
-          </td>
-          <td class="center">
-            <?php echo JHTML::_('jgrid.published', true, 0, '', false); ?>
-          </td>
-          <td>
-            &nbsp;
-          </td>
-        </tr>
-<?php   }
+          $check['title'] = $table.': <span style="color:#080; font-weight:bold;">'.$count .' '.JText::_('COM_JOOMGALLERY_MIGMAN_ROWS').'</span>';
+          $check['state'] = true;
+          $ready = true;
+        }
       }
-      else
-      { ?>
-      <tr>
-        <td>
-          <?php echo $table; ?>: <span style="color:#f30; font-weight:bold;"><?php echo $db->getErrorMsg(); ?></span>
-        </td>
-        <td>
-          &nbsp;
-        </td>
-        <td class="center">
-          <?php echo JHTML::_('jgrid.published', false, 0, '', false); ?>
-        </td>
-      </tr>
-<?php }
+      catch(Exception $e)
+      {
+        $check['title'] = $table.': <span style="color:#f30; font-weight:bold;">'.$db->getErrorMsg().'</span>';
+        $check['state'] = false;
+      }
+
+      $displayData->checks[] = $check;
     }
 
     // Check JoomGallery tables
@@ -517,10 +725,13 @@ abstract class JoomMigration
                     _JOOM_TABLE_COMMENTS,
                     _JOOM_TABLE_NAMESHIELDS,
                     _JOOM_TABLE_USERS,
-                    _JOOM_TABLE_VOTES);
+                    _JOOM_TABLE_VOTES,
+                    _JOOM_TABLE_IMAGE_DETAILS,
+                    _JOOM_TABLE_CATEGORY_DETAILS);
     $prefix = $this->_mainframe->getCfg('dbprefix');
     foreach($tables as $table)
     {
+      $check = array();
       if($table != _JOOM_TABLE_CATEGORIES)
       {
         $query = $this->_db->getQuery(true)
@@ -537,39 +748,23 @@ abstract class JoomMigration
       $this->_db->setQuery($query);
       $count = $this->_db->loadResult();
       if(!is_null($count) && $count == 0)
-      { ?>
-      <tr>
-        <td>
-          <?php echo str_replace('#__', $prefix, $table); ?>: <span style="color:#080; font-size:12px; font-weight:bold;"><?php echo JText::_('COM_JOOMGALLERY_MIGMAN_EMPTY'); ?></span>
-        </td>
-        <td class="center">
-          <?php echo JHTML::_('jgrid.published', true, 0, '', false); ?>
-        </td>
-        <td>
-          &nbsp;
-        </td>
-      </tr>
-<?php }
+      {
+        $check['title'] = str_replace('#__', $prefix, $table).': <span style="color:#080; font-size:12px; font-weight:bold;">'.JText::_('COM_JOOMGALLERY_MIGMAN_EMPTY').'</span>';
+        $check['state'] = true;
+      }
       else
       {
-        $ready = false; ?>
-      <tr>
-        <td>
-          <?php echo str_replace('#__', $prefix, $table); ?>: <span style="color:#f30; font-weight:bold;"><?php echo $count .' '.JText::_('COM_JOOMGALLERY_MIGMAN_ROWS'); ?>.
-          <?php echo JText::_('COM_JOOMGALLERY_MIGMAN_ONLY_IN_NEW_INSTALLATION'); ?></span>
-          <?php echo JText::_('COM_JOOMGALLERY_MIGMAN_PLEASE_REINSTALL'); ?>
-        </td>
-        <td>
-          &nbsp;
-        </td>
-        <td class="center">
-          <?php echo JHTML::_('jgrid.published', false, 0, '', false); ?>
-        </td>
-      </tr>
-<?php }
+        $check['title'] = str_replace('#__', $prefix, $table).': <span style="color:#f30; font-weight:bold;">'.$count .' '.JText::_('COM_JOOMGALLERY_MIGMAN_ROWS').'. ';
+        $check['title'] .= JText::_('COM_JOOMGALLERY_MIGMAN_ONLY_IN_NEW_INSTALLATION').'</span> '.JText::_('COM_JOOMGALLERY_MIGMAN_PLEASE_REINSTALL');
+        $check['state'] = false;
+        $ready = false;
+      }
+
+      $displayData->checks[] = $check;
     }
 
     // Check whether ROOT category exists
+    $check = array();
     $query = $this->_db->getQuery(true)
           ->select('COUNT(*)')
           ->from($this->_db->qn(_JOOM_TABLE_CATEGORIES))
@@ -578,39 +773,21 @@ abstract class JoomMigration
           ->where('parent_id = 0');
     $this->_db->setQuery($query);
     if($this->_db->loadResult())
-    { ?>
-      <tr>
-        <td>
-          <?php echo JText::_('COM_JOOMGALLERY_MIGMAN_ROOT_CATEGORY_EXISTS'); ?>
-        </td>
-        <td class="center">
-          <?php echo JHTML::_('jgrid.published', true, 0, '', false); ?>
-        </td>
-        <td>
-          &nbsp;
-        </td>
-      </tr>
-<?php
+    {
+      $check['title'] = JText::_('COM_JOOMGALLERY_MIGMAN_ROOT_CATEGORY_EXISTS');
+      $check['state'] = true;
     }
     else
     {
-      $ready = false; ?>
-      <tr>
-        <td>
-          <span style="color:#f30; font-weight:bold;"><?php echo JText::_('COM_JOOMGALLERY_MIGMAN_ROOT_CATEGORY_DOES_NOT_EXIST'); ?></span>
-          <?php echo JText::_('COM_JOOMGALLERY_MIGMAN_PLEASE_REINSTALL'); ?>
-        </td>
-        <td>
-          &nbsp;
-        </td>
-        <td class="center">
-          <?php echo JHTML::_('jgrid.published', false, 0, '', false); ?>
-        </td>
-      </tr>
-<?php
+      $check['title'] = '<span style="color:#f30; font-weight:bold;">'.JText::_('COM_JOOMGALLERY_MIGMAN_ROOT_CATEGORY_DOES_NOT_EXIST').'</span> '.JText::_('COM_JOOMGALLERY_MIGMAN_PLEASE_REINSTALL');
+      $check['state'] = false;
+      $ready = false;
     }
 
+    $displayData->checks[] = $check;
+
     // Check whether ROOT asset exists
+    $check = array();
     $query = $this->_db->getQuery(true)
           ->select('COUNT(*)')
           ->from($this->_db->qn('#__assets'))
@@ -618,37 +795,21 @@ abstract class JoomMigration
           ->where('parent_id = 1');
     $this->_db->setQuery($query);
     if($this->_db->loadResult())
-    { ?>
-      <tr>
-        <td>
-          <?php echo JText::_('COM_JOOMGALLERY_MIGMAN_ROOT_ASSET_EXISTS'); ?>
-        </td>
-        <td class="center">
-          <?php echo JHTML::_('jgrid.published', true, 0, '', false); ?>
-        </td>
-        <td>
-          &nbsp;
-        </td>
-      </tr>
-<?php
+    {
+      $check['title'] = JText::_('COM_JOOMGALLERY_MIGMAN_ROOT_ASSET_EXISTS');
+      $check['state'] = true;
     }
     else
     {
-      $ready = false; ?>
-      <tr>
-        <td>
-          <span style="color:#f30; font-weight:bold;"><?php echo JText::_('COM_JOOMGALLERY_MIGMAN_ROOT_ASSET_DOES_NOT_EXIST'); ?></span>
-          <?php echo JText::_('COM_JOOMGALLERY_MIGMAN_PLEASE_REINSTALL'); ?>
-        </td>
-        <td>
-          &nbsp;
-        </td>
-        <td class="center">
-          <?php echo JHTML::_('jgrid.published', false, 0, '', false); ?>
-        </td>
-      </tr>
-<?php
+      $check['title'] = '<span style="color:#f30; font-weight:bold;">'.Text::_('COM_JOOMGALLERY_MIGMAN_ROOT_ASSET_DOES_NOT_EXIST').'</span> '.JText::_('COM_JOOMGALLERY_MIGMAN_PLEASE_REINSTALL');
+      $check['state'] = false;
+      $ready = false;
     }
+
+    $displayData->checks[] = $check;
+
+    $layout = new JLayoutFile('joomgallery.migration.checksection', JPATH_COMPONENT.'/layouts');
+    echo $layout->render($displayData);
 
     return $ready;
   }
@@ -662,47 +823,14 @@ abstract class JoomMigration
    * @since   1.5.0
    */
   protected function endCheck($ready = false)
-  { ?>
-  <tr>
-    <td colspan="3">
-      <hr />
-<?php
-    if($ready)
-    { ?>
-      <div style="text-align:center;color:#080;padding:1em 0;font:bold 1.2em Verdana;">
-        <?php echo JText::_('COM_JOOMGALLERY_MIGMAN_TRUE'); ?></div>
-      <div style="text-align:center;"><?php echo JText::_('COM_JOOMGALLERY_MIGMAN_TRUE_LONG'); ?></div>
-<?php
-    }
-    else
-    { ?>
-      <div style="text-align:center;color:#f30;padding:1em 0;font:bold 1.2em Verdana;">
-        <?php echo JText::_('COM_JOOMGALLERY_MIGMAN_FALSE'); ?></div>
-      <div style="text-align:center;"><?php echo JText::_('COM_JOOMGALLERY_MIGMAN_FALSE_LONG'); ?></div>
-<?php
-    } ?>
-      <hr />
-    </td>
-  </tr>
-  <tr>
-<?php
-  if($ready)
-  { ?>
-    <th colspan="3" style="text-align:center;">
-      <form action="index.php?option=<?php echo _JOOM_OPTION; ?>&amp;controller=migration" method="post">
-        <div>
-          <input type="hidden" name="migration" value="<?php echo $this->migration; ?>">
-          <input type="hidden" name="task" value="start">
-          <button style="width:100px;"><?php echo JText::_('COM_JOOMGALLERY_MIGMAN_START'); ?></button>
-        </div>
-      </form>
-      <hr />
-    </th>
-  <?php
-    } ?>
-  </tr>
-</table>
-<?php
+  {
+    $displayData = new stdClass();
+    $displayData->ready = $ready;
+    $displayData->url = JRoute::_('index.php?option='._JOOM_OPTION.'&amp;controller=migration');
+    $displayData->migration = $this->migration;
+
+    $layout = new JLayoutFile('joomgallery.migration.checkend', JPATH_COMPONENT.'/layouts');
+    echo $layout->render($displayData);
   }
 
   /**
@@ -722,6 +850,22 @@ abstract class JoomMigration
    */
   public function check($dirs = array(), $tables = array(), $xml = false, $min_version = false, $max_version = false)
   {
+    // Check for correct connection to second database if necessary
+    if($this->otherDatabase)
+    {
+      try
+      {
+        $this->_db2->connect();
+      }
+      catch(Exception $e)
+      {
+        $this->_mainframe->redirect('index.php?option='._JOOM_OPTION.'&controller=migration', $e->getMessage(), 'error');
+      }
+    }
+
+    $layout = new JLayoutFile('joomgallery.migration.checkstart', JPATH_COMPONENT.'/layouts');
+    echo $layout->render(null);
+
     $ready    = array();
     $ready[]  = $this->checkGeneral($xml, $min_version, $max_version);
     if($ready[0] !== true && $ready[0] !== false)
@@ -742,8 +886,9 @@ abstract class JoomMigration
   abstract protected function doMigration();
 
   /**
-   * Returns the maximum category ID of the extension to migrate from
-   * This is necessary because in JoomGallery there can't be category
+   * Returns the maximum category ID of the extension to migrate from.
+   *
+   * This is necessary because in JoomGallery there can't be any category
    * with ID 1, so we have to look for a new one.
    *
    * @return  int   The maximum category ID of the extension to migrate from
@@ -754,14 +899,19 @@ abstract class JoomMigration
   /**
    * Creates directories and the database entry for a category
    *
-   * @param   object  $cat          Holds information about the new category
-   * @param   boolean $check_owner  Determines whether the owner ID shall be checked against the existing users
+   * @param   object  $cat        Holds information about the new category
+   * @param   boolean $checkOwner Determines whether the owner ID shall be checked against the existing users
    * @return  boolean True on success, false otherwise
    * @since   1.5.0
    */
-  public function createCategory($cat, $check_owner = false)
+  public function createCategory($cat, $checkOwner = null)
   {
     jimport('joomla.filesystem.file');
+
+    if(is_null($checkOwner))
+    {
+      $checkOwner = $this->checkOwner;
+    }
 
     // Some checks
     if(!isset($cat->cid))
@@ -790,7 +940,7 @@ abstract class JoomMigration
       // category with ID 1 is the ROOT category in JoomGallery
       if($cat->parent_id == 1)
       {
-        $cat->parent_id = $this->new_catid;
+        $cat->parent_id = $this->newCatid;
       }
 
       // Main categories are children of the ROOT category
@@ -830,10 +980,14 @@ abstract class JoomMigration
     if(     !isset($cat->owner)
         ||  !is_numeric($cat->owner)
         ||  $cat->owner < 1
-        ||  ($check_owner && !JUser::getTable()->load($cat->owner))
+        ||  ($checkOwner && !JUser::getTable()->load($cat->owner))
       )
     {
       $cat->owner = 0;
+    }
+    if(!isset($cat->password))
+    {
+      $cat->password = '';
     }
     if(!isset($cat->thumbnail))
     {
@@ -855,6 +1009,14 @@ abstract class JoomMigration
     {
       $cat->metadesc = '';
     }
+    if(!isset($cat->exclude_toplists))
+    {
+      $cat->exclude_toplists = 0;
+    }
+    if(!isset($cat->exclude_search))
+    {
+      $cat->exclude_search = 0;
+    }
 
     $catid_changed = false;
     if($cat->cid == 1)
@@ -863,8 +1025,8 @@ abstract class JoomMigration
       $cat->cid = $this->getMaxCategoryId() + 1;
 
       // Store the new category ID because we have to use it for the images and categories in this category
-      $this->new_catid = $cat->cid;
-      $this->_mainframe->setUserState('joom.migration.data.new_catid', $this->new_catid);
+      $this->newCatid = $cat->cid;
+      $this->_mainframe->setUserState('joom.migration.internal.new_catid', $this->newCatid);
 
       $this->writeLogfile('New ID '.$cat->cid.' assigned to category '.$cat->name);
 
@@ -922,7 +1084,7 @@ abstract class JoomMigration
     // Create database entry
     $query = $this->_db->getQuery(true)
           ->insert(_JOOM_TABLE_CATEGORIES)
-          ->columns('cid, name, alias, parent_id, lft, description, access, published, hidden, in_hidden, owner, thumbnail, img_position, catpath, params, metakey, metadesc')
+          ->columns('cid, name, alias, parent_id, lft, description, access, published, hidden, in_hidden, password, owner, thumbnail, img_position, catpath, params, metakey, metadesc, exclude_toplists, exclude_search')
           ->values( (int) $cat->cid.','.
                     $this->_db->quote($cat->name).','.
                     $this->_db->quote($cat->alias).','.
@@ -933,13 +1095,16 @@ abstract class JoomMigration
                     (int) $cat->published.','.
                     (int) $cat->hidden.','.
                     (int) $cat->in_hidden.','.
+                    $this->_db->quote($cat->password).','.
                     (int) $cat->owner.','.
                     (int) $cat->thumbnail.','.
                     (int) $cat->img_position.','.
                     $this->_db->quote($cat->catpath).','.
                     $this->_db->quote($cat->params).','.
                     $this->_db->quote($cat->metakey).','.
-                    $this->_db->quote($cat->metadesc)
+                    $this->_db->quote($cat->metadesc).','.
+                    (int) $cat->exclude_toplists.','.
+                    (int) $cat->exclude_toplists
                   );
 
     $this->_db->setQuery($query);
@@ -959,18 +1124,19 @@ abstract class JoomMigration
 
     if($catid_changed)
     {
+      // Set back category ID in the object because it may be used again later
       $cat->cid = 1;
     }
 
     if(!in_array(false, $result))
     {
-      $this->writeLogfile('Category '.($catid_changed ? $this->new_catid : $cat->cid).' created: '.$cat->name);
+      $this->writeLogfile('Category '.($catid_changed ? $this->newCatid : $cat->cid).' created: '.$cat->name);
 
       return true;
     }
     else
     {
-      $this->writeLogfile(' -> Error creating category '.($catid_changed ? $this->new_catid : $cat->cid).': '.$cat->name);
+      $this->writeLogfile(' -> Error creating category '.($catid_changed ? $this->newCatid : $cat->cid).': '.$cat->name);
 
       return false;
     }
@@ -999,16 +1165,11 @@ abstract class JoomMigration
     {
       $result = $db->$method();
     }
-    catch(DatabaseException $e)
+    catch(Exception $e)
     {
       $this->setError($e->getMessage(), true);
 
       $result = null;
-    }
-
-    if($db->getErrorMsg())
-    {
-      $this->setError($db->getErrorMsg(), true);
     }
 
     return $result;
@@ -1032,17 +1193,17 @@ abstract class JoomMigration
   {
     $this->parent_name = $parent_name;
 
-    if(is_null($this->_mainframe->getUserState('joom.migration.data.counter')))
+    if(is_null($this->_mainframe->getUserState('joom.migration.internal.counter')))
     {
-      $this->_mainframe->setUserState('joom.migration.data.counter', 0);
+      $this->_mainframe->setUserState('joom.migration.internal.counter', 0);
     }
 
     if($table && $parent_name)
     {
-      $parent_cats = $this->_mainframe->getUserState('joom.migration.data.parent_cats');
+      $parent_cats = $this->_mainframe->getUserState('joom.migration.internal.parent_cats');
       if(is_null($parent_cats))
       {
-        if(!$this->other_database || is_null($this->_db2))
+        if(!$this->otherDatabase || is_null($this->_db2))
         {
           $db = $this->_db;
         }
@@ -1051,10 +1212,28 @@ abstract class JoomMigration
           $db = $this->_db2;
         }
 
-        $db->setQuery('ALTER TABLE '.$table.' ADD '.$db->qn('joom_migrated').' INT(1) NOT NULL default 0');
-        $this->runQuery('', $db);
+        // Check whether 'joom_migrated' exists from previously failed migrations
+        $checkQuery = $db->getQuery(true)
+              ->select('COLUMN_NAME')
+              ->from('information_schema.COLUMNS')
+              ->where('TABLE_NAME = '.$db->q($table))
+              ->where('COLUMN_NAME = '.$db->q('joom_migrated'));
+        $db->setQuery($checkQuery);
+        if($this->runQuery('loadResult', $db))
+        {
+          $db->setQuery('ALTER TABLE '.$table.' DROP '.$db->qn('joom_migrated'));
+          $this->runQuery('', $db);
+        }
 
-        $this->_mainframe->setUserState('joom.migration.data.parent_cats', $first_parents);
+        // Add column 'joom_migrated' to be able to keep track of already migrated entries
+        $db->setQuery('ALTER TABLE '.$table.' ADD '.$db->qn('joom_migrated').' INT(1) NOT NULL default 0');
+        if(!$this->runQuery('', $db))
+        {
+          // If this fails we want to abort the whole migration
+          throw new RuntimeException('Could not add \'joom_migrated\' column which is essential for the migration.');
+        }
+
+        $this->_mainframe->setUserState('joom.migration.internal.parent_cats', $first_parents);
       }
     }
 
@@ -1071,7 +1250,7 @@ abstract class JoomMigration
    */
   protected function getNextObject()
   {
-    if(!$this->other_database || is_null($this->_db2))
+    if(!$this->otherDatabase || is_null($this->_db2))
     {
       $db = $this->_db;
     }
@@ -1082,20 +1261,20 @@ abstract class JoomMigration
 
     if($this->parent_name)
     {
-      $parent_cats = $this->_mainframe->getUserState('joom.migration.data.parent_cats');
+      $parent_cats = $this->_mainframe->getUserState('joom.migration.internal.parent_cats');
       $this->query->clear('where')
                   ->where($this->parent_name.' IN ('.implode(',', $parent_cats).')')
                   ->where('joom_migrated = 0');
     }
 
-    $counter = $this->_mainframe->getUserState('joom.migration.data.counter');
+    $counter = $this->_mainframe->getUserState('joom.migration.internal.counter');
 
     $db->setQuery($this->query, $counter, 1);
 
     if(!$this->parent_name)
     {
       $counter++;
-      $this->_mainframe->setUserState('joom.migration.data.counter', $counter);
+      $this->_mainframe->setUserState('joom.migration.internal.counter', $counter);
     }
 
     return $this->runQuery('loadObject', $db);
@@ -1115,7 +1294,7 @@ abstract class JoomMigration
    */
   protected function markAsMigrated($catid, $key, $table)
   {
-    if(!$this->other_database || is_null($this->_db2))
+    if(!$this->otherDatabase || is_null($this->_db2))
     {
       $db = $this->_db;
     }
@@ -1124,10 +1303,10 @@ abstract class JoomMigration
       $db = $this->_db2;
     }
 
-    $parent_cats = $this->_mainframe->getUserState('joom.migration.data.parent_cats');
+    $parent_cats = $this->_mainframe->getUserState('joom.migration.internal.parent_cats');
     $parent_cats[] = (int) $catid;
     $parent_cats = array_unique($parent_cats);
-    $this->_mainframe->setUserState('joom.migration.data.parent_cats', $parent_cats);
+    $this->_mainframe->setUserState('joom.migration.internal.parent_cats', $parent_cats);
 
     $query = $db->getQuery(true)
           ->update($table)
@@ -1150,7 +1329,7 @@ abstract class JoomMigration
    */
   protected function resetTable($table = '')
   {
-    if(!$this->other_database || is_null($this->_db2))
+    if(!$this->otherDatabase || is_null($this->_db2))
     {
       $db = $this->_db;
     }
@@ -1167,8 +1346,8 @@ abstract class JoomMigration
 
     $this->query = null;
     $this->parent_name = null;
-    $this->_mainframe->setUserState('joom.migration.data.parent_cats', null);
-    $this->_mainframe->setUserState('joom.migration.data.counter', null);
+    $this->_mainframe->setUserState('joom.migration.internal.parent_cats', null);
+    $this->_mainframe->setUserState('joom.migration.internal.counter', null);
   }
 
   /**
@@ -1182,12 +1361,24 @@ abstract class JoomMigration
    */
   protected function rebuild()
   {
+    // Refresh page once before rebuilding category tree
+    // in order to have as much time for it as possible.
+    // Refreshing is only necessary if not executed from the command line.
+    if(!$this->isCli && !$this->_mainframe->getUserState('joom.migration.internal.refreshedForRebuild'))
+    {
+      $this->_mainframe->setUserState('joom.migration.internal.refreshedForRebuild', true);
+
+      $this->writeLogfile('Refresh afore rebuilding category tree');
+      $this->_mainframe->setUserState('joom.migration.internal.task', 'rebuild');
+      $this->refresher->refresh();
+    }
+
     $table = JTable::getInstance('joomgallerycategories', 'Table');
 
     $this->writeLogfile('Build the nested set tree');
     if($table->rebuild())
     {
-      $this->writeLogfile('Nested set tree successfully build');
+      $this->writeLogfile('Nested set tree successfully built');
     }
     else
     {
@@ -1203,20 +1394,36 @@ abstract class JoomMigration
    * Creates images from the original one or moves the existing ones
    * into the folders of their category.
    *
+   * Required parameters are the first two ($row and $origimage) with $row being the data object with image
+   * information and $origimage being the path and filename of the image to migrate. $origimage will be the one
+   * stored in the original images directory of JoomGallery.
+   * You can also specify $detailimage and $thumbnail which will store them in the respective folders. If you
+   * don't specify them they will be created from the original image.
+   *
    * [jimport('joomla.filesystem.file') has to be called afore]
    *
    * @param   object  $row          Holds information about the new image
    * @param   string  $origimage    The original image
    * @param   string  $detailimage  The detail image
    * @param   string  $thumbnail    The thumbnail
-   * @param   boolean $newfilename  True if a new filename shall be generated
+   * @param   boolean $newfilename  True if a new file name shall be generated for the files
    * @param   boolean $copy         True if the image shall be copied into the new directory, not moved
-   * @param   boolean $check_owner  Determines whether the owner ID shall be checked against the existing users
+   * @param   boolean $checkOwner   Determines whether the owner ID shall be checked against the existing users
    * @return  boolean True on success, false otherwise
    * @since   1.5.0
    */
-  public function moveAndResizeImage($row, $origimage, $detailimage = null, $thumbnail = null, $newfilename = true, $copy = false, $check_owner = false)
+  public function moveAndResizeImage($row, $origimage, $detailimage = null, $thumbnail = null, $newfilename = true, $copy = null, $checkOwner = null)
   {
+    if(is_null($copy))
+    {
+      $copy = $this->copyImages;
+    }
+
+    if(is_null($checkOwner))
+    {
+      $checkOwner = $this->checkOwner;
+    }
+
     // Some checks
     if(!isset($row->id) || $row->id < 1)
     {
@@ -1226,7 +1433,7 @@ abstract class JoomMigration
     }
     if(!isset($row->imgfilename))
     {
-      $this->setError('Image file name wasn\'t found');
+      $this->setError('Image file name wasn\'t found.');
 
       return false;
     }
@@ -1243,12 +1450,18 @@ abstract class JoomMigration
       // category with ID 1 is the ROOT category in JoomGallery
       if($row->catid == 1)
       {
-        $row->catid = $this->new_catid;
+        $row->catid = $this->newCatid;
       }
     }
     if(!isset($row->catpath))
     {
       $row->catpath = JoomHelper::getCatpath($row->catid);
+      if(!$row->catpath)
+      {
+        $this->setError('Category with ID '.$row->catid.' does not exist for image with ID '.$row->id.'. Image cannot be migrated.');
+
+        return false;
+      }
     }
     if(!isset($row->imgtitle))
     {
@@ -1270,11 +1483,15 @@ abstract class JoomMigration
     if(!isset($row->imgdate) || is_numeric($row->imgdate))
     {
       $date = JFactory::getDate();
-      $row->imgdate = $date->toMySQL();
+      $row->imgdate = $date->toSQL();
     }
     if(!isset($row->hits))
     {
       $row->hits = 0;
+    }
+    if(!isset($row->downloads))
+    {
+      $row->downloads = 0;
     }
     if(!isset($row->imgvotes))
     {
@@ -1307,7 +1524,7 @@ abstract class JoomMigration
     if(     !isset($row->owner)
         ||  !is_numeric($row->owner)
         ||  $row->owner < 1
-        ||  ($check_owner && !JUser::getTable()->load($row->owner))
+        ||  ($checkOwner && !JUser::getTable()->load($row->owner))
       )
     {
       $row->owner = 0;
@@ -1543,7 +1760,7 @@ abstract class JoomMigration
     // Create database entry
     $query = $this->_db->getQuery(true)
           ->insert(_JOOM_TABLE_IMAGES)
-          ->columns('id, catid, imgtitle, alias, imgauthor, imgtext, imgdate, hits, imgvotes, imgvotesum, access, published, hidden, imgfilename, imgthumbname, checked_out, owner, approved, useruploaded, ordering, params, metakey, metadesc')
+          ->columns('id, catid, imgtitle, alias, imgauthor, imgtext, imgdate, hits, downloads, imgvotes, imgvotesum, access, published, hidden, imgfilename, imgthumbname, checked_out, owner, approved, useruploaded, ordering, params, metakey, metadesc')
           ->values( (int) $row->id.','.
                     (int) $row->catid.','.
                     $this->_db->quote($row->imgtitle).','.
@@ -1552,6 +1769,7 @@ abstract class JoomMigration
                     $this->_db->quote($row->imgtext).','.
                     $this->_db->quote($row->imgdate).','.
                     (int) $row->hits.','.
+                    (int) $row->downloads.','.
                     (int) $row->imgvotes.','.
                     (int) $row->imgvotesum.','.
                     (int) $row->access.','.
@@ -1607,7 +1825,7 @@ abstract class JoomMigration
   public function createComment($row)
   {
     // Some checks
-    if(!isset($row->cmtpic) || $row->cmtpic < 1)
+    if(!isset($row->cmtpic) || !$row->cmtpic)
     {
       $this->setError('Invalid image ID for comment');
 
@@ -1638,7 +1856,7 @@ abstract class JoomMigration
     if(!isset($row->cmtdate) || is_numeric($row->cmtdate))
     {
       $date = JFactory::getDate();
-      $row->cmtdate = $date->toMySQL();
+      $row->cmtdate = $date->toSQL();
     }
     if(!isset($row->published))
     {
@@ -1692,7 +1910,7 @@ abstract class JoomMigration
   public function createNametag($row)
   {
     // Some checks
-    if(!isset($row->npicid) || $row->npicid < 1)
+    if(!isset($row->npicid) || !$row->npicid)
     {
       $this->setError('Invalid image ID for name tag');
 
@@ -1714,9 +1932,13 @@ abstract class JoomMigration
     {
       $row->nid = 0;
     }
-    if(!isset($row->userid))
+    if(!isset($row->nuserid))
     {
-      $row->userid = 0;
+      $row->nuserid = 0;
+    }
+    if(!isset($row->by))
+    {
+      $row->by = 0;
     }
     if(!isset($row->nuserip))
     {
@@ -1725,7 +1947,7 @@ abstract class JoomMigration
     if(!isset($row->ndate) || is_numeric($row->ndate))
     {
       $date = JFactory::getDate();
-      $row->ndate = $date->toMySQL();
+      $row->ndate = $date->toSQL();
     }
     if(!isset($row->nzindex))
     {
@@ -1740,22 +1962,158 @@ abstract class JoomMigration
                     (int) $row->nuserid,
                     (int) $row->nxvalue,
                     (int) $row->nyvalue,
+                    (int) $row->by,
                     $this->_db->quote($row->nuserip),
                     $this->_db->quote($row->ndate),
                     (int) $row->nzindex
                     );
     if($row->nid)
     {
-      $query->columns('cmtid');
+      $query->columns('nid');
       array_unshift($values, $row->nid);
     }
 
-    $query->columns('npicid, nuserid, nxvalue, nyvalue, nuserip, ndate, nzindex')
+    $query->columns('npicid, nuserid, nxvalue, nyvalue, '.$this->_db->quoteName('by').', nuserip, ndate, nzindex')
           ->values(implode(',', $values));
     $this->_db->setQuery($query);
     if($this->runQuery())
     {
-      $this->writeLogfile('Name tag with ID '.$row->cmtid.' successfully stored');
+      $this->writeLogfile('Name tag with ID '.$row->nid.' successfully stored');
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Creates a user record
+   *
+   * @param   object  $row  Holds the user data
+   * @return  boolean True on success, false otherwise
+   * @since   3.1
+   */
+  public function createUser($row)
+  {
+    // Some checks
+    if(!isset($row->uuserid) || !$row->uuserid)
+    {
+      $this->setError('Invalid user ID for user record');
+
+      return false;
+    }
+    if(!isset($row->uid))
+    {
+      $row->uid = 0;
+    }
+    if(!isset($row->piclist))
+    {
+      $row->piclist = '';
+    }
+    if(!isset($row->layout))
+    {
+      $row->layout = 0;
+    }
+    if(!isset($row->time))
+    {
+      $row->time = JFactory::getDate()->toSql();
+    }
+    if(!isset($row->zipname) || !$row->zipname)
+    {
+      $row->zipname = '';
+    }
+
+    // Create database entry
+    $values = array((int) $row->uuserid,
+                    $this->_db->quote($row->piclist),
+                    (int) $row->layout,
+                    $this->_db->quote($row->time),
+                    $this->_db->quote($row->zipname)
+                    );
+
+    $query = $this->_db->getQuery(true)
+          ->insert(_JOOM_TABLE_USERS);
+
+    if((int) $row->uid)
+    {
+      $query->columns('uid');
+      array_unshift($values, (int) $row->uid);
+    }
+
+    $query->columns('uuserid, piclist, layout, time, zipname')
+          ->values(implode(',', $values));
+    $this->_db->setQuery($query);
+    if($this->runQuery())
+    {
+      $this->writeLogfile('User record with ID '.((int) $row->uid).' successfully stored');
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Creates a vote record
+   *
+   * @param   object  $row  Holds the vote data
+   * @return  boolean True on success, false otherwise
+   * @since   3.1
+   */
+  public function createVote($row)
+  {
+    // Some checks
+    if(!isset($row->picid) || !$row->picid)
+    {
+      $this->setError('Invalid image ID for vote record');
+
+      return false;
+    }
+    if(!isset($row->voteid))
+    {
+      $row->voteid = 0;
+    }
+    if(!isset($row->userid))
+    {
+      $row->userid = 0;
+    }
+    if(!isset($row->userip))
+    {
+      $row->userip = '127.0.0.1';
+    }
+    if(!isset($row->datevoted) || is_numeric($row->datevoted))
+    {
+      $date = JFactory::getDate();
+      $row->datevoted = $date->toSQL();
+    }
+    if(!isset($row->vote) || !$row->vote)
+    {
+      $row->vote = 0;
+    }
+
+    // Create database entry
+    $values = array((int) $row->picid,
+                    (int) $row->userid,
+                    $this->_db->quote($row->userip),
+                    $this->_db->quote($row->datevoted),
+                    (int) $row->vote
+                    );
+
+    $query = $this->_db->getQuery(true)
+          ->insert(_JOOM_TABLE_VOTES);
+
+    if($row->voteid)
+    {
+      $query->columns('voteid');
+      array_unshift($values, $row->voteid);
+    }
+
+    $query->columns('picid, userid, userip, datevoted, vote')
+          ->values(implode(',', $values));
+    $this->_db->setQuery($query);
+    if($this->runQuery())
+    {
+      $this->writeLogfile('Vote record with ID '.$row->voteid.' successfully stored');
 
       return true;
     }

@@ -8,7 +8,6 @@
       label="COM_JOOMGALLERY_CATMAN_CATEGORY_ID"
       size="20"
       readonly="true"
-      disabled="true"
     />
     <field
       name="asset_id"
@@ -19,9 +18,8 @@
       type="text"
       class="inputbox"
       name="name"
-      id="title"
+      id="jform_title"
       label="COM_JOOMGALLERY_COMMON_TITLE"
-      size="40"
       maxLength="255"
       required="true"
       message="COM_JOOMGALLERY_CATMAN_ALERT_CATEGORY_MUST_HAVE_TITLE"
@@ -33,7 +31,6 @@
       id="alias"
       label="COM_JOOMGALLERY_COMMON_ALIAS"
       description="COM_JOOMGALLERY_CATMAN_ALIAS_TIP"
-      size="40"
       maxLength="255"
     />
     <field 
@@ -43,19 +40,19 @@
       id="parent_id"
       label="COM_JOOMGALLERY_COMMON_PARENT_CATEGORY"
       size="1"
-    />  
+    />
     <field
       id="published"
       name="published"
-      type="list"
-      class="inputbox"
+      type="radio"
+      class="btn-group"
       label="COM_JOOMGALLERY_COMMON_PUBLISHED"
       size="1"
     >
-      <option value="1">
-        JPUBLISHED</option>
       <option value="0">
-        JUNPUBLISHED</option>
+        JNO</option>
+      <option value="1">
+        JYES</option>
     </field>
     <field
       name="access"
@@ -65,6 +62,32 @@
       class="inputbox"
       size="1"
     />
+    <field
+      id="exclude_toplists"
+      name="exclude_toplists"
+      type="radio"
+      class="btn-group"
+      label="COM_JOOMGALLERY_CATMAN_EXCLUDE_FROM_TOPLISTS"
+      description="COM_JOOMGALLERY_CATMAN_EXCLUDE_FROM_TOPLISTS_TIP"
+    >
+      <option value="0">
+        JNO</option>
+      <option value="1">
+        JYES</option>
+    </field>
+    <field
+      id="exclude_search"
+      name="exclude_search"
+      type="radio"
+      class="btn-group"
+      label="COM_JOOMGALLERY_CATMAN_EXCLUDE_FROM_SEARCH"
+      description="COM_JOOMGALLERY_CATMAN_EXCLUDE_FROM_SEARCH_TIP"
+    >
+      <option value="0">
+        JNO</option>
+      <option value="1">
+        JYES</option>
+    </field>
     <field
       name="description"
       type="editor"
@@ -96,7 +119,7 @@
       label="COM_JOOMGALLERY_COMMON_THUMBNAIL_PREVIEW"
     />
     <field
-      id="rules"
+      id="jform_rules"
       name="rules"
       type="rules"
       label="JFIELD_RULES_LABEL"
@@ -116,6 +139,7 @@
     <field
       name="hidden"
       type="radio"
+      class="btn-group"
       default="0"
       label="COM_JOOMGALLERY_CATMAN_HIDDEN"
       description="COM_JOOMGALLERY_CATMAN_HIDDEN_TIP"
@@ -125,9 +149,19 @@
       <option value="1">
         JYES</option>
     </field>
+    <field
+      name="password"
+      type="joompassword"
+      strengthmeter="true"
+      autocomplete="off"
+      class="inputbox"
+      label="COM_JOOMGALLERY_CATMAN_PASSWORD"
+      description="COM_JOOMGALLERY_CATMAN_PASSWORD_TIP"
+    />
     <field 
       name="ordering"
-      type="ordering"
+      type="joomordering"
+      class="inputbox"
       default=""
       label="COM_JOOMGALLERY_CATMAN_ORDERING"
       description="COM_JOOMGALLERY_CATMAN_ORDERING_TIP"
@@ -159,7 +193,7 @@
       name="metadesc"
       type="textarea"
       rows="5"
-      cols="30"
+      cols="40"
       default=""
       label="COM_JOOMGALLERY_COMMON_METADESC"
       description="COM_JOOMGALLERY_COMMON_METADESC_TIP"
@@ -168,7 +202,7 @@
       name="metakey"
       type="textarea"
       rows="5"
-      cols="30"
+      cols="40"
       default=""
       label="COM_JOOMGALLERY_COMMON_METAKEYS"
       description="COM_JOOMGALLERY_COMMON_METAKEYS_TIP"

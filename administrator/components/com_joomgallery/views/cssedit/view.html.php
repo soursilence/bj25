@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/views/cssedit/view.html.php $
-// $Id: view.html.php 3651 2012-02-19 14:36:46Z mab $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/views/cssedit/view.html.php $
+// $Id: view.html.php 4361 2014-02-24 18:03:18Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -35,7 +35,10 @@ class JoomGalleryViewCssedit extends JoomGalleryView
   {
     jimport('joomla.filesystem.file');
 
-    $path   = JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'css'.DS;
+    JToolBarHelper::apply('apply');
+    JToolBarHelper::save('save');
+
+    $path   = JPATH_ROOT.'/media/joomgallery/css/';
     $title  = JText::_('COM_JOOMGALLERY_CSSMAN_CSS_MANAGER');
     if(JFile::exists($path.'joom_local.css'))
     {
@@ -66,12 +69,7 @@ class JoomGalleryViewCssedit extends JoomGalleryView
       $edit = false;
     }
 
-    JToolBarHelper::title($title, 'config');
-    JToolBarHelper::apply('apply');
-    JToolBarHelper::save('save');
-    JToolBarHelper::divider();
-    JToolbarHelper::custom('cpanel', 'options.png', 'options.png', 'COM_JOOMGALLERY_COMMON_TOOLBAR_CPANEL', false);
-    JToolbarHelper::spacer();
+    JToolBarHelper::title($title, 'file');
 
     $content =  JFile::read($file);
     if($content === false)
@@ -89,6 +87,8 @@ class JoomGalleryViewCssedit extends JoomGalleryView
     $this->assignRef('content', $content);
     $this->assignRef('edit',    $edit);
     $this->assignRef('file',    $file);
+
+    $this->sidebar = JHtmlSidebar::render();
 
     parent::display($tpl);
   }

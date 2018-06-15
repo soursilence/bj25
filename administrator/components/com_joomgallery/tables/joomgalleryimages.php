@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/tables/joomgalleryimages.php $
-// $Id: joomgalleryimages.php 4276 2013-05-23 11:05:11Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/tables/joomgalleryimages.php $
+// $Id: joomgalleryimages.php 4350 2014-01-18 15:16:40Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -40,6 +40,8 @@ class TableJoomgalleryImages extends JTable
   /** @var int */
   var $hits         = 0;
   /** @var int */
+  var $downloads    = 0;
+  /** @var int */
   var $imgvotes     = null;
   /** @var int */
   var $imgvotesum   = null;
@@ -47,6 +49,8 @@ class TableJoomgalleryImages extends JTable
   var $published    = null;
   /** @var int */
   var $hidden       = 0;
+  /** @var int */
+  var $featured     = 0;
   /** @var string */
   var $imgfilename  = null;
   /** @var string */
@@ -76,7 +80,7 @@ class TableJoomgalleryImages extends JTable
    * @param   object  $db A database connector object
    * @since   1.5.5
    */
-  public function TableJoomgalleryImages(&$db)
+  public function __construct($db)
   {
     parent::__construct(_JOOM_TABLE_IMAGES, 'id', $db);
   }
@@ -195,7 +199,7 @@ class TableJoomgalleryImages extends JTable
       if(trim(str_replace('-', '', $this->alias)) == '')
       {
         $datenow      = JFactory::getDate();
-        $this->alias  = $datenow->toFormat('%Y-%m-%d-%H-%M-%S');
+        $this->alias  = $datenow->format('Y-m-d-H-i-s');
       }
     }
 
@@ -212,8 +216,8 @@ class TableJoomgalleryImages extends JTable
    */
   public function delete($pk = null)
   {
-		$k = $this->_tbl_key;
-		$pk = (is_null($pk)) ? $this->$k : $pk;
+    $k = $this->_tbl_key;
+    $pk = (is_null($pk)) ? $this->$k : $pk;
 
     if(!parent::delete($pk))
     {
@@ -237,6 +241,42 @@ class TableJoomgalleryImages extends JTable
   }
 
   /**
+   * Method to increment the downloads counter for an image row.
+   *
+   * @param   mixed  $pk  An optional primary key value to increment.
+   *                      If not set the instance property value is used.
+   *
+   * @return  boolean  True on success, false otherwise.
+   *
+   * @since   3.1
+   */
+  public function download($pk = null)
+  {
+    $k = $this->_tbl_key;
+    $pk = (is_null($pk)) ? $this->$k : $pk;
+
+    // If no primary key is given, return false.
+    if ($pk === null)
+    {
+      return false;
+    }
+
+    // Check the row in by primary key.
+    $query = $this->_db->getQuery(true)
+          ->update($this->_tbl)
+          ->set($this->_db->quoteName('downloads').' = ('.$this->_db->quoteName('downloads').' + 1)')
+          ->where($this->_tbl_key.' = '.$this->_db->quote($pk));
+
+    $this->_db->setQuery($query);
+    $this->_db->execute();
+
+    // Set table values in the object.
+    $this->downloads++;
+
+    return true;
+  }
+
+  /**
    * Reorders the images according
    * to the latest changes
    *
@@ -245,10 +285,11 @@ class TableJoomgalleryImages extends JTable
    */
   public function reorderAll()
   {
-    $query = 'SELECT DISTINCT catid
-                FROM '.$this->_db->nameQuote($this->_tbl);
+    $query = $this->_db->getQuery(true)
+          ->select('DISTINCT catid')
+          ->from($this->_db->quoteName($this->_tbl));
     $this->_db->setQuery($query);
-    $catids = $this->_db->loadResultArray();
+    $catids = $this->_db->loadColumn();
 
     foreach($catids as $catid)
     {
@@ -317,7 +358,7 @@ class TableJoomgalleryImages extends JTable
    * @return  int The parent asset id for the image
    * @since   2.0
    */
-  protected function _getAssetParentId($table = null, $id = null)
+  protected function _getAssetParentId(JTable $table = null, $id = null)
   {
     // Get the database object
     $db = $this->getDbo();

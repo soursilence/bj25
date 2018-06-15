@@ -1,116 +1,176 @@
 <?php defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+
+JHtml::_('behavior.keepalive');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+// JHtml::_('formbehavior.chosen', 'select');
+
 echo $this->loadTemplate('header'); ?>
   <script language="javascript" type="text/javascript">
   Joomla.submitbutton = function(task)
   {
-    if(document.formvalidator.isValid(document.id('adminForm'))) {
+	  var form = document.id('adminForm');
+    if(document.formvalidator.isValid(form)) {
       <?php echo ';' //$this->form->getField('description')->save(); ?>
-      Joomla.submitform(task, document.getElementById('adminForm'));
+      Joomla.submitform(task, form);
     }
     else {
       var msg = new Array();
-      msg.push('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>');
-      if(document.adminForm.name.hasClass('invalid')) {
-          msg.push('<?php echo JText::_('COM_JOOMGALLERY_COMMON_ALERT_CATEGORY_MUST_HAVE_TITLE', true);?>');
+      msg.push('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true); ?>');
+      if(form.name.hasClass('invalid')) {
+          msg.push('<?php echo JText::_('COM_JOOMGALLERY_COMMON_ALERT_CATEGORY_MUST_HAVE_TITLE', true); ?>');
       }
       alert(msg.join('\n'));
     }
   }
   </script>
   <div class="edit">
-    <form action = "<?php echo JRoute::_('index.php?task=category.save'.$this->slimitstart); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
-      <fieldset>
-        <legend><?php echo (!$this->category->cid) ? JText::_('COM_JOOMGALLERY_COMMON_NEW_CATEGORY') : JText::_('COM_JOOMGALLERY_EDITCATEGORY_MODIFY_CATEGORY'); ?></legend>
-        <div class="formelm">
-          <?php echo $this->form->getLabel('name'); ?>
-          <?php echo $this->form->getInput('name'); ?>
+    <form action = "<?php echo JRoute::_('index.php?task=category.save'.$this->slimitstart); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
+      <div class="btn-toolbar">
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" onclick="Joomla.submitbutton()">
+            <i class="icon-ok"></i> <?php echo JText::_('COM_JOOMGALLERY_COMMON_SAVE'); ?>
+          </button>
         </div>
-        <div class="formelm">
-          <?php echo $this->form->getLabel('alias'); ?>
-          <?php echo $this->form->getInput('alias'); ?>
+        <div class="btn-group">
+          <?php $url = !empty($this->redirecturl) ? JRoute::_($this->redirecturl) : JRoute::_('index.php?view=usercategories'.$this->slimitstart, false); ?>
+          <button type="button" class="btn" onclick="javascript:location.href='<?php echo $url; ?>';">
+            <i class="icon-cancel"></i> <?php echo JText::_('COM_JOOMGALLERY_COMMON_CANCEL'); ?>
+          </button>
         </div>
-        <div class="formelm">
-          <?php echo $this->form->getLabel('parent_id'); ?>
-          <?php echo $this->form->getInput('parent_id'); ?>
-        </div>
-        <?php if(!$this->_config->get('jg_disableunrequiredchecks')): ?>
-        <div class="formelm">
-          <?php echo $this->form->getLabel('ordering'); ?>
-          <?php echo $this->form->getInput('ordering'); ?>
-        </div>
-        <?php endif; ?>
-        <div class="formelm">
-          <?php echo $this->form->getLabel('description'); ?>
-          <?php echo $this->form->getInput('description'); ?>
-        </div>
-<?php if(   $this->_config->get('jg_showcatthumb') >= 2
-           || $this->_config->get('jg_showsubthumbs') == 1
-           || $this->_config->get('jg_showsubthumbs') == 3
-          ): ?>
-        <div class="jg_clearboth">
-          &nbsp;
-        </div>
-        <div class="formelm">
-          <?php echo $this->form->getLabel('thumbnail'); ?>
-          <?php echo $this->form->getInput('thumbnail'); ?>
-        </div>
-        <div class="jg_clearboth">
-          &nbsp;
-        </div>
-<?php   if($this->_config->get('jg_usercatthumbalign')): ?>
-        <div class="formelm">
-          <?php echo $this->form->getLabel('img_position'); ?>
-          <?php echo $this->form->getInput('img_position'); ?>
-        </div>
-<?php   endif; ?>
-        <div class="formelm">
-          <?php echo $this->form->getLabel('imagelib'); ?>
-          <?php echo $this->form->getInput('imagelib'); ?>
-        </div>
-<?php endif; ?>
-      </fieldset>
-      <fieldset>
-        <legend><?php echo JText::_('COM_JOOMGALLERY_EDITCATEGORY_PUBLISHING'); ?></legend>
-        <div class="formelm">
-          <?php echo $this->form->getLabel('published'); ?>
-          <?php echo $this->form->getInput('published'); ?>
-        </div>
-<?php if($this->_config->get('jg_usercatacc')): ?>
-        <div class="formelm">
-          <?php echo $this->form->getLabel('access'); ?>
-          <?php echo $this->form->getInput('access'); ?>
-        </div>
-<?php endif; ?>
-      </fieldset>
-<?php $fieldSets = $this->form->getFieldsets();
-      foreach($fieldSets as $name => $fieldSet):
-        if($name != ''): ?>
-      <fieldset>
-        <legend><?php echo JText::_($fieldSet->label); ?></legend>
-<?php     if(isset($fieldSet->description) && trim($fieldSet->description)): ?>
-        <p class="readonly"><?php echo $this->escape(JText::_($fieldSet->description)); ?></p>
-<?php     endif;
-          foreach($this->form->getFieldset($name) as $field): ?>
-        <div class="formelm">
-          <?php echo $field->label; ?>
-          <?php echo $field->input; ?>
-        </div>
-<?php     endforeach; ?>
-      </fieldset>
-<?php   endif;
-      endforeach; ?>
-      <div class="jg_up_buttons">
-        <button type="button" class="button" onclick="Joomla.submitbutton()">
-          <?php echo JText::_('COM_JOOMGALLERY_COMMON_SAVE'); ?>
-        </button>
-        <?php $url = !empty($this->redirecturl) ? JRoute::_($this->redirecturl) : JRoute::_('index.php?view=userpanel'.$this->slimitstart, false); ?>
-        <button type="button" class="button" onclick="javascript:location.href='<?php echo JRoute::_('index.php?view=usercategories'.$this->slimitstart, false); ?>';">
-          <?php echo JText::_('COM_JOOMGALLERY_COMMON_CANCEL'); ?>
-        </button>
       </div>
-      <?php echo $this->form->getInput('cid'); ?>
+      <fieldset>
+        <?php $this->fieldSets = $this->form->getFieldsets(); ?>
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#editor" data-toggle="tab"><?php echo (!$this->category->cid) ? JText::_('COM_JOOMGALLERY_COMMON_NEW_CATEGORY') : JText::_('COM_JOOMGALLERY_EDITCATEGORY_MODIFY_CATEGORY'); ?></a></li>
+          <li><a href="#publishing" data-toggle="tab"><?php echo JText::_('COM_JOOMGALLERY_EDITCATEGORY_PUBLISHING') ?></a></li>
+          <?php if($this->_config->get('jg_edit_metadata')): ?>
+          <li><a href="#metadata" data-toggle="tab"><?php echo JText::_('COM_JOOMGALLERY_EDIT_METADATA') ?></a></li>
+          <?php endif; ?>
+<?php if(count($this->fieldSets) > 0) : ?>
+          <li><a href="#other" data-toggle="tab"><?php echo JText::_('COM_JOOMGALLERY_EDITCATEGORY_OTHER') ?></a></li>
+<?php endif; ?>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="editor">
+            <div class="row-fluid">
+              <div class="span6">
+                <div class="control-group">
+                  <div class="control-label">
+                    <?php echo $this->form->getLabel('name'); ?>
+                  </div>
+                  <div class="controls">
+                    <?php echo $this->form->getInput('name'); ?>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <div class="control-label">
+                    <?php echo $this->form->getLabel('alias'); ?>
+                  </div>
+                  <div class="controls">
+                    <?php echo $this->form->getInput('alias'); ?>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <div class="control-label">
+                    <?php echo $this->form->getLabel('parent_id'); ?>
+                  </div>
+                  <div class="controls">
+                    <?php echo $this->form->getInput('parent_id'); ?>
+                  </div>
+                </div>
+<?php           if(!$this->_config->get('jg_disableunrequiredchecks')): ?>
+                <div class="control-group">
+                  <div class="control-label">
+                    <?php echo $this->form->getLabel('ordering'); ?>
+                  </div>
+                  <div class="controls">
+                    <?php echo $this->form->getInput('ordering'); ?>
+                  </div>
+                </div>
+<?php           endif; ?>
+              </div>
+              <div class="span6">
+<?php           if(   $this->_config->get('jg_showcatthumb') >= 2
+                   || $this->_config->get('jg_showsubthumbs') == 1
+                   || $this->_config->get('jg_showsubthumbs') == 3
+                  ) : ?>
+                <div class="control-group">
+                  <div class="control-label">
+                    <?php echo $this->form->getLabel('thumbnail'); ?>
+                  </div>
+                  <div class="controls">
+                    <?php echo $this->form->getInput('thumbnail'); ?>
+                  </div>
+                </div>
+<?php           endif ?>
+<?php           if($this->_config->get('jg_usercatthumbalign')): ?>
+                <div class="control-group">
+                  <div class="control-label">
+                    <?php echo $this->form->getLabel('img_position'); ?>
+                  </div>
+                  <div class="controls">
+                    <?php echo $this->form->getInput('img_position'); ?>
+                  </div>
+                </div>
+<?php           endif; ?>
+                <div class="control-group">
+                  <div class="control-label">
+                    <?php echo $this->form->getLabel('imagelib'); ?>
+                  </div>
+                  <div class="controls">
+                    <?php echo $this->form->getInput('imagelib'); ?>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class="span12">
+                <div class="control-group">
+                  <div class="control-label">
+                    <?php echo $this->form->getLabel('description'); ?>
+                  </div>
+                  <div class="controls">
+                    <?php echo $this->form->getInput('description'); ?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="publishing">
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('published'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('published'); ?>
+              </div>
+            </div>
+<?php if($this->_config->get('jg_usercatacc')): ?>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('access'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('access'); ?>
+              </div>
+            </div>
+<?php endif; ?>
+          </div>
+          <?php if($this->_config->get('jg_edit_metadata')): ?>
+          <div class="tab-pane" id="metadata">
+            <?php echo $this->form->renderField('metadesc'); ?>
+            <?php echo $this->form->renderField('metakey'); ?>
+          </div>
+          <?php endif; ?>
+<?php if(count($this->fieldSets) > 0) : ?>
+          <div class="tab-pane" id="other">
+            <?php echo $this->loadTemplate('options'); ?>
+          </div>
+<?php endif; ?>
+        </div>
+        <?php echo $this->form->getInput('cid'); ?>
+      </fieldset>
     </form>
   </div>
-<?php JHtml::_('behavior.formvalidation');
-      JHTML::_('behavior.tooltip');
-echo $this->loadTemplate('footer');
+<?php echo $this->loadTemplate('footer');

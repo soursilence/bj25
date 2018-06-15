@@ -1,9 +1,9 @@
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/branches/ajax/administrator/components/com_joomgallery/helpers/html/joomselect.php $
-// $Id: joomselect.php 3717 2012-03-22 18:33:14Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/media/joomgallery/js/categories.js $
+// $Id: categories.js 4078 2013-02-12 10:56:43Z erftralle $
 /******************************************************************************\
-**   JoomGallery 2                                                            **
+**   JoomGallery 3                                                            **
 **   By: JoomGallery::ProjectTeam                                             **
-**   Copyright (C) 2008 - 2011  JoomGallery::ProjectTeam                      **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                      **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                  **
 **   Released under GNU GPL Public License                                    **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look             **
@@ -174,12 +174,12 @@ var JoomGallerySearchCategories = new Class({
         }
       }.bind(this),
       'keydown': function (e) {
-        e = new Event(e);
-        $clear(this.timer);
+        e = new DOMEvent(e);
+        clearTimeout(this.timer);
         if (e.key == 'enter') e.stop()
       },
       'keyup': function (e) {
-        e = new Event(e);
+        e = new DOMEvent(e);
         if (e.code == 17 || e.code == 18 || e.code == 224 || e.alt || e.control || e.meta) return false;
         if (e.alt || e.control || e.meta || e.key == 'esc' || e.key == 'up' || e.key == 'down' || e.key == 'left' || e.key == 'right') return true;
         if (e.key == 'enter') e.stop();
@@ -196,7 +196,7 @@ var JoomGallerySearchCategories = new Class({
           return false;
         };
 
-        $clear(this.timer);
+        clearTimeout(this.timer);
         this.searchstring = this.inputBox.value;
         this.more = null;
         this.timer = this.request.post.delay(500, this.request, 'searchstring=' + encodeURIComponent(this.searchstring) + '&action=' + this.options.action + '&filter=' + this.options.filter + '&current=' + this.options.current);
@@ -206,7 +206,7 @@ var JoomGallerySearchCategories = new Class({
   keyEvents: function () {
     var b = {
       'keyup': function (e) {
-        e = new Event(e);
+        e = new DOMEvent(e);
         if (e.key == 'up' || e.key == 'down' || e.key == 'enter' || e.key == 'esc') {
           e.stop();
           if(e.key == 'esc')

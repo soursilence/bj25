@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/helpers/helper.php $
-// $Id: helper.php 3839 2012-09-03 17:17:47Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/helper.php $
+// $Id: helper.php 4330 2013-09-08 08:19:39Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -32,10 +32,12 @@ class JoomHelper
   {
     $current_controller = JRequest::getCmd('controller', 'control');
 
-    $controllers = array( 'categories'  => JText::_('COM_JOOMGALLERY_CATEGORY_MANAGER'),
+    $controllers = array( 'control'     => JText::_('COM_JOOMGALLERY_CONTROL_PANEL'),
+                          'categories'  => JText::_('COM_JOOMGALLERY_CATEGORY_MANAGER'),
                           'images'      => JText::_('COM_JOOMGALLERY_IMAGE_MANAGER'),
                           'comments'    => JText::_('COM_JOOMGALLERY_COMMENTS_MANAGER'),
                           'upload'      => JText::_('COM_JOOMGALLERY_IMAGE_UPLOAD'),
+                          'ajaxupload'  => JText::_('COM_JOOMGALLERY_AJAX_UPLOAD'),
                           'batchupload' => JText::_('COM_JOOMGALLERY_BATCH_UPLOAD'),
                           'ftpupload'   => JText::_('COM_JOOMGALLERY_FTP_UPLOAD'),
                           'jupload'     => JText::_('COM_JOOMGALLERY_JAVA_UPLOAD'),
@@ -54,6 +56,7 @@ class JoomHelper
       unset($controllers['batchupload']);
       unset($controllers['ftpupload']);
       unset($controllers['jupload']);
+      unset($controllers['ajaxupload']);
     }
 
     if(!$canDo->get('core.admin'))
@@ -65,10 +68,10 @@ class JoomHelper
 
     foreach($controllers as $controller => $title)
     {
-      JSubMenuHelper::addEntry( $title,
-                                'index.php?option='._JOOM_OPTION.'&controller='.$controller,
-                                $controller == $current_controller
-                              );
+      JHtmlSidebar::addEntry( $title,
+                              'index.php?option='._JOOM_OPTION.'&controller='.$controller,
+                              $controller == $current_controller
+                            );
     }
   }
 
@@ -464,5 +467,51 @@ class JoomHelper
     }
 
     return $rating;
+  }
+
+  /**
+   * Converts a given size with units e.g. read from php.ini to bytes.
+   *
+   * @param   string  $val  Value with units (e.g. 8M)
+   * @return  int     Value in bytes
+   * @since   3.0
+   */
+
+  public static function iniToBytes($val)
+  {
+    $val = trim($val);
+
+    switch(strtolower(substr($val, -1)))
+    {
+      case 'm':
+        $val = (int)substr($val, 0, -1) * 1048576;
+        break;
+      case 'k':
+        $val = (int)substr($val, 0, -1) * 1024;
+        break;
+      case 'g':
+        $val = (int)substr($val, 0, -1) * 1073741824;
+        break;
+      case 'b':
+        switch(strtolower(substr($val, -2, 1)))
+        {
+          case 'm':
+            $val = (int)substr($val, 0, -2) * 1048576;
+            break;
+          case 'k':
+            $val = (int)substr($val, 0, -2) * 1024;
+            break;
+          case 'g':
+            $val = (int)substr($val, 0, -2) * 1073741824;
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+
+    return $val;
   }
 }

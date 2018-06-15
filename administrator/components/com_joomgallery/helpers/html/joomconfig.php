@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/helpers/html/joomconfig.php $
-// $Id: joomconfig.php 3773 2012-05-07 15:28:36Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/html/joomconfig.php $
+// $Id: joomconfig.php 4076 2013-02-12 10:35:29Z erftralle $
 /******************************************************************************\
-**   JoomGallery 2                                                            **
+**   JoomGallery 3                                                            **
 **   By: JoomGallery::ProjectTeam                                             **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                      **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                      **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                  **
 **   Released under GNU GPL Public License                                    **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look             **
@@ -31,7 +31,7 @@ class JHTMLJoomConfig
   {
 ?>
   <div id="<?php echo $id; ?>">
-    <table width="100%" border="0" cellpadding="4" cellspacing="0" class="adminlist">
+    <table class="adminlist table table-bordered">
 <?php
   }
 
@@ -56,7 +56,7 @@ class JHTMLJoomConfig
   {
 ?>
     <tr>
-      <td colspan="3"><?php echo $text; ?></td>
+      <td colspan="3"><div class="alert alert-info"><?php echo $text; ?></div></td>
     </tr>
 <?php
   }
@@ -71,8 +71,9 @@ class JHTMLJoomConfig
    * @param $info     string/int  current setting of the option, if $type = 'custom', we will assume that it holds the complete HTML string
    * @param $display  boolean     if set to false, we won't display this option, defaults to true
    * @param $attribs  string      additional tag attributes (e.g. size = "50"), for now only effective for type 'text'
+   * @param $text     string      Alternative description text, if null the default language constant will be used for each option
    */
-  public static function row($key, $type, $name, $info, $display = true, $attribs = '')
+  public static function row($key, $type, $name, $info, $display = true, $attribs = '', $text = null)
   {
     if(!$display)
     {
@@ -101,7 +102,7 @@ class JHTMLJoomConfig
       default:
         break;
     } ?></td>
-      <td align="left" valign="top"><?php echo JText::_($name.'_LONG'); ?></td>
+      <td align="left" valign="top"><?php echo $text ? $text : JText::_($name.'_LONG'); ?></td>
     </tr>
 <?php
   }

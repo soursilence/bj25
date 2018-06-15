@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/views/toplist/view.html.php $
-// $Id: view.html.php 3866 2012-09-15 20:29:13Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/toplist/view.html.php $
+// $Id: view.html.php 4082 2013-02-12 14:46:02Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -79,6 +79,22 @@ class JoomGalleryViewToplist extends JoomGalleryView
         break;
     }
 
+    // Check whether this is the active menu item. This is a
+    // special case in addition to code in constructor of parent class
+    // because here we have to check the toplist type, too.
+    if($type == 'lastcommented' || $type == 'lastadded' || $type == 'toprated')
+    {
+      $active = $this->_mainframe->getMenu()->getActive();
+      if(!$active || strpos($active->link, '&type='.$type) === false)
+      {
+        // Get the default layout from the configuration
+        if($layout = $this->_config->get('jg_alternative_layout'))
+        {
+          $this->setLayout($layout);
+        }
+      }
+    }
+
     // Breadcrumbs
     if($this->_config->get('jg_completebreadcrumbs'))
     {
@@ -109,7 +125,7 @@ class JoomGalleryViewToplist extends JoomGalleryView
 
       // Set the title attribute in a tag with title and/or description of image
       // if a box is activated
-      if($this->_config->get('jg_detailpic_open') > 1)
+      if(!is_numeric($this->_config->get('jg_detailpic_open')) || $this->_config->get('jg_detailpic_open') > 1)
       {
         $rows[$key]->atagtitle = JHTML::_('joomgallery.getTitleforATag', $row);
       }

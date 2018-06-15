@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/view.php $
-// $Id: view.php 3651 2012-02-19 14:36:46Z mab $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/view.php $
+// $Id: view.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -21,7 +21,7 @@ jimport( 'joomla.application.component.view');
  * @package JoomGallery
  * @since   1.5.5
  */
-class JoomGalleryView extends JView
+class JoomGalleryView extends JViewLegacy
 {
   /**
    * JApplication object
@@ -83,12 +83,12 @@ class JoomGalleryView extends JView
 
     $this->_doc->addStyleSheet($this->_ambit->getStyleSheet('admin.joomgallery.css'));
 
-    JHTML::core();
+    JHtmlBehavior::framework();
     $this->_doc->addScript($this->_ambit->getScript('admin.js'));
 
     JoomHelper::addSubmenu();
 
-    JHTML::addIncludePath(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
+    JHTML::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
     // Check for available updates
     if(!$checked = $this->_mainframe->getUserState('joom.update.checked'))
@@ -99,7 +99,7 @@ class JoomGalleryView extends JView
         $dated_extensions = JoomExtensions::checkUpdate();
         if(count($dated_extensions))
         {
-          JError::raiseNotice('302', JText::_('COM_JOOMGALLERY_ADMENU_SYSTEM_NOT_UPTODATE'));
+          $this->_mainframe->enqueueMessage(JText::_('COM_JOOMGALLERY_ADMENU_SYSTEM_NOT_UPTODATE'), 'warning');
           $this->_mainframe->setUserState('joom.update.checked', -1);
         }
         else
@@ -115,7 +115,7 @@ class JoomGalleryView extends JView
         $controller = JRequest::getCmd('controller');
         if($controller && $controller != 'control')
         {
-          JError::raiseNotice('302', JText::_('COM_JOOMGALLERY_ADMENU_SYSTEM_NOT_UPTODATE'));
+          $this->_mainframe->enqueueMessage(JText::_('COM_JOOMGALLERY_ADMENU_SYSTEM_NOT_UPTODATE'), 'warning');
         }
       }
     }

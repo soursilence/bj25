@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/models/detail.php $
-// $Id: detail.php 3848 2012-09-13 16:03:31Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/detail.php $
+// $Id: detail.php 4379 2014-04-27 19:17:00Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -234,7 +234,14 @@ class JoomGalleryModelDetail extends JoomGalleryModel
       }
       else
       {
-        $image->author        = JHTML::_('joomgallery.displayname', $image->imgowner, 'detail');
+        if($this->_config->get('jg_showowner'))
+        {
+          $image->author      = JHTML::_('joomgallery.displayname', $image->imgowner, 'detail');
+        }
+        else
+        {
+          $image->author      = JText::_('COM_JOOMGALLERY_COMMON_NO_DATA');
+        }
       }
 
       if(     (($this->_config->get('jg_bigpic') == 1 && $this->_user->get('id'))
@@ -652,7 +659,7 @@ class JoomGalleryModelDetail extends JoomGalleryModel
       $language = JFactory::getLanguage();
       $language->load('com_joomgallery.exif');
 
-      require_once(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'exifarray.php');
+      require_once(JPATH_COMPONENT_ADMINISTRATOR.'/includes/exifarray.php');
 
       $ii = 0;
 
@@ -696,7 +703,7 @@ class JoomGalleryModelDetail extends JoomGalleryModel
             {
               $kk      = $k % 2 + 1;
               $tagdata = $exif_array[$tagcat][$exif_config_array[$tagcat][$jgtag]['Attribute']];
-              $output .= "      <div class=\"sectiontableentry".$kk."\">\n";
+              $output .= "      <div class=\"jg_row".$kk."\">\n";
               $output .= "        <div class=\"jg_exif_left\">\n";
 //              $output .= "        ".$jgtag."\n";
 //              $output .= "        &nbsp;\n";
@@ -963,7 +970,7 @@ class JoomGalleryModelDetail extends JoomGalleryModel
   //        else
   //        {
   //          $kk = $k%2+1;
-  //          $output .= "    <div class=\"sectiontableentry".$kk."\">\n";
+  //          $output .= "    <div class=\"jg_row".$kk."\">\n";
   //          $output .= "      <div class=\"jg_exif_left\">\n";
   //          $output .= "        ".$jgtag."\n";
   //          $output .= "        &nbsp;\n";
@@ -1042,7 +1049,7 @@ class JoomGalleryModelDetail extends JoomGalleryModel
       $language = JFactory::getLanguage();
       $language->load('com_joomgallery.iptc');
 
-      require_once(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'iptcarray.php');
+      require_once(JPATH_COMPONENT_ADMINISTRATOR.'/includes/iptcarray.php');
 
       $ii = 0;
 
@@ -1130,7 +1137,7 @@ class JoomGalleryModelDetail extends JoomGalleryModel
             if($realiptctag != '2#025')
             {
               $kk = $k%2+1;
-              $output .= "      <div class=\"sectiontableentry".$kk."\">\n";
+              $output .= "      <div class=\"jg_row".$kk."\">\n";
               $output .= "        <div class=\"jg_exif_left\">\n";
               $output .= "          ".$iptc_config_array['IPTC'][$iptctag]['Name']."\n";
               $output .= "        </div>\n";
@@ -1166,9 +1173,9 @@ class JoomGalleryModelDetail extends JoomGalleryModel
               $num = count($iptc_array['2#025']);
               if($num > 0)
               {
-                $kk = $k%2+1;
+                $kk = $k % 2 + 1;
                 $tagdata = '';
-                $output .= "      <div class=\"sectiontableentry".$kk."\">\n";
+                $output .= "      <div class=\"jg_row".$kk."\">\n";
                 $output .= "        <div class=\"jg_exif_left\">\n";
                 $output .= "          ".$iptc_config_array['IPTC'][$iptctag]['Name']." \n";
                 $output .= "        </div>\n";

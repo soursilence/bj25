@@ -24,7 +24,7 @@
       if($this->params->get('show_header_search', 0)): ?>
   <div class="jg_search">
     <form action="<?php echo JRoute::_('index.php?view=search'); ?>" method="post">
-      <input title="<?php echo JText::_('COM_JOOMGALLERY_COMMON_SEARCH') ;?>" type="text" name="sstring" class="inputbox" onblur="if(this.value=='') this.value='<?php echo JText::_('COM_JOOMGALLERY_COMMON_SEARCH', true) ;?>';" onfocus="if(this.value=='<?php echo  JText::_('COM_JOOMGALLERY_COMMON_SEARCH', true) ;?>') this.value='';" value="<?php echo JText::_('COM_JOOMGALLERY_COMMON_SEARCH') ;?>" />
+      <input title="<?php echo JText::_('COM_JOOMGALLERY_COMMON_SEARCH'); ?>" type="text" name="sstring" class="inputbox" onblur="if(this.value=='') this.value='<?php echo JText::_('COM_JOOMGALLERY_COMMON_SEARCH', true); ?>';" onfocus="if(this.value=='<?php echo  JText::_('COM_JOOMGALLERY_COMMON_SEARCH', true); ?>') this.value='';" value="<?php echo JText::_('COM_JOOMGALLERY_COMMON_SEARCH'); ?>" />
     </form>
   </div>
 <?php endif;

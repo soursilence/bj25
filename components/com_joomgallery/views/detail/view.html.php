@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/views/detail/view.html.php $
-// $Id: view.html.php 4406 2014-07-06 16:26:27Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/detail/view.html.php $
+// $Id: view.html.php 4404 2014-06-26 21:23:58Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -36,7 +36,7 @@ class JoomGalleryViewDetail extends JoomGalleryView
                                   JText::_('COM_JOOMGALLERY_COMMON_MSG_NOT_ALLOWED_VIEW_IMAGE'), 'notice');
     }
 
-    if($this->_config->get('jg_detailpic_open') && $this->_config->get('jg_disabledetailpage'))
+    if((!is_numeric($this->_config->get('jg_detailpic_open')) || $this->_config->get('jg_detailpic_open') > 0) && $this->_config->get('jg_disabledetailpage'))
     {
       $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false),
                                   JText::_('COM_JOOMGALLERY_DETAIL_MSG_NOT_ALLOWED_VIEW_DEFAULT_DETAIL_VIEW'), 'notice');
@@ -186,6 +186,19 @@ class JoomGalleryViewDetail extends JoomGalleryView
       $params->set('show_detailbtm_modules', 1);
     }
 
+    // Check whether this is the active menu item. This is a
+    // special case in addition to code in constructor of parent class
+    // because here we have to check the image ID, too.
+    $active = $this->_mainframe->getMenu()->getActive();
+    if(!$active || strpos($active->link, '&id='.JRequest::getInt('id')) === false)
+    {
+      // Get the default layout from the configuration
+      if($layout = $this->_config->get('jg_alternative_layout'))
+      {
+        $this->setLayout($layout);
+      }
+    }
+
     // Meta data
     if($image->metadesc)
     {
@@ -203,14 +216,14 @@ class JoomGalleryViewDetail extends JoomGalleryView
     {
       $this->_doc->setMetadata('keywords', $image->catmetakey);
     }
-    if($this->_mainframe->getCfg('MetaAuthor') == '1' && $image->imgauthor)
+    if($this->_mainframe->getCfg('MetaAuthor') == '1' && $image->author && strcmp(JText::_('COM_JOOMGALLERY_COMMON_NO_DATA'), $image->author) != 0)
     {
-      $this->_doc->setMetaData('author', $image->imgauthor);
+      $this->_doc->setMetaData('author', $image->author);
     }
 
     // Set the title attribute in a tag with title and/or description of image
     // if a box is activated
-    if(    $this->_config->get('jg_bigpic_open') > 1
+    if(    (!is_numeric($this->_config->get('jg_bigpic_open')) || $this->_config->get('jg_bigpic_open') > 1)
         && !$slideshow
       )
     {
@@ -227,9 +240,9 @@ class JoomGalleryViewDetail extends JoomGalleryView
     {
       $toggler = 'class="joomgallery-toggler"';
       $slider  = 'class="joomgallery-slider"';
-      JHTML::_('behavior.mootools');
+      JHtml::_('behavior.framework', true);
       $accordionscript= 'window.addEvent(\'domready\', function(){
-        new Accordion
+        new Fx.Accordion
         (
           $$(\'h4.joomgallery-toggler\'),
           $$(\'div.joomgallery-slider\'),
@@ -345,7 +358,7 @@ class JoomGalleryViewDetail extends JoomGalleryView
         $nametag['link']    = JRoute::_('index.php?task=nametags.save');
         $this->assignRef('nametag', $nametag);
 
-        JHTML::_('behavior.mootools');
+        JHtml::_('behavior.framework');
         if($this->_config->get('jg_nameshields_others'))
         {
           JHTML::_('behavior.modal');
@@ -362,7 +375,7 @@ class JoomGalleryViewDetail extends JoomGalleryView
 
       if($slideshow)
       {
-        JHTML::_('behavior.mootools');
+        JHtml::_('behavior.framework', true);
         $this->_doc->addStyleSheet($this->_ambit->getScript('smoothgallery/css/jd.gallery.css'));
         $this->_doc->addScript($this->_ambit->getScript('smoothgallery/scripts/jd.gallery.js'));
 
@@ -398,7 +411,7 @@ class JoomGalleryViewDetail extends JoomGalleryView
 
         // The slideshow needs an array of objects
         $script .= 'var photo = new Array();
-                  function joom_createphotoobject(image,thumbnail,linkTitle,link,title,description,number,date,hits,rating,filesizedtl,filesizeorg,author,detaillink) {
+                  function joom_createphotoobject(image,thumbnail,linkTitle,link,title,description,number,date,hits,downloads,rating,filesizedtl,filesizeorg,author,detaillink) {
                     this.image = image;
                     this.thumbnail = thumbnail;
                     this.linkTitle = linkTitle;
@@ -409,6 +422,7 @@ class JoomGalleryViewDetail extends JoomGalleryView
                     this.number=number;
                     this.date=date,
                     this.hits=hits,
+                    this.downloads=downloads,
                     this.rating=rating,
                     this.filesizedtl=filesizedtl,
                     this.filesizeorg=filesizeorg,
@@ -485,13 +499,21 @@ class JoomGalleryViewDetail extends JoomGalleryView
             }
             else
             {
-              $author = JHTML::_('joomgallery.displayname', $row->imgowner, 'detail');
+              if($this->_config->get('jg_showowner'))
+              {
+                $author = JHTML::_('joomgallery.displayname', $row->imgowner, 'detail');
+              }
+              else
+              {
+                $author = JText::_('COM_JOOMGALLERY_COMMON_NO_DATA');
+              }
             }
           }
           else
           {
             $author = '';
           }
+
           if ($this->_config->get('jg_slideshow_maxdimauto'))
           {
             // Get dimensions of image for calculating the max. width/height
@@ -518,6 +540,7 @@ class JoomGalleryViewDetail extends JoomGalleryView
             '.$number.',
             "'.$date.'",
             "'.$row->hits.'",
+            "'.$row->downloads.'",
             "'.$rating.'",
             "'.$filesizedtl.'",
             "'.$filesizeorg.'",
@@ -603,29 +626,9 @@ class JoomGalleryViewDetail extends JoomGalleryView
     // MotionGallery
     if($this->_config->get('jg_minis') && $this->_config->get('jg_motionminis') == 2)
     {
-      $this->_doc->addScript($this->_ambit->getScript('motiongallery.js'));
-      $script = "\n"
-              . "   /***********************************************\n"
-              . "   * CMotion Image Gallery- © Dynamic Drive DHTML code library (www.dynamicdrive.com)\n"
-              . "   * Visit http://www.dynamicDrive.com for hundreds of DHTML scripts\n"
-              . "   * This notice must stay intact for legal use\n"
-              . "   * Modified by Jscheuer1 for autowidth and optional starting positions\n"
-              . "   ***********************************************/";
-      $this->_doc->addScriptDeclaration($script);
-
-      $custom = "  <!-- Do not edit IE conditional style below -->"
-              . "\n"
-              . "  <!--[if gte IE 5.5]>"
-              . "\n"
-              . "  <style type=\"text/css\">\n"
-              . "     #motioncontainer {\n"
-              . "       width:expression(Math.min(this.offsetWidth, maxwidth)+'px');\n"
-              . "     }\n"
-              . "  </style>\n"
-              . "  <![endif]-->"
-              . "\n"
-              . "  <!-- End Conditional Style -->";
-      $this->_doc->addCustomTag($custom);
+      JHtml::_('jquery.framework');
+      $this->_doc->addStyleSheet($this->_ambit->getScript('motiongallery/css/jquery.mThumbnailScroller.css'));
+      $this->_doc->addScript($this->_ambit->getScript('motiongallery/js/jquery.mThumbnailScroller'.(JFactory::getConfig()->get('debug') ? '' : '.min').'.js'));
     }
 
     // Icons
@@ -792,8 +795,8 @@ class JoomGalleryViewDetail extends JoomGalleryView
 
         $popup = array();
 
-        $popup['before']  = JHTML::_('joomgallery.popup', $images, 0, $image->position);
-        $popup['after']   = JHTML::_('joomgallery.popup', $images, $image->position + 1);
+        $popup['before']  = JHTML::_('joomgallery.popup', $images, 0, $image->position, $params->get('image_linked') ? 'joomgalleryIcon' : null);
+        $popup['after']   = JHTML::_('joomgallery.popup', $images, $image->position + 1, null, $params->get('image_linked') ? 'joomgalleryIcon' : null);
 
         $this->assignRef('popup', $popup);
       }
@@ -865,7 +868,7 @@ class JoomGalleryViewDetail extends JoomGalleryView
             $this->assignRef('mapdata', $mapdata);
 
             $apikey = $this->_config->get('jg_geotaggingkey');
-            $this->_doc->addScript('http://maps.google.com/maps/api/js?sensor=false'.(!empty($apikey) ? '&amp;key='.$apikey : ''));
+            $this->_doc->addScript('http'.(JUri::getInstance()->isSSL() ? 's' : '').'://maps.google.com/maps/api/js?sensor=false'.(!empty($apikey) ? '&amp;key='.$apikey : ''));
 
             JText::script('COM_JOOMGALLERY_DETAIL_MAPS_BROWSER_IS_INCOMPATIBLE');
           }
@@ -905,7 +908,7 @@ class JoomGalleryViewDetail extends JoomGalleryView
           else
           {
             // Set to 1 will show the voting area
-            JHTML::_('behavior.mootools');
+            JHtml::_('behavior.framework');
             $params->set('show_voting_area', 1);
             $params->set('ajaxvoting', $this->_config->get('jg_ajaxrating'));
             if($this->_config->get('jg_ratingdisplaytype') == 0)
@@ -945,8 +948,9 @@ class JoomGalleryViewDetail extends JoomGalleryView
 
       if($this->_config->get('jg_bbcodelink'))
       {
-        $current_uri  = JURI::getInstance(JURI::base());
-        $current_host = $current_uri->toString(array('scheme', 'host', 'port'));
+        $current_uri    = JURI::getInstance(JURI::base());
+        $current_host   = $current_uri->getHost();
+        $current_scheme = $current_uri->getScheme();
 
         $params->set('show_bbcode', 1);
 
@@ -955,9 +959,10 @@ class JoomGalleryViewDetail extends JoomGalleryView
           )
         {
           // Ensure that the correct host and path is prepended
-          $uri  = JFactory::getUri($image->img_src);
+          $uri = JFactory::getUri($image->img_src);
+          $uri->setScheme($current_scheme);
           $uri->setHost($current_host);
-          $params->set('bbcode_img', str_replace(array('&', 'http://http://'), array('&amp;', 'http://'), $uri->toString()));
+          $params->set('bbcode_img', str_replace('&', '&amp;', $uri->toString()));
         }
 
         if(    $this->_config->get('jg_bbcodelink') == 2
@@ -967,7 +972,8 @@ class JoomGalleryViewDetail extends JoomGalleryView
           $url = JRoute::_('index.php?view=detail&id='.$image->id).JHTML::_('joomgallery.anchor');
 
           // Ensure that the correct host and path is prepended
-          $uri  = JFactory::getUri($url);
+          $uri = JFactory::getUri($url);
+          $uri->setScheme($current_scheme);
           $uri->setHost($current_host);
           $params->set('bbcode_url', str_replace('&', '&amp;', $uri->toString()));
         }

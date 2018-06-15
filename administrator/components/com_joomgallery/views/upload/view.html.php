@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/views/upload/view.html.php $
-// $Id: view.html.php 3863 2012-09-15 13:13:00Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/views/upload/view.html.php $
+// $Id: view.html.php 4361 2014-02-24 18:03:18Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -30,9 +30,7 @@ class JoomGalleryViewUpload extends JoomGalleryView
    */
   public function display($tpl = null)
   {
-    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_UPLOAD_IMAGE_UPLOAD_MANAGER'));
-    JToolbarHelper::custom('cpanel', 'options.png', 'options.png', 'COM_JOOMGALLERY_COMMON_TOOLBAR_CPANEL', false);
-    JToolbarHelper::spacer();
+    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_UPLOAD_IMAGE_UPLOAD_MANAGER'), 'upload');
 
     $this->_doc->addScriptDeclaration('    var jg_filenamewithjs = '.($this->_config->get('jg_filenamewithjs') ? 'true' : 'false').';');
     $this->_doc->addScript($this->_ambit->getScript('upload.js'));
@@ -46,11 +44,14 @@ class JoomGalleryViewUpload extends JoomGalleryView
 
     JForm::addFormPath(JPATH_COMPONENT.'/models/forms');
     $this->form = JForm::getInstance(_JOOM_OPTION.'.upload', 'upload');
+    $this->form->setFieldAttribute('access', 'default', (int) JFactory::getConfig()->get('access'));
 
     if($this->_config->get('jg_useorigfilename'))
     {
       $this->form->setFieldAttribute('imgtitle', 'required', 'false');
     }
+
+    $this->sidebar = JHtmlSidebar::render();
 
     parent::display($tpl);
   }

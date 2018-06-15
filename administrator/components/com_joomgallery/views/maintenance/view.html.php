@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/views/maintenance/view.html.php $
-// $Id: view.html.php 3675 2012-03-04 14:58:48Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/views/maintenance/view.html.php $
+// $Id: view.html.php 4361 2014-02-24 18:03:18Z erftralle $
 /******************************************************************************\
-**   JoomGallery 2                                                            **
+**   JoomGallery 3                                                            **
 **   By: JoomGallery::ProjectTeam                                             **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                      **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                      **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                  **
 **   Released under GNU GPL Public License                                    **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look             **
@@ -31,9 +31,7 @@ class JoomGalleryViewMaintenance extends JoomGalleryView
    */
   function display($tpl = null)
   {
-    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_MAIMAN_MAINTENANCE_MANAGER'), 'mediamanager');
-    JToolbarHelper::custom('cpanel', 'options.png', 'options.png', 'COM_JOOMGALLERY_COMMON_TOOLBAR_CPANEL', false);
-    JToolbarHelper::spacer();
+    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_MAIMAN_MAINTENANCE_MANAGER'), 'wrench');
 
     $this->_doc->addStyleDeclaration('    .icon-32-refresh {
       background-image:url(templates/khepri/images/toolbar/icon-32-refresh.png);
@@ -196,8 +194,8 @@ class JoomGalleryViewMaintenance extends JoomGalleryView
 
     if(!is_null($checked))
     {
-      $this->assignRef('items',       $items);
-      $this->assignRef('pagination',  $this->get('Pagination'));
+      $this->items = $items;
+      $this->pagination = $this->get('Pagination');
 
       if($state->get('filter.inuse') && !$this->get('Total'))
       {
@@ -234,21 +232,19 @@ class JoomGalleryViewMaintenance extends JoomGalleryView
     JText::script('COM_JOOMGALLERY_MAIMAN_FV_ALERT_RESET_FAVOURITES_CONFIRM');
     JText::script('COM_JOOMGALLERY_MAIMAN_NT_ALERT_RESET_NAMETAGS_CONFIRM');
 
-    JHTML::_('behavior.tooltip');
+    $this->sidebar = JHtmlSidebar::render();
 
     parent::display($tpl);
   }
 
   function cross($title = 'COM_JOOMGALLERY_MAIMAN_MISSING')
   {
-    $title = JText::_($title);
-    return '<span class="jgrid hasTip" title="'.$title.'"><span class="state unpublish"><span class="text">'.$title.'</span></span></span>';
+    return '<i class="hasTooltip icon-unpublish" title="'.JText::_($title).'"></i>';
   }
 
   function tick($title = 'COM_JOOMGALLERY_MAIMAN_AVAILABLE')
   {
-    $title = JText::_($title);
-    return '<span class="jgrid hasTip" title="'.$title.'"><span class="state publish"><span class="text">'.$title.'</span></span></span>';
+    return '<i class="hasTooltip icon-publish" title="'.JText::_($title).'"></i>';
   }
 
   function correct($task, $id, $title = 'Apply', $js = false, $extra = null)
@@ -262,12 +258,12 @@ class JoomGalleryViewMaintenance extends JoomGalleryView
       $link = 'index.php?option='._JOOM_OPTION.'&amp;controller=maintenance&amp;task='.$task.'&amp;cid='.$id.$extra;
     }
 
-    return '<span class="hasTip" title="'.$title.'"><a href="'.$link.'">
+    return '<span class="hasTooltip" title="'.$title.'"><a href="'.$link.'">
               <img src="'.$this->_ambit->getIcon('joom_maintenance.png').'" border="0" alt="'.$title.'" /></a></span>';
   }
 
   function warning($title, $text)
   {
-    return '<span class="hasTip" title="'.$title.'::'.$text.'"><img src="'.$this->_ambit->getIcon('error.png').'" alt="Warning" /></span>';
+    return '<span class="hasTooltip" title="'.$title.'::'.$text.'"><img src="'.$this->_ambit->getIcon('error.png').'" alt="Warning" /></span>';
   }
 }

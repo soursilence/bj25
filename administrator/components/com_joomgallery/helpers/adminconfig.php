@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/helpers/adminconfig.php $
-// $Id: adminconfig.php 3857 2012-09-14 20:32:06Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/adminconfig.php $
+// $Id: adminconfig.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -1006,7 +1006,7 @@ joom_local.css.README umbenennen und anpassen
 
     // Save the file
     jimport('joomla.filesystem.file');
-    $css_settings_file = JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.$this->getStyleSheetName($this->id);
+    $css_settings_file = JPATH_ROOT.'/media/joomgallery/css/'.$this->getStyleSheetName($this->id);
     if(!JFile::write($css_settings_file, $css_settings))
     {
       return false;
@@ -1041,7 +1041,7 @@ joom_local.css.README umbenennen und anpassen
     }
 
     jimport('joomla.filesystem.file');
-    $css_settings_file = JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.$this->getStyleSheetName($id);
+    $css_settings_file = JPATH_ROOT.'/media/joomgallery/css/'.$this->getStyleSheetName($id);
     if(!JFile::delete($css_settings_file))
     {
       return false;

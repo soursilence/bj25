@@ -4,6 +4,11 @@
     <field
       name="id"
       type="hidden"
+      class="inputbox"
+      label="COM_JOOMGALLERY_COMMON_ID"
+      size="10"
+      default="0"
+      readonly="true"
     />
     <field
       name="asset_id"
@@ -64,9 +69,9 @@
       size="1"
     >
       <option value="0">
-        JUNPUBLISHED</option>
+        JNO</option>
       <option value="1">
-        JPUBLISHED</option>
+        JYES</option>
     </field>
     <field
       name="owner"
@@ -79,6 +84,7 @@
     <field
       name="imagelib"
       type="thumbnailpreview"
+      class="img-polaroid"
       label="COM_JOOMGALLERY_COMMON_IMAGE"
       description="COM_JOOMGALLERY_EDIT_IMAGE_TIP"
     />
@@ -99,5 +105,26 @@
       maxLength="50"
       default=""
     />
+    <field
+      id="metakey"
+      name="metakey"
+      type="textarea"
+      label="JFIELD_META_KEYWORDS_LABEL"
+      description="JFIELD_META_KEYWORDS_DESC"
+      class="inputbox"
+      rows="5"
+      cols="50"
+    />
+    <field
+      id="metadesc"
+      name="metadesc"
+      type="textarea"
+      label="JFIELD_META_DESCRIPTION_LABEL"
+      description="JFIELD_META_DESCRIPTION_DESC"
+      class="inputbox"
+      rows="5"
+      cols="50"
+    />
+
   </fieldset>
 </form>

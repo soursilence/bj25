@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/views/edit/view.html.php $
-// $Id: view.html.php 3819 2012-07-08 10:08:30Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/edit/view.html.php $
+// $Id: view.html.php 4077 2013-02-12 10:46:13Z erftralle $
 /****************************************************************************************\
-**   JoomGallery  2                                                                     **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -38,8 +38,8 @@ class JoomGalleryViewEdit extends JoomGalleryView
       $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false), $msg, 'notice');
     }
 
-    // TODO: This check may be removed later on
-    if(!$this->_user->get('id'))
+    // Additional security check for unregistered users
+    if(!$this->_user->get('id') && !$this->_config->get('jg_unregistered_permissions'))
     {
       $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false), JText::_('COM_JOOMGALLERY_COMMON_MSG_YOU_ARE_NOT_LOGGED'), 'notice');
     }
@@ -83,7 +83,10 @@ class JoomGalleryViewEdit extends JoomGalleryView
       $params->set('show_btm_modules', 1);
     }
 
-    $image = $this->get('Image');
+    $model = $this->getModel();
+    $array = JRequest::getVar('id',  0, '', 'array');
+    $model->setId((int)$array[0]);
+    $image = $model->getImage();
 
     // Get the form and fill the fields
     $form = $this->get('Form');

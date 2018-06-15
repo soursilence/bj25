@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/views/jupload/view.html.php $
-// $Id: view.html.php 3791 2012-05-20 22:47:41Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/views/jupload/view.html.php $
+// $Id: view.html.php 4361 2014-02-24 18:03:18Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -30,17 +30,18 @@ class JoomGalleryViewJupload extends JoomGalleryView
    */
   public function display($tpl = null)
   {
-    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_UPLOAD_JAVA_UPLOAD_MANAGER'));
-    JToolbarHelper::custom('cpanel', 'options.png', 'options.png', 'COM_JOOMGALLERY_COMMON_TOOLBAR_CPANEL', false);
-    JToolbarHelper::spacer();
+    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_UPLOAD_JAVA_UPLOAD_MANAGER'), 'upload');
 
     JForm::addFormPath(JPATH_COMPONENT.'/models/forms');
     $this->form = JForm::getInstance(_JOOM_OPTION.'.jupload', 'jupload');
+    $this->form->setFieldAttribute('access', 'default', (int) JFactory::getConfig()->get('access'));
 
     if($this->_config->get('jg_useorigfilename'))
     {
       $this->form->setFieldAttribute('imgtitle', 'required', 'false');
     }
+
+    $this->sidebar = JHtmlSidebar::render();
 
     parent::display($tpl);
   }

@@ -1,9 +1,9 @@
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/media/joomgallery/js/upload.js $
-// $Id: upload.js 3867 2012-09-15 20:33:58Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/media/joomgallery/js/upload.js $
+// $Id: upload.js 4078 2013-02-12 10:56:43Z erftralle $
 /****************************************************************************************\
-**   JoomGallery  2                                                                     **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -18,7 +18,7 @@
  */
 function joomOnSubmit()
 {
-  var form = document.adminForm;
+  var form = document.getElementById('upload-form');
   var no_files_selected = true;
   var fullfields = new Array();
   var screenshotfieldname = new Array();
@@ -102,7 +102,7 @@ function joomOnSubmit()
   if(!jg_filenamewithjs)
   {
     var filenames_not_ok = false;
-    var searchwrongchars = /[^a-zA-Z0-9_-]/;
+    var searchwrongchars = /[^a-zA-Z0-9 _-]/;
     var lastbackslash = new Array();
     var endoffilename = new Array();
     var filename = new Array();

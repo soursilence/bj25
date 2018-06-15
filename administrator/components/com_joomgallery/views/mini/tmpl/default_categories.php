@@ -1,63 +1,61 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
-  <div class="jg-slider">
-    <div class="jg_bu_extended_options">
-      <div class="jg_bu_option_key">
-        <span title="<?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_MODE'); ?>::<?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_MODE_TIP'); ?>" class="hasTip"><?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_MODE'); ?></span>
+  <form action="index.php" name="imagesForm" onsubmit="return false;" class="form-horizontal">
+    <div class="control-group">
+      <?php echo $this->categories_form->getLabel('category_mode'); ?>
+      <div class="controls">
+        <?php echo $this->categories_form->getInput('category_mode'); ?>
       </div>
-      <div class="jg_bu_option_value">
-        <?php echo $this->options['category']; ?>
-      </div>
-      <div class="jg_clearboth"></div>
-      <hr />
-      <div id="jg-category-thumbnails-options"<?php echo $this->params->get('default_category_mode', 0) == 1 ? ' class="jg_displaynone"' : ''; ?>>
-        <div class="jg_bu_option_key">
-          <span title="<?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_LIMIT'); ?>::<?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_LIMIT_TIP'); ?>" class="hasTip"><?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_LIMIT'); ?></span>
-        </div>
-        <div class="jg_bu_option_value">
-          <input type="text" name="jg_bu_thumbnail_number" id="jg_bu_thumbnail_number" value="<?php echo $this->params->get('default_category_limit', 4); ?>" size="4" maxlength="4" />
-        </div>
-        <div class="jg_clearboth"></div>
-        <div class="jg_bu_option_key">
-          <span title="<?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_COLUMNS'); ?>::<?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_COLUMNS_TIP'); ?>" class="hasTip"><?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_COLUMNS'); ?></span>
-        </div>
-        <div class="jg_bu_option_value">
-          <input type="text" name="jg_bu_thumbnail_columns" id="jg_bu_thumbnail_columns" value="<?php echo $this->params->get('default_category_columns', 2); ?>" size="4" maxlength="2" />
-        </div>
-        <div class="jg_clearboth"></div>
-        <div class="jg_bu_option_key">
-          <span title="<?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_ORDERING'); ?>::<?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_ORDERING_TIP'); ?>" class="hasTip"><?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_ORDERING'); ?></span>
-        </div>
-        <div class="jg_bu_option_value">
-          <?php echo $this->options['ordering']; ?>
-        </div>
-        <div class="jg_clearboth"></div>
-      </div>
-      <div id="jg-category-linkedtext-options"<?php echo !$this->params->get('default_category_mode', 0) ? ' class="jg_displaynone"' : ''; ?>>
-        <div class="jg_bu_option_key">
-          <span title="<?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_TEXTLINK'); ?>::<?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_TEXTLINK_TIP'); ?>" class="hasTip"><?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_TEXTLINK'); ?></span>
-        </div>
-        <div class="jg_bu_option_value">
-          <input type="text" name="jg_bu_category_linkedtext" id="jg_bu_category_linkedtext" value="<?php echo $this->params->get('default_category_linkedtext', ''); ?>" />
-        </div>
-        <div class="jg_clearboth"></div>
-      </div>
-      <hr />
-      <div class="jg_bu_option_key">
-        <span title="<?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_SELECT'); ?>::<?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_SELECT_TIP'); ?>" class="hasTip"><?php echo JText::_('COM_JOOMGALLERY_PLUGIN_MINI_CATEGORY_SELECT'); ?></span>
-      </div>
-      <div class="jg_bu_option_value">
-        <?php echo $this->lists['category_categories']; ?>
-      </div>
-      <div class="jg_clearboth"></div>
     </div>
-  </div>
+    <hr />
+    <div class="control-group jg_bu_category_thumbnails_option">
+      <?php echo $this->categories_form->getLabel('category_limit'); ?>
+      <div class="controls">
+        <?php echo $this->categories_form->getInput('category_limit'); ?>
+      </div>
+    </div>
+    <div class="control-group jg_bu_category_thumbnails_option">
+      <?php echo $this->categories_form->getLabel('category_columns'); ?>
+      <div class="controls">
+        <?php echo $this->categories_form->getInput('category_columns'); ?>
+      </div>
+    </div>
+    <div class="control-group jg_bu_category_thumbnails_option">
+      <?php echo $this->categories_form->getLabel('category_ordering'); ?>
+      <div class="controls">
+        <?php echo $this->categories_form->getInput('category_ordering'); ?>
+      </div>
+    </div>
+    <div class="control-group jg_bu_category_linkedtext_option">
+      <?php echo $this->categories_form->getLabel('category_linkedtext'); ?>
+      <div class="controls">
+        <?php echo $this->categories_form->getInput('category_linkedtext'); ?>
+      </div>
+    </div>
+    <hr />
+    <div class="control-group">
+      <?php echo $this->categories_form->getLabel('category_catid'); ?>
+      <div class="controls">
+        <?php echo $this->categories_form->getInput('category_catid'); ?>
+      </div>
+    </div>
+  </form>
   <script type="text/javascript">
-    $('jg_bu_category0').addEvent('click', function(){
-      $('jg-category-linkedtext-options').addClass('jg_displaynone');
-      $('jg-category-thumbnails-options').removeClass('jg_displaynone');
+    document.addEvent('domready', function(){
+      if(document.id('jg_bu_category0').checked)
+      {
+        $$('.jg_bu_category_linkedtext_option').addClass('hide');
+      }
+      else
+      {
+        $$('.jg_bu_category_thumbnails_option').addClass('hide');
+      }
     });
-    $('jg_bu_category1').addEvent('click', function(){
-      $('jg-category-linkedtext-options').removeClass('jg_displaynone');
-      $('jg-category-thumbnails-options').addClass('jg_displaynone');
+    document.id('jg_bu_category0').addEvent('click', function(){
+      $$('.jg_bu_category_linkedtext_option').addClass('hide');
+      $$('.jg_bu_category_thumbnails_option').removeClass('hide');
+    });
+    document.id('jg_bu_category1').addEvent('click', function(){
+      $$('.jg_bu_category_linkedtext_option').removeClass('hide');
+      $$('.jg_bu_category_thumbnails_option').addClass('hide');
     });
   </script>

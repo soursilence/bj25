@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/views/move/view.html.php $
-// $Id: view.html.php 3675 2012-03-04 14:58:48Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/views/move/view.html.php $
+// $Id: view.html.php 4361 2014-02-24 18:03:18Z erftralle $
 /******************************************************************************\
-**   JoomGallery 2                                                            **
+**   JoomGallery 3                                                            **
 **   By: JoomGallery::ProjectTeam                                             **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                      **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                      **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                  **
 **   Released under GNU GPL Public License                                    **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look             **
@@ -31,7 +31,7 @@ class JoomGalleryViewMove extends JoomGalleryView
    */
   function display($tpl = null)
   {
-    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_IMGMAN_IMAGE_MANAGER').' :: '.JText::_('COM_JOOMGALLERY_IMGMAN_MOVE_IMAGE'));
+    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_IMGMAN_IMAGE_MANAGER').' :: '.JText::_('COM_JOOMGALLERY_IMGMAN_MOVE_IMAGE'), 'images');
     JToolbarHelper::save('move');
     JToolbarHelper::cancel('cancel');
     JToolbarHelper::spacer();
@@ -40,8 +40,9 @@ class JoomGalleryViewMove extends JoomGalleryView
     $items = $this->get('Images');
     $lists = array();
     $lists['cats'] = JHTML::_('joomselect.categorylist', $catid, 'catid', 'class="inputbox" size="1" ', null, '- ', null, 'joom.upload');
-    $this->assignRef('items',     $items);
-    $this->assignRef('lists',     $lists);
+
+    $this->assignRef('items', $items);
+    $this->assignRef('lists', $lists);
 
     parent::display($tpl);
   }

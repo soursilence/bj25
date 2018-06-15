@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/models/fields/cbtext.php $
-// $Id: cbtext.php 3773 2012-05-07 15:28:36Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/fields/cbtext.php $
+// $Id: cbtext.php 4384 2014-05-09 12:40:47Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -51,13 +51,11 @@ class JFormFieldCbtext extends JFormFieldText
     $cbonclick = '';
     if($cbrequired == 'true' || $cbrequired == 'required' || $cbrequired == '1')
     {
-      $cbonclick  = "javascript: var el = $('".$this->id."'); if($('".$cbid."').checked) {el.addClass('required');} else {el.removeClass('required');}";
+      $cbonclick = "javascript: var el = jQuery('#".$this->id."'); if(jQuery('#".$cbid."').prop('checked')) { el.attr('aria-required', 'true').attr('required', 'required');} else {el.removeAttr('aria-required').removeAttr('required');}";
     }
-    $cbhtml     = '<input id="'.$cbid.'" type="checkbox" onclick="'.$cbonclick.'" name="'.$cbname.'" value="'.$cbvalue.'" />';
+    $cbhtml = '<input id="'.$cbid.'" type="checkbox" onclick="'.$cbonclick.'" name="'.$cbname.'" value="'.$cbvalue.'" />';
 
-    $label      = parent::getLabel();
-    $insertpos  = strpos($label, '>');
-    $label      = substr_replace($label, $cbhtml, $insertpos + 1, 0);
+    $label = $cbhtml . parent::getLabel();
 
     return $label;
   }

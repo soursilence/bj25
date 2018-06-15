@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/views/migration/view.html.php $
-// $Id: view.html.php 3651 2012-02-19 14:36:46Z mab $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/views/migration/view.html.php $
+// $Id: view.html.php 4361 2014-02-24 18:03:18Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -22,6 +22,14 @@ defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 class JoomGalleryViewMigration extends JoomGalleryView
 {
   /**
+   * The output of the migration script
+   *
+   * @var   string
+   * @since 3.1
+   */
+  protected $output;
+
+  /**
    * HTML view display method
    *
    * @access  public
@@ -31,13 +39,14 @@ class JoomGalleryViewMigration extends JoomGalleryView
    */
   function display($tpl = null)
   {
-    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_MIGMAN_MIGRATION_MANAGER'));
-    JToolbarHelper::custom('cpanel', 'options.png', 'options.png', 'COM_JOOMGALLERY_COMMON_TOOLBAR_CPANEL', false);
-    JToolbarHelper::spacer();
+    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_MIGMAN_MIGRATION_MANAGER'), 'loop');
 
-    $files = JFolder::files(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'migration', '.php$', false, true);
+    $this->sidebar = JHtmlSidebar::render();
 
-    $this->assignRef('files', $files);
+    $this->output = $this->_mainframe->getUserState('joom.migration.output', null);
+    $this->_mainframe->setUserState('joom.migration.output', null);
+
+    $this->files = JFolder::files(JPATH_COMPONENT.'/helpers/migration', '.php$', false, true);
 
     parent::display($tpl);
   }

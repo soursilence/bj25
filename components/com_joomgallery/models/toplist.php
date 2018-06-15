@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/models/toplist.php $
-// $Id: toplist.php 3651 2012-02-19 14:36:46Z mab $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/toplist.php $
+// $Id: toplist.php 4251 2013-05-05 17:27:13Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -123,6 +123,7 @@ class JoomGalleryModelToplist extends JoomGalleryModel
               ->where('a.hidden = 0')
               ->where('ca.hidden = 0')
               ->where('ca.in_hidden = 0')
+              ->where('ca.exclude_toplists = 0')
               ->order('cc.cmtdate DESC');
 
         $this->_db->setQuery($query, 0, (int) $this->_config->get('jg_toplist'));
@@ -192,6 +193,7 @@ class JoomGalleryModelToplist extends JoomGalleryModel
             ->where('a.hidden = 0')
             ->where('ca.hidden = 0')
             ->where('ca.in_hidden = 0')
+            ->where('ca.exclude_toplists = 0')
             ->order('a.id DESC');
 
       $this->_db->setQuery($query, 0, (int) $this->_config->get('jg_toplist'));
@@ -261,6 +263,7 @@ class JoomGalleryModelToplist extends JoomGalleryModel
             ->where('a.hidden = 0')
             ->where('ca.hidden = 0')
             ->where('ca.in_hidden = 0')
+            ->where('ca.exclude_toplists = 0')
             ->order('rating DESC, imgvotesum DESC');
 
       $this->_db->setQuery($query, 0, (int) $this->_config->get('jg_toplist'));
@@ -330,6 +333,7 @@ class JoomGalleryModelToplist extends JoomGalleryModel
             ->where('a.hidden = 0')
             ->where('ca.hidden = 0')
             ->where('ca.in_hidden = 0')
+            ->where('ca.exclude_toplists = 0')
             ->order('hits DESC');
 
       $this->_db->setQuery($query, 0, (int) $this->_config->get('jg_toplist'));

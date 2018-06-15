@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/models/image.php $
-// $Id: image.php 3809 2012-06-09 16:04:23Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/image.php $
+// $Id: image.php 4331 2013-09-08 08:27:42Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -40,25 +40,6 @@ class JoomGalleryModelImage extends JoomGalleryModel
   protected $_image;
 
   /**
-   * Method to set the image id
-   *
-   * @param   int   $id Image ID number
-   * @since   1.5.5
-   */
-  public function setId($id)
-  {
-    $id = (int) $id;
-
-    // Set new image ID if valid and wipe data
-    if(!$id)
-    {
-      JError::raiseError(500, JText::_('COM_JOOMGALLERY_COMMON_NO_IMAGE_SPECIFIED'));
-    }
-    $this->_id    = $id;
-    $this->_image = null;
-  }
-
-  /**
    * Method to get the identifier
    *
    * @return  int   The image ID
@@ -72,13 +53,24 @@ class JoomGalleryModelImage extends JoomGalleryModel
   /**
    * Method to get the image data
    *
+   * @param   int     $id ID of the image to display
    * @return  object  The image data
    * @since   1.5.5
    */
-  public function getImage()
+  public function getImage($id)
   {
-    $id = JRequest::getInt('id');
-    $this->setId($id);
+    $id = (int) $id;
+
+    // Set new image ID if valid and wipe data
+    if(!$id)
+    {
+      $this->setError(JText::_('COM_JOOMGALLERY_COMMON_NO_IMAGE_SPECIFIED'));
+
+      return false;
+    }
+
+    $this->_id    = $id;
+    $this->_image = null;
 
     if(!$this->_loadImage())
     {
@@ -91,15 +83,46 @@ class JoomGalleryModelImage extends JoomGalleryModel
   /**
    * Method to increment the hit counter for the image
    *
+   * @param   int     $id Image ID to use if no image data was loaded in the object afore
    * @return  boolean True on success, false otherwise
    * @since   1.5.5
    */
-  public function hit()
+  public function hit($id = null)
   {
+    if($id)
+    {
+      $this->_id = $id;
+    }
+
     if($this->_id && !$this->countstop())
     {
       $image = $this->getTable('joomgalleryimages');
       $image->hit($this->_id);
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Method to increment the download counter for the image
+   *
+   * @param   int     $id Image ID to use if no image data was loaded in the object afore.
+   * @return  boolean True on success, false otherwise.
+   * @since   3.1
+   */
+  public function download($id = null)
+  {
+    if($id)
+    {
+      $this->_id = $id;
+    }
+
+    if($this->_id)
+    {
+      $image = $this->getTable('joomgalleryimages');
+      $image->download($this->_id);
 
       return true;
     }
@@ -225,7 +248,9 @@ class JoomGalleryModelImage extends JoomGalleryModel
     // Checks if watermark file is existent
     if(!JFile::exists($watermark))
     {
-      $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false), JText::_('Watermark does not exist'), 'error');
+      $this->setError(JText::_('COM_JOOMGALLERY_COMMON_ERROR_WATERMARK_NOT_EXIST'));
+
+      return false;
     }
 
     // Gets information of the image (height, width, mime)
@@ -237,12 +262,85 @@ class JoomGalleryModelImage extends JoomGalleryModel
     {
       $info_img = array(0 => imagesx($src_img), 1 => imagesy($src_img));
     }
+
     $info_wat = getimagesize($watermark);
 
+    switch($info_wat[2])
+    {
+      case 1:
+        $watermark  = imagecreatefromgif($watermark);
+        $mime_wat   = 'image/gif';
+        break;
+      case 2:
+        $watermark  = imagecreatefromjpeg($watermark);
+        $mime_wat   = 'image/jpeg';
+        break;
+      case 3:
+        $watermark  = imagecreatefrompng($watermark);
+        $mime_wat   = 'image/png';
+        break;
+      default:
+        $this->setError(JText::sprintf('COM_JOOMGALLERY_COMMON_MSG_MIME_NOT_ALLOWED', $info_wat[2]));
+
+        return false;
+    }
+
+    $watermarkzoom = $this->_config->get('jg_watermarkzoom');
+
+    if($watermarkzoom)
+    {
+      $watermarksize = $this->_config->get('jg_watermarksize');
+
+      if($watermarksize <= 0)
+      {
+        $watermarksize = 1;
+      }
+      elseif($watermarksize > 100)
+      {
+        $watermarksize = 100;
+      }
+
+      $widthwm  = $info_wat[0];
+      $heightwm = $info_wat[1];
+
+      if($watermarkzoom == 1)
+      {
+        // Resize by height
+        $newheight_watermark = $info_img[1] * $watermarksize / 100;
+        $newwidth_watermark  = $newheight_watermark * $widthwm / $heightwm;
+
+        if($newwidth_watermark > $info_img[0])
+        {
+          $newwidth_watermark  = $info_img[0];
+        }
+      }
+      else
+      {
+        // Resize by width
+        $newwidth_watermark  = $info_img[0] * $watermarksize / 100;
+        $newheight_watermark = $newwidth_watermark * $heightwm / $widthwm;
+
+        if($newheight_watermark > $info_img[1])
+        {
+          $newheight_watermark = $info_img[1];
+        }
+      }
+
+      $newwatermark = ImageCreateTrueColor($newwidth_watermark, $newheight_watermark);
+      imagealphablending($newwatermark, false);
+      imagecopyresampled($newwatermark, $watermark, 0, 0, 0, 0, $newwidth_watermark, $newheight_watermark, $widthwm, $heightwm);
+
+      $info_wat[0] = $newwidth_watermark;
+      $info_wat[1] = $newheight_watermark;
+
+      imagedestroy($watermark);
+
+      $watermark = $newwatermark;
+    }
+
     // Gets the position of the watermark
-    $t_x = 0;
-    $t_y = 0;
     $position = $this->_config->get('jg_watermarkpos');
+
     // Position x
     switch(($position - 1) % 3)
     {
@@ -256,6 +354,7 @@ class JoomGalleryModelImage extends JoomGalleryModel
         $pos_x = 0;
         break;
     }
+
     // Position y
     switch(floor(($position - 1) / 3))
     {
@@ -287,44 +386,23 @@ class JoomGalleryModelImage extends JoomGalleryModel
           $mime_img = 'image/png';
           break;
         default:
-          JError::raiseError(404, JText::sprintf('Mime not allowed: %s', $info_img[2]));
-          break;
+          $this->setError(JText::sprintf('COM_JOOMGALLERY_COMMON_MSG_MIME_NOT_ALLOWED', $info_img[2]));
+
+          return false;
       }
     }
 
     // Check if image is smaller than watermark and return image without watermark
     if($info_img[0] < $info_wat[0] || $info_img[1] < $info_wat[1])
     {
+      imagedestroy($watermark);
+
       return $src_img;
     }
 
-    // Watermark procedure
-    switch($info_wat[2])
-    {
-      case 1:
-        $watermark  = imagecreatefromgif($watermark);
-        $mime_wat   = 'image/gif';
-        break;
-      case 2:
-        $watermark  = imagecreatefromjpeg($watermark);
-        $mime_wat   = 'image/jpeg';
-        break;
-      case 3:
-        $watermark  = imagecreatefrompng($watermark);
-        $mime_wat   = 'image/png';
-        break;
-     default:
-        JError::raiseError(404, JText::sprintf('Mime not allowed: %s', $info_wat[2]));
-       break;
-    }
-
-    $watermark_width  = imagesx($watermark);
-    $watermark_height = imagesy($watermark);
-
     imagealphablending($src_img, true);
-    imagealphablending($watermark, true);
-    imagecolortransparent($watermark, imagecolorat($watermark, $t_x, $t_y));
-    imagecopyresampled($src_img, $watermark, $pos_x, $pos_y, 0, 0, $watermark_width, $watermark_height, $watermark_width, $watermark_height);
+    imagecopyresampled($src_img, $watermark, $pos_x, $pos_y, 0, 0, $info_wat[0], $info_wat[1], $info_wat[0], $info_wat[1]);
+    imagedestroy($watermark);
 
     return $src_img;
   }
@@ -360,13 +438,16 @@ class JoomGalleryModelImage extends JoomGalleryModel
             ->where('a.access     IN ('.implode(',', $this->_user->getAuthorisedViewLevels()).')')
             ->where('c.access     IN ('.implode(',', $this->_user->getAuthorisedViewLevels()).')')
             ->where('p.access     IN ('.implode(',', $this->_user->getAuthorisedViewLevels()).')')
+            ->where('(p.password = '.$this->_db->q('').' OR p.cid IN ('.implode(',', $this->_mainframe->getUserState('joom.unlockedCategories', array(0))).'))')
             ->group('a.id')
             ->having('COUNT(p.cid) >= c.level');
       $this->_db->setQuery($query);
 
       if(!$row = $this->_db->loadObject())
       {
-        JError::raiseError(500, JText::sprintf('Image with ID %d not found', $this->_id));
+        $this->setError(JText::sprintf('Image with ID %d not found', $this->_id));
+
+        return false;
       }
 
       $this->_image = $row;
@@ -460,6 +541,14 @@ class JoomGalleryModelImage extends JoomGalleryModel
     {
       // Get background color for cropped image
       $cropbgcol = $this->_config->get('jg_dyncropbgcol');
+      if(!$cropbgcol || in_array($cropbgcol, array('none', 'transparent')))
+      {
+        $cropbgcol = 'FFFFFF';
+      }
+      elseif($cropbgcol['0'] == '#')
+      {
+        $cropbgcol = substr($cropbgcol, 1);
+      }
 
       // Calculate a rgb code from hex value
       $rgb[0] = hexdec(substr($cropbgcol, 0, 2));

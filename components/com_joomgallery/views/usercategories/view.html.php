@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/views/usercategories/view.html.php $
-// $Id: view.html.php 4382 2014-05-05 17:20:15Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/usercategories/view.html.php $
+// $Id: view.html.php 4391 2014-06-08 12:50:10Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -37,8 +37,8 @@ class JoomGalleryViewUsercategories extends JoomGalleryView
       $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false), $msg, 'notice');
     }
 
-    // TODO: This check may be removed later on
-    if(!$this->_user->get('id'))
+    // Additional security check for unregistered users
+    if(!$this->_user->get('id') && !$this->_config->get('jg_unregistered_permissions'))
     {
       $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false), JText::_('COM_JOOMGALLERY_COMMON_MSG_YOU_ARE_NOT_LOGGED'), 'notice');
     }
@@ -56,151 +56,129 @@ class JoomGalleryViewUsercategories extends JoomGalleryView
     // Header and footer
     JoomHelper::prepareParams($params);
 
-    $pathway = null;
+    $this->pathway = null;
     if($this->_config->get('jg_showpathway'))
     {
-      $pathway  = '<a href="'.JRoute::_('index.php?view=userpanel').'">'.JText::_('COM_JOOMGALLERY_COMMON_USER_PANEL').'</a>';
-      $pathway .= ' &raquo; '.JText::_('COM_JOOMGALLERY_COMMON_CATEGORIES');
+      $this->pathway  = '<a href="'.JRoute::_('index.php?view=userpanel').'">'.JText::_('COM_JOOMGALLERY_COMMON_USER_PANEL').'</a>';
+      $this->pathway .= ' &raquo; '.JText::_('COM_JOOMGALLERY_COMMON_CATEGORIES');
     }
 
-    $backtarget = JRoute::_('index.php?view=userpanel'); //see above
-    $backtext   = JText::_('COM_JOOMGALLERY_COMMON_BACK_TO_USER_PANEL');
+    $this->backtarget = JRoute::_('index.php?view=userpanel');
+    $this->backtext   = JText::_('COM_JOOMGALLERY_COMMON_BACK_TO_USER_PANEL');
 
     // Get number of images and hits in gallery
-    $numbers  = JoomHelper::getNumberOfImgHits();
+    $numbers             = JoomHelper::getNumberOfImgHits();
+    $this->numberofpics  = $numbers[0];
+    $this->numberofhits  = $numbers[1];
 
     // Load modules at position 'top'
-    $modules['top'] = JoomHelper::getRenderedModules('top');
-    if(count($modules['top']))
+    $this->modules['top'] = JoomHelper::getRenderedModules('top');
+    if(count($this->modules['top']))
     {
       $params->set('show_top_modules', 1);
     }
     // Load modules at position 'btm'
-    $modules['btm'] = JoomHelper::getRenderedModules('btm');
-    if(count($modules['btm']))
+    $this->modules['btm'] = JoomHelper::getRenderedModules('btm');
+    if(count($this->modules['btm']))
     {
       $params->set('show_btm_modules', 1);
     }
 
-    // Prepare pagelimit choices
-    $default_limit  = $this->_mainframe->getCfg('list_limit');
-    $limit          = $this->_mainframe->getUserStateFromRequest('joom.usercategories.limit', 'limit', $default_limit, 'int');
-    $limitstart     = JRequest::getInt('limitstart', 0);#$this->_mainframe->getUserStateFromRequest('joom.usercategories.limitstart', 'limitstart', 0, 'int');
-
-    // In case limit has been changed, adjust limitstart accordingly
-    $limitstart = ( $limit != 0 ? (floor($limitstart / $limit) * $limit) : 0 );
-
-    // Prepare other choices
-    #$searchtext     = $this->_mainframe->getUserStateFromRequest('joom.usercategories.search', 'search', '');
-    #$filter         = $this->_mainframe->getUserStateFromRequest('joom.usercategories.filter', 'filter', 0);
-    #$ordering       = $this->_mainframe->getUserStateFromRequest('joom.usercategories.ordering','ordering', 0);
-
-    $filter       = JRequest::getInt('filter', null);
-    $filter_state = $this->_mainframe->getUserState('joom.usercategories.filter');
-    if(is_null($filter))
-    {
-      $filter = $filter_state;
-      if(is_null($filter))
-      {
-        $filter = 0;
-      }
-    }
-    else
-    {
-      $this->_mainframe->setUserState('joom.usercategories.filter', $filter);
-      if($filter != $filter_state)
-      {
-        // Number of categories changes now, so go to first page
-        $limitstart = 0;
-      }
-    }
-
-    JRequest::setVar('limitstart', $limitstart);
-    JRequest::setVar('limit',     (int) $limit);
-    #JRequest::setVar('search',    $searchtext);
-    #JRequest::setVar('ordering',  (int) $ordering);
-    JRequest::setVar('filter',    $filter);
-
-    $lists = array();
-
-    /*
-    // Sorting options
-    $o_options[] = JHTML::_('select.option', 0, JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_DATE_ASC'));
-    $o_options[] = JHTML::_('select.option', 1, JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_DATE_DESC'));
-    $o_options[] = JHTML::_('select.option', 2, JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_TITLE_ASC'));
-    $o_options[] = JHTML::_('select.option', 3, JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_TITLE_DESC'));
-    $o_options[] = JHTML::_('select.option', 4, JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_HITS_ASC'));
-    $o_options[] = JHTML::_('select.option', 5, JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_HITS_DESC'));
-    $o_options[] = JHTML::_('select.option', 6, JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_CATNAME_ASC') .' - '. JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_TITLE_ASC'));
-    $o_options[] = JHTML::_('select.option', 7, JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_CATNAME_DESC') .' - '. JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_TITLE_DESC'));
-
-    $lists['ordering'] = JHTML::_('select.genericlist', $o_options, 'ordering',
-            'class="inputbox" size="1" onchange="form.submit();"',
-            'value', 'text', $ordering); */
-
-    // Filter
-    $s_options[] = JHTML::_('select.option', 0, JText::_('COM_JOOMGALLERY_COMMON_SELECT_STATE'));
-    $s_options[] = JHTML::_('select.option', 1, JText::_('COM_JOOMGALLERY_COMMON_OPTION_PUBLISHED_ONLY'));
-    $s_options[] = JHTML::_('select.option', 2, JText::_('COM_JOOMGALLERY_COMMON_OPTION_NOT_PUBLISHED_ONLY'));
-
-    $lists['filter'] = JHTML::_('select.genericlist', $s_options, 'filter',
-            'class="inputbox" size="1" onchange="form.submit();"',
-            'value', 'text', $filter);
-
-    // Get data from the model
-    $total = $this->get('Total');
-    if($limitstart >= $total)
-    {
-      // This may happen for instance when a category has been deleted on a page with just one entry
-      $limitstart = ($total > 0 && $total > $limit) ? (floor(($total - 1) / $limit) * $limit) : 0;
-    }
-    JRequest::setVar('limit',     (int) $limit);
-    JRequest::setVar('limitstart', $limitstart);
-    $slimitstart = ($limitstart > 0 ? '&limitstart='.$limitstart : '');
-
-    $categoryNumber = $this->get('CategoryNumber');
-    $rows           = $this->get('Categories');
-
     // Show upload quota
-    if($this->_config->get('jg_newpicnote'))
+    if($this->_config->get('jg_newpicnote') && $this->_user->get('id'))
     {
       $params->set('show_categories_notice', 1);
+    }
+
+    // Get data from the model
+    $this->total      = $this->get('Total');
+    $this->state      = $this->get('State');
+
+    if($this->state->get('list.start') >= $this->total)
+    {
+      // This may happen for instance when a category has been deleted on a page with just one entry
+      $limitstart = ($this->total > 0 && $this->total > $this->state->get('list.limit')) ? (floor(($this->total - 1) / $this->state->get('list.limit')) * $this->state->get('list.limit')) : 0;
+      $this->state->set('list.start', $limitstart);
+    }
+    $this->slimitstart = ($this->state->get('list.start') > 0 ? '&limitstart='.$this->state->get('list.start') : '');
+
+    // Get data from the model
+    $this->categoryNumber = $this->get('CategoryNumber');
+    $this->items          = $this->get('Categories');
+    $this->pagination     = $this->get('Pagination');
+
+    // Enqueue a message in case no categories were found
+    if(!$this->total)
+    {
+      if($this->state->get('filter.inuse'))
+      {
+        $this->_mainframe->enqueueMessage(JText::_('COM_JOOMGALLERY_USERPANEL_MSG_NO_CATEGORIES_FOUND_MATCHING_YOUR_QUERY'));
+      }
+      else
+      {
+        // Guests cannot own any categories
+        if(!$this->_user->get('id'))
+        {
+          $this->_mainframe->enqueueMessage(JText::_('COM_JOOMGALLERY_USERCATEGORIES_GUESTS_CANNOT_OWN_CATEGORIES'));
+        }
+        else
+        {
+          $this->_mainframe->enqueueMessage(JText::_('COM_JOOMGALLERY_USERCATEGORIES_YOU_NOT_HAVE_CATEGORY'));
+        }
+      }
     }
 
     // Show the button to create a new category only for users
     // with create permissions and who have not reached the limits
     if( (     $this->_user->authorise('core.create', _JOOM_OPTION)
-          ||  $this->_config->get('jg_disableunrequiredchecks')
-          ||  count(JoomHelper::getAuthorisedCategories('core.create'))
+            ||  $this->_config->get('jg_disableunrequiredchecks')
+            ||  count(JoomHelper::getAuthorisedCategories('core.create'))
         )
-        &&
-        ($this->_config->get('jg_maxusercat') - $categoryNumber) > 0
+            &&
+            ($this->_config->get('jg_maxusercat') - $this->categoryNumber) > 0
       )
     {
       $params->set('show_category_button', 1);
     }
 
-    // Create the navigation, only if images exist
-    $pagination = null;
-    if($total)
+    // Preprocess the list of items to find ordering divisions.
+    foreach ($this->items as &$item)
     {
-      jimport('joomla.html.pagination');
-      $pagination = new JPagination($total, $limitstart, $limit);
+      $this->ordering[$item->parent_id][] = $item->cid;
     }
 
-    $this->assignRef('params',          $params);
-    $this->assignRef('rows',            $rows);
-    $this->assignRef('pagination',      $pagination);
-    $this->assignRef('slimitstart',     $slimitstart);
-    $this->assignRef('lists',           $lists);
-    $this->assignRef('pathway',         $pathway);
-    $this->assignRef('modules',         $modules);
-    $this->assignRef('backtarget',      $backtarget);
-    $this->assignRef('backtext',        $backtext);
-    $this->assignRef('numberofpics',    $numbers[0]);
-    $this->assignRef('numberofhits',    $numbers[1]);
-    $this->assignRef('categoryNumber',  $categoryNumber);
+    $this->lists = array();
+
+    // Filter by state
+    $options = array( JHTML::_('select.option', 0, JText::_('COM_JOOMGALLERY_COMMON_SELECT_STATE')),
+            JHTML::_('select.option', 1, JText::_('COM_JOOMGALLERY_COMMON_OPTION_PUBLISHED_ONLY')),
+            JHTML::_('select.option', 2, JText::_('COM_JOOMGALLERY_COMMON_OPTION_NOT_PUBLISHED_ONLY'))
+    );
+
+    $this->lists['filter_state'] = JHTML::_( 'select.genericlist', $options, 'filter_state',
+                                             'class="inputbox" size="1" onchange="form.submit();"',
+                                             'value', 'text', $this->state->get('filter.state')
+                                           );
+
+    $this->params = $params;
 
     parent::display($tpl);
+  }
+
+  /**
+   * Returns an array of fields the table can be sorted by
+   *
+   * @return  array  Array containing the field name to sort by as the key and display text as value
+   *
+   * @since   3.0
+   */
+  protected function getSortFields()
+  {
+    return array(
+                  'c.lft'        => JText::_('COM_JOOMGALLERY_COMMON_ORDERING'),
+                  'c.name'       => JText::_('COM_JOOMGALLERY_COMMON_CATEGORY'),
+                  'images'       => JText::_('COM_JOOMGALLERY_USERCATEGORIES_IMAGES'),
+                  'c.parent_id'  => JText::_('COM_JOOMGALLERY_COMMON_PARENT_CATEGORY')
+                );
   }
 }

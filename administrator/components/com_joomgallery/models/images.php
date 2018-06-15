@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/models/images.php $
-// $Id: images.php 4108 2013-02-22 17:36:47Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/images.php $
+// $Id: images.php 2015-03-23 $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -51,15 +51,19 @@ class JoomGalleryModelImages extends JoomGalleryModel
         'imgtitle', 'a.imgtitle',
         'alias', 'a.alias',
         'catid', 'a.catid',
-        'category_name',
+        'category', 'category_name',
         'published', 'a.published',
         'approved', 'a.approved',
+        'featured', 'a.featured',
         'access', 'a.access', 'access_level',
         'owner', 'a.owner',
         'imgauthor', 'a.imgauthor',
         'imgdate', 'a.imgdate',
         'hits', 'a.hits',
-        'ordering', 'a.ordering'
+        'downloads', 'a.downloads',
+        'ordering', 'a.ordering',
+        'state',
+        'type'
         );
   }
 
@@ -75,10 +79,37 @@ class JoomGalleryModelImages extends JoomGalleryModel
     if(empty($this->_images))
     {
       $query = $this->_buildQuery();
-      $this->_images = $this->_getList($query, $this->getState('list.start'), $this->getState('list.limit'));
+      $this->_images = $this->_getList($query, $this->getStart(), $this->getState('list.limit'));
     }
 
     return $this->_images;
+  }
+
+  /**
+   * Function to get the active filters
+   *
+   * @return  array  Associative array in the format: array('filter_published' => 0)
+   *
+   * @since   3.2.3
+   */
+  public function getActiveFilters()
+  {
+    $activeFilters = array();
+
+    if (!empty($this->filter_fields))
+    {
+      foreach ($this->filter_fields as $filter)
+      {
+        $filterName = 'filter.' . $filter;
+
+        if (property_exists($this->state, $filterName) && (!empty($this->state->{$filterName}) || is_numeric($this->state->{$filterName})))
+        {
+          $activeFilters[$filter] = $this->state->get($filterName);
+        }
+      }
+    }
+
+    return $activeFilters;
   }
 
   /**
@@ -91,7 +122,6 @@ class JoomGalleryModelImages extends JoomGalleryModel
    */
   public function getPagination()
   {
-    jimport('joomla.html.pagination');
     return new JPagination($this->getTotal(), $this->getStart(), $this->getState('list.limit'));
   }
 
@@ -133,6 +163,99 @@ class JoomGalleryModelImages extends JoomGalleryModel
   }
 
   /**
+   * Get the filter form
+   *
+   * @param   array    $data      data
+   * @param   boolean  $loadData  load current data
+   *
+   * @return  JForm/false  the JForm object or false
+   *
+   * @since   3.2.3
+   */
+  public function getFilterForm($data = array(), $loadData = true)
+  {
+    return $this->loadForm(_JOOM_OPTION . '.filter_images', 'filter_images', array('control' => '', 'load_data' => $loadData));
+  }
+
+  /**
+   * Method to get a form object.
+   *
+   * @param   string   $name     The name of the form.
+   * @param   string   $source   The form source. Can be XML string if file flag is set to false.
+   * @param   array    $options  Optional array of options for the form creation.
+   * @param   boolean  $clear    Optional argument to force load a new form.
+   * @param   string   $xpath    An optional xpath to search for the fields.
+   *
+   * @return  mixed  JForm object on success, False on error.
+   *
+   * @see     JForm
+   * @since   3.2.3
+   */
+  protected function loadForm($name, $source = null, $options = array(), $clear = false, $xpath = false)
+  {
+    // Handle the optional arguments.
+    $options['control'] = JArrayHelper::getValue($options, 'control', false);
+
+    // Get the form.
+    JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
+    JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
+
+    try
+    {
+      $form = JForm::getInstance($name, $source, $options, false, $xpath);
+
+      $form->setFieldAttribute('owner', 'useListboxMaxUserCount', $this->_config->get('jg_use_listbox_max_user_count'), 'filter');
+
+      if(isset($options['load_data']) && $options['load_data'])
+      {
+        // Get the data for the form.
+        $data = $this->loadFormData();
+      }
+      else
+      {
+        $data = array();
+      }
+
+      // Load the data into the form after the plugins have operated.
+      $form->bind($data);
+    }
+    catch(Exception $e)
+    {
+      $this->setError($e->getMessage());
+
+      return false;
+    }
+
+    return $form;
+  }
+
+  /**
+   * Method to get the data that should be injected in the form.
+   *
+   * @return  mixed  The data for the form.
+   *
+   * @since  3.2.3
+   */
+  protected function loadFormData()
+  {
+    // Check the session for previously entered form data.
+    $data = JFactory::getApplication()->getUserState('joom.images', new stdClass);
+
+    // Pre-fill the list options
+    if (!property_exists($data, 'list'))
+    {
+      $data->list = array(
+          'direction' => $this->state->{'list.direction'},
+          'limit'     => $this->state->{'list.limit'},
+          'ordering'  => $this->state->{'list.ordering'},
+          'start'     => $this->state->{'list.start'}
+      );
+    }
+
+    return $data;
+  }
+
+  /**
    * Method to auto-populate the model state.
    *
    * Note. Calling getState in this method will result in recursion.
@@ -142,88 +265,161 @@ class JoomGalleryModelImages extends JoomGalleryModel
    * @return  void
    * @since   2.0
    */
-  protected function populateState($ordering = 'a.ordering', $direction = 'ASC')
+  protected function populateState($ordering = 'a.ordering', $direction = 'asc')
   {
-    $search = $this->getUserStateFromRequest('joom.images.filter.search', 'filter_search');
-    $this->setState('filter.search', $search);
+    // Receive & set filters
+    $filters = $this->getUserStateFromRequest('joom.images.filter', 'filter',
+      array('search' => null, 'access' => '', 'state' => '', 'type' => '', 'category' => '', 'owner' => ''), 'array');
 
-    $access = $this->getUserStateFromRequest('joom.images.filter.access', 'filter_access', '');
-    $this->setState('filter.access', $access);
-
-    $published = $this->getUserStateFromRequest('joom.images.filter.state', 'filter_state', 0, 'int');
-    $this->setState('filter.state', $published);
-
-    $type = $this->getUserStateFromRequest('joom.images.filter.type', 'filter_type', 0, 'int');
-    $this->setState('filter.type', $type);
-
-    $category = $this->getUserStateFromRequest('joom.images.filter.category', 'filter_category', '');
-    $this->setState('filter.category', $category);
-
-    $owner = $this->getUserStateFromRequest('joom.images.filter.owner', 'filter_owner', '');
-    $this->setState('filter.owner', $owner);
-
-    $value = $this->getUserStateFromRequest('global.list.limit', 'limit', $this->_mainframe->getCfg('list_limit'));
-    $limit = $value;
-    $this->setState('list.limit', $limit);
-
-    $value = $this->getUserStateFromRequest('joom.images.limitstart', 'limitstart', 0);
-    $limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
-    $this->setState('list.start', $limitstart);
-
-    // Check if the ordering field is in the white list, otherwise use the incoming value
-    $value = $this->getUserStateFromRequest('joom.images.ordercol', 'filter_order', $ordering);
-    if(!in_array($value, $this->filter_fields))
+    if($filters)
     {
-      $value = $ordering;
-      $this->_mainframe->setUserState('joom.images.ordercol', $value);
+      foreach($filters as $name => $value)
+      {
+        // Special case for category filter to ensure that search tools will be hidden
+        // , if 'None' has been selected in AJAX category selection box
+        if($this->_config->get('jg_ajaxcategoryselection') && $name == 'category' && $value == 0)
+        {
+          $value = '';
+          JFactory::getApplication()->setUserState('joom.images.filter.' . $name, $value);
+        }
+
+        $this->setState('filter.' . $name, $value);
+
+        if($value)
+        {
+          $this->setState('filter.inuse', 1);
+        }
+      }
     }
 
-    $this->setState('list.ordering', $value);
+    $limit = 0;
 
-    // Check if the ordering direction is valid, otherwise use the incoming value
-    $value = $this->getUserStateFromRequest('joom.images.orderdirn', 'filter_order_Dir', $direction);
-    if(!in_array(strtoupper($value), array('ASC', 'DESC', '')))
+    // Receive & set list options
+    $list = $this->getUserStateFromRequest('joom.images.list', 'list',
+      array('ordering' => $ordering, 'direction' => $direction, 'fullordering' => $ordering . ' ' . $direction,
+      'limit' => $this->_mainframe->getCfg('list_limit'), 'start' => 0), 'array');
+
+    if($list)
     {
-      $value = $direction;
-      $this->_mainframe->setUserState('joom.images.orderdirn', $value);
+      foreach($list as $name => $value)
+      {
+        // Extra validations
+        switch($name)
+        {
+          case 'fullordering':
+            $orderingParts = explode(' ', $value);
+
+            if(count($orderingParts) >= 2)
+            {
+              // Latest part will be considered the direction
+              $fullDirection = end($orderingParts);
+
+              if(in_array(strtoupper($fullDirection), array('ASC', 'DESC', '')))
+              {
+                $this->setState('list.direction', $fullDirection);
+              }
+
+              unset($orderingParts[count($orderingParts) - 1]);
+
+              // The rest will be the ordering
+              $fullOrdering = implode(' ', $orderingParts);
+
+              if(in_array($fullOrdering, $this->filter_fields))
+              {
+                $this->setState('list.ordering', $fullOrdering);
+              }
+            }
+            else
+            {
+              $this->setState('list.ordering', $ordering);
+              $this->setState('list.direction', $direction);
+            }
+            break;
+          case 'ordering':
+            if(!in_array($value, $this->filter_fields))
+            {
+              $value = $ordering;
+            }
+            break;
+
+          case 'direction':
+            if(!in_array(strtoupper($value), array('ASC', 'DESC', '')))
+            {
+              $value = $direction;
+            }
+            break;
+
+          case 'limit':
+            $limit = $value;
+            break;
+
+            // Just to keep the default case
+          default:
+            $value = $value;
+            break;
+        }
+
+        $this->setState('list.' . $name, $value);
+      }
+
+      $value      = $this->getUserStateFromRequest('joom.images.limitstart', 'limitstart', 0);
+      $limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
+      $this->setState('list.start', $limitstart);
+
     }
+  }
 
-    $this->setState('list.direction', $value);
-
-    if($search || $access || $published || $type || $category || $owner)
+  /**
+   * Method to reorder images in categories
+   *
+   * @param    object  $table  Image table object
+   * @return   array   $cats   Array of categories
+   * @return   void
+   * @since    3.1
+   */
+  protected function reorder($table, $cats)
+  {
+    if(!empty($cats))
     {
-      $this->setState('filter.inuse', 1);
+      $cats = array_unique($cats);
+
+      // Execute reorder for each category
+      foreach($cats as $cat)
+      {
+        $table->reorder('catid = '.(int) $cat);
+      }
     }
   }
 
   /**
    * Method to delete one or more images
    *
-   * @return  int     Number of successfully deleted images, boolean false if an error occured
+   * @param   array $ids  IDs of images to delete
+   * @return  int   Number of successfully deleted images, boolean false if an error occurred
+   * @throws  RuntimeException
    * @since   1.5.5
    */
-  public function delete()
+  public function delete($ids)
   {
     jimport('joomla.filesystem.file');
 
-    $cids = JRequest::getVar('cid', array(), '', 'array');
-
     $row = $this->getTable('joomgalleryimages');
 
-    if(!count($cids))
+    if(!count($ids))
     {
-      $this->setError(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_IMAGES_SELECTED'));
-      return false;
+      throw new RuntimeException(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_IMAGES_SELECTED'));
     }
 
-    $count = 0;
+    $count         = 0;
+    $catsToReorder = array();
 
     // Loop through selected images
-    foreach($cids as $cid)
+    foreach($ids as $cid)
     {
       if(!$this->_user->authorise('core.delete', _JOOM_OPTION.'.image.'.$cid))
       {
-        $this->setError(JText::plural('COM_JOOMGALLERY_IMGMAN_ERROR_DELETE_NOT_PERMITTED', 1));
+        JLog::add(JText::plural('COM_JOOMGALLERY_IMGMAN_ERROR_DELETE_NOT_PERMITTED', 1), JLog::ERROR, 'jerror');
+
         continue;
       }
 
@@ -258,9 +454,8 @@ class JoomGalleryModelImages extends JoomGalleryModel
         $thumb = $this->_ambit->getImg('thumb_path', $row);
         if(!JFile::delete($thumb))
         {
-          // If thumbnail is not deleteable raise an error message and abort
-          JError::raiseWarning(100, JText::sprintf('COM_JOOMGALLERY_IMGMAN_MSG_COULD_NOT_DELETE_THUMB', $thumb));
-          return false;
+          // If thumbnail is not deletable raise an error message
+          JLog::add(JText::sprintf('COM_JOOMGALLERY_IMGMAN_MSG_COULD_NOT_DELETE_THUMB', $thumb), JLog::WARNING, 'jerror');
         }
       }
 
@@ -271,10 +466,10 @@ class JoomGalleryModelImages extends JoomGalleryModel
         $img = $this->_ambit->getImg('img_path', $row);
         if(!JFile::delete($img))
         {
-          // If detail image is not deleteable raise an error message and abort
-          JError::raiseWarning(100, JText::sprintf('COM_JOOMGALLERY_IMGMAN_MSG_COULD_NOT_DELETE_IMG', $img));
-          return false;
+          // If detail image is not deletable raise an error message
+          JLog::add(JText::sprintf('COM_JOOMGALLERY_IMGMAN_MSG_COULD_NOT_DELETE_IMG', $img), JLog::WARNING, 'jerror');
         }
+
         // Original exists?
         $orig = $this->_ambit->getImg('orig_path', $row);
         if(JFile::exists($orig))
@@ -282,9 +477,8 @@ class JoomGalleryModelImages extends JoomGalleryModel
           // Delete it
           if(!JFile::delete($orig))
           {
-            // If original is not deleteable raise an error message and abort
-            JError::raiseWarning(100, JText::sprintf('COM_JOOMGALLERY_IMGMAN_MSG_COULD_NOT_DELETE_ORIG', $orig));
-            return false;
+            // If original is not deletable raise an error message and abort
+            JLog::add(JText::sprintf('COM_JOOMGALLERY_IMGMAN_MSG_COULD_NOT_DELETE_ORIG', $orig), JLog::WARNING, 'jerror');
           }
         }
       }
@@ -298,7 +492,7 @@ class JoomGalleryModelImages extends JoomGalleryModel
       $this->_db->setQuery($query);
       if(!$this->_db->query())
       {
-        JError::raiseWarning(100, JText::sprintf('COM_JOOMGALLERY_MAIMAN_MSG_NOT_DELETE_COMMENTS', $cid));
+        JLog::add(JText::sprintf('COM_JOOMGALLERY_MAIMAN_MSG_NOT_DELETE_COMMENTS', $cid), JLog::WARNING, 'jerror');
       }
 
       // Delete the corresponding database entries of the name tags
@@ -310,22 +504,40 @@ class JoomGalleryModelImages extends JoomGalleryModel
       $this->_db->setQuery($query);
       if(!$this->_db->query())
       {
-        JError::raiseWarning(100, JText::sprintf('COM_JOOMGALLERY_MAIMAN_MSG_NOT_DELETE_NAMETAGS', $cid));
+        JLog::add(JText::sprintf('COM_JOOMGALLERY_MAIMAN_MSG_NOT_DELETE_NAMETAGS', $cid), JLog::WARNING, 'jerror');
+      }
+
+      // Delete the corresponding database entries of the votes
+      $query = $this->_db->getQuery(true)
+            ->delete()
+            ->from(_JOOM_TABLE_VOTES)
+            ->where('picid = '.$cid);
+
+      $this->_db->setQuery($query);
+      if(!$this->_db->query())
+      {
+        JLog::add(JText::sprintf('COM_JOOMGALLERY_MAIMAN_MSG_NOT_DELETE_VOTES', $cid), JLog::WARNING, 'jerror');
       }
 
       // Delete the database entry of the image
       if(!$row->delete())
       {
-        JError::raiseWarning(100, JText::sprintf('COM_JOOMGALLERY_MAIMAN_MSG_NOT_DELETE_IMAGE_DATA', $cid));
-        return false;
+        $this->reorder($row, $catsToReorder);
+
+        throw new RuntimeException(JText::sprintf('COM_JOOMGALLERY_MAIMAN_MSG_NOT_DELETE_IMAGE_DATA', $cid));
       }
 
       $this->_mainframe->triggerEvent('onContentAfterDelete', array(_JOOM_OPTION.'.image', $row));
 
       // Image successfully deleted
       $count++;
-      $row->reorder('catid = '.$row->catid);
+
+      // Remember the categories for reordering later
+      $catsToReorder[] = $row->catid;
     }
+
+    // Execute reorder for each category
+    $this->reorder($row, $catsToReorder);
 
     return $count;
   }
@@ -351,6 +563,10 @@ class JoomGalleryModelImages extends JoomGalleryModel
     if($task == 'publish')
     {
       $column = 'published';
+    }
+    if($task == 'feature')
+    {
+      $column = 'featured';
     }
 
     foreach($cid as $id)
@@ -378,6 +594,40 @@ class JoomGalleryModelImages extends JoomGalleryModel
     }
 
     return $count;
+  }
+
+  /**
+   * Sends message about reason of rejection to image owner
+   *
+   * @param   int     $id       The image ID
+   * @param   string  $message  The message to send
+   * @return  boolean True on success, false otherwise
+   * @since   3.1
+   */
+  public function sendRejectionMessage($id, $message)
+  {
+    if(!$image = $this->_ambit->getImgObject($id))
+    {
+      return false;
+    }
+
+    if(!$image->owner)
+    {
+      return false;
+    }
+
+    require_once JPATH_COMPONENT_SITE.'/helpers/messenger.php';
+    $messenger  = new JoomMessenger();
+
+    $message    = array(
+                        'from'      => $this->_user->get('id'),
+                        'recipient' => $image->owner,
+                        'subject'   => JText::sprintf('COM_JOOMGALLERY_IMGMAN_REJECT_IMAGE_SUBJECT', $image->imgtitle),
+                        'body'      => $message,
+                        'mode'      => 'rejectimg'
+                      );
+
+    return $messenger->send($message);
   }
 
   /**
@@ -411,7 +661,7 @@ class JoomGalleryModelImages extends JoomGalleryModel
       $recreated = array();
     }
 
-    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
+    require_once JPATH_COMPONENT.'/helpers/refresher.php';
 
     $refresher = new JoomRefresher(array('controller' => 'images', 'task' => 'recreate', 'remaining' => count($cids), 'start' => JRequest::getBool('cid')));
 
@@ -587,8 +837,7 @@ class JoomGalleryModelImages extends JoomGalleryModel
     }
 
     // Filter by owner
-    $owner = $this->getState('filter.owner');
-    if($owner !== '')
+    if($owner = $this->getState('filter.owner'))
     {
       $query->where('a.owner = '.(int) $owner);
     }
@@ -616,8 +865,20 @@ class JoomGalleryModelImages extends JoomGalleryModel
         $query->where('a.approved = 1');
         break;
       case 4:
-        // Not approved / rejected
+        // Not approved
         $query->where('a.approved = 0');
+        break;
+      case 5:
+        // Rejected
+        $query->where('a.approved = -1');
+        break;
+      case 6:
+        // Featured
+        $query->where('a.featured = 1');
+        break;
+      case 7:
+        // Not featured
+        $query->where('a.featured = 0');
         break;
       default:
         // No filter by state
@@ -653,12 +914,12 @@ class JoomGalleryModelImages extends JoomGalleryModel
       {
         if(stripos($search, 'author:') === 0)
         {
-          $search = $this->_db->Quote('%'.$this->_db->getEscaped(substr($search, 7), true).'%');
+          $search = $this->_db->Quote('%'.$this->_db->escape(substr($search, 7), true).'%');
           $query->where('(u.name LIKE '.$search.' OR u.username LIKE '.$search.')');
         }
         else
         {
-          $search = $this->_db->Quote('%'.$this->_db->getEscaped($search, true).'%');
+          $search = $this->_db->Quote('%'.$this->_db->escape($search, true).'%');
           $query->where('(a.imgtitle LIKE '.$search.' OR a.alias LIKE '.$search.' OR LOWER(a.imgtext) LIKE '.$search.')');
         }
       }
@@ -671,7 +932,7 @@ class JoomGalleryModelImages extends JoomGalleryModel
     {
       $orderCol = 'category_name '.$orderDirn.', a.ordering';
     }
-    $query->order($this->_db->getEscaped($orderCol.' '.$orderDirn));
+    $query->order($this->_db->escape($orderCol.' '.$orderDirn));
 
     return $query;
   }
@@ -692,11 +953,20 @@ class JoomGalleryModelImages extends JoomGalleryModel
   public function getUserStateFromRequest($key, $request, $default = null, $type = 'none', $resetPage = true)
   {
     $app = JFactory::getApplication();
+
     $old_state = $app->getUserState($key);
     $cur_state = (!is_null($old_state)) ? $old_state : $default;
     $new_state = JRequest::getVar($request, null, 'default', $type);
 
-    if($cur_state != $new_state && $resetPage)
+    // Special case for owner filter since Joomla! 3.5 when using modal user selection
+    if(    !is_null($new_state) && isset($new_state['owner'])
+        && ($new_state['owner'] === 0 || $new_state['owner'] === '0')
+      )
+    {
+      $new_state['owner'] = '';
+    }
+
+    if($cur_state != $new_state && !is_null($new_state) && !is_null($old_state) && $resetPage)
     {
       JRequest::setVar('limitstart', 0);
     }

@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/models/fields/joomcategory.php $
-// $Id: joomcategory.php 4006 2012-12-03 18:40:40Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/fields/joomcategory.php $
+// $Id: joomcategory.php 4381 2014-05-04 09:30:44Z erftralle $
 /****************************************************************************************\
-**   JoomGallery  2                                                                     **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -37,13 +37,13 @@ class JFormFieldJoomCategory extends JFormField
    */
   protected function getInput()
   {
-    require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'defines.php';
-    JLoader::register('JoomExtensions', JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'extensions.php');
-    JLoader::register('JoomHelper', JPATH_BASE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'helper.php');
-    JLoader::register('JoomConfig', JPATH_BASE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'config.php');
-    JLoader::register('JoomAmbit', JPATH_BASE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'ambit.php');
-    JTable::addIncludePath(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'tables');
-    JHTML::addIncludePath(JPATH_BASE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
+    require_once JPATH_ADMINISTRATOR.'/components/com_joomgallery/includes/defines.php';
+    JLoader::register('JoomExtensions', JPATH_ADMINISTRATOR.'/components/'._JOOM_OPTION.'/helpers/extensions.php');
+    JLoader::register('JoomHelper', JPATH_BASE.'/components/'._JOOM_OPTION.'/helpers/helper.php');
+    JLoader::register('JoomConfig', JPATH_BASE.'/components/'._JOOM_OPTION.'/helpers/config.php');
+    JLoader::register('JoomAmbit', JPATH_BASE.'/components/'._JOOM_OPTION.'/helpers/ambit.php');
+    JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/'._JOOM_OPTION.'/tables');
+    JHTML::addIncludePath(JPATH_BASE.'/components/'._JOOM_OPTION.'/helpers/html');
 
     $class = $this->element['class'] ? (string) $this->element['class'] : '';
     if($this->element['required'] && $this->element['required'] == true && strpos($class, 'required') === false)
@@ -60,7 +60,7 @@ class JFormFieldJoomCategory extends JFormField
 
       // Add a validation script for form validation
       $js_validate = "
-        window.addEvent('domready', function() {
+        jQuery(document).ready(function() {
           document.formvalidator.setHandler('joompositivenumeric', function(value) {
             regex=/^[1-9]+[0-9]*$/;
             return regex.test(value);

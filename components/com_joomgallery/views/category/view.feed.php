@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/views/category/view.feed.php $
-// $Id: view.feed.php 3651 2012-02-19 14:36:46Z mab $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/category/view.feed.php $
+// $Id: view.feed.php 4077 2013-02-12 10:46:13Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -26,19 +26,20 @@ class JoomGalleryViewCategory extends JoomGalleryView
    * of the current category and its sub-categories
    *
    * @access  public
+   * @param   string  $tpl  The name of the template file to parse
    * @return  void
    * @since   1.5.7
    */
-  function display()
+  function display($tpl = null)
   {
-    $params     = & $this->_mainframe->getParams();
+    $params     = $this->_mainframe->getParams();
     $feedEmail  = ($this->_mainframe->getCfg('feed_email')) ? $this->_mainframe->getCfg('feed_email') : 'author';
     $siteEmail  = $this->_mainframe->getCfg('mailfrom');
 
     // Get the images data from the model
     JRequest::setVar('limit', $this->_config->get('jg_category_rss'));
-    $category  = & $this->get('Category');
-    $rows     = & $this->get('AllImages');
+    $category  = $this->get('Category');
+    $rows     = $this->get('AllImages');
 
     $this->_doc->link = JRoute::_('index.php?view=category&catid='.$category->cid);
 
@@ -49,7 +50,7 @@ class JoomGalleryViewCategory extends JoomGalleryView
       $title = html_entity_decode($title);
 
       // URL link to image
-      if(!$this->_config->get('jg_detailpic_open'))
+      if(is_numeric($this->_config->get('jg_detailpic_open')) && $this->_config->get('jg_detailpic_open') == 0)
       {
         $link = JRoute::_('index.php?view=detail&id='.$row->id);
       }

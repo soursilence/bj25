@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/models/fields/cbjoomuser.php $
-// $Id: cbjoomuser.php 3773 2012-05-07 15:28:36Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/fields/cbjoomuser.php $
+// $Id: cbjoomuser.php 4327 2013-09-07 14:49:38Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -48,9 +48,7 @@ class JFormFieldCbjoomuser extends JFormFieldJoomuser
 
     $cbid       = str_replace(array('[', ']'), array('', ''), $cbname.$cbvalue);
     $cbhtml     = '<input id="'.$cbid.'" type="checkbox" name="'.$cbname.'" value="'.$cbvalue.'" />';
-    $label      = parent::getLabel();
-    $insertpos  = strpos($label, '>');
-    $label      = substr_replace($label, $cbhtml, $insertpos + 1, 0);
+    $label      = $cbhtml . parent::getLabel();
 
     return $label;
   }

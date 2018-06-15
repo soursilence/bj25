@@ -133,6 +133,8 @@
   background-position: center center;
   float: left;
   border: solid 1px #fff;
+  margin: 0;
+  padding: 0;
 }
 
 .jdGallery .wall .thumbnail, .jdExtCarousel .wall .thumbnail
@@ -140,7 +142,7 @@
   margin-bottom: 10px;
 }
 
-.jdGallery .carousel .label, .jdExtCarousel .label
+.jdGallery .carousel .jdlabel, .jdExtCarousel .jdlabel
 {
   font-size: 13px;
   position: absolute;
@@ -163,7 +165,7 @@
   cursor: pointer;
 }
 
-.jdGallery .carousel .label .number, .jdExtCarousel .label .number
+.jdGallery .carousel .jdlabel .number, .jdExtCarousel .jdlabel .number
 {
   color: #b5b5b5;
 }

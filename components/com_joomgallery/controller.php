@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/controller.php $
-// $Id: controller.php 3839 2012-09-03 17:17:47Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/controller.php $
+// $Id: controller.php 4157 2013-03-30 02:41:56Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                   **
+**   JoomGallery 3                                                                   **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -21,7 +21,7 @@ jimport('joomla.application.component.controller');
  * @package JoomGallery
  * @since   1.5.5
  */
-class JoomGalleryController extends JController
+class JoomGalleryController extends JControllerLegacy
 {
   /**
    * JApplication object
@@ -94,11 +94,7 @@ class JoomGalleryController extends JController
     // Increase hit counter in detail view if image view isn't used
     if($view == 'detail' && $this->_config->get('jg_use_real_paths'))
     {
-      $id = JRequest::getInt('id');
-
-      $img_model = $this->getModel('image');
-      $img_model->setId($id);
-      $img_model->hit();
+      $this->getModel('image')->hit(JRequest::getInt('id'));
     }
 
     parent::display($cachable, $urlparams);

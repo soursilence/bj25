@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/controllers/vote.php $
-// $Id: vote.php 3904 2012-09-27 19:09:29Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/controllers/vote.php $
+// $Id: vote.php 4077 2013-02-12 10:46:13Z erftralle $
 /****************************************************************************************\
-**   JoomGallery  2                                                                     **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2010  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -21,7 +21,7 @@ jimport('joomla.application.component.controller');
  * @package JoomGallery
  * @since   2.1
  */
-class JoomGalleryControllerVote extends JController
+class JoomGalleryControllerVote extends JControllerLegacy
 {
   /**
    * Votes an image

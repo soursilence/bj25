@@ -11,7 +11,6 @@
         class="inputbox"
         label="COM_JOOMGALLERY_UPLOAD_BATCH_ZIP_FILE"
         description="COM_JOOMGALLERY_UPLOAD_BATCH_ZIP_FILE_DESC"
-        size="60"
         required="true"
       />
       <field
@@ -30,10 +29,9 @@
         id="batch-filecounter"
         type="text"
         default="1"
-        class="inputbox validate-numeric"
+        class="inputbox validate-numeric span2"
         label="COM_JOOMGALLERY_UPLOAD_COUNTER_NUMBER"
         description="COM_JOOMGALLERY_UPLOAD_COUNTER_NUMBER_ASTERISK"
-        size="5"
       />
       <field
         name="imgtitle"
@@ -57,13 +55,14 @@
         type="text"
         class="inputbox"
         label="COM_JOOMGALLERY_COMMON_AUTHOR"
+        disabled="true"
+        readonly="true"
       />
       <field
         name="published"
         id="batch-published"
-        type="radio"
+        type="list"
         class="inputbox"
-        labelclass="jg-float-label"
         default="1"
         label="COM_JOOMGALLERY_COMMON_PUBLISHED"
         size="1"

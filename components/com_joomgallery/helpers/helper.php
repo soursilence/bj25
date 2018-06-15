@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/helpers/helper.php $
-// $Id: helper.php 3856 2012-09-14 20:23:40Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/helpers/helper.php $
+// $Id: helper.php 4331 2013-09-08 08:27:42Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -52,6 +52,7 @@ class JoomHelper
 
       if(     $user->authorise($action, _JOOM_OPTION.'.category.'.$category->cid)
           ||  (     $action2
+                &&  $category->owner
                 &&  $category->owner == $user->get('id')
                 &&  $user->authorise($action2, _JOOM_OPTION.'.category.'.$category->cid)
               )
@@ -251,7 +252,9 @@ class JoomHelper
       $replace  = trim($replace);
       $replace2 = str_replace('[!', '\[\!', $results[0][$i]);
       $replace2 = str_replace('!]', '\!\]', $replace2);
-      $text     = preg_replace('/('.$replace2.')/ie', $replace, $text);
+      $text     = preg_replace_callback('/('.$replace2.')/i', function($matches) use ($replace){
+        return JText::_($replace);
+      }, $text);
     }
     $text = str_replace('#cat', $catname, $text);
     $text = str_replace('#img', $imgtitle, $text);
@@ -651,9 +654,9 @@ class JoomHelper
     // Link to userpanel in the header
     if(!$params->get('disable_global_info') && $config->get('jg_userspace') == 1 && $config->get('jg_showuserpanel'))
     {
-      if($user->get('id') || $config->get('jg_showuserpanel_unreg'))
+      if($user->get('id') || $config->get('jg_unregistered_permissions') || $config->get('jg_showuserpanel_unreg'))
       {
-        if($user->get('id'))
+        if($user->get('id') || $config->get('jg_unregistered_permissions'))
         {
           $params->set('show_mygal', 1);
         }
@@ -672,7 +675,7 @@ class JoomHelper
     {
       if($view != 'favourites')
       {
-        if(   (/*$config->get('jg_showdetailfavourite') && */ $user->get('id'))
+        if(     $user->get('id')
            || (($config->get('jg_usefavouritesforpubliczip') == 1) && !$user->get('id'))
           )
         {
@@ -918,5 +921,51 @@ class JoomHelper
     }
 
     return $clause;
+  }
+
+  /**
+   * Converts a given size with units e.g. read from php.ini to bytes.
+   *
+   * @param   string  $val  Value with units (e.g. 8M)
+   * @return  int     Value in bytes
+   * @since   3.0
+   */
+
+  public static function iniToBytes($val)
+  {
+    $val = trim($val);
+
+    switch(strtolower(substr($val, -1)))
+    {
+      case 'm':
+        $val = (int)substr($val, 0, -1) * 1048576;
+        break;
+      case 'k':
+        $val = (int)substr($val, 0, -1) * 1024;
+        break;
+      case 'g':
+        $val = (int)substr($val, 0, -1) * 1073741824;
+        break;
+      case 'b':
+        switch(strtolower(substr($val, -2, 1)))
+        {
+          case 'm':
+            $val = (int)substr($val, 0, -2) * 1048576;
+            break;
+          case 'k':
+            $val = (int)substr($val, 0, -2) * 1024;
+            break;
+          case 'g':
+            $val = (int)substr($val, 0, -2) * 1073741824;
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+
+    return $val;
   }
 }

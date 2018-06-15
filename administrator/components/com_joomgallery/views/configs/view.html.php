@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/views/configs/view.html.php $
-// $Id: view.html.php 3651 2012-02-19 14:36:46Z mab $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/views/configs/view.html.php $
+// $Id: view.html.php 4361 2014-02-24 18:03:18Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -31,29 +31,16 @@ class JoomGalleryViewConfigs extends JoomGalleryView
    */
   function display($tpl = null)
   {
-    JHTML::_('behavior.tooltip');
-
     // Get data from the model
-    $items = $this->get('Configs');
-    $this->assignRef('items', $items);
-
-    if($this->getLayout() == 'new')
-    {
-      $this->assignRef('usergroups', $this->get('Usergroups'));
-
-      parent::display($tpl);
-
-      return;
-    }
-
-    // Get some additional data from the model
-    $state      = $this->get('State');
-    $pagination = $this->get('Pagination');
-
-    $this->assignRef('state',       $state);
-    $this->assignRef('pagination',  $pagination);
+    $this->items      = $this->get('Configs');
+    $this->allitems   = $this->get('AllConfigs');
+    $this->state      = $this->get('State');
+    $this->pagination = $this->get('Pagination');
+    $this->usergroups = $this->get('Usergroups');
 
     $this->addToolbar();
+    $this->sidebar = JHtmlSidebar::render();
+
     parent::display($tpl);
   }
 
@@ -65,17 +52,31 @@ class JoomGalleryViewConfigs extends JoomGalleryView
    */
   protected function addToolbar()
   {
-    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_CONFIGS_CONFIGURATION_MANAGER'), 'config');
+    require_once JPATH_COMPONENT.'/includes/popup.php';
+
+    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_CONFIGS_CONFIGURATION_MANAGER'), 'equalizer');
 
     $toolbar = JToolbar::getInstance('toolbar');
-    $toolbar->appendButton('Popup', 'new', 'JTOOLBAR_NEW', 'index.php?option='._JOOM_OPTION.'&amp;controller=config&amp;layout=new&amp;tmpl=component', 400, 350);
+    $toolbar->appendButton('Popup', 'new', 'JTOOLBAR_NEW', 'index.php?option='._JOOM_OPTION.'&amp;controller=config&amp;layout=new&amp;tmpl=component', 400, 350, 0, 0, '', 'COM_JOOMGALLERY_CONFIGS_NEW_HEADING', 'jg-new-popup', 'new');
 
     JToolbarHelper::editList('edit');
 
     JToolbarHelper::deleteList('','remove');
-    JToolbarHelper::divider();
+  }
 
-    JToolbarHelper::custom('cpanel', 'options.png', 'options.png', 'COM_JOOMGALLERY_COMMON_TOOLBAR_CPANEL', false);
-    JToolbarHelper::spacer();
+  /**
+   * Returns an array of fields the table can be sorted by
+   *
+   * @return  array Array containing the field name to sort by as the key and display text as value
+   * @since   3.0
+   */
+  protected function getSortFields()
+  {
+    return array(
+      'c.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+      'g.title' => JText::_('COM_JOOMGALLERY_CONFIGS_TITLE'),
+      'g.lft' => JText::_('COM_JOOMGALLERY_CONFIGS_GROUP'),
+      'c.id' => JText::_('JGRID_HEADING_ID')
+    );
   }
 }

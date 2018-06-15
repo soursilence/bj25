@@ -2,140 +2,232 @@
 <script language="javascript" type="text/javascript">
   Joomla.submitbutton = function(task)
   {
-    if (task == 'cancel' || document.formvalidator.isValid(document.id('adminform'))) {
+    var form = document.id('item-form');
+    if (task == 'cancel' || document.formvalidator.isValid(form)) {
       <?php echo $this->form->getField('description')->save(); ?>
-      Joomla.submitform(task, document.getElementById('adminform'));
+      Joomla.submitform(task, form);
     }
     else {
       var msg = new Array();
       msg.push('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>');
-      if (document.adminForm.name.hasClass('invalid')) {
+      if (form.name.hasClass('invalid')) {
           msg.push('<?php echo JText::_('COM_JOOMGALLERY_CATMAN_ALERT_CATEGORY_MUST_HAVE_TITLE', true);?>');
       }
       alert(msg.join('\n'));
     }
   }
+  // Ensure that changing permissions via AJAX is working correctly by adding some additional URL parameters
+  jQuery(document).ready(function() {
+    var modifiedURL = window.location.href;
+    if(modifiedURL.search('&view=category') == (-1)) {
+      modifiedURL += '&view=category';
+    }
+    if(modifiedURL.search('&cid=') > 0 && modifiedURL.search('&id=') == (-1)) {
+      modifiedURL += '&id=' + '<?php echo $this->item->cid; ?>';
+    }
+    history.replaceState(null, null, modifiedURL);
+  });
 </script>
-<form action="index.php" method="post" name="adminForm" id="adminform">
-  <div class="width-60 fltlft">
-    <fieldset class="adminform">
-      <legend><?php echo JText::_('COM_JOOMGALLERY_FIELDSET_CATEGORY'); ?></legend>
-      <ul class="adminformlist">
-        <li><?php echo $this->form->getLabel('name'); ?>
-        <?php echo $this->form->getInput('name'); ?></li>
-        <li><?php echo $this->form->getLabel('alias'); ?>
-        <?php echo $this->form->getInput('alias'); ?></li>
-        <li><?php echo $this->form->getLabel('parent_id'); ?>
-        <?php echo $this->form->getInput('parent_id'); ?></li>
-        <li><?php echo $this->form->getLabel('published'); ?>
-        <?php echo $this->form->getInput('published'); ?></li>
-        <li><?php echo $this->form->getLabel('access'); ?>
-        <?php echo $this->form->getInput('access'); ?></li>
-<?php if($this->_user->authorise('core.admin', _JOOM_OPTION.'.category.'.$this->item->cid)): ?>
-        <li><span class="faux-label"><?php echo JText::_('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
-          <div class="button2-left">
-            <div class="blank">
-              <button type="button" onclick="document.location.href='#access-rules';">
-                <?php echo JText::_('JGLOBAL_PERMISSIONS_ANCHOR'); ?></button>
+<form action="<?php echo JRoute::_('index.php?option='._JOOM_OPTION.'&controller=categories'); ?>" method="post" name="adminForm" id="item-form" class="form-validate form-horizontal">
+  <fieldset>
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#details" data-toggle="tab"><?php echo JText::_('COM_JOOMGALLERY_FIELDSET_CATEGORY');?></a></li>
+      <li><a href="#options" data-toggle="tab"><?php echo JText::_('COM_JOOMGALLERY_COMMON_PARAMETERS');?></a></li>
+      <li><a href="#metadata" data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS');?></a></li>
+      <?php if($this->_user->authorise('core.admin', _JOOM_OPTION.'.category.'.$this->item->cid)): ?>
+        <li><a href="#permissions" data-toggle="tab"><?php echo JText::_('COM_JOOMGALLERY_FIELDSET_CATEGORY_RULES');?></a></li>
+      <?php endif; ?>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="details">
+        <div class="row-fluid">
+          <div class="span6">
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('name'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('name'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('alias'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('alias'); ?>
+              </div>
             </div>
           </div>
-        </li>
-<?php endif; ?>
-      </ul>
-      <div class="clr"></div>
-      <?php echo $this->form->getLabel('description'); ?>
-      <div class="clr"></div>
-      <?php echo $this->form->getInput('description'); ?>
-      <div class="clr"></div>
-      <?php echo $this->form->getLabel('imagelib'); ?>
-      <div class="clr"></div>
-      <?php echo $this->form->getInput('imagelib'); ?>
-    </fieldset>
-  </div>
-<?php if(!$this->isNew): ?>
-  <div class="width-40 fltrt">
-    <fieldset class="adminform">
-      <legend><?php echo JText::_('COM_JOOMGALLERY_FIELDSET_CATEGORY_IMMUTABLE'); ?></legend>
-        <ul class="adminformlist">
-          <li><?php echo $this->form->getLabel('cid'); ?>
-          <?php echo $this->form->getInput('cid'); ?></li>
-          <li><?php echo $this->form->getLabel('publishhiddenstate'); ?>
-          <?php echo $this->form->getInput('publishhiddenstate'); ?></li>
+          <div class="span6">
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('publishhiddenstate'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('publishhiddenstate'); ?>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-fluid">
+          <div class="span12">
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('description'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('description'); ?>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-fluid">
+          <h4><?php echo JText::_('JDETAILS');?></h4>
+          <hr />
+        </div>
+        <div class="row-fluid">
+          <div class="span6">
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('parent_id'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('parent_id'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('published'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('published'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('hidden'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('hidden'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('access'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('access'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('exclude_toplists'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('exclude_toplists'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('exclude_search'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('exclude_search'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('cid'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('cid'); ?>
+              </div>
+            </div>
 <?php   if($this->form->getValue('notice')): ?>
-          <li><?php echo $this->form->getLabel('notice'); ?>
-          <span id="notice"><?php echo $this->form->getValue('notice'); ?></span></li>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('notice'); ?>
+              </div>
+              <div class="controls">
+                <span id="notice"><?php echo $this->form->getValue('notice'); ?></span>
+              </div>
+            </div>
 <?php   endif; ?>
-        </ul>
-    </fieldset>
-  </div>
-<?php endif; ?>
-  <div class="width-40 fltrt">
-    <?php echo  JHtml::_('sliders.start', 'category-slider'); ?>
-      <?php echo JHtml::_('sliders.panel', JText::_('COM_JOOMGALLERY_COMMON_PARAMETERS'), 'details-page'); ?>
-      <fieldset class="panelform">
-        <ul class="adminformlist">
-          <li><?php echo $this->form->getLabel('owner'); ?>
-          <?php echo $this->form->getInput('owner'); ?></li>
-          <li><?php echo $this->form->getLabel('hidden'); ?>
-          <?php echo $this->form->getInput('hidden'); ?></li>
-          <?php if(!$this->_config->get('jg_disableunrequiredchecks')): ?>
-          <li><?php echo $this->form->getLabel('ordering'); ?>
-          <?php echo $this->form->getInput('ordering'); ?></li>
-          <?php endif; ?>
-          <li><?php echo $this->form->getLabel('thumbnail'); ?>
-          <?php echo $this->form->getInput('thumbnail'); ?></li>
-          <li><?php echo $this->form->getLabel('img_position'); ?>
-          <?php echo $this->form->getInput('img_position'); ?></li>
-        </ul>
-      </fieldset>
-      <?php echo JHtml::_('sliders.panel', JText::_('COM_JOOMGALLERY_COMMON_METADATA_INFORMATION'), 'metadata-page'); ?>
-      <fieldset class="panelform">
-        <ul class="adminformlist">
-          <li><?php echo $this->form->getLabel('metadesc'); ?>
-          <?php echo $this->form->getInput('metadesc'); ?></li>
-          <li><?php echo $this->form->getLabel('metakey'); ?>
-          <?php echo $this->form->getInput('metakey'); ?></li>
-        </ul>
-      </fieldset>
-<?php $fieldSets = $this->form->getFieldsets();
-      foreach($fieldSets as $name => $fieldSet):
-        if($name != ''):
-          echo JHtml::_('sliders.panel', JText::_($fieldSet->label), $name.'-options');
-          if(isset($fieldSet->description) && trim($fieldSet->description)): ?>
-      <p class="tip"><?php echo $this->escape(JText::_($fieldSet->description)); ?></p>
-<?php     endif; ?>
-      <fieldset class="panelform">
-        <ul class="adminformlist">
-<?php     foreach($this->form->getFieldset($name) as $field): ?>
-          <li><?php echo $field->label; ?>
-          <?php echo $field->input; ?></li>
-<?php     endforeach; ?>
-        </ul>
-      </fieldset>
-<?php   endif;
-      endforeach; ?>
-    <?php echo JHtml::_('sliders.end'); ?>
-  </div>
-  <div class="clr"></div>
-<?php if($this->_user->authorise('core.admin', _JOOM_OPTION.'.category.'.$this->item->cid)): ?>
-  <div  class="width-100 fltlft">
-    <?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->cid, array('useCookie' =>1 )); ?>
-    <?php echo JHtml::_('sliders.panel', JText::_('COM_JOOMGALLERY_FIELDSET_CATEGORY_RULES'), 'access-rules'); ?>
-      <fieldset class="panelform">
-        <?php echo $this->form->getLabel('rules'); ?>
-        <?php echo $this->form->getInput('rules'); ?>
-      </fieldset>
-    <?php echo JHtml::_('sliders.end'); ?>
-  </div>
-<?php endif; ?>
-  <div>
-    <input type="hidden" name="option" value="<?php echo _JOOM_OPTION; ?>" />
-    <input type="hidden" name="controller" value="categories" />
-    <input type="hidden" name="task" value="" />
-    <input type="hidden" name="cid" value="<?php echo $this->item->cid; ?>" />
-  </div>
+          </div>
+          <div class="span6">
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('owner'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('owner'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <?php echo $this->form->getLabel('imagelib'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('imagelib'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('thumbnail'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('thumbnail'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('img_position'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('img_position'); ?>
+              </div>
+            </div>
+            <?php if(!$this->_config->get('jg_disableunrequiredchecks')): ?>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('ordering'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('ordering'); ?>
+              </div>
+            </div>
+            <?php endif; ?>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('password'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('password'); ?>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="options">
+        <?php echo $this->loadTemplate('options'); ?>
+      </div>
+      <div class="tab-pane" id="metadata">
+        <?php echo $this->loadTemplate('metadata'); ?>
+      </div>
+      <?php if($this->_user->authorise('core.admin', _JOOM_OPTION.'.category.'.$this->item->cid)): ?>
+        <div class="tab-pane" id="permissions">
+          <?php echo $this->form->getInput('rules'); ?>
+        </div>
+      <?php endif; ?>
+    </div>
+  </fieldset>
+
+  <input type="hidden" name="task" value="" />
+  <?php echo JHtml::_('form.token'); ?>
 </form>
 <?php JHtml::_('behavior.formvalidation');
-      JHTML::_('behavior.keepalive');
-      JHTML::_('behavior.tooltip');
-      JHTML::_('joomgallery.credits');
+      JHtml::_('behavior.keepalive');
+      JHtml::_('bootstrap.tooltip');
+      JHtml::_('formbehavior.chosen', 'select');
+      JHtml::_('joomgallery.credits');

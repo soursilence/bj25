@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
-  <fieldset>
+  <fieldset
+    addfieldpath="administrator/components/com_joomgallery/models/fields"
+    addrulepath="administrator/components/com_joomgallery/models/rules"
+  >
     <field
       name="cid"
       type="hidden"
+      class="inputbox"
+      label="COM_JOOMGALLERY_COMMON_ID"
+      size="10"
+      default="0"
+      readonly="true"
     />
     <field
       name="asset_id"
@@ -67,13 +75,13 @@
       size="1"
     >
       <option value="0">
-        JUNPUBLISHED</option>
+        JNO</option>
       <option value="1">
-        JPUBLISHED</option>
+        JYES</option>
     </field>
     <field
       name="ordering"
-      type="ordering"
+      type="joomordering"
       default=""
       label="COM_JOOMGALLERY_EDITCATEGORY_ORDERING"
       description="COM_JOOMGALLERY_EDITCATEGORY_ORDERING_TIP"
@@ -100,11 +108,32 @@
         COM_JOOMGALLERY_COMMON_OPTION_FLUSH_RIGHT</option>
       <option value="2">
         COM_JOOMGALLERY_COMMON_OPTION_CENTERED</option>
-    </field>        
+    </field>   
     <field
       name="imagelib"
+      class="img-polaroid"
       type="thumbnailpreview"
       label="COM_JOOMGALLERY_COMMON_THUMBNAIL_PREVIEW"
+    />
+    <field
+      id="metakey"
+      name="metakey"
+      type="textarea"
+      label="JFIELD_META_KEYWORDS_LABEL"
+      description="JFIELD_META_KEYWORDS_DESC"
+      class="inputbox"
+      rows="5"
+      cols="50"
+    />
+    <field
+      id="metadesc"
+      name="metadesc"
+      type="textarea"
+      label="JFIELD_META_DESCRIPTION_LABEL"
+      description="JFIELD_META_DESCRIPTION_DESC"
+      class="inputbox"
+      rows="5"
+      cols="50"
     />
   </fieldset>
 </form>

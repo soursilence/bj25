@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/models/mini.php $
-// $Id: mini.php 3772 2012-05-06 12:55:30Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/mini.php $
+// $Id: mini.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -125,7 +125,7 @@ class JoomGalleryModelMini extends JoomGalleryModel
     $search = $this->_mainframe->getUserStateFromRequest('joom.mini.search', 'search', '', 'string');
     if($search)
     {
-      $search  = $this->_db->getEscaped($search);
+      $search  = $this->_db->escape($search);
       $query->where('(LOWER(jg.imgtitle) LIKE \'%'.$search.'%\' OR LOWER(jg.imgtext) LIKE \'%'.$search.'%\')');
     }
 

@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/models/fields/cbcategory.php $
-// $Id: cbcategory.php 4006 2012-12-03 18:40:40Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/fields/cbcategory.php $
+// $Id: cbcategory.php 4384 2014-05-09 12:40:47Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -51,10 +51,10 @@ class JFormFieldCbcategory extends JFormFieldJoomCategory
     $cbonclick = '';
     if(!empty($validate))
     {
-      $cbonclick  = "if($('".$cbid."').checked) { $('".$this->id."').addClass('validate-".$validate."');} else { $('".$this->id."').removeClass('validate-".$validate."');}";
+      $cbonclick  = "if(jQuery('#".$cbid."').prop('checked')) { var el = jQuery('#".$this->id."'); el.addClass('validate-".$validate."'); el.attr('aria-required', 'true').attr('required', 'required'); } else { var el = jQuery('#".$this->id."'); el.removeClass('validate-".$validate."'); el.removeAttr('aria-required').removeAttr('required');}";
 
       $js = "
-        window.addEvent('domready', function() {
+        jQuery(document).ready(function() {
           ".$cbonclick."
         });";
       $doc = JFactory::getDocument();

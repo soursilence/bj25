@@ -54,7 +54,7 @@
 .jg_pathway a:hover {
   color:#900;
 }
-div.gallery .sectiontableheader {
+div.gallery .jg-header {
   font-size:1em !important;
   font-weight:bold !important;
   text-align:center !important;
@@ -63,19 +63,6 @@ div.gallery .sectiontableheader {
   color:#333 !important;
   border: #BBB solid 1px !important;
   padding:0.3em !important;
-}
-div.gallery .sectiontableentry {
-  background-color:#c0c0c0 !important;
-  background-image:none !important;
-  color:#fff !important;
-}
-div.gallery .sectiontableentry1 {
-  background-color:#FFF !important;
-  background-image:none !important;
-}
-div.gallery .sectiontableentry2 {
-  background-color:#EEE !important;
-  background-image:none !important;
 }
 
 /* box elements in detailed view */
@@ -99,10 +86,3 @@ div.jg_details, div.jg_voting, div.jg_send2friend, div.jg_commentsarea{
   /* text-align:left;   */
 }
 
-/* Toplists picture elements */
-.jg_top_element {
-   /* text-align:left; */
-   /* uncomment below to have elements ordered vertically 
-      instead of horizontally */   
-   /*  float:none; */
-}

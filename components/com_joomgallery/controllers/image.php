@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/controllers/image.php $
-// $Id: image.php 3904 2012-09-27 19:09:29Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/controllers/image.php $
+// $Id: image.php 4405 2014-07-02 07:13:31Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                   **
+**   JoomGallery 3                                                                   **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Direct Access to this location is not allowed.');
  * @package JoomGallery
  * @since   2.1
  */
-class JoomGalleryControllerImage extends JController
+class JoomGalleryControllerImage extends JControllerLegacy
 {
   /**
    * Saves an image after editing
@@ -30,6 +30,10 @@ class JoomGalleryControllerImage extends JController
   public function save()
   {
     $model = $this->getModel('edit');
+
+    $array = JRequest::getVar('id',  0, '', 'array');
+
+    $model->setId((int)$array[0]);
 
     /*$data = JRequest::get('post');
 
@@ -118,6 +122,10 @@ class JoomGalleryControllerImage extends JController
   {
     $model = $this->getModel('edit');
 
+    $array = JRequest::getVar('id',  0, '', 'array');
+
+    $model->setId((int)$array[0]);
+
     // Get limitstart from request to set the correct limitstart (page) for redirect url
     $slimitstart = '';
     if(JRequest::getVar('limitstart', null) != null)
@@ -138,15 +146,16 @@ class JoomGalleryControllerImage extends JController
       }
     }
 
-    if($model->delete())
+    try
     {
+      $model->delete();
+
       $msg  = JText::_('COM_JOOMGALLERY_COMMON_MSG_IMAGE_AND_COMMENTS_DELETED');
       $this->setRedirect(JRoute::_($redirect, false), $msg);
     }
-    else
+    catch(RuntimeException $e)
     {
-      $msg  = $model->getError();
-      $this->setRedirect(JRoute::_($redirect, false), $msg, 'error');
+      $this->setRedirect(JRoute::_($redirect, false), $e->getMessage(), 'error');
     }
   }
 
@@ -159,6 +168,10 @@ class JoomGalleryControllerImage extends JController
   public function publish()
   {
     $model = $this->getModel('edit');
+
+    $array = JRequest::getVar('id',  0, '', 'array');
+
+    $model->setId((int)$array[0]);
 
     // Get limitstart from request to set the correct limitstart (page) for redirect url
     $slimitstart = '';

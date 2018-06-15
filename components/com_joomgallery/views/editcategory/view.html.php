@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/views/editcategory/view.html.php $
-// $Id: view.html.php 3839 2012-09-03 17:17:47Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/editcategory/view.html.php $
+// $Id: view.html.php 4077 2013-02-12 10:46:13Z erftralle $
 /****************************************************************************************\
-**   JoomGallery  2                                                                     **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -37,8 +37,8 @@ class JoomGalleryViewEditcategory extends JoomGalleryView
       $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false), $msg, 'notice');
     }
 
-    // TODO: This check may be removed later on
-    if(!$this->_user->get('id'))
+    // Additional security check for unregistered users
+    if(!$this->_user->get('id') && !$this->_config->get('jg_unregistered_permissions'))
     {
       $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false), JText::_('COM_JOOMGALLERY_COMMON_MSG_YOU_ARE_NOT_LOGGED'), 'notice');
     }

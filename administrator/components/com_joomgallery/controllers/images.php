@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/controllers/images.php $
-// $Id: images.php 4218 2013-04-21 17:22:10Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/controllers/images.php $
+// $Id: images.php 4405 2014-07-02 07:13:31Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -24,11 +24,10 @@ class JoomGalleryControllerImages extends JoomGalleryController
   /**
    * Constructor
    *
-   * @access  protected
    * @return  void
    * @since   1.5.5
    */
-  function __construct()
+  public function __construct()
   {
     parent::__construct();
 
@@ -41,6 +40,7 @@ class JoomGalleryControllerImages extends JoomGalleryController
     $this->registerTask('save2new',         'save');
     $this->registerTask('save2copy',        'save');
     $this->registerTask('unpublish',        'publish');
+    $this->registerTask('unfeature',        'feature');
     $this->registerTask('reject',           'approve');
     $this->registerTask('accesspublic',     'access');
     $this->registerTask('accessregistered', 'access');
@@ -52,11 +52,10 @@ class JoomGalleryControllerImages extends JoomGalleryController
   /**
    * Publishes or unpublishes one or more images
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function publish()
+  public function publish()
   {
     // Initialize variables
     $cid      = JRequest::getVar('cid', array(), 'post', 'array');
@@ -106,18 +105,17 @@ class JoomGalleryControllerImages extends JoomGalleryController
   }
 
   /**
-   * Approves or rejects one or more images
+   * Features or unfeatures one or more images
    *
-   * @access  public
    * @return  void
-   * @since   1.5.5
+   * @since   3.3
    */
-  function approve()
+  public function feature()
   {
     // Initialize variables
     $cid      = JRequest::getVar('cid', array(), 'post', 'array');
     $task     = JRequest::getCmd('task');
-    $publish  = ($task == 'approve');
+    $feature  = (int)($task == 'feature');
 
     if(empty($cid))
     {
@@ -142,16 +140,82 @@ class JoomGalleryControllerImages extends JoomGalleryController
     }
 
     $model = $this->getModel('images');
+    if($count = $model->publish($cid, $feature, 'feature'))
+    {
+      if($count != 1)
+      {
+        $msg = JText::sprintf($feature ? 'COM_JOOMGALLERY_IMGMAN_MSG_IMAGES_FEATURED' : 'COM_JOOMGALLERY_IMGMAN_MSG_IMAGES_UNFEATURED', $count);
+      }
+      else
+      {
+        $msg = JText::_($feature ? 'COM_JOOMGALLERY_IMGMAN_MSG_IMAGE_FEATURED' : 'COM_JOOMGALLERY_IMGMAN_MSG_IMAGE_UNFEATURED');
+      }
+      $this->setRedirect($this->_ambit->getRedirectUrl(), $msg);
+    }
+    else
+    {
+      $msg = JText::_('COM_JOOMGALLERY_COMMON_MSG_ERROR_FEATURING_UNFEATURING');
+      $this->setRedirect($this->_ambit->getRedirectUrl(), $msg, 'error');
+    }
+  }
+
+  /**
+   * Approves or rejects one or more images
+   *
+   * @return  void
+   * @since   1.5.5
+   */
+  public function approve()
+  {
+    // Initialize variables
+    $cid      = JRequest::getVar('cid', array(), 'post', 'array');
+    $task     = JRequest::getCmd('task');
+    $publish  = -1;
+    if($task == 'approve')
+    {
+      $publish = 1;
+    }
+
+    if(empty($cid))
+    {
+      $this->setRedirect($this->_ambit->getRedirectUrl(), JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_IMAGES_SELECTED'));
+      $this->redirect();
+    }
+
+    $unchanged_images = 0;
+    foreach($cid as $key => $id)
+    {
+      // Prune images for which we aren't allowed to change the state
+      if(!JFactory::getUser()->authorise('core.edit.state', _JOOM_OPTION.'.image.'.$id))
+      {
+        unset($cid[$key]);
+        $unchanged_images++;
+      }
+    }
+
+    if($unchanged_images)
+    {
+      $this->_mainframe->enqueueMessage(JText::plural('COM_JOOMGALLERY_IMGMAN_ERROR_EDITSTATE_NOT_PERMITTED', $unchanged_images), 'notice');
+    }
+
+    $model = $this->getModel('images');
     if($count = $model->publish($cid, $publish, 'approve'))
     {
       if($count != 1)
       {
-        $msg = JText::sprintf($publish ? 'COM_JOOMGALLERY_IMGMAN_MSG_IMAGES_APPROVED' : 'COM_JOOMGALLERY_IMGMAN_MSG_IMAGES_REJECTED', $count);
+        $msg = JText::sprintf($publish == 1 ? 'COM_JOOMGALLERY_IMGMAN_MSG_IMAGES_APPROVED' : 'COM_JOOMGALLERY_IMGMAN_MSG_IMAGES_REJECTED', $count);
       }
       else
       {
-        $msg = JText::_($publish ? 'COM_JOOMGALLERY_IMGMAN_MSG_IMAGE_APPROVED' : 'COM_JOOMGALLERY_IMGMAN_MSG_IMAGE_REJECTED');
+        $msg = JText::_($publish == 1 ? 'COM_JOOMGALLERY_IMGMAN_MSG_IMAGE_APPROVED' : 'COM_JOOMGALLERY_IMGMAN_MSG_IMAGE_REJECTED');
+
+        // Send message about rejection if a message was specified
+        if($task == 'reject' && $message = JRequest::getString('message'))
+        {
+          $model->sendRejectionMessage($cid[0], $message);
+        }
       }
+
       $this->setRedirect($this->_ambit->getRedirectUrl(), $msg);
     }
     else
@@ -164,11 +228,10 @@ class JoomGalleryControllerImages extends JoomGalleryController
   /**
    * Removes one or more images
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function remove()
+  public function remove()
   {
     $model = $this->getModel('images');
 
@@ -188,7 +251,7 @@ class JoomGalleryControllerImages extends JoomGalleryController
 
     if($unaffected_images)
     {
-      JError::raiseNotice(403, JText::plural('COM_JOOMGALLERY_IMGMAN_ERROR_DELETE_NOT_PERMITTED', $unaffected_images));
+      JLog::add(JText::plural('COM_JOOMGALLERY_IMGMAN_ERROR_DELETE_NOT_PERMITTED', $unaffected_images), JLog::WARNING, 'jerror');
     }
 
     if(!count($cid))
@@ -198,14 +261,10 @@ class JoomGalleryControllerImages extends JoomGalleryController
       return;
     }
 
-    if(!$count = $model->delete())
+    try
     {
-      $msg  = $model->getError();
-      $type = 'error';
-    }
-    else
-    {
-      $type = 'message';
+      $count = $model->delete($cid);
+
       if($count == 1)
       {
         $msg  = JText::_('COM_JOOMGALLERY_IMGMAN_MSG_IMAGE_DELETED');
@@ -214,20 +273,23 @@ class JoomGalleryControllerImages extends JoomGalleryController
       {
         $msg  = JText::sprintf('COM_JOOMGALLERY_IMGMAN_MSG_IMAGES_DELETED', $count);
       }
-    }
 
-    // Some messages are enqueued by the model
-    $this->setRedirect($this->_ambit->getRedirectUrl(), $msg, $type);
+      // Some messages are enqueued by the model
+      $this->setRedirect($this->_ambit->getRedirectUrl(), $msg);
+    }
+    catch(RuntimeException $e)
+    {
+      $this->setRedirect($this->_ambit->getRedirectUrl(), $e->getMessage(), 'error');
+    }
   }
 
   /**
    * Displays the edit form for one or multiple images
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function edit()
+  public function edit()
   {
     $cid = JRequest::getVar('cid', array(), '', 'array');
     if(count($cid) <= 1)
@@ -264,11 +326,10 @@ class JoomGalleryControllerImages extends JoomGalleryController
   /**
    * Saves one or more images
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function save()
+  public function save()
   {
     $model = $this->getModel('image');
 
@@ -296,7 +357,7 @@ class JoomGalleryControllerImages extends JoomGalleryController
       $imgname_separator    = JText::_('COM_JOOMGALLERY_IMGMAN_IMAGENAME_SEPARATOR');
 
       $changeable_fields  = array('imgtitle', 'catid', 'access', 'imgtext', 'owner', 'imgauthor', 'clearvotes',
-                                  'clearhits','published', 'approved', 'hidden', 'ordering');
+                                  'cleardownloads', 'clearhits', 'published', 'approved', 'hidden', 'ordering', 'metakey', 'metadesc');
       $state_fields       = array('published', 'approved', 'hidden', 'ordering');
 
       // Delete all unselected and unchangeable fields
@@ -334,7 +395,38 @@ class JoomGalleryControllerImages extends JoomGalleryController
           }
         }
 
-        $cloned_data['cid']  = $cid;
+        // Check whether images shall be moved or copied
+        if(isset($cloned_data['catid']) && JRequest::getCmd('movecopy') == 'copy')
+        {
+          $orig_img = (array) $this->_ambit->getImgObject($cid);
+
+          $orig_img['thumb_catid'] = $orig_img['catid'];
+          $orig_img['detail_catid'] = $orig_img['catid'];
+
+          $orig_img['alias'] = '';
+
+          $orig_img['copy_original'] = false;
+          if(is_file($this->_ambit->getImg('orig_path', (object) $orig_img)))
+          {
+            $orig_img['copy_original'] = true;
+          }
+
+          foreach($cloned_data as $key => $value)
+          {
+            $orig_img[$key] = $value;
+          }
+
+          // Set image ID back so that the model creates new images
+          $orig_img['id'] = 0;
+          $orig_img['cid'] = 0;
+
+          $cloned_data = $orig_img;
+        }
+        else
+        {
+          $cloned_data['cid']  = $cid;
+        }
+
         if($model->store($cloned_data))
         {
           $count++;
@@ -390,11 +482,10 @@ class JoomGalleryControllerImages extends JoomGalleryController
   /**
    * Moves the order of an image
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function order()
+  public function order()
   {
     $cid = JRequest::getVar('cid', array(), 'post', 'array');
 
@@ -416,7 +507,7 @@ class JoomGalleryControllerImages extends JoomGalleryController
         return;
       }
 
-      $row = & JTable::getInstance('joomgalleryimages', 'Table');
+      $row = JTable::getInstance('joomgalleryimages', 'Table');
       $row->load((int)$cid[0]);
       $row->move($dir, 'catid = '.$row->catid);
       $row->reorder('catid = '.$row->catid);
@@ -428,18 +519,17 @@ class JoomGalleryControllerImages extends JoomGalleryController
   /**
    * Saves the order of the images
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function saveOrder()
+  public function saveOrder()
   {
     $cid    = JRequest::getVar('cid', array(), 'post', 'array');
     $order  = JRequest::getVar('order', array (0), 'post', 'array');
     $user   = JFactory::getUser();
 
     // Create and load the images table object
-    $row = & JTable::getInstance('joomgalleryimages', 'Table');
+    $row = JTable::getInstance('joomgalleryimages', 'Table');
 
     // Update the ordering for items in the cid array
     $unchanged_images = 0;
@@ -477,11 +567,10 @@ class JoomGalleryControllerImages extends JoomGalleryController
   /**
    * Displays the move form
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function showmove()
+  public function showmove()
   {
     JRequest::setVar('view',    'move');
     JRequest::setVar('hidemainmenu', 1);
@@ -492,11 +581,10 @@ class JoomGalleryControllerImages extends JoomGalleryController
   /**
    * Moves images to another category
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function move()
+  public function move()
   {
     $cid    = JRequest::getVar('cid', array(), 'post', 'array');
     $catid  = JRequest::getInt('catid');
@@ -556,11 +644,10 @@ class JoomGalleryControllerImages extends JoomGalleryController
   /**
    * Recreates thumbnails and detail images
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function recreate()
+  public function recreate()
   {
     $model  = $this->getModel('images');
     $count  = $model->recreate();
@@ -600,11 +687,10 @@ class JoomGalleryControllerImages extends JoomGalleryController
   /**
    * Resets hits of an image
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function resetHits()
+  public function resetHits()
   {
     $id = JRequest::getInt('cid');
 
@@ -617,7 +703,7 @@ class JoomGalleryControllerImages extends JoomGalleryController
     }
 
     // Instantiate and load an image table
-    $row = & JTable::getInstance('joomgalleryimages', 'Table');
+    $row = JTable::getInstance('joomgalleryimages', 'Table');
     $row->load($id);
     $row->hits = 0;
     $row->store();
@@ -628,13 +714,12 @@ class JoomGalleryControllerImages extends JoomGalleryController
   }
 
   /**
-   * Resets votes of an image
+   * Resets downloads of an image
    *
-   * @access  public
    * @return  void
-   * @since   1.5.5
+   * @since   3.1
    */
-  function resetVotes()
+  public function resetDownloads()
   {
     $id = JRequest::getInt('cid');
 
@@ -647,17 +732,49 @@ class JoomGalleryControllerImages extends JoomGalleryController
     }
 
     // Instantiate and load an image table
-    $row = & JTable::getInstance('joomgalleryimages', 'Table');
+    $row = JTable::getInstance('joomgalleryimages', 'Table');
+    $row->load($id);
+    $row->downloads = 0;
+    $row->store();
+
+    JRequest::setVar('task', 'apply');
+    $msg = JText::_('COM_JOOMGALLERY_IMGMAN_MSG_DOWNLOADS_RESETED');
+    $this->setRedirect($this->_ambit->getRedirectUrl(null, $id), $msg);
+  }
+
+  /**
+   * Resets votes of an image
+   *
+   * @return  void
+   * @since   1.5.5
+   */
+  public function resetVotes()
+  {
+    $id = JRequest::getInt('cid');
+
+    if(!JFactory::getUser()->authorise('core.edit', _JOOM_OPTION.'.image.'.$id))
+    {
+      $msg = JText::_('COM_JOOMGALLERY_IMGMAN_ERROR_EDIT_NOT_PERMITTED');
+      $this->setRedirect($this->_ambit->getRedirectUrl(null, $id), $msg, 'notice');
+
+      return;
+    }
+
+    // Instantiate and load an image table
+    $row = JTable::getInstance('joomgalleryimages', 'Table');
     $row->load($id);
 
     // Delete votes for image
     $row->imgvotes = 0;
     $row->imgvotesum = 0;
-    $query = "DELETE FROM "._JOOM_TABLE_VOTES." WHERE picid = ".$row->id;
+    $query = $this->_db->getQuery(true)
+          ->delete(_JOOM_TABLE_VOTES)
+          ->where('picid = '.$row->id);
     $this->_db->setQuery($query);
     if(!$this->_db->query())
     {
-      JError::raiseError(0, $row->getError());
+      JFactory::getApplication()->enqueueMessagge($this->_db->getErrorMsg(), 'error');
+
       return false;
     }
     $row->store();
@@ -670,11 +787,10 @@ class JoomGalleryControllerImages extends JoomGalleryController
   /**
    * Cancel creating, editing or moving images
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function cancel()
+  public function cancel()
   {
     $this->setRedirect($this->_ambit->getRedirectUrl());
   }

@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/helpers/messenger.php $
-// $Id: messenger.php 4215 2013-04-20 14:26:43Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/helpers/messenger.php $
+// $Id: messenger.php 4250 2013-05-02 16:49:22Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -70,6 +70,15 @@ class JoomMessenger extends JObject
   protected $realname = true;
 
   /**
+   * Indicates whether only the global sender mail address
+   * and name of the system should be used for mails
+   *
+   * @var   boolean
+   * @since 3.1
+   */
+  protected $globalfrom = false;
+
+  /**
    * Constructor
    *
    * @return  void
@@ -81,7 +90,8 @@ class JoomMessenger extends JObject
 
     $config = JoomConfig::getInstance();
 
-    $this->realname = $config->get('jg_realname') ? true : false;
+    $this->realname   = $config->get('jg_realname') ? true : false;
+    $this->globalfrom = $config->get('jg_msg_global_from') ? true : false;
 
     // Predefined message send modes
     $this->addMode( array('name'        => 'upload',
@@ -116,6 +126,9 @@ class JoomMessenger extends JObject
                   );
     $this->_modes['send2friend']['recipients']  = array();
     $this->_modes['send2friend']['type']        = 1;
+
+    $this->_modes['rejectimg']['recipients']    = array();
+    $this->_modes['rejectimg']['type']          = $config->get('jg_msg_rejectimg_type');
 
     $this->_modes['default']    ['recipients']  = array();
     $this->_modes['default']    ['type']        = 2;
@@ -219,7 +232,7 @@ class JoomMessenger extends JObject
               ->from('#__users')
               ->where('sendEmail = 1');
         $db->setQuery($query);
-        $recipients = $db->loadResultArray();
+        $recipients = $db->loadColumn();
       }
 
       $mode['recipients'] = $recipients;
@@ -370,7 +383,7 @@ class JoomMessenger extends JObject
   protected function _sendMail()
   {
     $from = null;
-    if(isset($this->_message['from']))
+    if(!$this->globalfrom && isset($this->_message['from']))
     {
       if(is_numeric($this->_message['from']))
       {
@@ -396,12 +409,12 @@ class JoomMessenger extends JObject
       $from       = $mainframe->getCfg('mailfrom');
     }
 
-    if(!isset($this->_message['fromname']) || !$this->_message['fromname'])
+    if($this->globalfrom || !isset($this->_message['fromname']) || !$this->_message['fromname'])
     {
       if(!isset($user) || !is_object($user))
       {
         $mainframe  = JFactory::getApplication('site');
-        $fromname   = $mainframe->getCfg('mailfrom');
+        $fromname   = $mainframe->getCfg('fromname');
       }
       else
       {
@@ -441,7 +454,26 @@ class JoomMessenger extends JObject
       return true;
     }
 
-    if(JUtility::sendMail($from, $fromname, $recipients, $this->_subject,  $this->_text) !== true)
+    $result = false;
+
+    try
+    {
+      $mailer = JFactory::getMailer();
+
+      $mailer->setSubject($this->_subject);
+      $mailer->setBody($this->_text);
+      $mailer->isHtml(false);
+      $mailer->addBcc($recipients);
+      $mailer->setSender(array($from, $fromname));
+
+      $result = $mailer->Send();
+    }
+    catch(phpmailerException $ex)
+    {
+      return false;
+    }
+
+    if($result !== true)
     {
       return false;
     }
@@ -502,7 +534,7 @@ class JoomMessenger extends JObject
     }
 
     // Messaging for new items
-    JModel::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_messages/models', 'MessagesModel');
+    JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_messages/models', 'MessagesModel');
     JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_messages/tables');
 
     $result_array = array();
@@ -524,7 +556,7 @@ class JoomMessenger extends JObject
         $message['user_id_to']    = $recipient;
         $message['user_id_from']  = $from;
         $message['message']       = $this->_text;
-        $msg = JModel::getInstance('Message', 'MessagesModel');
+        $msg = JModelLegacy::getInstance('Message', 'MessagesModel');
         $result_array[] =  $msg->save($message);
       }
     }

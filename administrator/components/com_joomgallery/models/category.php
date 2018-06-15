@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/models/category.php $
-// $Id: category.php 4218 2013-04-21 17:22:10Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/category.php $
+// $Id: category.php 4395 2014-06-10 14:03:32Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -249,10 +249,18 @@ class JoomGalleryModelCategory extends JoomGalleryModel
       //}
     }
 
+    if(isset($data['password']) && $data['password'])
+    {
+      $salt = JUserHelper::genRandomPassword(32);
+      $crypt = JUserHelper::getCryptedPassword($data['password'], $salt);
+      $data['password'] = $crypt.':'.$salt;
+    }
+
     // Bind the form fields to the category table
     if(!$row->bind($data))
     {
-      JError::raiseError(0, $row->getError());
+      $this->setError($row->getError());
+
       return false;
     }
 
@@ -271,7 +279,7 @@ class JoomGalleryModelCategory extends JoomGalleryModel
     // Bind the rules
     if(isset($data['rules']))
     {
-      $rules = new JRules($data['rules']);
+      $rules = new JAccessRules($data['rules']);
       $row->setRules($rules);
     }
 
@@ -354,13 +362,15 @@ class JoomGalleryModelCategory extends JoomGalleryModel
       if(JoomFile::checkValidFilename($row->name, $catpath) == false)
       {
         $this->setError(JText::_('COM_JOOMGALLERY_CATMAN_MSG_ERROR_INVALID_FOLDERNAME'));
+
         return false;
       }
 
       // Store the entry to the database in order to get the new ID
       if(!$row->store())
       {
-        JError::raiseError(0, $row->getError());
+        $this->setError($row->getError());
+
         return false;
       }
 
@@ -396,7 +406,8 @@ class JoomGalleryModelCategory extends JoomGalleryModel
         // Store the entry to the database
         if(!$row->store())
         {
-          JError::raiseError(0, $row->getError());
+          $this->setError($row->getError());
+
           return false;
         }
       }
@@ -525,13 +536,482 @@ class JoomGalleryModelCategory extends JoomGalleryModel
     // Store the entry to the database
     if(!$row->store())
     {
-      JError::raiseError(0, $row->getError());
+      $this->setError($row->getError());
+
       return false;
     }
 
     $this->_mainframe->triggerEvent('onContentAfterSave', array(_JOOM_OPTION.'.category', &$row, true));
 
     return $row->cid;
+  }
+
+  /**
+   * Method to perform batch operations on a category or a set of categories
+   *
+   * @param   array   $commands  An array of commands to perform
+   * @param   array   $pks       An array of category IDs
+   * @return  boolean True on success, false otherwis
+   * @since   3.0
+   */
+  public function batch($commands, $pks)
+  {
+    // Sanitize user IDs
+    $pks = array_unique($pks);
+    JArrayHelper::toInteger($pks);
+
+    // Remove any values of zero
+    if(array_search(0, $pks, true))
+    {
+      unset($pks[array_search(0, $pks, true)]);
+    }
+
+    if(empty($pks))
+    {
+      $this->setError(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_CATEGORIES_SELECTED'));
+
+      return false;
+    }
+
+    $done = false;
+
+    if($cmd = JArrayHelper::getValue($commands, 'move_copy'))
+    {
+      if($cmd == 'c')
+      {
+        $result = $this->batchCopy($commands['category_id'], $pks);
+        if(is_array($result))
+        {
+          $pks = $result;
+        }
+        else
+        {
+          return false;
+        }
+      }
+      else
+      {
+        if($cmd == 'm' && !$this->batchMove($commands['category_id'], $pks))
+        {
+          return false;
+        }
+      }
+
+      $done = true;
+    }
+
+    if(!empty($commands['assetgroup_id']))
+    {
+      if(!$this->batchAccess($commands['assetgroup_id'], $pks))
+      {
+        return false;
+      }
+
+      $done = true;
+    }
+
+    if(!empty($commands['language_id']))
+    {
+      if(!$this->batchLanguage($commands['language_id'], $pks))
+      {
+        return false;
+      }
+
+      $done = true;
+    }
+
+    if(!$done)
+    {
+      $this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
+
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Batch access level changes for a group of categories
+   *
+   * @param   int      $value     The new value matching an Asset Group ID
+   * @param   array    $pks       An array of row IDs
+   * @return  boolean  True on success, false otherwise
+   * @since   3.0
+   */
+  protected function batchAccess($value, $pks)
+  {
+    $table = $this->getTable('joomgallerycategories');
+
+    foreach($pks as $pk)
+    {
+      $table->reset();
+      $table->load($pk);
+
+      if(      $this->_user->authorise('core.edit', _JOOM_OPTION.'.category.'.$pk)
+          || (
+                $table->owner == $this->_user->get('id')
+            &&  $table->owner != 0
+            &&  $this->_user->authorise('core.edit.own', _JOOM_OPTION.'.category.'.$pk)
+              )
+        )
+      {
+        $table->load($pk);
+        $table->access = (int) $value;
+
+        if(!$table->store())
+        {
+          $this->setError($table->getError());
+
+          return false;
+        }
+      }
+      else
+      {
+        $this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Batch copy items to a new category or current
+   *
+   * @param   int   $value  The new parent category
+   * @param   array $pks    An array of category IDs
+   * @return  mixed An array of new IDs on success, boolean false on failure
+   * @since   3.0
+   */
+  protected function batchCopy($value, $pks)
+  {
+    $categoryId = (int) $value;
+
+    $table = $this->getTable('joomgallerycategories');
+    $i = 0;
+
+    // Check that the parent category exists
+    if($categoryId)
+    {
+      if(!$parent_category = $table->load($categoryId))
+      {
+        if($error = $table->getError())
+        {
+          $this->setError($error);
+
+          return false;
+        }
+        else
+        {
+          $this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+
+          return false;
+        }
+      }
+    }
+
+    if(!$categoryId)
+    {
+      // Check that the user has create permissions in root
+      if(!$this->_user->authorise('core.create', _JOOM_OPTION))
+      {
+        $this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+
+        return false;
+      }
+
+      $categoryId = 1;
+    }
+    else
+    {
+      // Check that the user has create permissions
+      if(!$this->_user->authorise('core.create', _JOOM_OPTION.'.category.'.$categoryId)
+          &&  (     !$this->_user->authorise('joom.create.inown', _JOOM_OPTION.'.category.'.$categoryId)
+                ||  !$parent_category->owner
+                ||  $parent_category->owner != $this->_user->get('id')
+              )
+        )
+      {
+        $this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+
+        return false;
+      }
+    }
+
+    foreach($pks as $pk)
+    {
+      $table->reset();
+
+      // Check that the row actually exists
+      if(!$table->load($pk))
+      {
+        if($error = $table->getError())
+        {
+          $this->setError($error);
+
+          return false;
+        }
+        else
+        {
+          // Not fatal error
+          $this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+
+          continue;
+        }
+      }
+
+      // Reset the ID and the alias (resetting catpath is
+      // necessary for that, too) because we are making a copy
+      $table->cid = 0;
+      $table->alias = '';
+      $table->catpath = '';
+
+      // New parent category ID
+      $table->parent_id = $categoryId;
+
+      // Set ordering
+      $table->setLocation($categoryId, 'last-child');
+
+      // Check the row
+      if(!$table->check())
+      {
+        $this->setError($table->getError());
+
+        return false;
+      }
+
+      JFilterOutput::objectHTMLSafe($table->name);
+
+      // Check if special characters of catname can be replaced for a valid catpath
+      // if resulting string is invalid set an error
+      $catpath = JoomFile::fixFilename($table->name);
+      if(JoomFile::checkValidFilename($table->name, $catpath) == false)
+      {
+        $this->setError(JText::_('COM_JOOMGALLERY_CATMAN_MSG_ERROR_INVALID_FOLDERNAME'));
+
+        return false;
+      }
+
+      // Store the entry to the database in order to get the new ID
+      if(!$table->store())
+      {
+        $this->setError($table->getError());
+
+        return false;
+      }
+
+      if($table->parent_id > 1)
+      {
+        $parent_catpath = JoomHelper::getCatPath($table->parent_id);
+        $catpath   = $parent_catpath . $catpath;
+      }
+
+      // Add the category id to catpath
+      $catpath .= '_'.$table->cid;
+
+      if(!$this->_createFolders($catpath))
+      {
+        $this->setError(JText::_('COM_JOOMGALLERY_CATMAN_MSG_ERROR_CREATING_FOLDERS'));
+
+        // Delete the just stored database entry
+        $table->delete();
+
+        return false;
+      }
+
+      $table->catpath = $catpath;
+
+      // Make sure the record is valid
+      if(!$table->check())
+      {
+        $this->setError($table->getError());
+
+        return false;
+      }
+
+      // Alter the title and alias (for preventing duplicates)
+      $data = $this->generateNewTitle($categoryId, $table->alias, $table->name);
+      $table->name = $data['0'];
+      $table->alias = $data['1'];
+
+      // Store the entry to the database
+      if(!$table->store())
+      {
+        $this-setError($table->getError());
+
+        return false;
+      }
+
+      $this->_mainframe->triggerEvent('onContentAfterSave', array(_JOOM_OPTION.'.category', &$table, true));
+
+      // Get the new category ID
+      $newId = $table->cid;
+
+      // Add the new ID to the array
+      $newIds[$i]  = $newId;
+      $i++;
+    }
+
+    return $newIds;
+  }
+
+  /**
+   * Batch move categories to a new category
+   *
+   * @param   int      $value The new parent category ID
+   * @param   array    $pks   An array of category IDs
+   * @return  boolean  True on success, false otherwise
+   * @since   3.0
+   */
+  protected function batchMove($value, $pks)
+  {
+    $categoryId = (int) $value;
+
+    $table = $this->getTable('joomgallerycategories');
+
+    // Check that the parent category exists
+    if($categoryId)
+    {
+      if(!$parent_category = $table->load($categoryId))
+      {
+        if($error = $table->getError())
+        {
+          $this->setError($error);
+
+          return false;
+        }
+        else
+        {
+          $this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+
+          return false;
+        }
+      }
+    }
+
+    if(!$categoryId)
+    {
+      // Check that the user has create permissions in root
+      if(!$this->_user->authorise('core.create', _JOOM_OPTION))
+      {
+        $this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+
+        return false;
+      }
+
+      $categoryId = 1;
+    }
+    else
+    {
+      // Check that the user has create permissions
+      if(!$this->_user->authorise('core.create', _JOOM_OPTION.'.category.'.$categoryId)
+          &&  (     !$this->_user->authorise('joom.create.inown', _JOOM_OPTION.'.category.'.$categoryId)
+                ||  !$parent_category->owner
+                ||  $parent_category->owner != $this->_user->get('id')
+              )
+        )
+      {
+        $this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+
+        return false;
+      }
+    }
+
+    foreach($pks as $pk)
+    {
+      // Check that the category actually exists
+      if(!$table->load($pk))
+      {
+        if($error = $table->getError())
+        {
+          $this->setError($error);
+
+          return false;
+        }
+        else
+        {
+          // Not fatal error
+          $this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+
+          continue;
+        }
+      }
+
+      if(!$this->_user->authorise('core.edit', _JOOM_OPTION.'.category.'.$pk)
+          &&  (     !$this->_user->authorise('joom.edit.own', _JOOM_OPTION.'.category.'.$pk)
+                ||  !$table->owner
+                ||  $table->owner != $this->_user->get('id')
+              )
+        )
+      {
+        $this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+
+        return false;
+      }
+
+      // New parent category ID
+      $table->parent_id = $categoryId;
+
+      // Set ordering
+      $table->setLocation($categoryId, 'last-child');
+
+      // Save old path
+      $catpath_old    = $table->catpath;
+
+      JFilterOutput::objectHTMLSafe($table->name);
+
+      // Check if special characters of catname can be replaced for a valid catpath
+      // if resulting string is invalid set an error
+      $catpath = JoomFile::fixFilename($table->name);
+      if(JoomFile::checkValidFilename($catpath_old, $catpath) == false)
+      {
+        $this->setError(JText::_('COM_JOOMGALLERY_CATMAN_MSG_ERROR_INVALID_FOLDERNAME'));
+
+        return false;
+      }
+
+      // Add the category ID to catpath
+      $catpath .= '_' . $table->cid;
+
+      if($table->parent_id > 1)
+      {
+        $parent_catpath = JoomHelper::getCatPath($table->parent_id);
+        $catpath = $parent_catpath . $catpath;
+      }
+
+      // Move folders, only if the catpath has changed
+      if($catpath_old != $catpath && !$this->_moveFolders($catpath_old, $catpath))
+      {
+        $this->setError(JText::_('COM_JOOMGALLERY_CATMAN_MSG_ERROR_MOVING_FOLDERS'));
+
+        return false;
+      }
+
+      // Update catpath in the database
+      $table->catpath = $catpath;
+
+      // Modify catpath of all sub-categories in the database
+      $this->updateNewCatpath($table->cid, $catpath_old, $catpath);
+
+      // Make sure the record is valid
+      if(!$table->check())
+      {
+        $this->setError($table->getError());
+
+        return false;
+      }
+
+      // Store the entry to the database
+      if(!$table->store())
+      {
+        $this-setError($table->getError());
+
+        return false;
+      }
+    }
+
+    return true;
   }
 
   /**
@@ -610,15 +1090,13 @@ class JoomGalleryModelCategory extends JoomGalleryModel
   public function updateNewCatpath($catids_values, &$oldpath, &$newpath)
   {
     // Query for sub-categories with parent in $catids_values
-    $this->_db->setQuery("SELECT
-                            cid
-                          FROM
-                            "._JOOM_TABLE_CATEGORIES."
-                          WHERE
-                            parent_id IN ($catids_values)
-                        ");
+    $query = $this->_db->getQuery(true)
+          ->select('cid')
+          ->from(_JOOM_TABLE_CATEGORIES)
+          ->where('parent_id IN ('.$catids_values.')');
+    $this->_db->setQuery($query);
 
-    $subcatids = $this->_db->loadResultArray();
+    $subcatids = $this->_db->loadColumn();
 
     if($this->_db->getErrorNum())
     {

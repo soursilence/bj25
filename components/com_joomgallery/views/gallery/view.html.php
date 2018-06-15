@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/views/gallery/view.html.php $
-// $Id: view.html.php 4207 2013-04-19 14:34:15Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/gallery/view.html.php $
+// $Id: view.html.php 4212 2013-04-20 00:51:15Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -60,7 +60,7 @@ class JoomGalleryViewGallery extends JoomGalleryView
     // Get number of all root categories
     if($this->_config->get('jg_hideemptycats') == 2)
     {
-      $total = &$this->get('TotalWithoutEmpty');
+      $total = $this->get('TotalWithoutEmpty');
     }
     else
     {
@@ -97,7 +97,7 @@ class JoomGalleryViewGallery extends JoomGalleryView
     $limitstart = ($page - 1) * $catperpage;
     JRequest::setVar('limitstart', $limitstart);
 
-    require_once JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'pagination.php';
+    require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/pagination.php';
     $this->pagination = new JoomPagination($totalcategories, $limitstart, $catperpage, '', 'gallery');
 
     if($totalpages > 1 && $total != 0)
@@ -166,7 +166,7 @@ class JoomGalleryViewGallery extends JoomGalleryView
       // is chosen ('Also those which contain empty sub-categories'),
       // we need additional code to exclude these categories.
       // (For the second alternative only the query in the model is modified.)
-      $categories = &$this->get('CategoriesWithoutEmpty');
+      $categories = $this->get('CategoriesWithoutEmpty');
     }
     else
     {
@@ -408,6 +408,17 @@ class JoomGalleryViewGallery extends JoomGalleryView
       {
         // Set link to category view if no skipping
         $categories[$key]->link = JRoute::_('index.php?view=category&catid='.$category->cid);
+      }
+
+      // Icon for quick upload at sub-category thumbnail
+      if(     $this->_config->get('jg_uploadicongallery')
+          &&  (   $this->_user->authorise('joom.upload', _JOOM_OPTION.'.category.'.$category->cid)
+              ||  $category->owner && $category->owner == $this->_user->get('id') && $this->_user->authorise('joom.upload.inown', _JOOM_OPTION.'.category.'.$category->cid)
+              )
+        )
+      {
+        $categories[$key]->show_upload_icon = true;
+        JHtml::_('behavior.modal');
       }
 
       // Additional HTML added by plugins

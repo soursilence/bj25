@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/views/category/view.html.php $
-// $Id: view.html.php 4207 2013-04-19 14:34:15Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/category/view.html.php $
+// $Id: view.html.php 4250 2013-05-02 16:49:22Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -48,13 +48,26 @@ class JoomGalleryViewCategory extends JoomGalleryView
       $params->set('show_btm_modules', 1);
     }
 
+    // Check whether this is the active menu item. This is a
+    // special case in addition to code in constructor of parent class
+    // because here we have to check the category ID, too.
+    $active = $this->_mainframe->getMenu()->getActive();
+    if(!$active || strpos($active->link, '&catid='.JRequest::getInt('catid')) === false)
+    {
+      // Get the default layout from the configuration
+      if($layout = $this->_config->get('jg_alternative_layout'))
+      {
+        $this->setLayout($layout);
+      }
+    }
+
     // Get number of images and hits in gallery
     $numbers  = JoomHelper::getNumberOfImgHits();
 
     // Categories pagination
     if($this->_config->get('jg_hideemptycats') == 2)
     {
-      $totalcategories = &$this->get('TotalCategoriesWithoutEmpty');
+      $totalcategories = $this->get('TotalCategoriesWithoutEmpty');
     }
     else
     {
@@ -98,7 +111,7 @@ class JoomGalleryViewCategory extends JoomGalleryView
     $limitstart = ($catpage - 1) * $catperpage;
     JRequest::setVar('catlimitstart', $limitstart);
 
-    require_once JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'pagination.php';
+    require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/pagination.php';
     $this->catpagination = new JoomPagination($total, $limitstart, $catperpage, 'cat', 'subcategory');
 
     if($cattotalpages > 1 && $totalcategories != 0)
@@ -167,7 +180,10 @@ class JoomGalleryViewCategory extends JoomGalleryView
 
     $this->pagination = new JoomPagination($total, $limitstart, $perpage);
 
-    if($this->_config->get('jg_detailpic_open') > 4 && $this->_config->get('jg_lightbox_slide_all'))
+    // 'jg_detailpic_open' is not numeric if an OpenImage plugin was selected, thus we handle it like > 4
+    if(     $this->_config->get('jg_lightbox_slide_all')
+        &&  (!is_numeric($this->_config->get('jg_detailpic_open')) ||  $this->_config->get('jg_detailpic_open') > 4)
+      )
     {
       $params->set('show_all_in_popup', 1);
       JRequest::setVar('limitstart', -1);
@@ -221,6 +237,15 @@ class JoomGalleryViewCategory extends JoomGalleryView
     }
 
     $cat      = $this->get('Category');
+
+    if(isset($cat->protected))
+    {
+      $this->cat = $cat;
+      echo $this->loadTemplate('password');
+
+      return;
+    }
+
     $backlink = array();
 
     if($cat->parent_id > 1)
@@ -385,6 +410,17 @@ class JoomGalleryViewCategory extends JoomGalleryView
       }
     }
 
+    // Icon for quick upload
+    if(     $this->_config->get('jg_uploadiconcategory')
+        &&  (   $this->_user->authorise('joom.upload', _JOOM_OPTION.'.category.'.$cat->cid)
+            ||  $cat->owner && $cat->owner == $this->_user->get('id') && $this->_user->authorise('joom.upload.inown', _JOOM_OPTION.'.category.'.$cat->cid)
+            )
+      )
+    {
+      $params->set('show_upload_icon', 1);
+      JHtml::_('behavior.modal');
+    }
+
     // Get all sub-categories of the current category
     if($this->_config->get('jg_hideemptycats') == 2)
     {
@@ -392,7 +428,7 @@ class JoomGalleryViewCategory extends JoomGalleryView
       // is chosen ('Also those which contain empty sub-categories'),
       // we need additional code to exclude these categories.
       // (For the second alternative only the query in the model is modified.)
-      $categories = &$this->get('CategoriesWithoutEmpty');
+      $categories = $this->get('CategoriesWithoutEmpty');
     }
     else
     {
@@ -619,6 +655,17 @@ class JoomGalleryViewCategory extends JoomGalleryView
         $categories[$key]->link = JRoute::_('index.php?view=category&catid='.$category->cid);
       }
 
+      // Icon for quick upload at sub-category thumbnail
+      if(     $this->_config->get('jg_uploadiconsubcat')
+          &&  (   $this->_user->authorise('joom.upload', _JOOM_OPTION.'.category.'.$category->cid)
+              ||  $category->owner && $category->owner == $this->_user->get('id') && $this->_user->authorise('joom.upload.inown', _JOOM_OPTION.'.category.'.$category->cid)
+              )
+        )
+      {
+        $categories[$key]->show_upload_icon = true;
+        JHtml::_('behavior.modal');
+      }
+
       $categories[$key]->event  = new stdClass();
 
       // Additional HTML added by plugins
@@ -770,7 +817,7 @@ class JoomGalleryViewCategory extends JoomGalleryView
 
       // Set the title attribute in a tag with title and/or description of image
       // if a box is activated
-      if($this->_config->get('jg_detailpic_open') > 1)
+      if(!is_numeric($this->_config->get('jg_detailpic_open')) || $this->_config->get('jg_detailpic_open') > 1)
       {
         $images[$key]->atagtitle =  JHTML::_('joomgallery.getTitleforATag', $images[$key]);
       }
@@ -796,6 +843,7 @@ class JoomGalleryViewCategory extends JoomGalleryView
       if(    !$this->_config->get('jg_showtitle')
           && !$this->_config->get('jg_showpicasnew')
           && !$this->_config->get('jg_showhits')
+          && !$this->_config->get('jg_showdownloads')
           && !$this->_config->get('jg_showauthor')
           && !$this->_config->get('jg_showcatcom')
           && !$this->_config->get('jg_showcatrate')
@@ -822,18 +870,6 @@ class JoomGalleryViewCategory extends JoomGalleryView
       else
       {
         $images[$key]->show_elems = true;
-      }
-    }
-
-    if($this->_config->get('jg_cooliris') && count($images))
-    {
-      $href = JRoute::_('index.php?view=category&catid='.$cat->cid.'&page='.$page.'&format=raw');
-      $attribs = array('id' => 'gallery', 'type' => 'application/rss+xml', 'title' => 'Cooliris');
-      $this->_doc->addHeadLink($href, 'alternate', 'rel', $attribs);
-
-      if($this->_config->get('jg_coolirislink'))
-      {
-        $this->_doc->addScript('http://lite.piclens.com/current/piclens.js');
       }
     }
 

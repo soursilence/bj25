@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/tables/joomgalleryconfig.php $
-// $Id: joomgalleryconfig.php 3851 2012-09-13 17:46:24Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/tables/joomgalleryconfig.php $
+// $Id: joomgalleryconfig.php 4267 2013-05-10 11:41:59Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -55,7 +55,6 @@ class TableJoomgalleryConfig extends JTable
   var $jg_useorigfilename;
   var $jg_filenamenumber;
   var $jg_delete_original;
-  var $jg_wrongvaluecolor;
   var $jg_msg_upload_type;
   var $jg_msg_upload_recipients;
   var $jg_msg_download_type;
@@ -71,31 +70,37 @@ class TableJoomgalleryConfig extends JTable
   var $jg_msg_report_type;
   var $jg_msg_report_recipients;
   var $jg_msg_report_toowner;
+  var $jg_msg_rejectimg_type;
+  var $jg_msg_global_from;
   var $jg_realname;
-  var $jg_cooliris;
-  var $jg_coolirislink;
   var $jg_contentpluginsenabled;
   var $jg_itemid;
   var $jg_ajaxcategoryselection;
   var $jg_disableunrequiredchecks;
+  var $jg_use_listbox_max_user_count;
   var $jg_userspace;
+  var $jg_useruploaddefaultcat;
   var $jg_approve;
+  var $jg_unregistered_permissions;
   var $jg_maxusercat;
   var $jg_maxuserimage;
+  var $jg_maxuserimage_timespan;
   var $jg_maxfilesize;
   var $jg_usercatacc;
   var $jg_usercatthumbalign;
   var $jg_maxuploadfields;
-  var $jg_useruploadnumber;
   var $jg_useruploadsingle;
+  var $jg_useruploadajax;
   var $jg_useruploadbatch;
   var $jg_useruploadjava;
   var $jg_useruseorigfilename;
+  var $jg_useruploadnumber;
   var $jg_special_gif_upload;
   var $jg_delete_original_user;
   var $jg_newpiccopyright;
   var $jg_newpicnote;
   var $jg_redirect_after_upload;
+  var $jg_edit_metadata;
   var $jg_download;
   var $jg_download_unreg;
   var $jg_download_hint;
@@ -118,6 +123,7 @@ class TableJoomgalleryConfig extends JTable
   var $jg_report_images;
   var $jg_report_unreg;
   var $jg_report_hint;
+  var $jg_alternative_layout;
   var $jg_anchors;
   var $jg_tooltips;
   var $jg_dyncrop;
@@ -148,8 +154,8 @@ class TableJoomgalleryConfig extends JTable
   var $jg_openjs_padding;
   var $jg_openjs_background;
   var $jg_dhtml_border;
-  var $jg_show_title_in_dhtml;
-  var $jg_show_description_in_dhtml;
+  var $jg_show_title_in_popup;
+  var $jg_show_description_in_popup;
   var $jg_lightbox_speed;
   var $jg_lightbox_slide_all;
   var $jg_resize_js_image;
@@ -169,11 +175,13 @@ class TableJoomgalleryConfig extends JTable
   var $jg_showcatasnew;
   var $jg_catdaysnew;
   var $jg_showdescriptioningalleryview;
+  var $jg_uploadicongallery;
   var $jg_showrestrictedcats;
   var $jg_showrestrictedhint;
   var $jg_showsubsingalleryview;
   var $jg_category_rss;
   var $jg_category_rss_icon;
+  var $jg_uploadiconcategory;
   var $jg_showcathead;
   var $jg_usercatorder;
   var $jg_usercatorderlist;
@@ -189,6 +197,7 @@ class TableJoomgalleryConfig extends JTable
   var $jg_showpicasnew;
   var $jg_daysnew;
   var $jg_showhits;
+  var $jg_showdownloads;
   var $jg_showauthor;
   var $jg_showowner;
   var $jg_showcatcom;
@@ -210,13 +219,13 @@ class TableJoomgalleryConfig extends JTable
   var $jg_ordersubcatbyalpha;
   var $jg_showtotalsubcatimages;
   var $jg_showtotalsubcathits;
+  var $jg_uploadiconsubcat;
   var $jg_showdetailpage;
   var $jg_disabledetailpage;
   var $jg_showdetailnumberofpics;
   var $jg_cursor_navigation;
   var $jg_disable_rightclick_detail;
   var $jg_detail_report_images;
-  var $jg_report_images_notauth;
   var $jg_showdetaileditorlinks;
   var $jg_showdetailtitle;
   var $jg_showdetail;
@@ -229,6 +238,7 @@ class TableJoomgalleryConfig extends JTable
   var $jg_showdetaildescription;
   var $jg_showdetaildatum;
   var $jg_showdetailhits;
+  var $jg_showdetaildownloads;
   var $jg_showdetailrating;
   var $jg_showdetailfilesize;
   var $jg_showdetailauthor;
@@ -238,6 +248,8 @@ class TableJoomgalleryConfig extends JTable
   var $jg_downloadwithwatermark;
   var $jg_watermark;
   var $jg_watermarkpos;
+  var $jg_watermarkzoom;
+  var $jg_watermarksize;
   var $jg_bigpic;
   var $jg_bigpic_unreg;
   var $jg_bigpic_open;
@@ -249,6 +261,7 @@ class TableJoomgalleryConfig extends JTable
   var $jg_motionminis;
   var $jg_motionminiWidth;
   var $jg_motionminiHeight;
+  var $jg_motionminiLimit;
   var $jg_miniWidth;
   var $jg_miniHeight;
   var $jg_minisprop;
@@ -316,7 +329,7 @@ class TableJoomgalleryConfig extends JTable
    * @return  void
    * @since   1.5.5
    */
-  public function TableJoomGalleryConfig(&$db)
+  public function __construct($db)
   {
     parent::__construct(_JOOM_TABLE_CONFIG, 'id', $db);
   }
@@ -399,6 +412,25 @@ class TableJoomgalleryConfig extends JTable
     if(is_array($this->jg_usercatorderlist))
     {
       $this->jg_usercatorderlist  = implode(',', $this->jg_usercatorderlist);
+    }
+
+    // Checking for a SQL injection in the image sorting ORDER BY clauses
+    if(!in_array($this->jg_firstorder, JoomConfig::getValidImageSortingOrderByClauses()))
+    {
+      JFactory::getApplication()->enqueueMessage('SQL injection hacking attempt prevented!', 'warning');
+      $this->jg_firstorder = JoomConfig::getValidImageSortingOrderByClauses(0);
+    }
+
+    if(!empty($this->jg_secondorder) && !in_array($this->jg_secondorder, JoomConfig::getValidImageSortingOrderByClauses()))
+    {
+      JFactory::getApplication()->enqueueMessage('SQL injection hacking attempt prevented!', 'warning');
+      $this->jg_secondorder = JoomConfig::getValidImageSortingOrderByClauses(2);
+    }
+
+    if(!empty($this->jg_thirdorder) && !in_array($this->jg_thirdorder, JoomConfig::getValidImageSortingOrderByClauses()))
+    {
+      JFactory::getApplication()->enqueueMessage('SQL injection hacking attempt prevented!', 'warning');
+      $this->jg_thirdorder = JoomConfig::getValidImageSortingOrderByClauses(4);
     }
 
     // When no array there are no ticked checkboxes submitted per $_POST
@@ -559,11 +591,11 @@ class TableJoomgalleryConfig extends JTable
    */
   public function fixPath($path)
   {
-    if(!JFolder::exists(JPATH_ROOT.DIRECTORY_SEPARATOR.$path))
+    if(!JFolder::exists(JPATH_ROOT.'/'.$path))
     {
       // We assume that it's an absolute path,
-      // so trim '/' and '\' only on the right side and append one DS
-      $path = JPath::clean(rtrim($path, '\/').DS);
+      // so trim '/' and '\' only on the right side and append one '/'
+      $path = JPath::clean(rtrim($path, '\/').'/');
     }
     else
     {

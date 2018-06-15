@@ -2,7 +2,7 @@
 /**
  * @package    Joomla.Language
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -29,14 +29,13 @@ abstract class pl_PLLocalise
 		if ($count == 0)
 		{
 			return array('0');
-		}
+		} elseif ($count % 10 >= 2 && $count % 10 <= 4 && ($count % 100 < 10 || $count % 100 >= 20))
+{
+         return array('2');
+}
 		elseif ($count == 1)
 		{
 			return array('1');
-		} 
-		elseif ($count % 10 >= 2 && $count % 10 <= 4 && ($count % 100 < 10 || $count % 100 >= 20))
-		{
-			return array('2');
 		}
 		else
 		{
@@ -54,7 +53,7 @@ abstract class pl_PLLocalise
 	public static function getIgnoredSearchWords()
 	{
 		return array('i', 'w', 'od', 'na', 'pod', 'z', 'ze');
-	} 
+	}
 
 	/**
 	 * Returns the lower length limit of search words
@@ -66,7 +65,7 @@ abstract class pl_PLLocalise
 	public static function getLowerLimitSearchWord()
 	{
 		return 3;
-	} 
+	}
 
 	/**
 	 * Returns the upper length limit of search words
@@ -78,7 +77,7 @@ abstract class pl_PLLocalise
 	public static function getUpperLimitSearchWord()
 	{
 		return 20;
-	} 
+	}
 
 	/**
 	 * Returns the number of chars to display when searching
@@ -90,5 +89,5 @@ abstract class pl_PLLocalise
 	public static function getSearchDisplayedCharactersNumber()
 	{
 		return 200;
-	} 
+	}
 }

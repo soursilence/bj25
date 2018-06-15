@@ -1,41 +1,32 @@
-<?php defined('_JEXEC') or die('Restricted access'); ?>
-  <div class="jg-slider jg_uploadform">
-    <form action="<?php echo JRoute::_('index.php?option='._JOOM_OPTION.'&controller=categories&task=save&tmpl=component&redirect='.base64_encode('index.php?option='._JOOM_OPTION.'&view=mini&tmpl=component')); ?>" method="post" name="CreateCategoryForm" onsubmit="return joom_categoryCheck()">
-      <div class="jg_uprow">
-        <div class="jg_uptext hasTip" title="<?php echo JText::_('COM_JOOMGALLERY_MINI_CATEGORY_NAME'); ?>::<?php echo JText::_('COM_JOOMGALLERY_MINI_CATEGORY_NAME_DESCRIPTION'); ?>">
-          <?php echo JText::_('COM_JOOMGALLERY_MINI_CATEGORY_NAME'); ?>
-        </div>
-        <input class="inputbox" type="text" name="name" size="42" maxlength="100" value="" />
+<?php defined('_JEXEC') or die('Restricted access');
+if($this->_mainframe->isSite()):
+  $action = JRoute::_('index.php?option='._JOOM_OPTION.'&task=category.save&tmpl=component&redirect='.base64_encode('index.php?option='._JOOM_OPTION.'&view=mini&format=raw'));
+else:
+  $action = JRoute::_('index.php?option='._JOOM_OPTION.'&controller=categories&task=save&tmpl=component&redirect='.base64_encode('index.php?option='._JOOM_OPTION.'&view=mini&format=raw'));
+endif; ?>
+  <form action="<?php echo $action; ?>" method="post" class="form-validate form-horizontal" name="CreateCategoryForm" onsubmit="if(!document.formvalidator.isValid(this)){alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true); ?>');return false;}">
+    <div class="control-group">
+      <?php echo $this->category_form->getLabel('name'); ?>
+      <div class="controls">
+        <?php echo $this->category_form->getInput('name'); ?>
       </div>
-      <!--<div class="jg_uprow">
-        <div class="jg_uptext">
-          <?php echo JText::_('COM_JOOMGALLERY_COMMON_ALIAS'); ?>
-        </div>
-        <input class="inputbox" type="text" name="alias" size="42" maxlength="100" value="" />
-      </div>-->
-      <div class="jg_uprow">
-        <div class="jg_uptext">
-          <?php echo JText::_('COM_JOOMGALLERY_COMMON_PARENT_CATEGORY'); ?>
-        </div>
-        <?php echo $this->lists['parent_categories']; ?> 
+    </div>
+    <div class="control-group">
+      <?php echo $this->category_form->getLabel('parent_id'); ?>
+      <div class="controls">
+        <?php echo $this->parent_categories ? $this->parent_categories : $this->category_form->getInput('parent_id'); ?>
       </div>
-      <!--<div class="jg_uprow">
-        <div class="jg_uptext">
-          <?php echo JText::_('COM_JOOMGALLERY_COMMON_DESCRIPTION'); ?>
-        </div>
-        <textarea class="inputbox" cols="40" rows="5" name="imgtext"></textarea>
-      </div>-->
-      <div class="jg_uprow">
-        <div class="jg_uptext">
-          <?php echo JText::_('COM_JOOMGALLERY_COMMON_PUBLISHED'); ?>
-        </div>
-        <?php echo JHTML::_('select.booleanlist', 'published', 'class="inputbox"', 1); ?>
+    </div>
+    <div class="control-group">
+      <?php echo $this->category_form->getLabel('published'); ?>
+      <div class="controls">
+        <?php echo $this->category_form->getInput('published'); ?>
       </div>
-      <div class="jg_uprow">
-        <div class="jg_uptext">
-          <input type="submit" value="<?php echo JText::_('COM_JOOMGALLERY_MINI_SAVE'); ?>" class="button" />
-        </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <button id="button" class="btn btn-large btn-primary" type="submit"><?php echo JText::_('COM_JOOMGALLERY_MINI_SAVE'); ?></button>
       </div>
       <input type="hidden" name="cid" value="" />
-    </form>
-  </div>
+    </div>
+  </form>

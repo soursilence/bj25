@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/helpers/html/joomselect.php $
-// $Id: joomselect.php 4057 2013-01-22 17:08:41Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/html/joomselect.php $
+// $Id: joomselect.php 4398 2014-06-11 13:39:02Z erftralle $
 /******************************************************************************\
-**   JoomGallery 2                                                            **
+**   JoomGallery 3                                                            **
 **   By: JoomGallery::ProjectTeam                                             **
-**   Copyright (C) 2008 - 2011  JoomGallery::ProjectTeam                      **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                      **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                  **
 **   Released under GNU GPL Public License                                    **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look             **
@@ -14,36 +14,26 @@
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
 /**
- * Utility class for creating HTML Grids
+ * Utility class for creating HTML select lists
  *
  * @static
  * @package JoomGallery
  * @since   1.5.5
  */
-class JHTMLJoomSelect
+abstract class JHtmlJoomSelect
 {
-  /**
-   * Maximum number of users for who the
-   * default select boxes should be used
-   *
-   * @var   int
-   * @since 2.1.2
-   */
-  static $max_count = 250;
-
   /**
    * Number of active users in the system.
    * This is not set until first call of method users().
    *
    * @var   int
-   * @since 2.1.2
+   * @since 3.0
    */
   static $count = null;
 
   /**
    * Construct HTML List of selectable categories
    *
-   * @access  public
    * @param   int     $currentcat catid, current cat or parent
    * @param   string  $cname      Name of the HTML element
    * @param   string  $extra      Some extra code to add to the element
@@ -73,6 +63,8 @@ class JHTMLJoomSelect
 
     if(JoomConfig::getInstance()->get('jg_ajaxcategoryselection'))
     {
+      $app = JFactory::getApplication();
+
       if(!$idtag)
       {
         $idtag = $cname;
@@ -107,33 +99,47 @@ class JHTMLJoomSelect
 
       JHtml::_('behavior.framework', true);
       $doc = JFactory::getDocument();
-      $doc->addStyleSheet(JoomAmbit::getInstance()->getStyleSheet('admin.joomgallery.css'));
-      $doc->addScript(JoomAmbit::getInstance()->getScript('categories.js'));
-      $doc->addScriptDeclaration('var '.$idtag.'search;
-      window.addEvent(\'domready\', function() {
-        '.$idtag.'search = new JoomGallerySearchCategories({
-          \'inputbox\': \'jg-'.$idtag.'-input\',
-          \'resultbox\': \'jg-'.$idtag.'-results\',
-          \'hiddenbox\': \''.$idtag.'\',
-          \'moreresults\': \'jg-'.$idtag.'-more-results\',
-          \'defaultcontent\': \''.($name ? addslashes($name) : JText::_('COM_JOOMGALLERY_COMMON_ALL', true)).'\',
-          \'variablename\': \''.$idtag.'search\',
-          \'action\': \''.($task ? '' : $action).'\',
-          \'filter\': '.(int) $orig.',
-          \'current\': '.(int) $currentcat.',
-          \'onchange\': \''.str_replace('\'', '\\\'', $onchange).'\',
-          \'url\': \''.JRoute::_('index.php?option='._JOOM_OPTION.'&controller=categories&task=getcategories', false).'&format=json\'
-        });
-      });');
+      if($app->isSite())
+      {
+        $url = JRoute::_('index.php?option='._JOOM_OPTION.'&task=categories.getcategories', false);
+        $doc->addStyleSheet(JoomAmbit::getInstance()->getStyleSheet('joomgallery.css'));
+      }
+      else
+      {
 
-      return '<input type="hidden" name="'.$cname.'" value="'.$currentcat.'" id="'.$idtag.'" '.$attribs.' />
-              <input type="text" name="jg-input-'.$cname.'" value="'.($name ? addslashes($name) : JText::_('COM_JOOMGALLERY_COMMON_ALL')).'" id="jg-'.$idtag.'-input" '.str_replace('validate-joompositivenumeric', '', $attribs).' />
-              <div id="jg-'.$idtag.'-results" class="jg-category-results">
-                <div id="jg-'.$idtag.'-more-results" class="jg-category-more-results" onclick="'.$idtag.'search.loadMore();return false;">
-                  <a href="#" onclick="return false;">
-                    '.JText::_('COM_JOOMGALLERY_COMMON_CATEGORIES_MORE_RESULTS').'</a>
-                </div>
-              </div>';
+        $url = JRoute::_('index.php?option='._JOOM_OPTION.'&controller=categories&task=getcategories', false);
+        $doc->addStyleSheet(JoomAmbit::getInstance()->getStyleSheet('admin.joomgallery.css'));
+      }
+      $doc->addScript(JoomAmbit::getInstance()->getScript('categories.js'));
+      $jscript = '
+        <script type="text/javascript">
+          var '.$idtag.'search;
+          window.addEvent(\'domready\', function() {
+            '.$idtag.'search = new JoomGallerySearchCategories({
+              \'inputbox\': \'jg-'.$idtag.'-input\',
+              \'resultbox\': \'jg-'.$idtag.'-results\',
+              \'hiddenbox\': \''.$idtag.'\',
+              \'moreresults\': \'jg-'.$idtag.'-more-results\',
+              \'defaultcontent\': \''.($name ? addslashes($name) : JText::_('COM_JOOMGALLERY_COMMON_ALL', true)).'\',
+              \'variablename\': \''.$idtag.'search\',
+              \'action\': \''.($task ? '' : $action).'\',
+              \'filter\': '.(int) $orig.',
+              \'current\': '.(int) $currentcat.',
+              \'onchange\': \''.str_replace('\'', '\\\'', $onchange).'\',
+              \'url\': \''.$url.'&format=json\'
+            });
+          });
+        </script>';
+
+      return $jscript . '
+        <input type="hidden" name="'.$cname.'" value="'.$currentcat.'" id="'.$idtag.'" '.$attribs.' />
+        <input type="text" name="jg-input-'.$cname.'" value="'.($name ? addslashes($name) : JText::_('COM_JOOMGALLERY_COMMON_ALL')).'" id="jg-'.$idtag.'-input" '.str_replace('validate-joompositivenumeric', '', $attribs).' />
+        <div id="jg-'.$idtag.'-results" class="jg-category-results">
+          <div id="jg-'.$idtag.'-more-results" class="jg-category-more-results" onclick="'.$idtag.'search.loadMore();return false;">
+            <a href="#" onclick="return false;">
+              '.JText::_('COM_JOOMGALLERY_COMMON_CATEGORIES_MORE_RESULTS').'</a>
+          </div>
+        </div>';
     }
 
     $user           = JFactory::getUser();
@@ -162,6 +168,12 @@ class JHTMLJoomSelect
 
     foreach($cats as $key => $cat)
     {
+      // Avoid 'ROOT' entry in drop down list in the case that no category has been created yet
+      if($cat->cid === 0)
+      {
+        continue;
+      }
+
       // Check whether a certain category and it's sub-categories
       // have to be filtered out of the list
       if($orig)
@@ -256,10 +268,11 @@ class JHTMLJoomSelect
   {
     static $users = null;
 
+    $config = JoomConfig::getInstance();
+
     if(is_null($users))
     {
       $db     = JFactory::getDbo();
-      $config = JoomConfig::getInstance();
 
       $type = $config->get('jg_realname') ? 'name' : 'username';
 
@@ -269,9 +282,9 @@ class JHTMLJoomSelect
             ->where('block = 0');
       $db->setQuery($query);
 
-      JHTMLJoomSelect::$count = $db->loadResult();
+      self::$count = $db->loadResult();
 
-      if(JHTMLJoomSelect::$count <= JHTMLJoomSelect::$max_count || !$multiple)
+      if(self::$count <= $config->get('jg_use_listbox_max_user_count') || !$multiple)
       {
         $users = array();
 
@@ -287,7 +300,7 @@ class JHTMLJoomSelect
       }
     }
 
-    if(JHTMLJoomSelect::$count > JHTMLJoomSelect::$max_count && $multiple)
+    if(self::$count > $config->get('jg_use_listbox_max_user_count') && $multiple)
     {
       return '<input type="text" name="'.$name.'" value="'.implode(',', $active).'" class="inputbox"'.($idtag ? ' id="'.$idtag.'"' : '').'/>';
     }
@@ -301,7 +314,14 @@ class JHTMLJoomSelect
 
     if($nouser)
     {
-      $options[] = JHtml::_('select.option',  '0', JText::_('COM_JOOMGALLERY_COMMON_NO_USER'));
+      if(JFactory::getApplication()->isSite())
+      {
+        $options[] = JHtml::_('select.option',  '0', JText::_('COM_JOOMGALLERY_DETAIL_NAMETAGS_SELECT_USER'));
+      }
+      else
+      {
+        $options[] = JHtml::_('select.option',  '0', JText::_('COM_JOOMGALLERY_COMMON_NO_USER'));
+      }
     }
 
     $options = array_merge($options, $users);
@@ -321,94 +341,68 @@ class JHTMLJoomSelect
   }
 
   /**
-   * Construct input field and button for selecting a user in a popup
+   * Callback function for sorting an array of objects to assembled names of
+   * categories with alle parent categories
    *
-   * @param   string  $name       Name of the HTML select list to use
-   * @param   array   $active     Array of selected users
-   * @param   string  $javascript Additional code in the select list
-   * @return  string  The HTML output
-   * @since   2.1.2
+   * @param   object $a Element one
+   * @param   object $b Element two
+   * @return  int     0 if names equal, -1 if a < b, 1 if a > b
+   * @since   1.0.0
    */
-  public static function usersPopup($name, $active, $javascript = null)
+  public static function sortCatArray($a, $b)
   {
-    // Use simple select box if there aren't too many users
-    $db = JFactory::getDbo();
-    $query = $db->getQuery(true)
-          ->select('COUNT(id)')
-          ->from('#__users')
-          ->where('block = 0');
-    $db->setQuery($query);
-
-    if($db->loadResult() <= JHTMLJoomSelect::$max_count)
-    {
-      return JHtml::_('joomselect.users', $name, $active, false, array('' => JText::_('COM_JOOMGALLERY_COMMON_OPTION_SELECT_OWNER')), $javascript, false, false, $name);
-    }
-
-    $html = array();
-    $link = JRoute::_('index.php?option=com_users&view=users&layout=modal&tmpl=component&field='.$name);
-    $type = JoomConfig::getInstance()->get('jg_realname') ? 'name' : 'username';
-
-    // Load the modal behavior script
-    JHtml::_('behavior.modal', 'a.modal_'.$name);
-
-    // Build the script
-    $script = array();
-    $script[] = '  function jSelectUser_'.$name.'(id, title) {';
-    $script[] = '    var old_id = document.getElementById("'.$name.'_id").value;';
-    $script[] = '    if(old_id != id) {';
-    $script[] = '      document.getElementById("'.$name.'_id").value = id;';
-    $script[] = '      document.getElementById("'.$name.'_name").value = title;';
-    $script[] = '      '.$javascript;
-    $script[] = '    }';
-    $script[] = '    SqueezeBox.close();';
-    $script[] = '  }';
-
-    // Add the script to the document head
-    JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
-
-    // Load the current user name if available
-    $table = JTable::getInstance('user');
-    if(!empty($active))
-    {
-      $table->load((int)$active);
-    }
-    else
-    {
-      $table->$type = JText::_('JLIB_FORM_SELECT_USER');
-    }
-
-    // Create a dummy text field with the user name
-    $html[] = '<div class="fltlft">';
-    $html[] = '  <input type="text" id="'.$name.'_name" value="'.htmlspecialchars($table->$type, ENT_COMPAT, 'UTF-8').'" disabled="disabled" class="inputbox" />';
-    $html[] = '</div>';
-
-    // Create the user select button
-    $html[] = '<div class="button2-left">';
-    $html[] = '  <div class="blank">';
-    $html[] = '    <a class="modal_'.$name.'" title="' . JText::_('JLIB_FORM_CHANGE_USER').'" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
-    $html[] = '      '.JText::_('JLIB_FORM_CHANGE_USER').'</a>';
-    $html[] = '  </div>';
-    $html[] = '</div>';
-
-    // Create the real field, hidden, that stores the user id
-    $html[] = '<input type="hidden" id="'.$name.'_id" name="'.$name.'" value="'.$active.'" />';
-
-    return implode("\n", $html);
+    return strcmp($a->path, $b->path);
   }
 
   /**
-   * Callback function for sorting an array of objects to assembled names of
-   * categories with alle parent categories
-   * @see categoryList()
+   * Creates a HMTL select list of OpenImage options
    *
-   * @access  public
-   * @param   object  $a
-   * @param   object  $b
-   * @return  0 if names equal, -1 if a < b, 1 if a > b
-   * @since   1.0.0
+   * @param   string  $name         Name of the field
+   * @param   string  $selected     Option that should be preselected.
+   * @param   boolean $detail       True, if the default detail view shall be an available option, defaults to true
+   * @param   boolean $default      True, if the 'like in JoomGallery configured' shall be an available option, defaults to false
+   * @param   string  $lang_prefix  Prefix for the language constants of the options, defaults to 'COM_JOOMGALLERY_CONFIG_CV_GS_OPEN'
+   * @param   string  $attr         Optional attributes for the HTML element
+   * @param   array   $extra        Array of additional options for the select list
+   * @return  string  The HTML select list of OpenImage options
+   * @since   3.0
    */
-  public static function sortCatArray($a,$b)
+  public static function openImage($name, $selected = null, $detail = true, $default = false, $lang_prefix = 'COM_JOOMGALLERY_CONFIG_CV_GS_OPEN_', $attr = null, $extra = array())
   {
-    return strcmp($a->path, $b->path);
+    // Additional options are placed first in the list
+    $options = $extra;
+
+    if($default)
+    {
+      $options[] = JHtml::_('select.option', 'default', JText::_($lang_prefix.'LIKE_IN_JOOMGALLERY'));
+    }
+
+    if($detail)
+    {
+      $options[] = JHtml::_('select.option', '0', JText::_($lang_prefix.'DEFAULT'));
+    }
+
+    $options[] = JHtml::_('select.option', '1', JText::_($lang_prefix.'BLANK_WINDOW'));
+    $options[] = JHtml::_('select.option', '2', JText::_($lang_prefix.'JS_WINDOW'));
+    $options[] = JHtml::_('select.option', '3', JText::_($lang_prefix.'DHTML'));
+    #$options[] = JHtml::_('select.option', '4', JText::_('COM_JOOMGALLERY_MODAL'));
+    $options[] = JHtml::_('select.option', '5', JText::_($lang_prefix.'THICKBOX3'));
+    $options[] = JHtml::_('select.option', '6', JText::_($lang_prefix.'SLIMBOX'));
+
+    // Load plugins in order to search for additional OpenImage plugins
+    JPluginHelper::importPlugin('joomgallery');
+    $plugins = JDispatcher::getInstance()->trigger('onJoomOpenImageGetName');
+
+    foreach($plugins as $plugin)
+    {
+      $options[] = JHtml::_('select.option', $plugin);
+    }
+
+    if(!$attr)
+    {
+      $attr = 'class="inputbox" size="'.count($options).'"';
+    }
+
+    return JHtml::_('select.genericlist', $options, $name, $attr, 'value', 'text', $selected);
   }
 }

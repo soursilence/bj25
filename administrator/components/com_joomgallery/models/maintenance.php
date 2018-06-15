@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/models/maintenance.php $
-// $Id: maintenance.php 3848 2012-09-13 16:03:31Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/maintenance.php $
+// $Id: maintenance.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -721,7 +721,7 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
             ->from($this->_db->qn(_JOOM_TABLE_CATEGORIES))
             ->where('parent_id = '.$cid);
       $this->_db->setQuery($query);
-      $categories = $this->_db->loadResultArray();
+      $categories = $this->_db->loadColumn();
       if(count($categories))
       {
         $extant_subcats = true;
@@ -893,7 +893,7 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
             ->from(_JOOM_TABLE_IMAGES);
       $this->_db->setQuery($query);
 
-      if($images = $this->_db->loadResultArray())
+      if($images = $this->_db->loadColumn())
       {
         $start = true;
         $this->_mainframe->setUserState('joom.setalias.images', $images);
@@ -907,7 +907,7 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
             ->from(_JOOM_TABLE_CATEGORIES);
       $this->_db->setQuery($query);
 
-      if($categories = $this->_db->loadResultArray())
+      if($categories = $this->_db->loadColumn())
       {
         $start = true;
         $this->_mainframe->setUserState('joom.setalias.categories', $categories);
@@ -1806,7 +1806,9 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
   {
     $query = 'OPTIMIZE TABLE
                 '._JOOM_TABLE_IMAGES.',
+                '._JOOM_TABLE_IMAGE_DETAILS.',
                 '._JOOM_TABLE_CATEGORIES.',
+                '._JOOM_TABLE_CATEGORY_DETAILS.',
                 '._JOOM_TABLE_COMMENTS.',
                 '._JOOM_TABLE_CONFIG.',
                 '._JOOM_TABLE_COUNTSTOP.',
@@ -1997,13 +1999,13 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       }
       else
       {
-        $search = $this->_db->Quote('%'.$this->_db->getEscaped($search, true).'%');
+        $search = $this->_db->Quote('%'.$this->_db->escape($search, true).'%');
         $query->where('a.title LIKE '.$search);
       }
     }
 
     // Add the order clause
-    $query->order($this->_db->getEscaped($this->getState('list.ordering', 'a.id')).' '.$this->_db->getEscaped($this->getState('list.direction', 'ASC')));
+    $query->order($this->_db->escape($this->getState('list.ordering', 'a.id')).' '.$this->_db->escape($this->getState('list.direction', 'ASC')));
 
     return $query;
   }
@@ -2069,13 +2071,13 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       }
       else
       {
-        $search = $this->_db->Quote('%'.$this->_db->getEscaped($search, true).'%');
+        $search = $this->_db->Quote('%'.$this->_db->escape($search, true).'%');
         $query->where('a.title LIKE '.$search);
       }
     }
 
     // Add the order clause
-    $query->order($this->_db->getEscaped($this->getState('list.ordering', 'a.id')).' '.$this->_db->getEscaped($this->getState('list.direction', 'ASC')));
+    $query->order($this->_db->escape($this->getState('list.ordering', 'a.id')).' '.$this->_db->escape($this->getState('list.direction', 'ASC')));
 
     return $query;
   }
@@ -2145,13 +2147,13 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       }
       else
       {
-        $search = $this->_db->Quote('%'.$this->_db->getEscaped($search, true).'%');
+        $search = $this->_db->Quote('%'.$this->_db->escape($search, true).'%');
         $query->where('a.fullpath LIKE '.$search);
       }
     }
 
     // Add the order clause
-    $query->order($this->_db->getEscaped($this->getState('list.ordering', 'a.id')).' '.$this->_db->getEscaped($this->getState('list.direction', 'ASC')));
+    $query->order($this->_db->escape($this->getState('list.ordering', 'a.id')).' '.$this->_db->escape($this->getState('list.direction', 'ASC')));
 
     return $query;
   }
@@ -2196,13 +2198,13 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       }
       else
       {
-        $search = $this->_db->Quote('%'.$this->_db->getEscaped($search, true).'%');
+        $search = $this->_db->Quote('%'.$this->_db->escape($search, true).'%');
         $query->where('a.fullpath LIKE '.$search);
       }
     }
 
     // Add the order clause
-    $query->order($this->_db->getEscaped($this->getState('list.ordering', 'a.id')).' '.$this->_db->getEscaped($this->getState('list.direction', 'ASC')));
+    $query->order($this->_db->escape($this->getState('list.ordering', 'a.id')).' '.$this->_db->escape($this->getState('list.direction', 'ASC')));
 
     return $query;
   }

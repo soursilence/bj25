@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/controllers/config.php $
-// $Id: config.php 3857 2012-09-14 20:32:06Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/controllers/config.php $
+// $Id: config.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -63,6 +63,14 @@ class JoomGalleryControllerConfig extends JoomGalleryController
    */
   public function edit()
   {
+    $id  = JRequest::getInt('id');
+    $cid = JRequest::getVar('cid', array(), 'post', 'array');
+
+    if(!$id && count($cid) && $cid[0])
+    {
+      JRequest::setVar('id', (int) $cid[0]);
+    }
+
     JRequest::setVar('view', 'config');
     JRequest::setVar('hidemainmenu', 1);
 

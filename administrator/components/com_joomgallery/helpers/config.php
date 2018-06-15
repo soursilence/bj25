@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/helpers/config.php $
-// $Id: config.php 3851 2012-09-13 17:46:24Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/config.php $
+// $Id: config.php 4267 2013-05-10 11:41:59Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -38,7 +38,6 @@ class JoomConfig extends JObject
   var $jg_use_real_paths;
   var $jg_checkupdate;
   var $jg_filenamewithjs;
-  var $jg_filenamesearch;
   var $jg_filenamereplace;
   var $jg_thumbcreation;
   var $jg_fastgd2thumbcreation;
@@ -55,12 +54,11 @@ class JoomConfig extends JObject
   var $jg_useorigfilename;
   var $jg_filenamenumber;
   var $jg_delete_original;
-  var $jg_wrongvaluecolor;
   var $jg_msg_upload_type;
   var $jg_msg_upload_recipients;
   var $jg_msg_download_type;
-  var $jg_msg_zipdownload;
   var $jg_msg_download_recipients;
+  var $jg_msg_zipdownload;
   var $jg_msg_comment_type;
   var $jg_msg_comment_recipients;
   var $jg_msg_comment_toowner;
@@ -71,22 +69,27 @@ class JoomConfig extends JObject
   var $jg_msg_report_type;
   var $jg_msg_report_recipients;
   var $jg_msg_report_toowner;
+  var $jg_msg_rejectimg_type;
+  var $jg_msg_global_from;
   var $jg_realname;
-  var $jg_cooliris;
-  var $jg_coolirislink;
   var $jg_contentpluginsenabled;
   var $jg_itemid;
   var $jg_ajaxcategoryselection;
   var $jg_disableunrequiredchecks;
+  var $jg_use_listbox_max_user_count;
   var $jg_userspace;
+  var $jg_useruploaddefaultcat;
   var $jg_approve;
+  var $jg_unregistered_permissions;
   var $jg_maxusercat;
   var $jg_maxuserimage;
+  var $jg_maxuserimage_timespan;
   var $jg_maxfilesize;
   var $jg_usercatacc;
   var $jg_usercatthumbalign;
   var $jg_maxuploadfields;
   var $jg_useruploadsingle;
+  var $jg_useruploadajax;
   var $jg_useruploadbatch;
   var $jg_useruploadjava;
   var $jg_useruseorigfilename;
@@ -96,6 +99,7 @@ class JoomConfig extends JObject
   var $jg_newpiccopyright;
   var $jg_newpicnote;
   var $jg_redirect_after_upload;
+  var $jg_edit_metadata;
   var $jg_download;
   var $jg_download_unreg;
   var $jg_download_hint;
@@ -118,6 +122,7 @@ class JoomConfig extends JObject
   var $jg_report_images;
   var $jg_report_unreg;
   var $jg_report_hint;
+  var $jg_alternative_layout;
   var $jg_anchors;
   var $jg_tooltips;
   var $jg_dyncrop;
@@ -169,11 +174,13 @@ class JoomConfig extends JObject
   var $jg_showcatasnew;
   var $jg_catdaysnew;
   var $jg_showdescriptioningalleryview;
+  var $jg_uploadicongallery;
   var $jg_showrestrictedcats;
   var $jg_showrestrictedhint;
   var $jg_showsubsingalleryview;
   var $jg_category_rss;
   var $jg_category_rss_icon;
+  var $jg_uploadiconcategory;
   var $jg_showcathead;
   var $jg_usercatorder;
   var $jg_usercatorderlist;
@@ -189,6 +196,7 @@ class JoomConfig extends JObject
   var $jg_showpicasnew;
   var $jg_daysnew;
   var $jg_showhits;
+  var $jg_showdownloads;
   var $jg_showauthor;
   var $jg_showowner;
   var $jg_showcatcom;
@@ -210,6 +218,7 @@ class JoomConfig extends JObject
   var $jg_ordersubcatbyalpha;
   var $jg_showtotalsubcatimages;
   var $jg_showtotalsubcathits;
+  var $jg_uploadiconsubcat;
   var $jg_showdetailpage;
   var $jg_disabledetailpage;
   var $jg_showdetailnumberofpics;
@@ -220,9 +229,15 @@ class JoomConfig extends JObject
   var $jg_showdetailtitle;
   var $jg_showdetail;
   var $jg_showdetailaccordion;
+  var $jg_accordionduration;
+  var $jg_accordiondisplay;
+  var $jg_accordionopacity;
+  var $jg_accordionalwayshide;
+  var $jg_accordioninitialeffect;
   var $jg_showdetaildescription;
   var $jg_showdetaildatum;
   var $jg_showdetailhits;
+  var $jg_showdetaildownloads;
   var $jg_showdetailrating;
   var $jg_showdetailfilesize;
   var $jg_showdetailauthor;
@@ -232,6 +247,8 @@ class JoomConfig extends JObject
   var $jg_downloadwithwatermark;
   var $jg_watermark;
   var $jg_watermarkpos;
+  var $jg_watermarkzoom;
+  var $jg_watermarksize;
   var $jg_bigpic;
   var $jg_bigpic_unreg;
   var $jg_bigpic_open;
@@ -243,6 +260,7 @@ class JoomConfig extends JObject
   var $jg_motionminis;
   var $jg_motionminiWidth;
   var $jg_motionminiHeight;
+  var $jg_motionminiLimit;
   var $jg_miniWidth;
   var $jg_miniHeight;
   var $jg_minisprop;
@@ -318,6 +336,14 @@ class JoomConfig extends JObject
    * @var boolean
    */
   protected $_extended = false;
+
+  /**
+   * Contains all valid ORDER BY clauses for the image sorting
+   * options $jg_firstorder, $jg_secondorder and $jg_thirdorder.
+   *
+   * @var array
+   */
+  private static $_validImageSortingOrderByClauses = array('ordering ASC', 'ordering DESC', 'imgdate ASC', 'imgdate DESC', 'imgtitle ASC', 'imgtitle DESC');
 
   /**
    * Constructor
@@ -403,7 +429,7 @@ class JoomConfig extends JObject
     {
       if($id == 'admin')
       {
-        require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR._JOOM_OPTION.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'adminconfig.php';
+        require_once JPATH_ADMINISTRATOR.'/components/'._JOOM_OPTION.'/helpers/adminconfig.php';
         $config = new JoomAdminConfig();
       }
       else
@@ -453,5 +479,19 @@ class JoomConfig extends JObject
     }
 
     return 'joom_settings'.$this->_id.'.css';
+  }
+
+  /**
+   * Returns a string containing a valid image sorting ORDER BY clause for a given index or an
+   * array containing all of them.
+   *
+   * @param   mixed  $index
+   * @return  mixed  A string containing a valid image sorting ORDER BY clause or an array
+   *                 containing all of them.
+   * @since   3.3
+   */
+  public static function getValidImageSortingOrderByClauses($index = false)
+  {
+    return $index !== false ? self::$_validImageSortingOrderByClauses[$index] : self::$_validImageSortingOrderByClauses;
   }
 }

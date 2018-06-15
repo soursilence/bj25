@@ -1,7 +1,7 @@
 <?php defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 echo $this->loadTemplate('header'); ?>
   <div class="jg_topview">
-    <div class="sectiontableheader">
+    <div class="well well-small jg-header">
       <?php echo $this->title; ?>&nbsp;
     </div>
 <?php $count = count($this->rows);
@@ -10,14 +10,14 @@ echo $this->loadTemplate('header'); ?>
       $this->i  = 0;
       if(!$count): ?>
     <div class="jg_txtrow">
-      <div class="sectiontableentry1">
+      <div class="jg_row1">
         <?php echo JHTML::_('joomgallery.icon', 'arrow.png', 'arrow'); ?>
         <?php echo JText::_('COM_JOOMGALLERY_TOPLIST_NO_IMAGES'); ?>
       </div>
     </div>
 <?php endif;
       for($row_count = 0; $row_count < $num_rows; $row_count++ ): ?>
-    <div class="jg_row sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+    <div class="jg_row jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
 <?php   for($col_count = 0; ($col_count < $this->_config->get('jg_toplistcols')) && ($index < $count); $col_count++):
           $row = $this->rows[$index]; ?>
       <div class="jg_topelement">
@@ -51,6 +51,11 @@ echo $this->loadTemplate('header'); ?>
           if($this->_config->get('jg_showhits')): ?>
             <li>
               <?php echo JText::sprintf('COM_JOOMGALLERY_COMMON_HITS_VAR', $row->hits); ?>
+            </li>
+<?php     endif;
+          if($this->_config->get('jg_showdownloads')): ?>
+            <li>
+              <?php echo JText::sprintf('COM_JOOMGALLERY_COMMON_DOWNLOADS_VAR', $row->downloads); ?>
             </li>
 <?php     endif;
           if($this->_config->get('jg_showcatrate')): ?>

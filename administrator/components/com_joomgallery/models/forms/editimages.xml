@@ -4,19 +4,20 @@
     <field
       name="imgtitle"
       type="cbtext"
+      class="inputbox"
       cbname="change[]"
       cbvalue="imgtitle"
       cbrequired="true"
       label="COM_JOOMGALLERY_COMMON_TITLE"
       description="COM_JOOMGALLERY_IMGMAN_IMGTITLE_DESC"
-      size="40"
       maxLength="255"
     />
     <field
       name="imgtitlestartcounter"
       type="text"
+      class="inputbox"
       size="5"
-      maxLength="5"
+      maxlength="5"
       default=""
     />    
     <field 
@@ -28,8 +29,22 @@
       label="COM_JOOMGALLERY_COMMON_CATEGORY"
     />
     <field
+      id="jg_movecopy"
+      name="movecopy"
+      type="radio"
+      class="inputbox btn-group"
+      label="COM_JOOMGALLERY_COMMON_PUBLISHED"
+      default="move"
+    >
+      <option value="move">
+        JLIB_HTML_BATCH_MOVE</option>
+      <option value="copy">
+        JLIB_HTML_BATCH_COPY</option>
+    </field>
+    <field
       name="access"
       type="cbaccesslevel"
+      class="inputbox"
       cbname="change[]"
       cbvalue="access"
       label="COM_JOOMGALLERY_COMMON_ACCESS"
@@ -37,6 +52,7 @@
     <field
       name="imgtext"
       type="cbeditor"
+      class="inputbox"
       cbname="change[]"
       cbvalue="imgtext"
       label="COM_JOOMGALLERY_COMMON_DESCRIPTION"
@@ -56,6 +72,7 @@
     <field
       name="imgauthor"
       type="cbtext"
+      class="inputbox"
       cbname="change[]"
       cbvalue="imgauthor"
       label="COM_JOOMGALLERY_COMMON_AUTHOR"
@@ -64,17 +81,41 @@
       default=""
     />
     <field
+      name="metakey"
+      type="cbtextarea"
+      class="inputbox"
+      cbname="change[]"
+      cbvalue="metakey"
+      label="COM_JOOMGALLERY_COMMON_METAKEYS"
+      description="COM_JOOMGALLERY_COMMON_METAKEYS_TIP"
+      default=""
+      rows="5"
+      cols="40"
+    />
+    <field
+      name="metadesc"
+      type="cbtextarea"
+      class="inputbox"
+      cbname="change[]"
+      cbvalue="metadesc"
+      label="COM_JOOMGALLERY_COMMON_METADESC"
+      description="COM_JOOMGALLERY_COMMON_METADESC_TIP"
+      default=""
+      rows="5"
+      cols="40"
+    />
+    <field
       name="published"
       type="cblist"
       cbname="change[]"
       cbvalue="published"
-      label="COM_JOOMGALLERY_COMMON_STATE"
+      label="COM_JOOMGALLERY_COMMON_PUBLISHED"
       size="1"
     >
       <option value="0">
-        JUNPUBLISHED</option>
+        JNO</option>
       <option value="1">
-        JPUBLISHED</option>
+        JYES</option>
     </field>
     <field
       name="txtclearvotes"
@@ -84,7 +125,7 @@
       cbvalue="clearvotes"
       label="COM_JOOMGALLERY_IMGMAN_IMAGES_RATINGS"
       disabled="true"
-      size="80"
+      size="60"
     />
     <field
       name="clearvotes"
@@ -101,13 +142,30 @@
       cbvalue="clearhits"
       label="COM_JOOMGALLERY_IMGMAN_IMAGES_HITS"
       disabled="true"
-      size="80"
+      size="60"
     />
     <field
       name="clearhits"
       type="hidden"
       cbname="change[]"
       cbvalue="clearhits"
+      default="1"
+    />
+    <field
+      name="txtcleardownloads"
+      type="cbtext"
+      class="readonly"      
+      cbname="change[]"
+      cbvalue="cleardownloads"
+      label="COM_JOOMGALLERY_COMMON_DOWNLOADS"
+      disabled="true"
+      size="60"
+    />
+    <field
+      name="cleardownloads"
+      type="hidden"
+      cbname="change[]"
+      cbvalue="cleardownloads"
       default="1"
     />
   </fieldset>

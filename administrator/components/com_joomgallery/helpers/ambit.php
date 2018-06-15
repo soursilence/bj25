@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/helpers/ambit.php $
-// $Id: ambit.php 4020 2012-12-15 14:13:44Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/ambit.php $
+// $Id: ambit.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -145,6 +145,8 @@ class JoomAmbit extends JObject
    */
   function __construct()
   {
+    jimport('joomla.filesystem.folder');
+
     $config     = JoomConfig::getInstance();
     $mainframe  = JFactory::getApplication('administrator');
 
@@ -155,7 +157,7 @@ class JoomAmbit extends JObject
 
     $this->_external['thumb'] = false;
     $this->thumb_url  = JURI::root().$config->get('jg_paththumbs');
-    $this->thumb_path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_paththumbs'));
+    $this->thumb_path = JPath::clean(JPATH_ROOT.'/'.$config->get('jg_paththumbs'));
     if(!JFolder::exists($this->thumb_path))
     {
       $this->_external['thumb'] = true;
@@ -165,7 +167,7 @@ class JoomAmbit extends JObject
 
     $this->_external['img'] = false;
     $this->img_url    = JURI::root().$config->get('jg_pathimages');
-    $this->img_path   = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_pathimages'));
+    $this->img_path   = JPath::clean(JPATH_ROOT.'/'.$config->get('jg_pathimages'));
     if(!JFolder::exists($this->img_path))
     {
       $this->_external['img'] = true;
@@ -175,7 +177,7 @@ class JoomAmbit extends JObject
 
     $this->_external['orig'] = false;
     $this->orig_url   = JURI::root().$config->get('jg_pathoriginalimages');
-    $this->orig_path  = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_pathoriginalimages'));
+    $this->orig_path  = JPath::clean(JPATH_ROOT.'/'.$config->get('jg_pathoriginalimages'));
     if(!JFolder::exists($this->orig_path))
     {
       $this->_external['orig'] = true;
@@ -183,17 +185,17 @@ class JoomAmbit extends JObject
       $this->orig_path  = JPath::clean($config->get('jg_pathoriginalimages'));
     }
 
-    $this->temp_path  = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_pathtemp'));
+    $this->temp_path  = JPath::clean(JPATH_ROOT.'/'.$config->get('jg_pathtemp'));
     if(!JFolder::exists($this->temp_path))
     {
       $this->temp_path  = JPath::clean($config->get('jg_pathtemp'));
     }
-    $this->ftp_path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_pathftpupload'));
+    $this->ftp_path = JPath::clean(JPATH_ROOT.'/'.$config->get('jg_pathftpupload'));
     if(!JFolder::exists($this->ftp_path))
     {
       $this->ftp_path = JPath::clean($config->get('jg_pathftpupload'));
     }
-    $this->wtm_path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_wmpath'));
+    $this->wtm_path = JPath::clean(JPATH_ROOT.'/'.$config->get('jg_wmpath'));
     if(!JFolder::exists($this->wtm_path))
     {
       $this->wtm_path = JPath::clean($config->get('jg_wmpath'));

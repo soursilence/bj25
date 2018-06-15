@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/models/vote.php $
-// $Id: vote.php 3839 2012-09-03 17:17:47Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/vote.php $
+// $Id: vote.php 4077 2013-02-12 10:46:13Z erftralle $
 /****************************************************************************************\
-**   JoomGallery  2                                                                     **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -198,7 +198,7 @@ class JoomGalleryModelVote extends JoomGalleryModel
     $row->picid     = $this->_id;
     $row->userid    = $this->_user->get('id');
     $row->userip    = $_SERVER['REMOTE_ADDR'];
-    $row->datevoted = $date->toMySQL();
+    $row->datevoted = $date->toSQL();
     $row->vote      = $vote;
 
     if(!$row->store())

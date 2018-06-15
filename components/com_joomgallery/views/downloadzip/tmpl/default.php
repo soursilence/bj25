@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 echo $this->loadTemplate('header'); ?>
-  <div class="sectiontableheader">
+  <div class="well well-small jg-header">
     <?php echo $this->output('DOWNLOAD'); ?>
   </div>
   <div class="jg_createzip">
@@ -16,7 +16,7 @@ echo $this->loadTemplate('header'); ?>
       <?php echo $this->output('CREATEZIP_REMOVE_ALL'); ?> 
     </a>
   </div>
-  <div class="sectiontableheader">
+  <div class="jg-footer">
     &nbsp;
   </div>
 <?php echo $this->loadTemplate('footer');

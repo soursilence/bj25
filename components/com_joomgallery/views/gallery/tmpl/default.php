@@ -19,7 +19,7 @@ echo $this->loadTemplate('header'); ?>
   </div>
 <?php endif;
       if($this->_config->get('jg_showallcathead')): ?>
-  <div class="sectiontableheader">
+  <div class="well well-small jg-header">
     <?php echo JText::_('COM_JOOMGALLERY_COMMON_CATEGORIES'); ?>
   </div>
 <?php endif;
@@ -27,7 +27,7 @@ echo $this->loadTemplate('header'); ?>
       $num_rows = ceil(count($this->rows ) / $this->_config->get('jg_colcat'));
       $index    = 0;
       for($row_count = 0; $row_count < $num_rows; $row_count++):?>
-  <div class="jg_row sectiontableentry<?php echo ($this->i%2)+1; ?>">
+  <div class="jg_row jg_row<?php echo ($this->i % 2) + 1; ?>">
 <?php   for($col_count = 0; (($col_count < $this->_config->get('jg_colcat')) && ($index < count($this->rows))); $col_count++):
           $row = $this->rows[$index]; ?>
     <div class="<?php echo $row->gallerycontainer; ?>">
@@ -47,6 +47,11 @@ echo $this->loadTemplate('header'); ?>
             <a href="<?php echo $row->link; ?>">
               <b><?php echo $this->escape($row->name); ?></b>
             </a>
+<?php       if($row->password && $this->_config->get('jg_showrestrictedhint')): ?>
+            <span<?php echo JHtml::_('joomgallery.tip', JText::_('COM_JOOMGALLERY_COMMON_CATEGORY_PASSWORD_PROTECTED_TIPTEXT'), JText::_('COM_JOOMGALLERY_COMMON_CATEGORY_PASSWORD_PROTECTED'), true); ?>>
+              <?php echo JHtml::_('joomgallery.icon', 'key.png', 'COM_JOOMGALLERY_COMMON_CATEGORY_PASSWORD_PROTECTED'); ?>
+            </span>
+<?php       endif; ?>
 <?php     else: ?>
             <span class="jg_no_access<?php echo JHTML::_('joomgallery.tip', JText::_('COM_JOOMGALLERY_COMMON_TIP_YOU_NOT_ACCESS_THIS_CATEGORY'), $this->escape($row->name), false, false); ?>">
               <b><?php echo $this->escape($row->name); ?></b>
@@ -54,7 +59,7 @@ echo $this->loadTemplate('header'); ?>
             </span>
 <?php     endif; ?>
           </li>
-<?php     if(in_array($row->access, $this->_user->getAuthorisedViewLevels())):
+<?php     if(in_array($row->access, $this->_user->getAuthorisedViewLevels()) && (!$row->password || in_array($row->cid, $this->_mainframe->getUserState('joom.unlockedCategories', array(0))))):
             if($this->_config->get('jg_showtotalcatimages') || $row->isnew): ?>
           <li>
 <?php       if($this->_config->get('jg_showtotalcatimages')): ?>
@@ -96,6 +101,12 @@ echo $this->loadTemplate('header'); ?>
             </span>
 <?php       endif; ?>
           </li>
+<?php     endif;
+          if(isset($row->show_upload_icon) && $row->show_upload_icon): ?>
+            <li>
+              <a href="<?php echo JRoute::_('index.php?view=mini&format=raw&upload_category='.$row->cid); ?>" class="modal<?php echo JHtml::_('joomgallery.tip', 'COM_JOOMGALLERY_COMMON_UPLOAD_ICON_TIPTEXT', 'COM_JOOMGALLERY_COMMON_UPLOAD_ICON_TIPCAPTION'); ?>" rel="{handler: 'iframe', size: {x: 620, y: 550}}">
+                <?php echo JHtml::_('joomgallery.icon', 'add.png', 'COM_JOOMGALLERY_COMMON_UPLOAD_ICON_TIPCAPTION'); ?></a>
+            </li>
 <?php     endif; ?>
         </ul>
       </div>
@@ -111,7 +122,7 @@ echo $this->loadTemplate('header'); ?>
 <?php   $this->i++;
       endfor;
       if($this->_config->get('jg_showallcathead')): ?>
-  <div class="sectiontableheader">
+  <div class="jg-footer">
     &nbsp;
   </div>
 <?php endif;

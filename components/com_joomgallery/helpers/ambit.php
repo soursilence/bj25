@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/helpers/ambit.php $
-// $Id: ambit.php 3810 2012-06-10 16:16:35Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/helpers/ambit.php $
+// $Id: ambit.php 4288 2013-05-27 21:31:08Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -154,7 +154,9 @@ class JoomAmbit extends JObject
 
     $this->_external['thumb'] = false;
     $this->thumb_url  = JURI::root().$config->get('jg_paththumbs');
-    $this->thumb_path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_paththumbs'));
+    $this->thumb_path = JPath::clean(JPATH_ROOT.'/'.$config->get('jg_paththumbs'));
+
+    jimport('joomla.filesystem.folder');
     if(!JFolder::exists($this->thumb_path))
     {
       $this->_external['thumb'] = true;
@@ -164,7 +166,7 @@ class JoomAmbit extends JObject
 
     $this->_external['img'] = false;
     $this->img_url    = JURI::root().$config->get('jg_pathimages');
-    $this->img_path   = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_pathimages'));
+    $this->img_path   = JPath::clean(JPATH_ROOT.'/'.$config->get('jg_pathimages'));
     if(!JFolder::exists($this->img_path))
     {
       $this->_external['img'] = true;
@@ -174,7 +176,7 @@ class JoomAmbit extends JObject
 
     $this->_external['orig'] = false;
     $this->orig_url   = JURI::root().$config->get('jg_pathoriginalimages');
-    $this->orig_path  = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_pathoriginalimages'));
+    $this->orig_path  = JPath::clean(JPATH_ROOT.'/'.$config->get('jg_pathoriginalimages'));
     if(!JFolder::exists($this->orig_path))
     {
       $this->_external['orig'] = true;
@@ -182,17 +184,17 @@ class JoomAmbit extends JObject
       $this->orig_path  = JPath::clean($config->get('jg_pathoriginalimages'));
     }
 
-    $this->temp_path  = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_pathtemp'));
+    $this->temp_path  = JPath::clean(JPATH_ROOT.'/'.$config->get('jg_pathtemp'));
     if(!JFolder::exists($this->temp_path))
     {
       $this->temp_path  = JPath::clean($config->get('jg_pathtemp'));
     }
-    $this->ftp_path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_pathftpupload'));
+    $this->ftp_path = JPath::clean(JPATH_ROOT.'/'.$config->get('jg_pathftpupload'));
     if(!JFolder::exists($this->ftp_path))
     {
       $this->ftp_path = JPath::clean($config->get('jg_pathftpupload'));
     }
-    $this->wtm_path = JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$config->get('jg_wmpath'));
+    $this->wtm_path = JPath::clean(JPATH_ROOT.'/'.$config->get('jg_wmpath'));
     if(!JFolder::exists($this->wtm_path))
     {
       $this->wtm_path = JPath::clean($config->get('jg_wmpath'));
@@ -408,13 +410,16 @@ class JoomAmbit extends JObject
       {
         $user = JFactory::getUser();
         $db   = JFactory::getDBO();
+        $lang = JFactory::getLanguage();
 
         $query = $db->getQuery(true)
               ->select('id')
               ->from('#__menu')
               ->where("link LIKE '%"._JOOM_OPTION."%view=gallery%'")
               ->where('access IN ('.implode(',', $user->getAuthorisedViewLevels()).')')
+              ->where('published = 1')
               ->where('client_id = 0')
+              ->where('(language = '.$db->q($lang->getTag()).' OR language = '.$db->q('').' OR language = '.$db->q('*').')')
               ->order('id DESC');
 
         $db->setQuery($query);
@@ -425,7 +430,9 @@ class JoomAmbit extends JObject
           $query->clear('where')
                 ->where("link LIKE '%"._JOOM_OPTION."%'")
                 ->where('access IN ('.implode(',', $user->getAuthorisedViewLevels()).')')
-                ->where('client_id = 0');
+                ->where('published = 1')
+                ->where('client_id = 0')
+                ->where('(language = '.$db->q($lang->getTag()).' OR language = '.$db->q('').' OR language = '.$db->q('*').')');
 
           $db->setQuery($query);
           $Itemid = $db->loadResult();
@@ -460,7 +467,7 @@ class JoomAmbit extends JObject
        )
     {
       // Creation of array
-      $database = JFactory::getDBO();
+      $database = JFactory::getDbo();
       $user     = JFactory::getUser();
 
       // Read all categories from database
@@ -472,7 +479,13 @@ class JoomAmbit extends JObject
       if(!$all)
       {
         $query->where('c.published = 1')
-              ->where('c.access IN ('.implode(',', $user->getAuthorisedViewLevels()).')');
+              ->where('c.access IN ('.implode(',', $user->getAuthorisedViewLevels()).')')
+              ->where('(c.password = '.$database->q('').' OR c.cid IN ('.implode(',', JFactory::getApplication()->getUserState('joom.unlockedCategories', array(0))).'))');
+      }
+      else
+      {
+        // In complete category structure we want to know the protected categories for creating the category tree view
+        $query->select('(CASE WHEN c.password != '.$database->quote('').' AND c.cid NOT IN  ('.implode(',', JFactory::getApplication()->getUserState('joom.unlockedCategories', array(0))).') THEN 1 ELSE 0 END) AS protected');
       }
 
       $database->setQuery($query);
@@ -518,6 +531,21 @@ class JoomAmbit extends JObject
            $categories[$key]->hitcount = 0;
         }
       }
+
+      // Avoid empty category structure for preventing SQL errors
+      if(empty($categories))
+      {
+        $categories[0] = new stdClass();
+        $categories[0]->cid       = 0;
+        $categories[0]->name      = 'ROOT';
+        $categories[0]->parent_id = 1;
+        $categories[0]->owner     = 0;
+        $categories[0]->access    = 0;
+        $categories[0]->hidden    = 0;
+        $categories[0]->piccount  = 0;
+        $categories[0]->hitcount  = 0;
+      }
+
       if($all)
       {
         $this->_allcategorystructure = $categories;

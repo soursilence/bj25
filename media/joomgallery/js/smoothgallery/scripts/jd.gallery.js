@@ -36,6 +36,12 @@
     replace(/&quot;/g, '"') in image descriptions,
     <div> instead of <p> container in slide info zone,
     the need of slide info zone height is calculated dynamically now instead of a fix height per CSS
+  - 20121006:
+    adaptions for JoomGallery 3, mootools 1.4.5
+    Element.injectInside replaced by Element.inject
+    $chk() removed
+    $clear replaced by clearTimeout() and clearInterval()
+    moved CSS class 'label' to 'jdlabel to avoid problems with bootstrap CSS'
 */
 
 // declaring the class
@@ -126,7 +132,7 @@ var gallery = {
       this.currentLink = new Element('a').addClass('open').setProperties({
         href: '#',
         title: ''
-      }).injectInside(element);
+      }).inject(element);
       // JG Start - for better browser compatibility set opacity here instead of using CSS file
       this.currentLink.setStyle('opacity', '0.8');
       // JG End
@@ -142,7 +148,7 @@ var gallery = {
       var leftArrow = new Element('a').addClass('left').addEvent(
         'click',
         this.prevItem.bind(this)
-      ).injectInside(element);
+      ).inject(element);
       // JG Start - for better browser compatibility set opacity here instead of using CSS file
       // Set the opacity of the element to 0.2 and add another two events
       leftArrow.set('opacity', '0.2').addEvents({
@@ -161,7 +167,7 @@ var gallery = {
       var rightArrow = new Element('a').addClass('right').addEvent(
         'click',
         this.nextItem.bind(this)
-      ).injectInside(element);
+      ).inject(element);
       // JG Start - for better browser compatibility set opacity here instead of using CSS file      
       // Set the opacity of the element to 0.2 and add another two events
       rightArrow.set('opacity', '0.2').addEvents({
@@ -179,7 +185,7 @@ var gallery = {
       // JG End
       this.galleryElement.addClass(this.options.withArrowsClass);
     }
-    this.loadingElement = new Element('div').addClass('loadingElement').injectInside(element);
+    this.loadingElement = new Element('div').addClass('loadingElement').inject(element);
     if (this.options.showInfopane) this.initInfoSlideshow();
     if (this.options.showCarousel) this.initCarousel();
 
@@ -192,8 +198,8 @@ var gallery = {
 
     // Set style of max dimension
     // get slideshow container
-    if($chk($('jg_dtl_photo'))) {
-        var jggallery = $('jg_dtl_photo');
+    var jggallery = $('jg_dtl_photo');
+    if(jggallery != null) {
         // Set the styles to new width/height
         jggallery.setStyles( {
           'width' : jgwidth+'px',
@@ -203,7 +209,7 @@ var gallery = {
         });
     }
     // Erase container showing the detail picture
-    if($chk($('jg_photo_big'))) {
+    if($('jg_photo_big') != null) {
       $('jg_photo_big').setStyle('display', 'none');//invisible
     }
     // END JoomGallery team
@@ -271,7 +277,7 @@ var gallery = {
           'padding':'0px',
           'backgroundPosition':"center center",
           'opacity':'0'
-        }).injectInside(el),
+        }).inject(el),
         'opacity',
         {duration: this.options.fadeDuration}
       );
@@ -428,35 +434,39 @@ var gallery = {
   },
   joomChangetext: function(element){
     //JG change the text elements if existent
-    if($chk($('jg_photo_title')))
+    if($('jg_photo_title') != null)
     {
       $('jg_photo_title').set('html',element.title);
     }
-    if($chk($('jg_photo_description')))
+    if($('jg_photo_description') != null)
     {        
       $('jg_photo_description').set('html', element.description.replace(/&quot;/g, '"'));
     }
-    if($chk($('jg_photo_date')))
+    if($('jg_photo_date') != null)
     {
       $('jg_photo_date').set('html',element.date);
     }
-    if($chk($('jg_photo_hits')))
+    if($('jg_photo_hits') != null)
     {
       $('jg_photo_hits').set('html',element.hits);
     }
-    if($chk($('jg_photo_rating')))
+    if($('jg_photo_downloads') != null)
+    {
+      $('jg_photo_downloads').set('html',element.downloads);
+    }
+    if($('jg_photo_rating') != null)
     {
       $('jg_photo_rating').set('html',element.rating);
     }
-    if($chk($('jg_photo_filesizedtl')))
+    if($('jg_photo_filesizedtl') != null)
     {
       $('jg_photo_filesizedtl').set('html',element.filesizedtl);
     }
-    if($chk($('jg_photo_filesizeorg')))
+    if($('jg_photo_filesizeorg') != null)
     {
       $('jg_photo_filesizeorg').set('html',element.filesizeorg);
     }
-    if($chk($('jg_photo_author')))
+    if($('jg_photo_author') != null)
     {
       $('jg_photo_author').set('html',element.author);
     }
@@ -465,7 +475,7 @@ var gallery = {
   clearTimer: function() {
     if (this.options.timed)
     {
-      $clear(this.timer);
+      clearTimeout(this.timer);
     }
   },
   prepareTimer: function() {
@@ -505,13 +515,13 @@ var gallery = {
     var carouselElement;
     if (!this.options.useExternalCarousel)
     {
-      var carouselContainerElement = new Element('div').addClass('carouselContainer').injectInside(this.galleryElement);
+      var carouselContainerElement = new Element('div').addClass('carouselContainer').inject(this.galleryElement);
       this.carouselContainer = new Fx.Morph(carouselContainerElement, {transition: Fx.Transitions.expoOut});
       this.carouselContainer.normalHeight = carouselContainerElement.offsetHeight;
       this.carouselContainer.set({'opacity': this.options.carouselMinimizedOpacity, 'top': (this.options.carouselMinimizedHeight - this.carouselContainer.normalHeight)});
       this.carouselBtn = new Element('a').addClass('carouselBtn').setProperties({
         title: this.options.textShowCarousel
-      }).injectInside(carouselContainerElement);
+      }).inject(carouselContainerElement);
       if(this.options.carouselPreloader)
         this.carouselBtn.set('html',this.options.textPreloadingCarousel);
       else
@@ -525,7 +535,7 @@ var gallery = {
       );
       this.carouselActive = false;
 
-      carouselElement = new Element('div').addClass('carousel').injectInside(carouselContainerElement);
+      carouselElement = new Element('div').addClass('carousel').inject(carouselContainerElement);
       this.carousel = new Fx.Morph(carouselElement);
     } else {
       carouselElement = $(this.options.carouselElement).addClass('jdExtCarousel');
@@ -533,11 +543,11 @@ var gallery = {
     this.carouselElement = new Fx.Morph(carouselElement, {transition: Fx.Transitions.expoOut});
     this.carouselElement.normalHeight = carouselElement.offsetHeight;
     if (this.options.showCarouselLabel)
-      this.carouselLabel = new Element('p').addClass('label').injectInside(carouselElement);
-    carouselWrapper = new Element('div').addClass('carouselWrapper').injectInside(carouselElement);
+      this.carouselLabel = new Element('p').addClass('jdlabel').inject(carouselElement);
+    carouselWrapper = new Element('div').addClass('carouselWrapper').inject(carouselElement);
     this.carouselWrapper = new Fx.Morph(carouselWrapper, {transition: Fx.Transitions.expoOut});
     this.carouselWrapper.normalHeight = carouselWrapper.offsetHeight;
-    this.carouselInner = new Element('div').addClass('carouselInner').injectInside(carouselWrapper);
+    this.carouselInner = new Element('div').addClass('carouselInner').inject(carouselWrapper);
     if (this.options.activateCarouselScroller)
     {
       this.carouselWrapper.scroller = new Scroller(carouselWrapper, {
@@ -612,7 +622,7 @@ var gallery = {
           marginLeft: this.options.thumbSpacing + "px",
           width: this.options.thumbWidth + "px",
           height: this.options.thumbHeight + "px"
-        }).injectInside(element), {property: 'opacity', link:'cancel', duration: '200'}).set(this.options.thumbIdleOpacity);
+        }).inject(element), {property: 'opacity', link:'cancel', duration: '200'}).set(this.options.thumbIdleOpacity);
       currentImg.element.addEvents({
         'mouseover': function (myself) {
           myself.start(0.99);
@@ -690,9 +700,9 @@ var gallery = {
   initInfoSlideshow: function() {
     /*if (this.slideInfoZone.element)
       this.slideInfoZone.element.remove();*/
-    this.slideInfoZone = new Fx.Morph(new Element('div').addClass('slideInfoZone').injectInside($(this.galleryElement))).set({'opacity':0});
-    var slideInfoZoneTitle = new Element('h2').injectInside(this.slideInfoZone.element);
-    var slideInfoZoneDescription = new Element('div').injectInside(this.slideInfoZone.element);
+    this.slideInfoZone = new Fx.Morph(new Element('div').addClass('slideInfoZone').inject($(this.galleryElement))).set({'opacity':0});
+    var slideInfoZoneTitle = new Element('h2').inject(this.slideInfoZone.element);
+    var slideInfoZoneDescription = new Element('div').inject(this.slideInfoZone.element);
     this.slideInfoZone.normalHeight = this.slideInfoZone.element.offsetHeight;
     this.slideInfoZone.element.setStyle('opacity',0);
   },
@@ -867,12 +877,12 @@ var Preloader = new Class({
   },
 
   complete: function(){
-    $clear(this.timer);
+    clearInterval(this.timer);
     this.fireEvent('onComplete', [this.images]);
   },
 
   cancel: function(){
-    $clear(this.timer);
+    clearInterval(this.timer);
   }
 
 });

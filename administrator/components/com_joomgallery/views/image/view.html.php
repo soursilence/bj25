@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/views/image/view.html.php $
-// $Id: view.html.php 3848 2012-09-13 16:03:31Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/views/image/view.html.php $
+// $Id: view.html.php 4361 2014-02-24 18:03:18Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -68,6 +68,9 @@ class JoomGalleryViewImage extends JoomGalleryView
         $rating = JoomHelper::getRating($item->id);
       }
     }
+
+    // Set maximum allowed user count to switch from listbox to modal popup selection
+    $form->setFieldAttribute('owner', 'useListboxMaxUserCount', $this->_config->get('jg_use_listbox_max_user_count'));
 
     // Bind the data to the form
     $form->bind($item);
@@ -158,6 +161,8 @@ class JoomGalleryViewImage extends JoomGalleryView
     }
     $form->setValue('imagelib', null, $thumbsource);
 
+    JHtml::_('jquery.framework');
+
     $this->assignRef('item',              $item);
     $this->assignRef('isNew',             $isNew);
     $this->assignRef('form',              $form);
@@ -210,7 +215,7 @@ class JoomGalleryViewImage extends JoomGalleryView
       $title .= JText::_('COM_JOOMGALLERY_IMGMAN_IMAGE_EDIT');
     }
 
-    JToolBarHelper::title($title);
+    JToolBarHelper::title($title, 'image');
 
     // For new images check the create permission
     if($this->isNew && ($this->_config->get('jg_disableunrequiredchecks') || $canDo->get('joom.upload') || count(JoomHelper::getAuthorisedCategories('joom.upload'))))

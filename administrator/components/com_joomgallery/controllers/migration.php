@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/controllers/migration.php $
-// $Id: migration.php 3651 2012-02-19 14:36:46Z mab $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/controllers/migration.php $
+// $Id: migration.php 4270 2013-05-21 14:10:18Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -33,7 +33,7 @@ class JoomGalleryControllerMigration extends JoomGalleryController
     parent::__construct();
 
     // Require the migration helper class
-    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'migration.php';
+    require_once JPATH_COMPONENT.'/helpers/migration.php';
 
     // Set view
     JRequest::setVar('view', 'migration');
@@ -57,16 +57,21 @@ class JoomGalleryControllerMigration extends JoomGalleryController
     $migration = JRequest::getCmd('migration', '');
     $task      = JRequest::getCmd('task');
 
-    if(!JFile::exists(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'migration'.DIRECTORY_SEPARATOR.'migrate'.$migration.'.php'))
+    if(!JFile::exists(JPATH_COMPONENT.'/helpers/migration/migrate'.$migration.'.php'))
     {
       $this->setRedirect('index.php?option='._JOOM_OPTION.'&controller=migration');
-      return false;
+
+      return;
     }
 
-    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'migration'.DIRECTORY_SEPARATOR.'migrate'.$migration.'.php';
-    $classname    = 'JoomMigrate_'.$migration;
+    require_once JPATH_COMPONENT.'/helpers/migration/migrate'.$migration.'.php';
+    $classname    = 'JoomMigrate'.$migration;
     $migrateclass = new $classname();
+
+    ob_start();
     $migrateclass->$task();
+    JFactory::getApplication()->setUserState('joom.migration.output', ob_get_contents());
+    ob_end_clean();
 
     if($task == 'check')
     {

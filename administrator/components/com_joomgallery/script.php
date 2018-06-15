@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/script.php $
-// $Id: script.php 4419 2014-11-29 20:06:27Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/script.php $
+// $Id: script.php 4408 2014-07-12 08:24:56Z erftralle $
 /****************************************************************************************\
-**   JoomGallery  2                                                                     **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -28,7 +28,7 @@ class Com_JoomGalleryInstallerScript
    *
    * @var string
    */
-  private $version = '2.1.6';
+  private $version = '3.3.4';
 
   /**
    * Preflight method
@@ -41,9 +41,9 @@ class Com_JoomGalleryInstallerScript
    */
   public function preflight($type = 'install')
   {
-    if(version_compare(JVERSION, '3.0', 'ge'))
+    if(version_compare(JVERSION, '4.0', 'ge') || version_compare(JVERSION, '3.0', 'lt'))
     {
-      JError::raiseWarning(500, 'JoomGallery 2.1 is not compatible with Joomla! 3.');
+      JError::raiseWarning(500, 'JoomGallery 3.x is only compatible to Joomla! 3.x');
 
       return false;
     }
@@ -59,8 +59,8 @@ class Com_JoomGalleryInstallerScript
    */
   public function install()
   {
+    $app = JFactory::getApplication();
     jimport('joomla.filesystem.file');
-    $this->_addStyleDeclarations();
 
     // Create image directories
     require_once JPATH_ADMINISTRATOR.'/components/com_joomgallery/helpers/file.php';
@@ -78,7 +78,7 @@ class Com_JoomGalleryInstallerScript
 
     if(in_array(false, $result))
     {
-      JError::raiseWarning(500, JText::_('Unable to create image directories!'));
+      $app->enqueueMessage(JText::_('Unable to create image directories!'), 'error');
 
       return false;
     }
@@ -97,7 +97,7 @@ class Com_JoomGalleryInstallerScript
     $row->position  = 'joom_cpanel';
     $row->published = 1;
     $row->module    = 'mod_feed';
-    $row->access    = 1;  // TODO: '1' does not have to be a valid access level
+    $row->access    = $app->getCfg('access');
     $row->showtitle = 1;
     $row->params    = 'cache=1
     cache_time=15
@@ -109,12 +109,12 @@ class Com_JoomGalleryInstallerScript
     rssimage=1
     rssitems=3
     rssitemdesc=1
-    word_count=30';
+    word_count=200';
     $row->client_id = 1;
     $row->language  = '*';
     if(!$row->store())
     {
-      JError::raiseWarning(500, JText::_('Unable to insert feed module data!'));
+      $app->enqueueMessage(JText::_('Unable to insert feed module data!'), 'error');
     }
 
     $db = JFactory::getDbo();
@@ -125,7 +125,7 @@ class Com_JoomGalleryInstallerScript
     $db->setQuery($query);
     if(!$db->query())
     {
-      JError::raiseNotice(500, JText::_('Unable to assign feed module!'));
+      $app->enqueueMessage(JText::_('Unable to assign feed module!'), 'error');
     }
 
     // joom_settings.css
@@ -134,26 +134,21 @@ class Com_JoomGalleryInstallerScript
 
     if(!JFile::move($temp, $dest))
     {
-      JError::raiseWarning(500, JText::_('Unable to copy joom_settings.css!'));
+      $app->enqueueMessage(JText::_('Unable to copy joom_settings.css!'), 'error');
 
       return false;
     }
 ?>
-    <div style="margin:0px auto; text-align:center; width:360px;">
+    <div class="hero-unit">
       <img src="../media/joomgallery/images/joom_logo.png" alt="JoomGallery Logo" />
-      <h3 class="headline oktext">JoomGallery <?php echo $this->version; ?> was installed successfully.</h3>
+      <div class="alert alert-success">
+        <h3>JoomGallery <?php echo $this->version; ?> was installed successfully.</h3>
+      </div>
       <p>You may now start using JoomGallery or download specific language files afore:</p>
-      <div class="button2-left" style="margin-left:70px;">
-        <div class="blank">
-          <a title="Start" onclick="location.href='index.php?option=com_joomgallery';" href="#">Start now!</a>
-        </div>
-      </div>
-      <div class="button2-left jg_floatright" style="margin-right:70px;">
-        <div class="blank">
-          <a title="Languages" onclick="location.href='index.php?option=com_joomgallery&controller=help';" href="#">Languages</a>
-        </div>
-      </div>
-      <div style="clear:both;"></div>
+      <p>
+        <a title="Start" class="btn" onclick="location.href='index.php?option=com_joomgallery'; return false;" href="#">Start now!</a>
+        <a title="Languages" class="btn btn-primary" onclick="location.href='index.php?option=com_joomgallery&controller=help'; return false;" href="#">Languages</a>
+      </p>
     </div>
   <?php
   }
@@ -166,10 +161,12 @@ class Com_JoomGalleryInstallerScript
    */
   public function update()
   {
-    jimport('joomla.filesystem.file');
-    $this->_addStyleDeclarations(); ?>
-    <div style="margin:0px auto; text-align:center; width:360px;">
+    jimport('joomla.filesystem.file'); ?>
+    <div class="hero-unit">
       <img src="../media/joomgallery/images/joom_logo.png" alt="JoomGallery Logo" />
+      <div class="alert alert-info">
+        <h3>Update JoomGallery to version: <?php echo $this->version; ?></h3>
+      </div>
     </div>
     <?php
 
@@ -186,24 +183,26 @@ class Com_JoomGalleryInstallerScript
       }
     }
 
-    // - Start Update Info - //
-    echo '<div class="infobox headline">';
-    echo '  Update JoomGallery to version: '.$this->version;
-    echo '</div>';
-
     //******************* Delete folders/files ************************************
-    echo '<div class="infobox">';
-    echo '<p class="headline2">File system</p>';
+    echo '<div class="alert alert-info">';
+    echo '<h3>File system</h3>';
 
     $delete_folders = array();
 
+    // MooRainbow assets
+    $delete_folders[] = JPATH_ROOT.'/media/joomgallery/js/moorainbow';
+    // Old vote view
+    $delete_folders[] = JPATH_ROOT.'/components/com_joomgallery/views/vote';
+
     echo '<p>';
-    echo 'Looking for orphaned files and folders from the old installation<br />';
+    echo 'Looking for orphaned files and folders from the old installation ';
 
     // Unzipped folder of latest auto update with cURL
     $temp_dir = false;
-    $query = "SELECT jg_pathtemp FROM #__joomgallery_config";
-    $database = JFactory::getDBO();
+    $database = JFactory::getDbo();
+    $query = $database->getQuery(true)
+          ->select('jg_pathtemp')
+          ->from('#__joomgallery_config');
     $database->setQuery($query);
     $temp_dir = $database->loadResult();
     if($temp_dir)
@@ -232,23 +231,25 @@ class Com_JoomGalleryInstallerScript
         if($result == true)
         {
           $deleted  = true;
-          echo '<span class="oktext">ok</span>';
+          echo '<span class="label label-success">ok</span>';
         }
         else
         {
           $jg_delete_error = true;
-          echo '<span class="notoktext">not ok</span>';
+          echo '<span class="label label-important">not ok</span>';
         }
         echo '<br />';
       }
     }
 
-    //Files
+    // Files
     $delete_files = array();
 
     // Cache file of the newsfeed for the update checker
     $delete_files[] = JPATH_ADMINISTRATOR.'/cache/'.md5('http://www.joomgallery.net/components/com_newversion/rss/extensions2.rss').'.spc';
     $delete_files[] = JPATH_ADMINISTRATOR.'/cache/'.md5('http://www.en.joomgallery.net/components/com_newversion/rss/extensions2.rss').'.spc';
+    $delete_files[] = JPATH_ADMINISTRATOR.'/cache/'.md5('http://www.joomgallery.net/components/com_newversion/rss/extensions3.rss').'.spc';
+    $delete_files[] = JPATH_ADMINISTRATOR.'/cache/'.md5('http://www.en.joomgallery.net/components/com_newversion/rss/extensions3.rss').'.spc';
 
     // Zip file of latest auto update with cURL
     $delete_files[] = JPATH_ADMINISTRATOR.'/components/com_joomgallery/temp/update.zip';
@@ -259,10 +260,33 @@ class Com_JoomGalleryInstallerScript
     // JFormFields that aren't used anymore
     $delete_files[] = JPATH_ADMINISTRATOR.'/components/com_joomgallery/models/fields/cbowner.php';
     $delete_files[] = JPATH_ADMINISTRATOR.'/components/com_joomgallery/models/fields/owner.php';
+    $delete_files[] = JPATH_ADMINISTRATOR.'/components/com_joomgallery/models/fields/color.php';
+    $delete_files[] = JPATH_ROOT.'/components/com_joomgallery/models/fields/thumbnail.php';
     // Template files that aren't used anymore
     $delete_files[] = JPATH_ROOT.'/components/com_joomgallery/views/category/tmpl/default_catpagination.php';
     $delete_files[] = JPATH_ROOT.'/components/com_joomgallery/views/category/tmpl/default_imgpagination.php';
     $delete_files[] = JPATH_ROOT.'/components/com_joomgallery/views/gallery/tmpl/default_pagination.php';
+    // Old changelog.php
+    $delete_files[] = JPATH_ROOT.'/administrator/components/com_joomgallery/changelog.php';
+    // Old ordering form field
+    $delete_files[] = JPATH_ADMINISTRATOR.'/components/com_joomgallery/models/fields/ordering.php';
+    // Old view file of MiniJoom
+    $delete_files[] = JPATH_ADMINISTRATOR.'/components/com_joomgallery/views/mini/view.html.php';
+    // Unnecessary layout XML files in views which cannot be linked from a menu
+    $delete_files[] = JPATH_ROOT.'/components/com_joomgallery/views/downloadzip/tmpl/default.xml';
+    $delete_files[] = JPATH_ROOT.'/components/com_joomgallery/views/edit/tmpl/default.xml';
+    $delete_files[] = JPATH_ROOT.'/components/com_joomgallery/views/editcategory/tmpl/default.xml';
+    // Old CSS file of MiniJoom
+    $delete_files[] = JPATH_ROOT.'/media/joomgallery/css/mini.css';
+    // Old JavaScript files
+    $delete_files[] = JPATH_ROOT.'/media/joomgallery/js/miniupload.js';
+    $delete_files[] = JPATH_ROOT.'/media/joomgallery/js/thickbox3/js/jquery-latest.pack.js';
+    // Old motion gallery
+    $delete_files[] = JPATH_ROOT.'/media/joomgallery/js/motiongallery.js';
+    // Old raw view for Cooliris
+    $delete_files[] = JPATH_ROOT.'/components/com_joomgallery/views/category/view.raw.php';
+    // Override function for setting permissions via AJAX
+    $delete_files[] = JPATH_ROOT.'/media/joomgallery/js/permissions.js';
 
     foreach($delete_files as $delete_file)
     {
@@ -273,12 +297,12 @@ class Com_JoomGalleryInstallerScript
         if($result == true)
         {
           $deleted  = true;
-          echo '<span class="oktext">ok</span>';
+          echo '<span class="label label-success">ok</span>';
         }
         else
         {
           $jg_delete_error = true;
-          echo '<span class="notoktext">not ok</span>';
+          echo '<span class="label label-important">not ok</span>';
         }
         echo '<br />';
       }
@@ -289,25 +313,25 @@ class Com_JoomGalleryInstallerScript
     {
       if($jg_delete_error)
       {
-        echo '<span class="notoktext">problems in deletion of files/folders</span>';
+        echo '<span class="label label-important">problems in deletion of files/folders</span>';
         $error = true;
       }
       else
       {
-        echo '<span class="oktext">files/folders sucessfully deleted</span>';
+        echo '<span class="label label-success">files/folders sucessfully deleted</span>';
       }
     }
     else
     {
-      echo '<span class="oktext">nothing to delete</span>';
+      echo '<span class="label label-success">nothing to delete</span>';
     }
 
     echo '</p>';
     echo '</div>';
 
     //******************* Write joom_settings.css ************************************
-    /*echo '<div class="infobox">';
-    echo '<p class="headline2">CSS</p>';
+    /*echo '<div class="alert alert-info">';
+    echo '<h3>CSS</h3>';
     echo '<p>';
     echo 'Update configuration dependent CSS settings: ';
 
@@ -319,11 +343,11 @@ class Com_JoomGalleryInstallerScript
     if(!$config->save())
     {
       $error = true;
-      echo '<span class="notoktext">not ok</span>';
+      echo '<span class="label label-important">not ok</span>';
     }
     else
     {
-      echo '<span class="oktext">ok</span>';
+      echo '<span class="label label-success">ok</span>';
     }
 
     echo '</p>';
@@ -332,27 +356,44 @@ class Com_JoomGalleryInstallerScript
 
     if($error)
     {
-      echo '<h3 class="headline notoktext">Problem with the update to JoomGallery version '.$this->version.'<br />Please read the update infos above</h3>';
-      JError::raiseWarning(500, JText::_('Problem with the update to JoomGallery version '.$this->version.'. Please read the update infos below'));
+      echo '<div class="alert alert-error">
+              <h3>Problem with the update to JoomGallery version '.$this->version.'<br />Please read the update infos above</h3>
+            </div>';
+      JFactory::getApplication()->enqueueMessage(JText::_('Problem with the update to JoomGallery version '.$this->version.'. Please read the update infos below'), 'error');
     }
     else
     { ?>
-    <div style="margin:0px auto; text-align:center; width:360px;">
+    <div class="hero-unit">
       <img src="../media/joomgallery/images/joom_logo.png" alt="JoomGallery Logo" />
-      <h3 class="headline oktext">JoomGallery was updated to version <?php echo $this->version; ?> successfully.</h3>
-      <p>You may now go on using JoomGallery or update your language files for JoomGallery:</p>
-      <div class="button2-left" style="margin-left:70px;">
-        <div class="blank">
-          <a title="Start" onclick="location.href='index.php?option=com_joomgallery';" href="#">Go on!</a>
-        </div>
+      <div class="alert alert-success">
+        <h3>JoomGallery was updated to version <?php echo $this->version; ?> successfully.</h3>
+        <button class="btn btn-small btn-info" data-toggle="modal" data-target="#jg-changelog-popup"><i class="icon-list"></i> Changelog</button>
       </div>
-      <div class="button2-left jg_floatright" style="margin-right:70px;">
-        <div class="blank">
-          <a title="Languages" onclick="location.href='index.php?option=com_joomgallery&controller=help';" href="#">Languages</a>
-        </div>
-      </div>
-      <div style="clear:both;"></div>
+      <p>You may now start using JoomGallery or download specific language files afore:</p>
+      <p>
+        <a title="Start" class="btn" onclick="location.href='index.php?option=com_joomgallery'; return false;" href="#">Go on!</a>
+        <a title="Languages" class="btn btn-primary" onclick="location.href='index.php?option=com_joomgallery&controller=help'; return false;" href="#">Languages</a>
+      </p>
     </div>
+    <?php JHtml::_('bootstrap.modal', 'jg-changelog-popup'); ?>
+    <div class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="PopupChangelogModalLabel" aria-hidden="true" id="jg-changelog-popup">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="PopupChangelogModalLabel">Changelog</h3>
+      </div>
+      <div id="jg-changelog-popup-container">
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JTOOLBAR_CLOSE'); ?></button>
+      </div>
+    </div>
+    <script type="text/javascript">
+      jQuery('#jg-changelog-popup').modal({backdrop: true, keyboard: true, show: false});
+      jQuery('#jg-changelog-popup').on('show', function ()
+      {
+        document.getElementById('jg-changelog-popup-container').innerHTML = '<div class="modal-body"><iframe class="iframe" frameborder="0" src="<?php echo JRoute::_('index.php?option=com_joomgallery&controller=changelog&tmpl=component'); ?>" height="400px" width="100%"></iframe></div>';
+      });
+    </script>
 <?php
     }
 
@@ -372,69 +413,11 @@ class Com_JoomGalleryInstallerScript
     {
       JFolder::delete($path);
     }
-    echo 'JoomGallery was uninstalled successfully!<br />
+
+    echo '<div class="alert alert-info">JoomGallery was uninstalled successfully!<br />
           Please remember to remove your images folders manually
-          if you didn\'t use JoomGallery\'s default directories.';
+          if you didn\'t use JoomGallery\'s default directories.</div>';
 
     return true;
-  }
-
-  /**
-   * Adds the style declaration for the install or update output to the document
-   *
-   * @return  void
-   * @since   2.0
-   */
-  private function _addStyleDeclarations()
-  {
-    // CCS Styles
-    $cssfile  = '
-    <style type="text/css">
-  p {
-    margin:0.3em 0;
-    padding:0.2em 0;
-  }
-  .infobox {
-    margin:0.5em 0;
-    padding:0.4em 0 0.4em 1em;
-    background-color:#f0f0f0;
-    border:2px solid #000;
-  }
-  .headline {
-    font-size:1.5em;
-    text-align:center;
-    font-weight:bold;
-  }
-  .headline2 {
-    font-size:1.3em;
-    text-align:center;
-    font-weight:bold;
-  }
-  .headline3 {
-    text-align:center;
-    font-weight:bold;
-  }
-  .oktext {
-    color:#2d2;
-    font-weight:bold;
-  }
-  .notoktext {
-    color:#d22;
-    font-weight:bold;
-  }
-  .noticetext {
-    color:#f38201;
-    font-weight:bold;
-  }
-  .button2-left{
-    margin-top:10px;
-    margin-bottom:30px;
-  }
-  .jg_floatright{
-    float:right;
-  }
-  </style>';
-
-    echo $cssfile;
   }
 }

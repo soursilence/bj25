@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/controllers/category.php $
-// $Id: category.php 3904 2012-09-27 19:09:29Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/controllers/category.php $
+// $Id: category.php 4405 2014-07-02 07:13:31Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                   **
+**   JoomGallery 3                                                                   **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Direct Access to this location is not allowed.');
  * @package JoomGallery
  * @since   2.1
  */
-class JoomGalleryControllerCategory extends JController
+class JoomGalleryControllerCategory extends JControllerLegacy
 {
   /**
    * Saves a category
@@ -80,15 +80,16 @@ class JoomGalleryControllerCategory extends JController
       $slimitstart = '&limitstart='.JRequest::getInt('limitstart', 0);
     }
 
-    if($model->delete())
+    try
     {
+      $model->delete();
+
       $msg  = JText::_('COM_JOOMGALLERY_COMMON_MSG_SUCCESS_DELETING_CATEGORY');
       $this->setRedirect(JRoute::_('index.php?view=usercategories'.$slimitstart, false), $msg);
     }
-    else
+    catch(RuntimeException $e)
     {
-      $msg  = $model->getError();
-      $this->setRedirect(JRoute::_('index.php?view=usercategories'.$slimitstart, false), $msg, 'error');
+      $this->setRedirect(JRoute::_('index.php?view=usercategories'.$slimitstart, false), $e->getMessage(), 'error');
     }
   }
 
@@ -119,5 +120,30 @@ class JoomGalleryControllerCategory extends JController
       $msg  = $model->getError();
       $this->setRedirect(JRoute::_('index.php?view=usercategories'.$slimitstart, false), $msg, 'error');
     }
+  }
+
+  /**
+   * Unlocks a password protected category
+   *
+   * @return  void
+   * @since   3.1
+   */
+  public function unlock()
+  {
+    $input = JFactory::getApplication()->input;
+    $model = $this->getModel('category');
+
+    $catid = $input->getInt('catid');
+
+    try
+    {
+      $model->unlock($catid, $input->getString('password'));
+    }
+    catch(Exception $e)
+    {
+      $this->setMessage($e->getMessage(), 'error');
+    }
+
+    $this->setRedirect(JRoute::_('index.php?view=category&catid='.$catid, false));
   }
 }

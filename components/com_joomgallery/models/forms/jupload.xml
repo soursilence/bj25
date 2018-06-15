@@ -42,13 +42,14 @@
         type="text"
         class="inputbox"
         label="COM_JOOMGALLERY_COMMON_AUTHOR"
+        disabled="true"
+        readonly="true"
       />
       <field
         name="published"
         id="java-published"
-        type="radio"
+        type="list"
         class="inputbox"
-        labelclass="jg-float-label"
         default="1"
         label="COM_JOOMGALLERY_COMMON_PUBLISHED"
         size="1"

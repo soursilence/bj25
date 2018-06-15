@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/helpers/pagination.php $
-// $Id: pagination.php 3678 2012-03-04 15:20:22Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/pagination.php $
+// $Id: pagination.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -97,24 +97,24 @@ class JoomPagination extends JPagination
 
     // Build the additional URL parameters string
     $params = '';
-    if(!empty($this->_additionalUrlParams))
+    if(!empty($this->additionalUrlParams))
     {
-      foreach($this->_additionalUrlParams as $key => $value)
+      foreach($this->additionalUrlParams as $key => $value)
       {
         $params .= '&'.$key.'='.$value;
       }
     }
 
     $data->all = new JPaginationObject(JText::_('JLIB_HTML_VIEW_ALL'), $this->prefix);
-    if(!$this->_viewall)
+    if(!$this->viewall)
     {
       $data->all->base  = '0';
       $data->all->link  = JRoute::_($params.'&'.$this->prefix.'limitstart=');
     }
 
     // Set the start and previous data objects
-    $data->start    = new JPaginationObject(JText::_('COM_JOOMGALLERY_COMMON_PAGENAVIGATION_BEGIN'), $this->prefix);
-    $data->previous = new JPaginationObject(JText::_('COM_JOOMGALLERY_COMMON_PAGENAVIGATION_PREVIOUS'), $this->prefix);
+    $data->start    = new JPaginationObject(JText::_('JLIB_HTML_START'), $this->prefix);
+    $data->previous = new JPaginationObject(JText::_('JPREV'), $this->prefix);
 
     if($currentPage > 1)
     {
@@ -127,8 +127,8 @@ class JoomPagination extends JPagination
     }
 
     // Set the next and end data objects
-    $data->next = new JPaginationObject(JText::_('COM_JOOMGALLERY_COMMON_PAGENAVIGATION_NEXT'), $this->prefix);
-    $data->end  = new JPaginationObject(JText::_('COM_JOOMGALLERY_COMMON_PAGENAVIGATION_END'), $this->prefix);
+    $data->next = new JPaginationObject(JText::_('JNEXT'), $this->prefix);
+    $data->end  = new JPaginationObject(JText::_('JLIB_HTML_END'), $this->prefix);
 
     if($currentPage < $pageCount)
     {

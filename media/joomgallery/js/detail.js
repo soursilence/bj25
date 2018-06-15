@@ -1,9 +1,9 @@
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/media/joomgallery/js/detail.js $
-// $Id: detail.js 3839 2012-09-03 17:17:47Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/media/joomgallery/js/detail.js $
+// $Id: detail.js 4078 2013-02-12 10:56:43Z erftralle $
 /****************************************************************************************\
-**   JoomGallery  2                                                                     **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -199,27 +199,13 @@ function joomAjaxVoteResponse(response)
     // Refresh rating tooltip
     if(response.data.tooltipclass != null)
     {
-      $$('.hasHintAjaxVote').each(function(el) {
-        var title = el.get('title');
-        if(title) {
-          var parts = title.split('::', 2);
-          el.store('tip:title', parts[0]);
-          el.store('tip:text', parts[1]);
-        }
-      });
-
       if(response.data.tooltipclass == 'default')
       {
-        var tooltips = new Tips($$('.hasHintAjaxVote'), { maxTitleChars: 50,
-                                                          fixed: false
-                                                        });
+        jQuery('.hasHintAjaxVote').tooltip();
       }
       else
       {
-        var tooltips = new Tips($$('.hasHintAjaxVote'), { maxTitleChars: 50,
-                                                          fixed: false,
-                                                          className: response.data.tooltipclass
-                                                        });
+        jQuery('.hasHintAjaxVote').tooltip({template: '<div class="jg-tooltip-wrap tooltip"><div class="tooltip-inner tip"></div></div>'});        
       }
     }
   }
@@ -229,11 +215,11 @@ function joomAjaxVoteResponse(response)
   // Show the voting result message
   if($('jg_starrating_bar'))
   {
-    new Element('div', {'id': 'jg_ajaxvoting_message', 'style': 'text-align: center;'}).injectBefore($('jg_starrating_bar'));
+    new Element('div', {'id': 'jg_ajaxvoting_message', 'style': 'text-align: center;'}).inject($('jg_starrating_bar'), 'before');
   }
   else
   {
-    new Element('div', {'id': 'jg_ajaxvoting_message'}).injectBefore($('ratingform'));
+    new Element('div', {'id': 'jg_ajaxvoting_message'}).inject($('ratingform'), 'before');
   }
   $('jg_ajaxvoting_message').set('html', response.message);
 }

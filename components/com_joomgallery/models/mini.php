@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/models/mini.php $
-// $Id: mini.php 3839 2012-09-03 17:17:47Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/mini.php $
+// $Id: mini.php 4084 2013-02-12 16:30:48Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -105,7 +105,7 @@ class JoomGalleryModelMini extends JoomGalleryModel
     {
       $asset = _JOOM_OPTION.'.category.'.$category->cid;
       if(     $this->_user->authorise('joom.upload', $asset)
-          ||  ($this->_user->authorise('joom.upload.inown', $asset) && $this->_user->get('id') == $category->owner)
+          ||  ($this->_user->authorise('joom.upload.inown', $asset) && $category->owner && $this->_user->get('id') == $category->owner)
         )
       {
         $category->path = str_repeat('- ', $category->level).$category->name;
@@ -143,7 +143,7 @@ class JoomGalleryModelMini extends JoomGalleryModel
     {
       $asset = _JOOM_OPTION.'.category.'.$category->cid;
       if(     $this->_user->authorise('core.create', $asset)
-          ||  ($this->_user->authorise('joom.create.inown', $asset) && $this->_user->get('id') == $category->owner)
+          ||  ($this->_user->authorise('joom.create.inown', $asset) && $category->owner && $this->_user->get('id') == $category->owner)
         )
       {
         $category->path = str_repeat('- ', $category->level).$category->name;
@@ -199,7 +199,7 @@ class JoomGalleryModelMini extends JoomGalleryModel
     $search = $this->_mainframe->getUserStateFromRequest('joom.mini.search', 'search', '', 'string');
     if($search)
     {
-      $search  = $this->_db->getEscaped($search);
+      $search  = $this->_db->escape($search);
       $query->where('(LOWER(jg.imgtitle) LIKE \'%'.$search.'%\' OR LOWER(jg.imgtext) LIKE \'%'.$search.'%\')');
     }
 

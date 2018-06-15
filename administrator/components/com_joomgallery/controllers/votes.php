@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/controllers/votes.php $
-// $Id: votes.php 3651 2012-02-19 14:36:46Z mab $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/controllers/votes.php $
+// $Id: votes.php 4318 2013-08-18 07:58:35Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -22,42 +22,32 @@ defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 class JoomGalleryControllerVotes extends JoomGalleryController
 {
   /**
-   * Constructor
-   *
-   * @access  protected
-   * @return  void
-   * @since   1.5.5
-   */
-  function __construct()
-  {
-    parent::__construct();
-  }
-
-  /**
    * Resets all votes of all images in the gallery
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function reset()
+  public function reset()
   {
-    // Delete all votes
-    $query = "DELETE FROM "._JOOM_TABLE_VOTES;
-    $this->_db->setQuery($query);
+    $this->_db->truncateTable(_JOOM_TABLE_VOTES);
 
-    if(!$this->_db->query())
+    if($this->_db->getErrorMsg())
     {
       $this->setRedirect($this->_ambit->getRedirectUrl('maintenance&tab=votes'), $this->_db->getErrorMsg(), 'error');
+
       return;
     }
 
-    $query = "UPDATE "._JOOM_TABLE_IMAGES." SET imgvotes = 0, imgvotesum = 0";
+    $query = $this->_db->getQuery(true)
+          ->update(_JOOM_TABLE_IMAGES)
+          ->set('imgvotes = 0')
+          ->set('imgvotesum = 0');
     $this->_db->setQuery($query);
 
     if(!$this->_db->query())
     {
       $this->setRedirect($this->_ambit->getRedirectUrl('maintenance&tab=votes'), $this->_db->getErrorMsg(), 'error');
+
       return;
     }
 
@@ -69,30 +59,18 @@ class JoomGalleryControllerVotes extends JoomGalleryController
    *
    * Votes of users that aren't registed any more will be deleted.
    *
-   * @access  public
    * @return  void
    * @since   1.5.5
    */
-  function synchronize()
+  public function synchronize()
   {
     // Synchronize users-votes-images
-    $query = "DELETE
-                v
-              FROM
-                "._JOOM_TABLE_VOTES." AS v
-              LEFT JOIN
-                #__users AS u
-              ON
-                v.userid = u.id
-              LEFT JOIN
-                "._JOOM_TABLE_IMAGES." AS i
-              ON
-                v.picid  = i.id
-              WHERE
-                    v.userid != 0
-                AND (   u.id IS NULL
-                    OR  i.id IS NULL
-                    )";
+    $query = $this->_db->getQuery(true)
+          ->delete('v USING '._JOOM_TABLE_VOTES.' AS v')
+          ->leftJoin('#__users AS u ON v.userid = u.id')
+          ->leftJoin(_JOOM_TABLE_IMAGES.' AS i ON v.picid  = i.id')
+          ->where('v.userid != 0')
+          ->where('(u.id IS NULL OR i.id IS NULL)');
     $this->_db->setQuery($query);
 
     if(!$this->_db->query())
@@ -101,26 +79,26 @@ class JoomGalleryControllerVotes extends JoomGalleryController
       return;
     }
 
-    $query = "UPDATE
-                "._JOOM_TABLE_IMAGES." AS p
-              SET
-                p.imgvotes    = ( SELECT
-                                    COUNT(*)
-                                  FROM
-                                    "._JOOM_TABLE_VOTES." as v
-                                  WHERE
-                                    v.picid = p.id),
-                p.imgvotesum  = ( SELECT
-                                    SUM(vote)
-                                  FROM
-                                    "._JOOM_TABLE_VOTES." as v
-                                  WHERE
-                                    v.picid = p.id)";
+    $count_subquery = $this->_db->getQuery(true)
+                    ->select('COUNT(*)')
+                    ->from(_JOOM_TABLE_VOTES.' as v')
+                    ->where('v.picid = p.id');
+
+    $sum_subquery = $this->_db->getQuery(true)
+                  ->select('SUM(v.vote)')
+                  ->from(_JOOM_TABLE_VOTES.' as v')
+                  ->where('v.picid = p.id');
+
+    $query->clear()
+          ->update(_JOOM_TABLE_IMAGES.' AS p')
+          ->set('p.imgvotes    = ('.$count_subquery.')')
+          ->set('p.imgvotesum  = ('.$sum_subquery.')');
     $this->_db->setQuery($query);
 
     if(!$this->_db->query())
     {
       $this->setRedirect($this->_ambit->getRedirectUrl('maintenance&tab=votes'), $this->_db->getErrorMsg(), 'error');
+
       return;
     }
 

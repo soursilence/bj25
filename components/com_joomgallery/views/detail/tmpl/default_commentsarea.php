@@ -12,7 +12,7 @@
             </td>
           </tr>
 <?php       foreach($this->comments as $comment): ?>
-          <tr class="sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+          <tr class="jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
             <td class="jg_cmtl">
               <span><?php echo $comment->author; ?></span>
 <?php         if($this->params->get('manager_logged')): ?>
@@ -35,7 +35,7 @@
 <?php       endforeach;
           endif;
           if($this->params->get('no_comments_message')): ?>
-          <tr class="sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+          <tr class="jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
             <td class="jg_cmtf">
               <?php echo $this->params->get('no_comments_message'); ?>
               <?php echo $this->params->get('no_comments_message2'); ?>

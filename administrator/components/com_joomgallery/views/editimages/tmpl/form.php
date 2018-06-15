@@ -1,67 +1,141 @@
-<?php defined('_JEXEC') or die('Restricted access'); ?>
+<?php defined('_JEXEC') or die('Restricted access');
+
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
+JHtml::_('formbehavior.chosen', 'select');
+
+?>
 <script language="javascript" type="text/javascript">
 Joomla.submitbutton = function(task)
 {
-  if(task == 'cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+  var form = document.id('editimages-form');
+  if(task == 'cancel' || document.formvalidator.isValid(form)) {
     <?php echo $this->form->getField('imgtext')->save(); ?>
-    Joomla.submitform(task, document.getElementById('adminForm'));
+    Joomla.submitform(task, form);
   }
   else {
     var msg = new Array();
     msg.push('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>');
-    if(document.adminForm.imgtitle.hasClass('invalid')) {
-        msg.push('<?php echo JText::_('COM_JOOMGALLERY_COMMON_ALERT_IMAGE_MUST_HAVE_TITLE', true);?>');
+    if(form.imgtitle.hasClass('invalid')) {
+        msg.push('<?php echo JText::_('COM_JOOMGALLERY_COMMON_ALERT_IMAGE_MUST_HAVE_TITLE', true); ?>');
     }
-    if(document.adminForm.catid.hasClass('invalid')) {
+    if(form.catid.hasClass('invalid')) {
       msg.push('<?php echo JText::_('COM_JOOMGALLERY_COMMON_ALERT_YOU_MUST_SELECT_CATEGORY', true);?>');
     }
     alert(msg.join('\n'));
   }
 }
 </script>
-<form action="index.php" method="post" name="adminForm" id="adminForm">
-  <div class="width-100">
-    <fieldset class="adminform">
-      <legend><?php echo JText::_('COM_JOOMGALLERY_FIELDSET_EDITIMAGES'); ?></legend>
-      <ul class="adminformlist">
-        <li><?php echo $this->form->getLabel('imgtitle'); ?>
-        <?php echo $this->form->getInput('imgtitle'); ?>
-        <?php echo $this->form->getInput('imgtitlestartcounter'); ?></li>
-        <li><?php echo $this->form->getLabel('catid'); ?>
-        <?php echo $this->form->getInput('catid'); ?></li>
-        <li><?php echo $this->form->getLabel('access'); ?>
-        <?php echo $this->form->getInput('access'); ?></li>
-      </ul>
-      <div class="fltlft"></div>
-      <?php echo $this->form->getLabel('imgtext'); ?>
-      <div class="fltlft">
-        <?php echo $this->form->getInput('imgtext'); ?>
+<form  class="form-validate form-horizontal" action="<?php echo JRoute::_('index.php?option='._JOOM_OPTION.'&controller=images'); ?>" method="post" name="adminForm" id="editimages-form">
+  <div class="row-fluid">
+    <div class="span6">
+      <div class="control-group form-inline">
+        <div class="control-label">
+          <?php echo $this->form->getLabel('imgtitle'); ?>
+        </div>
+        <div class="controls">
+          <?php echo $this->form->getInput('imgtitle'); ?>
+          <?php echo $this->form->getInput('imgtitlestartcounter'); ?>
+        </div>
       </div>
-      <div class="clr"></div>
-      <ul class="adminformlist">
-        <li>&nbsp;</li>
-        <li><?php echo $this->form->getLabel('owner'); ?>
-        <?php echo $this->form->getInput('owner'); ?></li>
-        <li><?php echo $this->form->getLabel('imgauthor'); ?>
-        <?php echo $this->form->getInput('imgauthor'); ?></li>
-        <li><?php echo $this->form->getLabel('published'); ?>
-        <?php echo $this->form->getInput('published'); ?></li>
-        <li><?php echo $this->form->getLabel('txtclearvotes'); ?>
-        <?php echo $this->form->getInput('txtclearvotes'); ?>
-        <?php echo $this->form->getInput('clearvotes'); ?></li>
-        <li><?php echo $this->form->getLabel('txtclearhits'); ?>
-        <?php echo $this->form->getInput('txtclearhits'); ?>
-        <?php echo $this->form->getInput('clearhits'); ?></li>
-      </ul>
-    </fieldset>
+      <div class="control-group">
+        <div class="control-label">
+          <?php echo $this->form->getLabel('catid'); ?>
+        </div>
+        <div class="controls">
+          <div class="pull-left"><?php echo $this->form->getInput('catid'); ?></div>
+          <?php echo $this->form->getInput('movecopy'); ?>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="control-label">
+          <?php echo $this->form->getLabel('access'); ?>
+        </div>
+        <div class="controls">
+          <?php echo $this->form->getInput('access'); ?>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="control-label">
+          <?php echo $this->form->getLabel('imgtext'); ?>
+        </div>
+        <div class="controls">
+          <?php echo $this->form->getInput('imgtext'); ?>
+        </div>
+      </div>
+      <div class="control-group form-inline">
+        <div class="control-label">
+          <?php echo $this->form->getLabel('owner'); ?>
+        </div>
+        <div class="controls">
+          <?php echo $this->form->getInput('owner'); ?>
+        </div>
+      </div>
+      <div class="control-group form-inline">
+        <div class="control-label">
+          <?php echo $this->form->getLabel('imgauthor'); ?>
+        </div>
+        <div class="controls">
+          <?php echo $this->form->getInput('imgauthor'); ?>
+        </div>
+      </div>
+      <div class="control-group form-inline">
+        <div class="control-label">
+          <?php echo $this->form->getLabel('metadesc'); ?>
+        </div>
+        <div class="controls">
+          <?php echo $this->form->getInput('metadesc'); ?>
+        </div>
+      </div>
+      <div class="control-group form-inline">
+        <div class="control-label">
+          <?php echo $this->form->getLabel('metakey'); ?>
+        </div>
+        <div class="controls">
+          <?php echo $this->form->getInput('metakey'); ?>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="control-label">
+          <?php echo $this->form->getLabel('published'); ?>
+        </div>
+        <div class="controls">
+          <?php echo $this->form->getInput('published'); ?>
+        </div>
+      </div>
+      <div class="control-group form-inline">
+        <div class="control-label">
+          <?php echo $this->form->getLabel('txtclearvotes'); ?>
+        </div>
+        <div class="controls">
+          <?php echo $this->form->getInput('txtclearvotes'); ?>
+          <?php echo $this->form->getInput('clearvotes'); ?>
+        </div>
+      </div>
+      <div class="control-group form-inline">
+        <div class="control-label">
+          <?php echo $this->form->getLabel('txtclearhits'); ?>
+        </div>
+        <div class="controls">
+          <?php echo $this->form->getInput('txtclearhits'); ?>
+          <?php echo $this->form->getInput('clearhits'); ?>
+        </div>
+      </div>
+      <div class="control-group form-inline">
+        <div class="control-label">
+          <?php echo $this->form->getLabel('txtcleardownloads'); ?>
+        </div>
+        <div class="controls">
+          <?php echo $this->form->getInput('txtcleardownloads'); ?>
+          <?php echo $this->form->getInput('cleardownloads'); ?>
+        </div>
+      </div>
+    </div>
   </div>
   <div>
-    <input type="hidden" name="option" value="<?php echo _JOOM_OPTION; ?>" />
-    <input type="hidden" name="controller" value="images" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="cids" value="<?php echo $this->cids; ?>" />
   </div>
 </form>
-<?php JHtml::_('behavior.formvalidation');
-      JHTML::_('behavior.tooltip');
-      JHTML::_('joomgallery.credits');
+<?php JHTML::_('joomgallery.credits');

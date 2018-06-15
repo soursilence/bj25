@@ -10,10 +10,8 @@
         id="arrscreenshot"
         type="files"
         class="inputbox validate-joomfiles"
-        labelclass="jg-float-label"
         fieldsetclass="jg-upload-fieldset"
         label="COM_JOOMGALLERY_UPLOAD_PLEASE_SELECT_IMAGES"
-        size="60"
         required="true"
       />
       <field
@@ -32,10 +30,9 @@
         id="single-filecounter"
         type="text"
         default="1"
-        class="inputbox validate-numeric"
+        class="inputbox validate-numeric span2"
         label="COM_JOOMGALLERY_UPLOAD_COUNTER_NUMBER"
         description="COM_JOOMGALLERY_UPLOAD_COUNTER_NUMBER_ASTERISK"
-        size="5"
       />
       <field
         name="imgtitle"
@@ -59,13 +56,14 @@
         type="text"
         class="inputbox"
         label="COM_JOOMGALLERY_COMMON_AUTHOR"
+        disabled="true"
+        readonly="true"
       />
       <field
         name="published"
         id="single-published"
-        type="radio"
+        type="list"
         class="inputbox"
-        labelclass="jg-float-label"
         default="1"
         label="COM_JOOMGALLERY_COMMON_PUBLISHED"
         size="1"

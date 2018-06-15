@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/helpers/file.php $
-// $Id: file.php 4338 2013-11-03 18:05:18Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/file.php $
+// $Id: file.php 4339 2013-11-03 18:06:02Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -742,8 +742,8 @@ class JoomFile
   {
     jimport('joomla.filesystem.file');
 
-    $src  = JPATH_ROOT.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'joomgallery'.DIRECTORY_SEPARATOR.'index.html';
-    $dest = JPath::clean($folder.DIRECTORY_SEPARATOR.'index.html');
+    $src  = JPATH_ROOT.'/media/joomgallery/index.html';
+    $dest = JPath::clean($folder.'/index.html');
 
     return JFile::copy($src, $dest);
   }

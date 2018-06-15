@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/helpers/upload.php $
-// $Id: upload.php 4215 2013-04-20 14:26:43Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/upload.php $
+// $Id: upload.php 4370 2014-02-27 10:40:34Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -107,6 +107,28 @@ class JoomUpload extends JObject
   protected $_db;
 
   /**
+   * Folder for saving image chunks
+   *
+   * @var string
+   */
+  protected $chunksFolder;
+
+  /**
+   * Probability for cleaning up the chunks folder
+   * (e.g. 0.001 means every 1000 requests a cleanup is triggered)
+   *
+   * @var float
+   */
+  protected $chunksCleanupProbability = 0.01;
+
+  /**
+   * Expiration time of chunk folders in seconds
+   *
+   * @var int
+   */
+  protected $chunksExpireIn = 86400;
+
+  /**
    * Constructor
    *
    * @return  void
@@ -128,6 +150,31 @@ class JoomUpload extends JObject
     $this->counter = $this->getImageNumber();
 
     $this->_site = $this->_mainframe->isSite();
+
+    // TODO Parameter in JoomGallery configuration neccessary ?
+    // Create folder for image chunks
+    $this->chunksFolder = $this->_mainframe->getCfg('tmp_path').'/joomgallerychunks';
+    if(!JFolder::exists($this->chunksFolder))
+    {
+      JFolder::create($this->chunksFolder);
+      JoomFile::copyIndexHtml($this->chunksFolder);
+    }
+  }
+
+  /**
+   * Returns the debug output
+   *
+   * @return  mixed  The debug output or false if debug is not enabled or debug output is empty.
+   * @since   3.0
+   */
+  public function getDebugOutput()
+  {
+    if($this->debug && !empty($this->_debugoutput))
+    {
+      return $this->_debugoutput;
+    }
+
+    return false;
   }
 
   /**
@@ -138,6 +185,14 @@ class JoomUpload extends JObject
    */
   public function upload($type = 'single')
   {
+    // Additional security check for unregistered users
+    if(!$this->_user->get('id') && !$this->_config->get('jg_unregistered_permissions'))
+    {
+      $this->setError(JText::_('COM_JOOMGALLERY_COMMON_MSG_YOU_ARE_NOT_LOGGED'));
+
+      return false;
+    }
+
     jimport('joomla.filesystem.file');
 
     switch($type)
@@ -151,10 +206,44 @@ class JoomUpload extends JObject
       case 'ftp':
         return $this->uploadFTP();
         break;
+      case 'ajax':
+        return $this->uploadAJAX();
+        break;
       default:
         return $this->uploadSingles();
         break;
      }
+  }
+
+  /**
+   * Deletes all file parts in the chunks folder for files uploaded
+   * more than chunksExpireIn seconds ago
+   *
+   * @return  void
+   * @since   3.0
+   */
+  protected function cleanupChunks()
+  {
+    if(is_writable($this->chunksFolder) && 1 == mt_rand(1, 1/$this->chunksCleanupProbability))
+    {
+      if(($folders = JFolder::folders($this->chunksFolder, '.', false, true)) !== false)
+      {
+        foreach($folders as $folder)
+        {
+          if(($files = JFolder::files($folder, '.', false, true)) !== false)
+          {
+            foreach($files as $file)
+            {
+              if(time() - filemtime($file) > $this->chunksExpireIn)
+              {
+                JFolder::delete($folder);
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -208,9 +297,10 @@ class JoomUpload extends JObject
         continue;
       }
 
-      if($this->_site && $this->counter > $this->_config->get('jg_maxuserimage') - 1)
+      if($this->_site && $this->counter > $this->_config->get('jg_maxuserimage') - 1 && $this->_user->get('id'))
       {
-        $this->_debugoutput .= JText::sprintf('COM_JOOMGALLERY_UPLOAD_OUTPUT_MAY_ADD_MAX_OF', $this->_config->get('jg_maxuserimage')).'<br />';
+        $timespan = $this->_config->get('jg_maxuserimage_timespan');
+        $this->_debugoutput .= JText::sprintf('COM_JOOMGALLERY_UPLOAD_OUTPUT_MAY_ADD_MAX_OF', $this->_config->get('jg_maxuserimage'), $timespan > 0 ? JText::plural('COM_JOOMGALLERY_UPLOAD_NEW_IMAGE_MAXCOUNT_TIMESPAN', $timespan) : '').'<br />';
         break;
       }
 
@@ -343,7 +433,7 @@ class JoomUpload extends JObject
       // Message about new image
       if($this->_site)
       {
-        require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php';
+        require_once JPATH_COMPONENT.'/helpers/messenger.php';
         $messenger  = new JoomMessenger();
         $message    = array(
                               'from'      => $this->_user->get('id'),
@@ -377,7 +467,7 @@ class JoomUpload extends JObject
       return !$this->debug;
     }
 
-    JHTML::addIncludePath(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
+    JHTML::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/helpers/html');
 ?>
     <p>
       <?php echo JHTML::_('joomgallery.icon', 'arrow.png', 'arrow'); ?>
@@ -426,7 +516,7 @@ class JoomUpload extends JObject
     }
 
     // Load the refresher in order to initialise it right now at the beginning
-    require_once JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
+    require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/refresher.php';
     $refresher = new JoomRefresher();
 
     // Check existence of temp directory
@@ -474,7 +564,7 @@ class JoomUpload extends JObject
       // Move uploaded file to a new directory with original name
       // because the uploaded archive is saved like php8900.tmp and JArchive
       // needs a valid extension
-      $zipfile = $extractdir.DIRECTORY_SEPARATOR.$zippack['name'];
+      $zipfile = $extractdir.'/'.$zippack['name'];
       JFile::upload($zippack['tmp_name'], $zipfile);
 
       // Extract archive to new directory, JArchive chooses the right adapter
@@ -547,9 +637,10 @@ class JoomUpload extends JObject
         $refresher->refresh(count($ziplist));
       }
 
-      if($this->_site && $this->counter > $this->_config->get('jg_maxuserimage') - 1)
+      if($this->_site && $this->counter > $this->_config->get('jg_maxuserimage') - 1 && $this->_user->get('id'))
       {
-        $this->_debugoutput .= '<hr />'.JText::sprintf('COM_JOOMGALLERY_UPLOAD_OUTPUT_MAY_ADD_MAX_OF', $this->_config->get('jg_maxuserimage')).'<br />';
+        $timespan = $this->_config->get('jg_maxuserimage_timespan');
+        $this->_debugoutput .= '<hr />'.JText::sprintf('COM_JOOMGALLERY_UPLOAD_OUTPUT_MAY_ADD_MAX_OF', $this->_config->get('jg_maxuserimage'), $timespan > 0 ? JText::plural('COM_JOOMGALLERY_UPLOAD_NEW_IMAGE_MAXCOUNT_TIMESPAN', $timespan) : '').'<br />';
         break;
       }
 
@@ -730,7 +821,7 @@ class JoomUpload extends JObject
     // Message about new images
     if($this->_site && $counter)
     {
-      require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php');
+      require_once(JPATH_COMPONENT.'/helpers/messenger.php');
       $messenger  = new JoomMessenger();
       $message    = array(
                             'from'      => $this->_user->get('id'),
@@ -758,7 +849,7 @@ class JoomUpload extends JObject
       return !$this->debug;
     }
 
-    JHTML::addIncludePath(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html');
+    JHTML::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/helpers/html');
 ?>
     <p>
       <?php echo JHTML::_('joomgallery.icon', 'arrow.png', 'arrow'); ?>
@@ -828,9 +919,10 @@ class JoomUpload extends JObject
 
     foreach($images as $file => $fileArray)
     {
-      if($this->_site && $this->counter > $this->_config->get('jg_maxuserimage') - 1)
+      if($this->_site && $this->counter > $this->_config->get('jg_maxuserimage') - 1 && $this->_user->get('id'))
       {
-        $this->_debugoutput .= JText::sprintf('COM_JOOMGALLERY_UPLOAD_OUTPUT_MAY_ADD_MAX_OF', $this->_config->get('jg_maxuserimage'));
+        $timespan = $this->_config->get('jg_maxuserimage_timespan');
+        $this->_debugoutput .= JText::sprintf('COM_JOOMGALLERY_UPLOAD_OUTPUT_MAY_ADD_MAX_OF', $this->_config->get('jg_maxuserimage'), $timespan > 0 ? JText::plural('COM_JOOMGALLERY_UPLOAD_NEW_IMAGE_MAXCOUNT_TIMESPAN', $timespan) : '');
         $this->debug = true;
         break;
       }
@@ -1114,7 +1206,7 @@ class JoomUpload extends JObject
       return false;
     }
 
-    $subdirectory = $this->_db->getEscaped($this->_mainframe->getUserStateFromRequest('joom.upload.ftp.subdirectory', 'subdirectory', DS, 'post', 'string'));
+    $subdirectory = $this->_db->escape($this->_mainframe->getUserStateFromRequest('joom.upload.ftp.subdirectory', 'subdirectory', '/', 'post', 'string'));
     $ftpfiles     = $this->_mainframe->getUserStateFromRequest('joom.upload.ftp.files', 'ftpfiles', array(), 'array');
 
     if(!$ftpfiles && JRequest::getBool('ftpfiles'))
@@ -1125,7 +1217,7 @@ class JoomUpload extends JObject
     }
 
     // Load the refresher
-    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
+    require_once JPATH_COMPONENT.'/helpers/refresher.php';
     $refresher = new JoomRefresher(array('remaining' => count($ftpfiles), 'start' => JRequest::getBool('ftpfiles')));
 
     $this->_debugoutput .= '<p></p>';
@@ -1255,6 +1347,8 @@ class JoomUpload extends JObject
       $this->_debugoutput .= JText::_('COM_JOOMGALLERY_UPLOAD_OUTPUT_IMAGE_SUCCESSFULLY_ADDED').'<br />';
       $this->_debugoutput .= JText::sprintf('COM_JOOMGALLERY_UPLOAD_NEW_FILENAME', $newfilename).'<br /><br />';
 
+      $this->_mainframe->triggerEvent('onJoomAfterUpload', array($row));
+	  
       unset($ftpfiles[$key]);
     }
 
@@ -1275,6 +1369,302 @@ class JoomUpload extends JObject
     }
 
     return !$this->debug;
+  }
+
+  /**
+   * AJAX upload
+   *
+   * An image is chosen and uploaded afore.
+   *
+   * @return  void
+   * @since   3.0
+   */
+  protected function uploadAJAX()
+  {
+    // Access check
+    $category = $this->getCategory($this->catid);
+    if(     !$category
+            ||  (     !$this->_user->authorise('joom.upload', _JOOM_OPTION.'.category.'.$this->catid)
+                    &&  (     !$this->_user->authorise('joom.upload.inown', _JOOM_OPTION.'.category.'.$this->catid)
+                            ||  !$category->owner
+                            ||  $category->owner != $this->_user->get('id')
+                    )
+            )
+    )
+    {
+      $this->setError(JText::_('COM_JOOMGALLERY_COMMON_MSG_YOU_ARE_NOT_ALLOWED_TO_UPLOAD_INTO_THIS_CATEGORY'));
+
+      return false;
+    }
+
+    $image               = JRequest::getVar('qqfile', '', 'files');
+    $qqtotalfilesize     = JRequest::getInt('qqtotalfilesize', -1);
+    $totalParts          = JRequest::getInt('qqtotalparts', 1);
+    $screenshot          = $image['tmp_name'];
+    $origfilename        = JRequest::getString('qqfilename', '');
+    $screenshot_filesize = $image['size'];
+    if(empty($origfilename))
+    {
+      $origfilename = $image['name'];
+    }
+
+    // Clean up directory containing old image chunks
+    $this->cleanupChunks();
+
+    if($totalParts == 1 && $qqtotalfilesize > 0 && $screenshot_filesize != $qqtotalfilesize)
+    {
+      $this->setError(JText::_('COM_JOOMGALLERY_UPLOAD_ERROR_FILE_PARTLY_UPLOADED'));
+      return false;
+    }
+
+    if($image['error'] > 0)
+    {
+      $errorMsg = JText::_('COM_JOOMGALLERY_AJAXUPLOAD_UPLOAD_FAILED').' '.JText::sprintf('COM_JOOMGALLERY_UPLOAD_ERROR_CODE', $image['error']);
+      $this->setError($errorMsg);
+
+      return false;
+    }
+
+    if($this->_site && $this->counter > $this->_config->get('jg_maxuserimage') - 1 && $this->_user->get('id'))
+    {
+      $timespan = $this->_config->get('jg_maxuserimage_timespan');
+      $errorMsg = JText::sprintf('COM_JOOMGALLERY_UPLOAD_OUTPUT_MAY_ADD_MAX_OF', $this->_config->get('jg_maxuserimage'), $timespan > 0 ? JText::plural('COM_JOOMGALLERY_UPLOAD_NEW_IMAGE_MAXCOUNT_TIMESPAN', $timespan) : '');
+      $this->setError($errorMsg);
+      return false;
+    }
+
+    $cleanChunkDir = false;
+    // Save a chunk
+    if($totalParts > 1)
+    {
+      $partIndex    = JRequest::getInt('qqpartindex');
+      $uuid         = JRequest::getVar('qquuid');
+
+      if(!is_writable($this->chunksFolder))
+      {
+        $errorMsg = JText::sprintf('COM_JOOMGALLERY_AJAXUPLOAD_ERROR_CHUNKSDIR_NOTWRITABLE', $this->chunksFolder);
+        $this->setError($errorMsg);
+        return false;
+      }
+
+      // Create unique target folder for chunks
+      $targetFolder = $this->chunksFolder.'/'.$uuid;
+      if(!JFolder::exists($targetFolder))
+      {
+        if(!JFolder::create($targetFolder))
+        {
+          return false;
+        }
+      }
+
+      // Save chunk in target folder
+      $target  = $targetFolder.'/'.$partIndex;
+      if(JFile::upload($screenshot, $target) === true)
+      {
+        // Last chunk
+        if(($totalParts - 1) == $partIndex)
+        {
+          $target              = $targetFolder.'/'.($partIndex + 1);
+          $cleanChunkDir       = $targetFolder;
+          $screenshot          = $target;
+          $screenshot_filesize = 0;
+
+          if($fp_target = fopen($target, 'wb'))
+          {
+            for($parts = 0; $parts < $totalParts; $parts++)
+            {
+              $fp_chunk              = fopen($targetFolder.'/'.$parts, "rb");
+              $screenshot_filesize  += stream_copy_to_stream($fp_chunk, $fp_target);
+              fclose($fp_chunk);
+            }
+            fclose($fp_target);
+          }
+          else
+          {
+            // Complete image could not be created
+            return false;
+          }
+        }
+        else
+        {
+          // Another chunk will arrive later
+          return true;
+        }
+      }
+      else
+      {
+        // Chunk could not be saved
+        return false;
+      }
+    }
+
+    // Trigger onJoomBeforeUpload
+    $plugins  = $this->_mainframe->triggerEvent('onJoomBeforeUpload');
+    if(in_array(false, $plugins, true))
+    {
+      $errorMsg = JText::_('COM_JOOMGALLERY_AJAXUPLOAD_UPLOAD_FAILED');
+      $this->setError($errorMsg);
+      return false;
+    }
+
+    $this->_debugoutput = '<hr />';
+    $this->_debugoutput .= JText::sprintf('COM_JOOMGALLERY_UPLOAD_FILENAME', $origfilename).'<br />';
+
+    // Image size must not exceed the setting in backend if we are in frontend
+    if($this->_site && $screenshot_filesize > $this->_config->get('jg_maxfilesize'))
+    {
+      $errorMsg = JText::sprintf('COM_JOOMGALLERY_UPLOAD_OUTPUT_MAX_ALLOWED_FILESIZE', $this->_config->get('jg_maxfilesize'));
+      $this->setError($errorMsg);
+      $this->_debugoutput .= $errorMsg.'<br />';
+      $this->debug = true;
+      return false;
+    }
+
+    // Get extension
+    $tag = strtolower(JFile::getExt($origfilename));
+
+    // Check for right format
+    if(   (($tag != 'jpeg') && ($tag != 'jpg') && ($tag != 'jpe') && ($tag != 'gif') && ($tag != 'png'))
+            || strlen($screenshot) == 0
+            || $screenshot == 'none'
+    )
+    {
+      $errorMsg = JText::_('COM_JOOMGALLERY_UPLOAD_OUTPUT_INVALID_IMAGE_TYPE');
+      $this->setError($errorMsg);
+      $this->_debugoutput .= $errorMsg.'<br />';
+      $this->debug = true;
+      return false;
+    }
+
+    $filecounter = null;
+    if(    ($this->_site && $this->_config->get('jg_useruploadnumber'))
+            ||
+            (!$this->_site && $this->_config->get('jg_filenamenumber'))
+    )
+    {
+      $filecounter = $this->_getSerial();
+    }
+
+    // Create new filename
+    // If generic filename set in backend use them
+    if(    ($this->_site && $this->_config->get('jg_useruseorigfilename'))
+            ||
+            (!$this->_site && $this->_config->get('jg_useorigfilename'))
+    )
+    {
+      $oldfilename = $origfilename;
+      $newfilename = JoomFile::fixFilename($origfilename);
+    }
+    else
+    {
+      $oldfilename = $this->imgtitle;
+      $newfilename = JoomFile::fixFilename($this->imgtitle);
+    }
+
+    // Check the new filename
+    if(JoomFile::checkValidFilename($oldfilename, $newfilename) == false)
+    {
+      if($this->_site)
+      {
+        $errorMsg = JText::_('COM_JOOMGALLERY_COMMON_ERROR_INVALID_FILENAME').'<br />';
+      }
+      else
+      {
+        $errorMsg = JText::sprintf('COM_JOOMGALLERY_UPLOAD_ERROR_INVALID_FILENAME', $newfilename, $oldfilename).'<br />';
+      }
+      $this->setError($errorMsg);
+      $this->_debugoutput .= $errorMsg.'<br />';
+      $this->debug = true;
+      return false;
+    }
+
+    $newfilename = $this->_genFilename($newfilename, $tag, $filecounter);
+
+    if($cleanChunkDir !== false)
+    {
+      $return = JFile::move($screenshot, $this->_ambit->getImg('orig_path', $newfilename, null, $this->catid));
+      // Clean up chunk directory
+      JFolder::delete($cleanChunkDir);
+    }
+    else
+    {
+      // We'll assume that this file is ok because with open_basedir,
+      // we can move the file, but may not be able to access it until it's moved
+      $return = JFile::upload($screenshot, $this->_ambit->getImg('orig_path', $newfilename, null, $this->catid));
+    }
+
+    if(!$return)
+    {
+      $errorMsg = JText::sprintf('COM_JOOMGALLERY_UPLOAD_ERROR_UPLOADING', $this->_ambit->getImg('orig_path', $newfilename, null, $this->catid));
+      $this->setError($errorMsg);
+      $this->_debugoutput .= $errorMsg.'<br />';
+      $this->debug = true;
+      return false;
+    }
+
+    $this->_debugoutput .= JText::_('COM_JOOMGALLERY_UPLOAD_OUTPUT_UPLOAD_COMPLETE').'<br />';
+
+    // Set permissions of uploaded file
+    $return = JoomFile::chmod($this->_ambit->getImg('orig_path', $newfilename, null, $this->catid), '0644');
+    //     if(!$return)
+      //     {
+      //       $this->rollback($this->_ambit->getImg('orig_path', $newfilename, null, $this->catid), null, null);
+      //       $errorMsg = $this->_ambit->getImg('orig_path', $newfilename, null, $this->catid).' '.JText::_('COM_JOOMGALLERY_COMMON_CHECK_PERMISSIONS');
+      //       $this->_debugoutput .= $errorMsg.'<br />';
+      //       $this->debug = true;
+      //       return false;
+      //     }
+
+    // Create thumbnail and detail image
+    if(!$this->resizeImage($this->_ambit->getImg('orig_path', $newfilename, null, $this->catid), $newfilename))
+    {
+      $this->rollback($this->_ambit->getImg('orig_path', $newfilename, null, $this->catid),
+              $this->_ambit->getImg('img_path', $newfilename, null, $this->catid),
+              $this->_ambit->getImg('thumb_path', $newfilename, null, $this->catid)
+      );
+      $this->debug  = true;
+      return false;
+    }
+
+    // Insert database entry
+    $row = JTable::getInstance('joomgalleryimages', 'Table');
+    if(!$this->registerImage($row, $origfilename, $newfilename, $tag, $filecounter))
+    {
+      $this->rollback($this->_ambit->getImg('orig_path', $newfilename, null, $this->catid),
+              $this->_ambit->getImg('img_path', $newfilename, null, $this->catid),
+              $this->_ambit->getImg('thumb_path', $newfilename, null, $this->catid)
+      );
+      $this->debug = true;
+      return false;
+    }
+
+    // Message about new image
+    if($this->_site)
+    {
+      require_once JPATH_COMPONENT.'/helpers/messenger.php';
+      $messenger  = new JoomMessenger();
+      $message    = array(
+              'from'      => $this->_user->get('id'),
+              'subject'   => JText::_('COM_JOOMGALLERY_UPLOAD_MESSAGE_NEW_IMAGE_UPLOADED'),
+              'body'      => JText::sprintf('COM_JOOMGALLERY_MESSAGE_NEW_IMAGE_SUBMITTED_BODY', $this->_config->get('jg_realname') ? $this->_user->get('name') : $this->_user->get('username'), $row->imgtitle),
+              'mode'      => 'upload'
+      );
+      $messenger->send($message);
+    }
+
+    $this->_debugoutput .= JText::_('COM_JOOMGALLERY_UPLOAD_OUTPUT_IMAGE_SUCCESSFULLY_ADDED').'<br />';
+    $this->_debugoutput .= JText::sprintf('COM_JOOMGALLERY_UPLOAD_NEW_FILENAME', $newfilename).'<br />';
+
+    $this->_mainframe->triggerEvent('onJoomAfterUpload', array($row));
+
+    // Reset file counter, delete original and create special gif selection and debug information
+    $this->_mainframe->setUserState('joom.upload.filecounter', 0);
+    $this->_mainframe->setUserState('joom.upload.delete_original', false);
+    $this->_mainframe->setUserState('joom.upload.create_special_gif', false);
+    $this->_mainframe->setUserState('joom.upload.debug', false);
+    $this->_mainframe->setUserState('joom.upload.debugoutput', null);
+
+    return $row;
   }
 
   /**
@@ -1302,6 +1692,16 @@ class JoomUpload extends JObject
     {
       mt_srand();
       $randomnumber = mt_rand(1000000000, 2099999999);
+
+      $maxlen = 255 - 2 - strlen($filedate) - strlen($randomnumber) - (strlen($tag) + 1);
+      if(!is_null($filecounter))
+      {
+        $maxlen = $maxlen - (strlen($filecounter) + 1);
+      }
+      if(strlen($filename) > $maxlen)
+      {
+        $filename = substr($filename, 0, $maxlen);
+      }
 
       // New filename
       if(is_null($filecounter))
@@ -1531,6 +1931,13 @@ class JoomUpload extends JObject
           ->select('COUNT(id)')
           ->from(_JOOM_TABLE_IMAGES)
           ->where('owner = '.$this->_user->get('id'));
+
+    $timespan = $this->_config->get('jg_maxuserimage_timespan');
+    if($timespan > 0)
+    {
+      $query->where('imgdate > (UTC_TIMESTAMP() - INTERVAL '. $timespan .' DAY)');
+    }
+
     $this->_db->setQuery($query);
 
     return $this->_db->loadResult();
@@ -1807,7 +2214,7 @@ class JoomUpload extends JObject
 
     // Date
     $date           = JFactory::getDate();
-    $row->imgdate   = $date->toMySQL();
+    $row->imgdate   = $date->toSQL();
 
     // Check whether images are approved directly if we are in frontend
     if($this->_site && $this->_config->get('jg_approve') == 1)

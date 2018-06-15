@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/models/nametags.php $
-// $Id: nametags.php 3861 2012-09-14 21:45:35Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/nametags.php $
+// $Id: nametags.php 4077 2013-02-12 10:46:13Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -184,7 +184,7 @@ class JoomGalleryModelNametags extends JoomGalleryModel
     $row->nyvalue = $yvalue;
     $row->by      = $by;
     $row->nuserip = $_SERVER['REMOTE_ADDR'];
-    $row->ndate   = $date->toMySQL();
+    $row->ndate   = $date->toSQL();
     $row->nzindex = $zindex;
 
     if(!$row->store())
@@ -205,7 +205,7 @@ class JoomGalleryModelNametags extends JoomGalleryModel
       $name     = $this->_config->get('jg_realname') ? $user->get('name') : $user->get('username');
       $by_name  = $this->_config->get('jg_realname') ? $this->_user->get('name') : $this->_user->get('username');
 
-      require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php');
+      require_once(JPATH_COMPONENT.'/helpers/messenger.php');
       $messenger  = new JoomMessenger();
 
       // General Message

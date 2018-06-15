@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/models/favourites.php $
-// $Id: favourites.php 4322 2013-08-27 22:01:40Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/favourites.php $
+// $Id: favourites.php 4331 2013-09-08 08:27:42Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -93,7 +93,7 @@ class JoomGalleryModelFavourites extends JoomGalleryModel
     // Set the image id
     $view = JRequest::getCmd('view');
     $task = JRequest::getCmd('task');
-    if(   $view != 'favourites'
+    if(  ($view != 'favourites' || $task == 'removeimage')
       &&  $view != 'downloadzip'
       &&  $task != 'removeall'
       &&  $task != 'switchlayout'
@@ -494,7 +494,7 @@ class JoomGalleryModelFavourites extends JoomGalleryModel
   {
     $layout = JRequest::getCmd('layout');
     if(
-        ($layout && $layout != 'default')
+        ($layout && $layout == 'list')
       ||
          $this->layout
       )
@@ -671,6 +671,8 @@ class JoomGalleryModelFavourites extends JoomGalleryModel
         $files[$row->id]['data'] = JFile::read($image);
       }
 
+      // Increase download counter for that image
+      $this->download($row->id);
     }
 
     if(!count($files))
@@ -685,7 +687,7 @@ class JoomGalleryModelFavourites extends JoomGalleryModel
       $this->_mainframe->redirect(JRoute::_('index.php?view=favourites', false));
     }
 
-    $createzip = $zip_adapter->create($zipname, $files, 'zip');
+    $createzip = $zip_adapter->create($zipname, $files);
 
     if(!$createzip)
     {
@@ -766,7 +768,7 @@ class JoomGalleryModelFavourites extends JoomGalleryModel
     if($this->_config->get('jg_msg_zipdownload'))
     {
       $imagefiles = implode(",\n", $files);
-      require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php';
+      require_once JPATH_COMPONENT.'/helpers/messenger.php';
       $messenger    = new JoomMessenger();
       $message      = array(
                             'subject'   => JText::_('COM_JOOMGALLERY_MESSAGE_NEW_ZIPDOWNLOAD_SUBJECT'),
@@ -794,6 +796,66 @@ class JoomGalleryModelFavourites extends JoomGalleryModel
     }
 
     return array();
+  }
+
+  /**
+   * Method to increment the download counter for an image.
+   *
+   * @param   int     $imgid  Image Id.
+   * @return  boolean True on success, false otherwise.
+   * @since   3.1
+   */
+  protected function download($imgid)
+  {
+    if($imgid)
+    {
+      $image = $this->getTable('joomgalleryimages');
+      $image->download($imgid);
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Method to auto-populate the model state.
+   *
+   * This method should only be called once per instantiation and is designed
+   * to be called on the first call to the getState() method unless the model
+   * configuration flag to ignore the request is set.
+   *
+   * Note. Calling getState in this method will result in recursion.
+   *
+   * @param   string  $ordering   An optional ordering field.
+   * @param   string  $direction  An optional direction (asc|desc).
+   * @return  void
+   * @since   3.0
+   */
+  protected function populateState($ordering = 'imgtitle', $direction = 'asc')
+  {
+    $filter_fields = array( 'imgtitle',
+                            'hits',
+                            'downloads',
+                            'catid'
+                          );
+
+    // Check if the ordering field is in the white list, otherwise use the incoming value
+    $value = $this->_mainframe->getUserStateFromRequest('joom.favourites.ordercol', 'filter_order', $ordering);
+    if(!in_array($value, $filter_fields))
+    {
+      $value = $ordering;
+      $this->_mainframe->setUserState('joom.favourites.ordercol', $value);
+    }
+    $this->setState('list.ordering', $value);
+
+    // Check if the ordering direction is valid, otherwise use the incoming value
+    $value = $this->_mainframe->getUserStateFromRequest('joom.favourites.orderdirn', 'filter_order_Dir', $direction);
+    if(!in_array(strtoupper($value), array('ASC', 'DESC', '')))
+    {
+      $value = $direction;
+      $this->_mainframe->setUserState('joom.favourites.orderdirn', strotoupper($value));
+    }
+    $this->setState('list.direction', $value);
   }
 
   /**
@@ -839,6 +901,7 @@ class JoomGalleryModelFavourites extends JoomGalleryModel
         $query->where('a.id IN ('.$this->piclist.')');
       }
 
+      $query->order($this->_db->escape($this->getState('list.ordering').' '.$this->getState('list.direction')));
       $this->_db->setQuery($query);
 
       $rows = $this->_db->loadObjectList();

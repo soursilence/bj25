@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/controllers/control.php $
-// $Id: control.php 3778 2012-05-11 20:44:09Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/controllers/control.php $
+// $Id: control.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -63,7 +63,7 @@ class JoomGalleryControllerControl extends JoomGalleryController
     }
 
     // Tell JoomGallery to do the update check again after the update
-    $mainframe = JFactory::getApplication('administrator');
+    $mainframe = JFactory::getApplication();
     $mainframe->setUserState('joom.update.checked', null);
   }
 
@@ -89,5 +89,41 @@ class JoomGalleryControllerControl extends JoomGalleryController
     {
       JoomExtensions::autoUpdate($extensions[$extension]['updatelink']);
     }
+  }
+
+  /**
+   * Uses the installer of Joomla! in order to install an extension
+   *
+   * @access  public
+   * @return  void
+   * @since   3.0
+   */
+  function doInstallation()
+  {
+    $mainframe = JFactory::getApplication();
+
+    JFactory::getLanguage()->load('com_installer');
+
+    $installer = JInstaller::getInstance();
+    if(!$installer->install($this->_ambit->get('temp_path').'update'))
+    {
+      // There was an error installing the package
+      $result = false;
+      if(is_object($installer->manifest))
+      {
+        $msg = JText::sprintf('COM_INSTALLER_INSTALL_ERROR', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($installer->manifest->attributes()->type)));
+      }
+    }
+    else
+    {
+      // Package installed sucessfully
+      $msg = JText::sprintf('COM_INSTALLER_INSTALL_SUCCESS', JText::_('COM_INSTALLER_TYPE_TYPE_'.strtoupper($installer->manifest->attributes()->type)));
+      $result = true;
+    }
+
+    $mainframe->setUserState('joom.control.message', $installer->message);
+    $mainframe->setUserState('joom.control.extension_message', $installer->get('extension_message'));
+
+    $this->setRedirect($this->_ambit->getRedirectUrl(), $msg, $result ? 'message' : 'error');
   }
 }

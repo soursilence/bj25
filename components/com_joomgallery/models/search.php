@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/models/search.php $
-// $Id: search.php 3848 2012-09-13 16:03:31Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/search.php $
+// $Id: search.php 4253 2013-05-06 20:26:05Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -66,7 +66,7 @@ class JoomGalleryModelSearch extends JoomGalleryModel
     if(empty($this->_searchResults))
     {
       $sstring        = JRequest::getString('sstring');
-      $searchstring   = $this->_db->getEscaped(trim($sstring));
+      $searchstring   = $this->_db->escape(trim($sstring));
 
       $categories           = $this->_ambit->getCategoryStructure();
       $authorisedViewLevels = implode(',', $this->_user->getAuthorisedViewLevels());
@@ -135,6 +135,7 @@ class JoomGalleryModelSearch extends JoomGalleryModel
             ->where('a.hidden = 0')
             ->where('ca.hidden = 0')
             ->where('ca.in_hidden = 0')
+            ->where('ca.exclude_search = 0')
             ->group('a.id')
             ->order('a.id DESC');
 

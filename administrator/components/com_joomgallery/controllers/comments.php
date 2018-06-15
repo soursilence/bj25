@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/controllers/comments.php $
-// $Id: comments.php 3780 2012-05-13 09:34:11Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/controllers/comments.php $
+// $Id: comments.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -170,30 +170,17 @@ class JoomGalleryControllerComments extends JoomGalleryController
   public function synchronize()
   {
     // Synchronize users-comments-images
-
-//    @TODO: Query does not work with JDatabaseQuery, does not support delete('c'),
-//    $query = $this->_db->getQuery(true)
-//          ->delete('c')
-//          ->from(_JOOM_TABLE_COMMENTS.' AS c')
-//          ->leftJoin(_JOOM_TABLE_IMAGES.' AS i ON c.cmtpic  = i.id')
-//          ->where('i.id IS NULL');
-
-    $query = "DELETE
-                c
-              FROM
-                "._JOOM_TABLE_COMMENTS." AS c
-              LEFT JOIN
-                "._JOOM_TABLE_IMAGES." AS i
-              ON
-                c.cmtpic  = i.id
-              WHERE
-                i.id IS NULL";
+    $query = $this->_db->getQuery(true)
+          ->delete('c USING '._JOOM_TABLE_COMMENTS.' AS c')
+          ->leftJoin(_JOOM_TABLE_IMAGES.' AS i ON c.cmtpic  = i.id')
+          ->where('i.id IS NULL');
     $this->_db->setQuery($query);
 
     if(!$this->_db->query())
     {
       // Redirect to maintenance manager because this task is usually launched there
       $this->setRedirect($this->_ambit->getRedirectUrl('maintenance&tab=comments'), $this->_db->getErrorMsg(), 'error');
+
       return;
     }
 
@@ -208,6 +195,7 @@ class JoomGalleryControllerComments extends JoomGalleryController
     {
       // Redirect to maintenance manager because this task is usually launched there
       $this->setRedirect($this->_ambit->getRedirectUrl('maintenance&tab=comments'), $this->_db->getErrorMsg(), 'error');
+
       return;
     }
 

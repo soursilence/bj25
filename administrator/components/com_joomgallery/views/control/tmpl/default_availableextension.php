@@ -16,14 +16,17 @@ defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
         if(!isset($this->installed_extensions[$this->name])):
           $label = JText::_('COM_JOOMGALLERY_ADMENU_DOWNLOAD_INSTALLATION_LINK');
         endif; ?>
-    <div class="jg_extavaildownload"><a href="<?php echo $this->extension['downloadlink']; ?>" target="_blank"><?php echo $label; ?></a></div>
+    <div class="jg_extavaildownload"><a class="btn" href="<?php echo $this->extension['downloadlink']; ?>" target="_blank"><?php echo $label; ?></a></div>
 <?php endif; ?>
     <div class="jg_extavailversions">
-      <table>
+      <table class="table table-bordered">
 <?php if(isset($this->dated_extensions[$this->name])): ?>
         <tr>
           <td><?php echo JText::_('COM_JOOMGALLERY_ADMENU_YOUR_VERSION'); ?></td>
           <td><?php echo $this->dated_extensions[$this->name]['installed_version']; ?></td>
+<?php if(isset($this->extension['releaselink'])): ?>
+          <td></td>
+<?php endif; ?>
         </tr>
 <?php endif; ?>
         <tr>
@@ -47,7 +50,7 @@ defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
         if($this->params->get('curl_loaded')): ?>
     <div class="jg_updexistauto"><?php echo JText::_('COM_JOOMGALLERY_ADMENU_AUTOUPDATE_TEXT'); ?></div>
     <div class="jg_updexistautolink">
-      <a href="index.php?option=<?php echo _JOOM_OPTION; ?>&amp;task=install&amp;extension=<?php echo $this->name; ?>"><?php echo $label; ?></a></div>
+      <a class="btn  btn-primary" href="index.php?option=<?php echo _JOOM_OPTION; ?>&amp;task=install&amp;extension=<?php echo $this->name; ?>"><?php echo $label; ?></a></div>
 <?php   endif;
         if(!$this->params->get('curl_loaded')):
           if($this->params->get('url_fopen_allowed')): ?>
@@ -61,7 +64,7 @@ defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
       </form>
     </div>
     <div class="jg_updexistformsubmit">
-      <a href="javascript:document.JoomUpdateForm<?php echo $this->entry; ?>.submit();"><?php echo $label; ?></a></div>
+      <a class="btn  btn-primary" href="javascript:document.JoomUpdateForm<?php echo $this->entry; ?>.submit();"><?php echo $label; ?></a></div>
 <?php     endif;
           if(!$this->params->get('url_fopen_allowed')):
             if(isset($this->installed_extensions[$this->name])):

@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/models/editcategory.php $
-// $Id: editcategory.php 4218 2013-04-21 17:22:10Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/editcategory.php $
+// $Id: editcategory.php 4405 2014-07-02 07:13:31Z chraneco $
 /****************************************************************************************\
-**   JoomGallery  2                                                                     **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -46,6 +46,12 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
   public function __construct()
   {
     parent::__construct();
+
+    // Additional security check for unregistered users
+    if(!$this->_user->get('id') && !$this->_config->get('jg_unregistered_permissions'))
+    {
+      throw new Exception(JText::_('COM_JOOMGALLERY_COMMON_MSG_YOU_ARE_NOT_LOGGED'));
+    }
 
     $array = JRequest::getVar('catid',  0, '', 'array');
 
@@ -170,6 +176,12 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
       // Unset the data of fields which we aren't allowed to change
       $form->setFieldAttribute('ordering', 'filter', 'unset');
       $form->setFieldAttribute('published', 'filter', 'unset');
+    }
+
+    if(!$this->_config->get('jg_usercatacc'))
+    {
+      $form->setFieldAttribute('access', 'disabled', 'true');
+      $form->setFieldAttribute('access', 'filter', 'unset');
     }
 
     return $form;
@@ -299,7 +311,7 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
             ->where('owner = '.$this->_user->get('id'));
       $this->_db->setQuery($query);
       $count = $this->_db->loadResult();
-      if($count >= $this->_config->get('jg_maxusercat'))
+      if($count >= $this->_config->get('jg_maxusercat') && $this->_user->get('id'))
       {
         $this->_mainframe->redirect(JRoute::_('index.php?view=usercategories', false), JText::_('COM_JOOMGALLERY_EDITCATEGORY_MSG_NOT_ALLOWED_CREATE_MORE_USERCATEGORIES'), 'notice');
       }
@@ -587,9 +599,7 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
     // Check whether we are allowed to delete this category
     if(!$this->_user->authorise('core.delete', _JOOM_OPTION.'.category.'.$this->_id))
     {
-      $this->setError(JText::_('COM_JOOMGALLERY_CATEGORY_MSG_DELETE_NOT_PERMITTED'));
-
-      return false;
+      throw new RuntimeException(JText::_('COM_JOOMGALLERY_CATEGORY_MSG_DELETE_NOT_PERMITTED'));
     }
 
     $query = $this->_db->getQuery(true);
@@ -599,9 +609,7 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
     $this->_db->setQuery($query);
     if($this->_db->loadResult())
     {
-      $msg = JText::sprintf('COM_JOOMGALLERY_EDITCATEGORY_MSG_CATEGORY_CONTAINS_IMAGES', $this->_id);
-      $this->setError($msg);
-      return false;
+      throw new RuntimeException(JText::sprintf('COM_JOOMGALLERY_EDITCATEGORY_MSG_CATEGORY_CONTAINS_IMAGES', $this->_id));
     }
 
     // Database query to check whether there are any sub-categories assigned
@@ -612,25 +620,18 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
     $this->_db->setQuery($query);
     if($this->_db->loadResult())
     {
-      $msg = JText::sprintf('COM_JOOMGALLERY_EDITCATEGORY_MSG_CATEGORY_CONTAINS_SUBCATEGORIES', $this->_id);
-      $this->setError($msg);
-
-      return false;
+      throw new RuntimeException(JText::sprintf('COM_JOOMGALLERY_EDITCATEGORY_MSG_CATEGORY_CONTAINS_SUBCATEGORIES', $this->_id));
     }
 
     $catpath = JoomHelper::getCatPath($this->_id);
     if(!$this->_deleteFolders($catpath))
     {
-      $this->setError(JText::_('COM_JOOMGALLERY_EDITCATEGORY_MSG_UNABLE_DELETE_DIRECTORIES'));
-
-      return false;
+      JLog::add(JText::_('COM_JOOMGALLERY_EDITCATEGORY_MSG_UNABLE_DELETE_DIRECTORIES'), JLog::WARNING, 'jerror');
     }
 
     if(!$row->delete())
     {
-      $this->setError($row->getError());
-
-      return false;
+      throw new RuntimeException($row->getError());
     }
 
     // Reset the user state variable 'catid' for filtering in user panel
@@ -711,7 +712,7 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
           ->from(_JOOM_TABLE_CATEGORIES)
           ->where('parent_id IN ('.$catids_values.')');
     $this->_db->setQuery($query);
-    $subcatids = $this->_db->loadResultArray();
+    $subcatids = $this->_db->loadColumn();
     if($this->_db->getErrorNum())
     {
       JError::raiseWarning(500, $this->_db->getErrorMsg());

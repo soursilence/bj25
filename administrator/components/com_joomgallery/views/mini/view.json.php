@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/views/mini/view.json.php $
-// $Id: view.json.php 3744 2012-04-06 16:03:05Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/views/mini/view.json.php $
+// $Id: view.json.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
-**   JoomGallery  2                                                                     **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -25,25 +25,20 @@ class JoomGalleryViewMini extends JoomGalleryView
    * Raw view display method
    *
    * @access  public
+   * @param   string  $tpl  The name of the template file to parse
    * @return  void
    * @since   1.5.5
    */
-  function display()
+  function display($tpl = null)
   {
-    if(!function_exists('json_encode'))
-    {
-      echo '{"minis":"You need PHP 5.2 or higher","pagination":""}';
-
-      return;
-    }
-
     $e_name = $this->_mainframe->getUserStateFromRequest('joom.mini.e_name', 'e_name', 'text', 'string');
 
     $catid = $this->_mainframe->getUserStateFromRequest('joom.mini.catid', 'catid', 0, 'int');
     $this->assignRef('catid', $catid);
+    $this->prefix = $this->_mainframe->getUserStateFromRequest('joom.mini.prefix', 'prefix', 'joom', 'cmd');
 
     // Pagination
-    $total    = &$this->get('TotalImages');
+    $total    = $this->get('TotalImages');
 
     // Calculation of the number of total pages
     $limit    = $this->_mainframe->getUserStateFromRequest('joom.mini.limit', 'limit', 30, 'int');
@@ -87,11 +82,11 @@ class JoomGalleryViewMini extends JoomGalleryView
 
     JRequest::setVar('limit', $limit);
 
-    require_once JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'pagination.php';
-    $onclick = 'javascript:ajaxRequest(\''.JRoute::_('index.php?option='._JOOM_OPTION.'&view=mini&format=json', false).'\', %u); return false;';
+    require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/pagination.php';
+    $onclick = 'javascript:ajaxRequest(\'index.php?option='._JOOM_OPTION.'&view=mini&format=json\', %u); return false;';
     $this->pagination = new JoomPagination($totalimages, $limitstart, $limit, '', null, $onclick);
 
-    $images = &$this->get('Images');
+    $images = $this->get('Images');
 
     foreach($images as $key => $image)
     {

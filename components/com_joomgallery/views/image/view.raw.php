@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/views/image/view.raw.php $
-// $Id: view.raw.php 3920 2012-10-02 18:21:10Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/image/view.raw.php $
+// $Id: view.raw.php 4224 2013-04-22 15:46:14Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -34,9 +34,6 @@ class JoomGalleryViewImage extends JoomGalleryView
 
     $type     = JRequest::getWord('type', 'thumb');
     $download = JRequest::getCmd('download');
-    $model    = $this->getModel();
-
-    $image    = $this->get('Image');
 
     $crop_image = false;
     $cropwidth  = JRequest::getInt('width');
@@ -46,7 +43,14 @@ class JoomGalleryViewImage extends JoomGalleryView
       $crop_image = true;
     }
 
-    $img      = $this->_ambit->getImg($type.'_path', $image);
+    $model = $this->getModel();
+
+    if(!$image = $model->getImage(JRequest::getInt('id')))
+    {
+      return $this->displayError($model->getError());
+    }
+
+    $img  = $this->_ambit->getImg($type.'_path', $image);
 
     $include_watermark = false;
 
@@ -110,7 +114,7 @@ class JoomGalleryViewImage extends JoomGalleryView
           $username = $this->_config->get('jg_realname') ? $this->_user->get('name') : $this->_user->get('username');
         }
 
-        require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php';
+        require_once JPATH_COMPONENT.'/helpers/messenger.php';
         $messenger    = new JoomMessenger();
         $message      = array(
                               'subject'   => JText::_('COM_JOOMGALLERY_MESSAGE_NEW_DOWNLOAD_SUBJECT'),
@@ -120,13 +124,15 @@ class JoomGalleryViewImage extends JoomGalleryView
                               );
         $messenger->send($message);
 
+        // Increase download counter
+        $model->download();
       }
       // Displaying, not downloading
       else
       {
         if(!$this->_config->get('jg_showdetailpage') && !$this->_user->get('id'))
         {
-          $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false), JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_ACCESS'), 'notice');
+          return $this->displayError(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_ACCESS'));
         }
 
         // Include watermark when displaying image in the detail view?
@@ -139,20 +145,20 @@ class JoomGalleryViewImage extends JoomGalleryView
         if(   ($type == 'orig')
             &&
               (
-                  (         !$this->_config->get('jg_detailpic_open')
+                  (         (is_numeric($this->_config->get('jg_detailpic_open')) && $this->_config->get('jg_detailpic_open') == 0)
                     &&
                       (     (!$this->_config->get('jg_bigpic') && $this->_user->get('id'))
                         ||  (!$this->_config->get('jg_bigpic_unreg') && !$this->_user->get('id'))
                       )
                   )
                 ||
-                  (     $this->_config->get('jg_detailpic_open')
+                  (     (!is_numeric($this->_config->get('jg_detailpic_open')) || $this->_config->get('jg_detailpic_open') > 0)
                     &&  !$this->_config->get('jg_lightboxbigpic')
                   )
               )
           )
         {
-          $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false), JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_ACCESS'), 'notice');
+          return $this->displayError(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_ACCESS'));
         }
       }
 
@@ -162,7 +168,7 @@ class JoomGalleryViewImage extends JoomGalleryView
 
     if(!JFile::exists($img))
     {
-      $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false), JText::_('COM_JOOMGALLERY_COMMON_MSG_IMAGE_NOT_EXIST'), 'error');
+      return $this->displayError(JText::_('COM_JOOMGALLERY_COMMON_MSG_IMAGE_NOT_EXIST'));
     }
 
     $info = getimagesize($img);
@@ -178,8 +184,7 @@ class JoomGalleryViewImage extends JoomGalleryView
         $mime = 'image/png';
         break;
       default:
-        JError::raiseError(404, JText::sprintf('COM_JOOMGALLERY_COMMON_MSG_MIME_NOT_ALLOWED', $info[2]));
-        break;
+        return $this->displayError(JText::sprintf('COM_JOOMGALLERY_COMMON_MSG_MIME_NOT_ALLOWED', $info[2]));
     }
 
     // Set mime encoding
@@ -194,7 +199,7 @@ class JoomGalleryViewImage extends JoomGalleryView
     }
     JResponse::setHeader('Content-disposition', $disposition.'; filename='.basename($img));
 
-    // Inlude watermark
+    // Inlude watermark and crop
     if(($include_watermark || $crop_image) && !$model->isGif($img))
     {
       $img_resource = null;
@@ -208,7 +213,10 @@ class JoomGalleryViewImage extends JoomGalleryView
 
       if($include_watermark)
       {
-        $img_resource = $model->includeWatermark($img, $img_resource, $cropwidth, $cropheight);
+        if(!$img_resource = $model->includeWatermark($img, $img_resource, $cropwidth, $cropheight))
+        {
+          return $this->displayError($model->getError());
+        }
       }
 
       if(!$img_resource)
@@ -230,8 +238,7 @@ class JoomGalleryViewImage extends JoomGalleryView
             imagejpeg($img_resource, null, $quali);
             break;
           default:
-            JError::raiseError(404, JText::sprintf('COM_JOOMGALLERY_COMMON_MSG_MIME_NOT_ALLOWED', $mime));
-            break;
+            return $this->displayError(JText::sprintf('COM_JOOMGALLERY_COMMON_MSG_MIME_NOT_ALLOWED', $mime));
         }
 
         imagedestroy($img_resource);
@@ -241,5 +248,46 @@ class JoomGalleryViewImage extends JoomGalleryView
     {
       echo JFile::read($img);
     }
+  }
+
+  /**
+   * Creates an empty image and inserts a text string for displaying error messages in 'img' tags
+   *
+   * @param   string  $msg  The message to display
+   * @return  void
+   * @since   3.0
+   */
+  protected function displayError($msg)
+  {
+    $this->_doc->setMimeEncoding('image/jpeg');
+
+    $type   = JRequest::getWord('type', 'thumb');
+    $width  = JRequest::getInt('width');
+    $height = JRequest::getInt('height');
+
+    if(!$width || !$height)
+    {
+      switch($type)
+      {
+        case 'thumb':
+          $width  = $this->_config->get('jg_thumbwidth');
+          $height = $this->_config->get('jg_thumbheight');
+          break;
+        case 'img':
+          $width  = $this->_config->get('jg_maxwidth');
+          $height = $this->_config->get('jg_maxwidth');
+          break;
+        default:
+          $width  = 500;
+          $height = 500;
+          break;
+      }
+    }
+
+    $img = imagecreatetruecolor($width, $height);
+    $text_color = imagecolorallocate($img, 255, 0, 0);
+    imagestring($img, 5, 5, 5,  $msg, $text_color);
+    imagejpeg($img);
+    imagedestroy($img);
   }
 }

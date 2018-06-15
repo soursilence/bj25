@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/helpers/refresher.php $
-// $Id: refresher.php 3651 2012-02-19 14:36:46Z mab $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/refresher.php $
+// $Id: refresher.php 4290 2013-05-29 00:02:48Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -184,6 +184,17 @@ class JoomRefresher extends JObject
   }
 
   /**
+   * Returns the calculated maximum execution time
+   *
+   * @return  int The calculated maximum execution time
+   * @since   3.2
+   */
+  public function getMaxTime()
+  {
+    return $this->_maxtime;
+  }
+
+  /**
    * Resets the progressbar or the name of the current task
    *
    * @param   int     $remaining  Number of remaining steps
@@ -230,7 +241,7 @@ class JoomRefresher extends JObject
   public function check()
   {
     $timeleft = -(time() - $this->_starttime - $this->_maxtime);
-    if($timeleft > 0)
+    if($timeleft > 3)
     {
       return true;
     }
@@ -288,59 +299,61 @@ class JoomRefresher extends JObject
     $url = 'index.php?option='._JOOM_OPTION.'&controller='.$controller.'&task='.$task;
     $onclick = 'document.location.href=\''.$url.'\';';
 
+    $buffer = '';
+    if($buffer = ob_get_contents())
+    {
+      ob_end_clean();
+    }
+
     echo '<?xml version="1.0" encoding="utf-8"?'.'>'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
-    <!--<meta http-equiv="refresh" content="0;url=<?php echo $url; ?>" />-->
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="templates/system/css/system.css" type="text/css" />
-    <link rel="stylesheet" href="<?php echo JoomAmbit::getInstance()->getStyleSheet('admin.joomgallery.css'); ?>" type="text/css" />
-    <link href="templates/<?php echo $this->_mainframe->getTemplate(); ?>/css/template.css" rel="stylesheet" type="text/css" />
+    <!--<link rel="stylesheet" href="<?php echo JoomAmbit::getInstance()->getStyleSheet('admin.joomgallery.css'); ?>" type="text/css" />
+    <link href="templates/<?php echo $this->_mainframe->getTemplate(); ?>/css/template.css" rel="stylesheet" type="text/css" />-->
+    <link href="<?php echo JUri::root(); ?>media/jui/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo JUri::root(); ?>media/jui/css/bootstrap-extended.css" rel="stylesheet" type="text/css" />
+    <?php if(JFactory::getLanguage()->isRTL()): ?>
+    <link href="<?php echo JUri::root(); ?>media/jui/css/bootstrap-rtl.css" rel="stylesheet" type="text/css" />
+    <?php endif; ?>
+    <style type="text/css">
+      body{
+        margin-top:30px;
+      }
 <?php if($this->_showprogress): ?>
-      <style type="text/css">
-        div.progressbar {
-          border:1px solid #000;
-          background-color:white;
-          width:500px;
-          height:28px;
-          padding:1px;
-          margin-top:5px;
-          margin-right:auto;
-          margin-left:auto;
-        }
-
-        div.progress {
-          background-color:#0F0;
-          height:28px;
-          width:<?php echo floor((($this->_total - $this->_remaining) / $this->_total) * 100); ?>%;
-        }
-      </style>
+      .bar{
+        width:<?php echo floor((($this->_total - $this->_remaining) / $this->_total) * 100); ?>% !important;
+      }
 <?php endif; ?>
-      <title><?php echo JText::_('COM_JOOMGALLERY_COMMON_REFRESHER_IN_PROGRESS'); ?></title>
+    </style>
+    <title><?php echo JText::_('COM_JOOMGALLERY_COMMON_REFRESHER_IN_PROGRESS'); ?></title>
   </head>
   <body>
-    <div class="jg-refresher-container">
-      <div class="jg-refresher-text">
-        <?php echo JText::_('COM_JOOMGALLERY_COMMON_REFRESHER_PLEASE_WAIT'); ?>
+    <div class="row-fluid">
+      <div class="offset2 span8 well">
+        <div class="alert alert-info">
+          <?php echo JText::_('COM_JOOMGALLERY_COMMON_REFRESHER_PLEASE_WAIT'); ?>
 <?php if($this->_name): ?>
-        <br />
-        <?php echo JText::sprintf('COM_JOOMGALLERY_COMMON_REFRESHER_CURRENT_TASK', '<span class="jg-refresher-name">'.$this->_name.'</span>'); ?>
+          <br />
+          <?php echo JText::sprintf('COM_JOOMGALLERY_COMMON_REFRESHER_CURRENT_TASK', '<span style="color:green;">'.$this->_name.'</span>'); ?>
 <?php endif; ?>
-      </div>
-      <div class="jg-refresher-spinnercontainer"><img src="../media/system/images/modal/spinner.gif" alt="Spinner" width="16" height="16" /></div>
+        </div>
+        <p class="center"><img src="<?php echo JUri::root(); ?>media/system/images/modal/spinner.gif" alt="Spinner" width="16" height="16" /></p>
 <?php if($this->_showprogress): ?>
-      <div class="progressbar" title="<?php echo JText::sprintf('COM_JOOMGALLERY_COMMON_REFRESHER_PROGRESSBAR', $this->_maxtime); ?>">
-        <div class="progress"></div>
-      </div>
-      <div class="small"><?php echo JText::sprintf('COM_JOOMGALLERY_COMMON_REFRESHER_PROGRESSBAR', $this->_maxtime); ?></div>
+        <div class="progress progress-striped active" title="<?php echo JText::sprintf('COM_JOOMGALLERY_COMMON_REFRESHER_PROGRESSBAR', $this->_maxtime); ?>">
+          <div class="bar"></div>
+        </div>
+        <div class="small muted center"><?php echo JText::sprintf('COM_JOOMGALLERY_COMMON_REFRESHER_PROGRESSBAR', $this->_maxtime); ?></div>
 <?php endif;
       if($this->_msg):
-        $doc = &JFactory::getDocument();
+        $doc = JFactory::getDocument();
         $renderer = $doc->loadRenderer('message');
         echo $renderer->render('');
       endif; ?>
+      </div>
     </div>
+    <div><?php echo $buffer; ?></div>
     <script type="text/javascript"><?php echo $onclick; ?></script>
   </body>
 </html><?php

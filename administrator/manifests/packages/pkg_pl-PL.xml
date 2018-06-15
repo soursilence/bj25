@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="package" version="3.6" method="upgrade">
-	<name>Polish Language Pack</name>
+<extension type="package" version="3.8" method="upgrade">
+	<name>Polish (Poland) (pl-PL) Language Pack</name>
 	<packagename>pl-PL</packagename>
-	<version>3.6.5.1</version>
-	<creationDate>14-12-2016</creationDate>
-	<author>Polskie Centrum Joomla!</author>
+	<version>3.8.8.2</version>
+	<creationDate>maj 2018</creationDate>
+	<author>Polskie Centrum Joomla</author>
 	<authorEmail>zwiastun@joomla.pl</authorEmail>
 	<authorUrl>http://www.joomla.pl</authorUrl>
-	<copyright>(C) 2005 - 2016 Open Source Matters. All right reserved.</copyright>
-	<copyright>(C) 2005 - 2016 Fundacja PCJ Otwarte Źródła. All rights reserved.</copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<url></url>
-	<packager></packager>
-	<packagerurl></packagerurl>	
-	<description>
-	<![CDATA[
-		<h3>3.6.5 Joomla - pakiet języka polskiego</h3>
-		
-		<p><span style="font-weight: normal">Polskie Centrum Joomla zapewnia społeczności kompletne tłumaczenia Joomla!.<br />
-		Ich przygotowanie kosztuje wiele czasu i pracy.</span></p>
-		
-		<h2>Wspieramy Cię, więc wesprzyj nas<br /><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZL442C5WE8FT2">Przekaż darowiznę przez PayPal</a></h2>	
+	<copyright>Copyright (C) 2005-2018 Open Source Matters, Inc. All rights reserved.</copyright>
+	<license>https://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<url>https://github.com/joomla/joomla-cms</url>
+	<packager>Joomla! Project</packager>
+	<packagerurl>www.joomla.org</packagerurl>
+	<description>	<![CDATA[
+		<div class="text-center span12"> 
+		<h3>Joomla! - pakiet języka polskiego - 3.8.8</h3>
+		<p><span style="font-weight: normal">Polskie Centrum Joomla zapewnia społeczności kompletne tłumaczenia Joomla!<br />Ich przygotowanie kosztuje wiele czasu i pracy.</span></p>
+		<div class="alert alert-info">
+		<h3>Wspieramy Ciebie, więc wesprzyj i nas.</h3>
+		<h3>Przekaż darowiznę przez:</h3>
+		<a class="btn btn-success" href="http://bit.ly/paypal-fundacja">PayPal</a>	
+		<a class="btn btn-success" href="http://bit.ly/przekaz-darowizne-payu">PayU</a> 
+		<a class="btn btn-info" href="http://bit.ly/przekaz-darowizne-pcj">Przelew bankowy</a>
 		<p>&nbsp;</p>
-		<h3 style="margin:0;">Nie korzystasz z PayPal?<br /><a href="http://fundacja.joomla.pl/pomagaj?id=62">Zobacz tutaj</a></h3>
-		<p>jak możesz wesprzeć Fundację PCJ Otwarte Źródła</p>
-		<p>&nbsp;</p><p>&nbsp;</p>
-	]]>
-	</description>
+		<h3>Dziękujemy</h3>
+		<p>Od 1 stycznia 2018 otrzymaliśmy 78 darowizn od 66 osób i 5 firm, razem: 4002 złote.</p>
+		<p>Serdeczne podziękowania dla osób i firm, które w okresie od 19 kwietnia  przekazały nam darowizny na kwotę 2320 złotych: 
+		Andrzeja K., Anety B-R., Arkadiusza G., Arkadiusza P., Artura S., Barbary L., Błażeja C.,  Edwarda M.P., Grzegorza K., Grzegorza Z., Jakuba T., Janusza Rz., Janusza S., Jarosława B., Jarosława S., Krystiana K., Krzysztofa B., Krzysztofa M., Leszka Sz., Łukasza G., Macieja S., Marcina W., Mariusza D., Mateusza R., Piotra K., Roberta C., Roberta K., Roberta P. Stefana O., Wojciecha K. i firm: AB-Com, Cedrowa Grupa Agencja Multimedialna, MK GADGETS Sp. z&nbsp;o.o.	
+		</p> 
+		</div>
+		</div>
+	]]></description>
+	<blockChildUninstall>true</blockChildUninstall>
 	<files>
-		<file type="language" client="site" id="pl-PL">site_pl-PL.zip</file>
-		<file type="language" client="administrator" id="pl-PL">admin_pl-PL.zip</file>
+		<folder type="language" client="site" id="pl-PL">site_pl-PL</folder>
+		<folder type="language" client="administrator" id="pl-PL">admin_pl-PL</folder>
 	</files>
 	<updateservers>
-		<server type="collection" priority="1" name="Accredited Joomla! Translations">http://update.joomla.org/language/translationlist_3.xml</server>
+		<server type="collection" priority="1" name="Accredited Joomla! Translations">
+			https://update.joomla.org/language/translationlist_3.xml
+		</server>
 	</updateservers>
 </extension>
-
-
-

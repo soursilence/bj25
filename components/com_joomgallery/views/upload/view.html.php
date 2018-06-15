@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/views/upload/view.html.php $
-// $Id: view.html.php 3868 2012-09-15 21:06:25Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/upload/view.html.php $
+// $Id: view.html.php 4398 2014-06-11 13:39:02Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -37,8 +37,8 @@ class JoomGalleryViewUpload extends JoomGalleryView
       $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false), $msg, 'notice');
     }
 
-    // TODO: This check may be removed later on
-    if(!$this->_user->get('id'))
+    // Additional security check for unregistered users
+    if(!$this->_user->get('id') && !$this->_config->get('jg_unregistered_permissions'))
     {
       $this->_mainframe->redirect(JRoute::_('index.php?view=gallery', false), JText::_('COM_JOOMGALLERY_COMMON_MSG_YOU_ARE_NOT_LOGGED'), 'notice');
     }
@@ -91,7 +91,8 @@ class JoomGalleryViewUpload extends JoomGalleryView
 
     if($count >= $this->_config->get('jg_maxuserimage'))
     {
-      $msg = JText::sprintf('COM_JOOMGALLERY_UPLOAD_OUTPUT_MAY_ADD_MAX_OF', $this->_config->get('jg_maxuserimage'));
+      $timespan = $this->_config->get('jg_maxuserimage_timespan');
+      $msg = JText::sprintf('COM_JOOMGALLERY_UPLOAD_OUTPUT_MAY_ADD_MAX_OF', $this->_config->get('jg_maxuserimage'), $timespan > 0 ? JText::plural('COM_JOOMGALLERY_UPLOAD_NEW_IMAGE_MAXCOUNT_TIMESPAN', $timespan) : '');
       $this->_mainframe->redirect(JRoute::_('index.php?view=userpanel', false), $msg, 'notice');
     }
 
@@ -118,6 +119,40 @@ class JoomGalleryViewUpload extends JoomGalleryView
     JHtml::_('behavior.formvalidation');
     JHtml::_('behavior.tooltip');
 
+    $this->uploads = array();
+    $types = array('single', 'ajax', 'batch', 'java');
+    $tab = $this->_mainframe->input->get('tab');
+    $active_found = false;
+    foreach($types as $type)
+    {
+      if($this->_config->get('jg_userupload'.$type))
+      {
+        $this->uploads[$type] = array('title'   => 'COM_JOOMGALLERY_UPLOAD_TAB_'.strtoupper($type).'_UPLOAD',
+                                      'active'  => false
+                                      );
+        if($tab == $type)
+        {
+          $this->uploads[$type]['active'] = true;
+          $active_found = true;
+        }
+      }
+    }
+
+    // One tab has to be active
+    if(!$active_found && count($this->uploads))
+    {
+      // Reset the array in order to be able to use the key of the first element
+      reset($this->uploads);
+      $this->uploads[key($this->uploads)]['active'] = true;
+    }
+
+    JForm::addFormPath(JPATH_COMPONENT.'/models/forms');
+    $this->single_form  = JForm::getInstance(_JOOM_OPTION.'.upload', 'upload');
+    $this->ajax_form    = JForm::getInstance(_JOOM_OPTION.'.ajaxupload', 'ajaxupload');
+    $this->batch_form   = JForm::getInstance(_JOOM_OPTION.'.batchupload', 'batchupload');
+    $this->applet_form  = JForm::getInstance(_JOOM_OPTION.'.jupload', 'jupload');
+    $this->single_form->setFieldAttribute('arrscreenshot', 'quantity', $inputcounter);
+
     $this->_doc->addScriptDeclaration('    var jg_filenamewithjs = '.($this->_config->get('jg_filenamewithjs') ? 'true' : 'false').';');
     $this->_doc->addScript($this->_ambit->getScript('upload.js'));
     JText::script('COM_JOOMGALLERY_COMMON_ALERT_IMAGE_MUST_HAVE_TITLE');
@@ -127,17 +162,31 @@ class JoomGalleryViewUpload extends JoomGalleryView
     JText::script('COM_JOOMGALLERY_UPLOAD_ALERT_FILENAME_DOUBLE_ONE');
     JText::script('COM_JOOMGALLERY_UPLOAD_ALERT_FILENAME_DOUBLE_TWO');
 
-    JForm::addFormPath(JPATH_COMPONENT.'/models/forms');
-    $this->single_form  = JForm::getInstance(_JOOM_OPTION.'.upload', 'upload');
-    $this->batch_form   = JForm::getInstance(_JOOM_OPTION.'.batchupload', 'batchupload');
-    $this->applet_form  = JForm::getInstance(_JOOM_OPTION.'.jupload', 'jupload');
-    $this->single_form->setFieldAttribute('arrscreenshot', 'quantity', $inputcounter);
+    // AJAX Drag'n'Drop Upload
+    if($this->_config->get('jg_useruploadajax'))
+    {
+      $this->_doc->addStyleSheet($this->_ambit->getScript('fineuploader/fineuploader.css'));
+      $this->_doc->addScript($this->_ambit->getScript('fineuploader/js/fineuploader'.(JFactory::getConfig()->get('debug') ? '' : '.min').'.js'));
+
+      $this->ajax_form->setFieldAttribute('ajaxupload', 'redirect', $this->getModel()->getRedirectUrlAfterUpload('ajax'));
+    }
 
     if($this->_config->get('jg_useorigfilename'))
     {
       $this->single_form->setFieldAttribute('imgtitle', 'required', 'false');
+      $this->ajax_form->setFieldAttribute('imgtitle', 'required', 'false');
       $this->batch_form->setFieldAttribute('imgtitle', 'required', 'false');
-      $this->batch_form->setFieldAttribute('imgtitle', 'required', 'false');
+      $this->applet_form->setFieldAttribute('imgtitle', 'required', 'false');
+    }
+
+    if(!$this->_config->get('jg_disableunrequiredchecks'))
+    {
+      // Set default user upload category
+      $defaultUserUploadCategory = $this->get('DefaultUserUploadCategory');
+      $this->single_form->setValue('catid', null, $defaultUserUploadCategory);
+      $this->ajax_form->setValue('catid', null, $defaultUserUploadCategory);
+      $this->batch_form->setValue('catid', null, $defaultUserUploadCategory);
+      $this->applet_form->setValue('catid', null, $defaultUserUploadCategory);
     }
 
     parent::display($tpl);

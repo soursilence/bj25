@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/branches/ajax/components/com_joomgallery/models/nametags.php $
-// $Id: nametags.php 3665 2012-02-26 21:24:47Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/send2friend.php $
+// $Id: send2friend.php 4222 2013-04-22 12:19:11Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -47,7 +47,7 @@ class JoomGalleryModelSend2Friend extends JoomGalleryModel
       return false;
     }
 
-    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'messenger.php';
+    require_once JPATH_COMPONENT.'/helpers/messenger.php';
 
     $send2friendname  = JRequest::getVar('send2friendname', '', 'post');
     $send2friendemail = JRequest::getVar('send2friendemail', '', 'post');
@@ -64,7 +64,7 @@ class JoomGalleryModelSend2Friend extends JoomGalleryModel
     $link = $uri->toString();
 
     $text = JText::sprintf( 'COM_JOOMGALLERY_MESSAGE_IMAGE_FROM_FRIEND_BODY',
-                            $this->_user->get('name'),
+                            $this->_config->get('jg_realname') ? $this->_user->get('name') : $this->_user->get('username'),
                             $this->_user->get('email'),
                             $link
                           );

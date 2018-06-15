@@ -97,7 +97,7 @@ echo $this->loadTemplate('header'); ?>
     </div>
     <div class="jg_iconbar">
 <?php if($this->params->get('show_zoom_icon') == 1): ?>
-      <a <?php echo $this->image->atagtitle; ?> href="<?php echo $this->image->link;?>"<?php //echo JHTML::_('joomgallery.tip', 'COM_JOOMGALLERY_DETAIL_IMG_FULLSIZE_TIPTEXT', 'COM_JOOMGALLERY_DETAIL_IMG_FULLSIZE_TIPCAPTION', true); ?>>
+      <a <?php echo $this->image->atagtitle; ?> href="<?php echo $this->params->get('image_linked') ? JHtml::_('joomgallery.openimage', $this->_config->get('jg_bigpic_open'), $this->image, false, 'joomgalleryIcon') : $this->image->link; ?>"<?php //echo JHTML::_('joomgallery.tip', 'COM_JOOMGALLERY_DETAIL_IMG_FULLSIZE_TIPTEXT', 'COM_JOOMGALLERY_DETAIL_IMG_FULLSIZE_TIPCAPTION', true); ?>>
         <?php echo JHTML::_('joomgallery.icon', 'zoom.png', 'COM_JOOMGALLERY_DETAIL_IMG_FULLSIZE_TIPCAPTION'); ?></a>
 <?php endif;
       if($this->params->get('show_zoom_icon') == -1): ?>
@@ -123,7 +123,7 @@ echo $this->loadTemplate('header'); ?>
         <?php echo JHTML::_('joomgallery.icon', 'tag_delete.png', 'COM_JOOMGALLERY_DETAIL_NAMETAGS_DELETE_TIPCAPTION'); ?></a>
 <?php endif;
       if($this->params->get('show_nametag_icon') == 3): ?>
-      <a href="<?php echo JRoute::_('index.php?view=nametag&tmpl=component'); ?>" class="modal<?php echo JHTML::_('joomgallery.tip', 'COM_JOOMGALLERY_DETAIL_NAMETAGS_SELECT_OTHERS_TIPTEXT', 'COM_JOOMGALLERY_DETAIL_NAMETAGS_SELECT_OTHERS_TIPCAPTION'); ?>" rel="{handler:'iframe', size:{x:200,y:100}}">
+      <a href="<?php echo JRoute::_('index.php?view=nametag&tmpl=component'); ?>" class="modal<?php echo JHTML::_('joomgallery.tip', 'COM_JOOMGALLERY_DETAIL_NAMETAGS_SELECT_OTHERS_TIPTEXT', 'COM_JOOMGALLERY_DETAIL_NAMETAGS_SELECT_OTHERS_TIPCAPTION'); ?>" rel="{handler:'iframe', size:{x:300,y:150}}">
         <?php echo JHTML::_('joomgallery.icon', 'tag_edit.png', 'COM_JOOMGALLERY_DETAIL_NAMETAGS_SELECT_OTHERS_TIPCAPTION'); ?></a>
 <?php endif;
       if($this->params->get('show_nametag_icon') == -1): ?>
@@ -193,22 +193,56 @@ echo $this->loadTemplate('header'); ?>
   <div class="jg_minis">
 <?php   if($this->_config->get('jg_motionminis') == 2): ?>
     <div id="motioncontainer">
-      <div id="motiongallery">
-        <div style="white-space:nowrap;" id="trueContainer">
+      <ul>
 <?php   endif;
-        if(count($this->images)):
-          foreach($this->images as $row): ?>
+        $rows  = array();
+        $limit = $this->_config->get('jg_motionminiLimit');
+
+        if ($limit > 0)
+        {
+          $imageposition = ($this->image->position + 1) - $limit/2;
+          $imageposition = min($imageposition, count($this->images) - $limit);
+          $rows = array_splice($this->images, max(0, $imageposition), $limit);
+        }
+        else
+        {
+          $rows = $this->images;
+        }
+
+        foreach($rows as $row):
+          if($this->_config->get('jg_motionminis') == 2): ?>
+        <li>
+<?php     endif; ?>
           <a title="<?php echo $row->imgtitle; ?>" href="<?php echo JRoute::_('index.php?view=detail&id='.$row->id).JHTML::_('joomgallery.anchor'); ?>">
 <?php       $cssid = '';
-            if($row->id == $this->image->id):
-              $cssid = ' id="jg_mini_akt"';
-            endif; ?>
+          if($row->id == $this->image->id):
+            $cssid = ' id="jg_mini_akt"';
+          endif; ?>
             <img src="<?php echo $this->_ambit->getImg('thumb_url', $row); ?>"<?php echo $cssid; ?> class="jg_minipic" alt="<?php echo $row->imgtitle; ?>" /></a>
-<?php     endforeach;
-        endif;
+<?php     if($this->_config->get('jg_motionminis') == 2): ?>
+        </li>
+<?php     endif; ?>
+<?php   endforeach;
         if($this->_config->get('jg_motionminis') == 2): ?>
-        </div>
-      </div>
+      </ul>
+      <script>
+        (function($){
+          $(window).load(function(){
+            $("#motioncontainer").mThumbnailScroller({
+              axis:"x",
+              type:"hover-20",
+              callbacks:{
+                onInit:function(){
+                  var $this = $(this);
+                  var moveTo = $("#jg_mini_akt").position().left + ($("#jg_mini_akt").width() / 2) - ($("#motioncontainer").find(".mTSWrapper").width() / 2);
+                  $this.mThumbnailScroller("scrollTo", (moveTo > 0 ? moveTo : "left"));
+                  setTimeout(function() { $this.addClass("jg_scroller-ready"); }, 300);
+                }
+              },
+            });
+          });
+        })(jQuery);
+      </script>
     </div>
 <?php   endif; ?>
   </div>
@@ -222,9 +256,9 @@ echo $this->loadTemplate('header'); ?>
 <?php endif;
       if($this->params->get('show_detailbtm_modules', 0)):
         foreach($this->modules['detailbtm'] as $module): ?>
-  <div class="jg_module">
+  <div class="well wells-mall jg_module">
 <?php     if($module->showtitle): ?>
-    <div class="sectiontableheader">
+    <div class="jg-details-header">
       <h4>
         <?php echo $module->title; ?>
       </h4>
@@ -236,8 +270,8 @@ echo $this->loadTemplate('header'); ?>
       endif;
       if($this->_config->get('jg_showdetail')):
         $this->i = 0; ?>
-  <div class="jg_details">
-    <div class="sectiontableheader">
+  <div class="well well-small jg_details">
+    <div class="jg-details-header">
       <h4 <?php echo $this->toggler; ?>>
         <?php echo JText::_('COM_JOOMGALLERY_DETAIL_INFO'); ?>
       </h4>
@@ -246,7 +280,7 @@ echo $this->loadTemplate('header'); ?>
     <div <?php echo $this->slider; ?>>
 <?php   endif;
         if($this->_config->get('jg_showdetaildescription') && strlen($this->image->imgtext) > 0): ?>
-      <div class="sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+      <div class="jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
         <div class="jg_photo_left">
           <?php echo JText::_('COM_JOOMGALLERY_COMMON_DESCRIPTION'); ?>
         </div>
@@ -256,7 +290,7 @@ echo $this->loadTemplate('header'); ?>
       </div>
 <?php   endif;
         if($this->_config->get('jg_showdetaildatum')): ?>
-      <div class="sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+      <div class="jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
         <div class="jg_photo_left">
           <?php echo JText::_('COM_JOOMGALLERY_DETAIL_INFO_DATE'); ?>
         </div>
@@ -266,7 +300,7 @@ echo $this->loadTemplate('header'); ?>
       </div>
 <?php   endif;
         if($this->_config->get('jg_showdetailhits')): ?>
-      <div class="sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+      <div class="jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
         <div class="jg_photo_left">
           <?php echo JText::_('COM_JOOMGALLERY_COMMON_HITS'); ?>
         </div>
@@ -275,8 +309,18 @@ echo $this->loadTemplate('header'); ?>
         </div>
       </div>
 <?php   endif;
+        if($this->_config->get('jg_showdetaildownloads')): ?>
+      <div class="jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
+        <div class="jg_photo_left">
+          <?php echo JText::_('COM_JOOMGALLERY_COMMON_DOWNLOADS'); ?>
+        </div>
+        <div class="jg_photo_right" id="jg_photo_downloads">
+          <?php echo $this->image->downloads; ?>
+        </div>
+      </div>
+<?php   endif;
         if($this->_config->get('jg_showdetailrating')): ?>
-      <div class="sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+      <div class="jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
         <div class="jg_photo_left">
           <?php echo JText::_('COM_JOOMGALLERY_DETAIL_INFO_RATING'); ?>
         </div>
@@ -287,7 +331,7 @@ echo $this->loadTemplate('header'); ?>
 <?php   endif;
         echo $this->event->afterDisplay;
         if($this->_config->get('jg_showdetailfilesize')): ?>
-      <div class="sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+      <div class="jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
         <div class="jg_photo_left">
           <?php echo JText::_('COM_JOOMGALLERY_DETAIL_INFO_FILESIZE'); ?>
         </div>
@@ -300,7 +344,7 @@ echo $this->loadTemplate('header'); ?>
       </div>
 <?php   endif;
         if($this->_config->get('jg_showdetailauthor')): ?>
-      <div class="sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+      <div class="jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
         <div class="jg_photo_left">
           <?php echo JText::_('COM_JOOMGALLERY_DETAIL_AUTHOR'); ?>
         </div>
@@ -310,7 +354,7 @@ echo $this->loadTemplate('header'); ?>
       </div>
 <?php   endif;
         if($this->_config->get('jg_showoriginalfilesize')): ?>
-      <div class="sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+      <div class="jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
         <div class="jg_photo_left">
           <?php echo JText::_('COM_JOOMGALLERY_DETAIL_INFO_FILESIZE_ORIGINAL'); ?>
         </div>
@@ -329,8 +373,8 @@ echo $this->loadTemplate('header'); ?>
 <?php endif;
       if($this->params->get('show_detailpane_modules')):
         foreach($this->modules['detailpane'] as $module): ?>
-  <div class="jg_panemodule">
-    <div class="sectiontableheader">
+  <div class="well well-small jg_panemodule">
+    <div class="jg-details-header">
       <h4 <?php echo $this->toggler; ?>>
         <?php echo $module->title; ?>
       </h4>
@@ -346,8 +390,8 @@ echo $this->loadTemplate('header'); ?>
 <?php   endforeach;
       endif;
       if($this->params->get('show_exifdata')): ?>
-  <div class="jg_exif">
-    <div class="sectiontableheader">
+  <div class="well well-small jg_exif">
+    <div class="jg-details-header">
       <h4 <?php echo $this->toggler; ?>>
         <?php echo JText::_('COM_JOOMGALLERY_EXIF_DATA'); ?>
       </h4>
@@ -362,8 +406,8 @@ echo $this->loadTemplate('header'); ?>
   </div>
 <?php endif;
       if($this->params->get('show_map')): ?>
-  <div class="jg_exif">
-    <div class="sectiontableheader">
+  <div class="well well-small jg_exif">
+    <div class="jg-details-header">
       <h4 <?php echo $this->toggler; ?>>
         <?php echo JText::_('COM_JOOMGALLERY_DETAIL_MAPS_GEOTAGGING'); ?>
       </h4>
@@ -394,8 +438,8 @@ echo $this->loadTemplate('header'); ?>
   </div>
 <?php endif;
       if($this->params->get('show_iptcdata')): ?>
-  <div class="jg_exif">
-    <div class="sectiontableheader">
+  <div class="well well-small jg_exif">
+    <div class="jg-details-header">
       <h4 <?php echo $this->toggler; ?>>
         <?php echo JText::_('COM_JOOMGALLERY_IPTC_DATA'); ?>
       </h4>
@@ -410,8 +454,8 @@ echo $this->loadTemplate('header'); ?>
   </div>
 <?php endif;
       if($this->params->get('show_voting_area')): ?>
-  <div id="jg_voting" class="jg_voting">
-    <div class="sectiontableheader">
+  <div id="jg_voting" class="well well-small jg_voting">
+    <div class="jg-details-header">
       <h4 <?php echo $this->toggler; ?>>
         <?php echo JText::_('COM_JOOMGALLERY_DETAIL_RATING'); ?>
       </h4>
@@ -435,7 +479,7 @@ echo $this->loadTemplate('header'); ?>
         <?php echo $this->voting; ?>
         <?php echo JText::_('COM_JOOMGALLERY_DETAIL_RATING_GOOD', $this->maxvoting); ?>
         <p>
-          <input class="button" type="submit" value="<?php echo JText::_('COM_JOOMGALLERY_DETAIL_RATING_VOTE'); ?>" name="<?php echo JText::_('COM_JOOMGALLERY_DETAIL_RATING_VOTE'); ?>" />
+          <input class="btn btn-small btn-primary" type="submit" value="<?php echo JText::_('COM_JOOMGALLERY_DETAIL_RATING_VOTE'); ?>" name="<?php echo JText::_('COM_JOOMGALLERY_DETAIL_RATING_VOTE'); ?>" />
         </p>
       </form>
 <?php     endif;
@@ -478,8 +522,8 @@ echo $this->loadTemplate('header'); ?>
 <?php endif;
       if($this->params->get('show_bbcode')):
         $this->i = 0; ?>
-  <div class="jg_bbcode">
-    <div class="sectiontableheader">
+  <div class="well well-small jg_bbcode">
+    <div class="jg-details-header">
       <h4 <?php echo $this->toggler; ?>>
         <?php echo JText::_('COM_JOOMGALLERY_DETAIL_BBCODE_SHARE'); ?>
       </h4>
@@ -509,8 +553,8 @@ echo $this->loadTemplate('header'); ?>
   </div>
 <?php endif;
       if($this->params->get('show_comments_block')): ?>
-  <div class="jg_commentsarea">
-    <div class="sectiontableheader">
+  <div class="well well-small jg_commentsarea">
+    <div class="jg-details-header">
       <h4 <?php echo $this->toggler; ?>>
         <?php echo JText::_('COM_JOOMGALLERY_DETAIL_COMMENTS_EXISTING'); ?>
       </h4>
@@ -527,7 +571,7 @@ echo $this->loadTemplate('header'); ?>
         <div class="jg_cmtl">
           <?php echo $this->_user->get('username'); ?>
 <?php     if(!$this->_user->get('id') && $this->_config->get('jg_namedanoncomment')): ?>
-          <input title="<?php echo JText::_('COM_JOOMGALLERY_COMMON_GUEST'); ?>" type="text" class="inputbox" name="cmtname" value="<?php echo $this->_mainframe->getUserState('joom.comments.name', JText::_('COM_JOOMGALLERY_COMMON_GUEST')); ?>" tabindex="1" />
+          <input title="<?php echo JText::_('COM_JOOMGALLERY_COMMON_GUEST'); ?>" type="text" class="inputbox input-medium" name="cmtname" value="<?php echo $this->_mainframe->getUserState('joom.comments.name', JText::_('COM_JOOMGALLERY_COMMON_GUEST')); ?>" tabindex="1" />
 <?php     endif;
           if($this->params->get('smiley_support')): ?>
           <div class="jg_cmtsmilies">
@@ -560,14 +604,14 @@ echo $this->loadTemplate('header'); ?>
           &nbsp;
         </div>
         <div class="jg_cmtr">
-          <input type="button" name="send" value="<?php echo JText::_('COM_JOOMGALLERY_DETAIL_COMMENTS_SEND_COMMENT'); ?>" class="button" onclick="joom_validatecomment()" />
+          <input type="button" name="send" value="<?php echo JText::_('COM_JOOMGALLERY_DETAIL_COMMENTS_SEND_COMMENT'); ?>" class="btn btn-primary btn-small" onclick="joom_validatecomment()" />
             &nbsp;
-          <input type="reset" value="<?php echo JText::_('COM_JOOMGALLERY_COMMON_DELETE'); ?>" name="reset" class="button" />
+          <input type="reset" value="<?php echo JText::_('COM_JOOMGALLERY_COMMON_DELETE'); ?>" name="reset" class="btn btn-small" />
         </div>
       </form>
 <?php   endif;
         if(!$this->params->get('commenting_allowed')): ?>
-      <div class="sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+      <div class="jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
         <div class="jg_cmtf">
           <?php echo JText::_('COM_JOOMGALLERY_DETAIL_COMMENTS_NOT_BY_GUEST'); ?>
         </div>
@@ -582,8 +626,8 @@ echo $this->loadTemplate('header'); ?>
   </div>
 <?php endif;
       if($this->params->get('show_send2friend_block')): ?>
-  <div class="jg_send2friend">
-    <div class="sectiontableheader">
+  <div class="well well-small jg_send2friend">
+    <div class="jg-details-header">
       <h4 <?php echo $this->toggler; ?>>
         <?php echo JText::_('COM_JOOMGALLERY_DETAIL_SENDTOFRIEND'); ?>
       </h4>
@@ -609,12 +653,12 @@ echo $this->loadTemplate('header'); ?>
           &nbsp;
         </div>
         <p class="jg_s2fr">
-          <input type="button" name="send" value="<?php echo JText::_('COM_JOOMGALLERY_DETAIL_SENDTOFRIEND_SEND_EMAIL'); ?>" class="button" onclick="joom_validatesend2friend()" />
+          <input type="button" name="send" value="<?php echo JText::_('COM_JOOMGALLERY_DETAIL_SENDTOFRIEND_SEND_EMAIL'); ?>" class="btn btn-primary btn-small" onclick="joom_validatesend2friend()" />
         </p>
       </form>
 <?php   endif;
         if($this->params->get('send2friend_message')): ?>
-      <div class="sectiontableentry1">
+      <div class="jg_row1">
         <?php echo JText::_('COM_JOOMGALLERY_DETAIL_LOGIN_FIRST'); ?>
       </div>
 <?php   endif;

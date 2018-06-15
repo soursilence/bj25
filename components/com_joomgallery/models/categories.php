@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/branches/ajax/administrator/components/com_joomgallery/models/categories.php $
-// $Id: categories.php 3708 2012-03-14 13:23:45Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/categories.php $
+// $Id: categories.php 4360 2014-02-20 16:51:51Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -58,7 +58,7 @@ class JoomGalleryModelCategories extends JoomGalleryModel
    */
   public function getAllowedCategories($action = null, $filter = null, $searchstring = '', $limitstart = 0, $current = 0)
   {
-    JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+    JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/helpers/html');
 
     // Initialise variables
     $results = array('results' => array());
@@ -128,6 +128,7 @@ class JoomGalleryModelCategories extends JoomGalleryModel
         if(     $result[$i]->cid != $current
             &&  $action && !$this->_user->authorise($action, _JOOM_OPTION.'.category.'.$result[$i]->cid)
             &&  (     !$action2
+                  ||  !$result[$i]->owner
                   ||  $result[$i]->owner != $this->_user->get('id')
                   ||  !$this->_user->authorise($action2, _JOOM_OPTION.'.category.'.$result[$i]->cid)
                 )
@@ -147,7 +148,7 @@ class JoomGalleryModelCategories extends JoomGalleryModel
         }
 
         $results['results'][$j] = $result[$i];
-        $results['results'][$j]->path = JHtml::_('joomgallery.categorypath', $result[$i]->cid, ' &raquo; ', false, false, true, false);
+        $results['results'][$j]->path = JHtml::_('joomgallery.categorypath', $result[$i]->cid, false, ' &raquo; ', false, false, true);
         $j++;
       }
     }

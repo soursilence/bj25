@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/views/downloadzip/view.html.php $
-// $Id: view.html.php 3839 2012-09-03 17:17:47Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/downloadzip/view.html.php $
+// $Id: view.html.php 4077 2013-02-12 10:46:13Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -67,7 +67,7 @@ class JoomGalleryViewDownloadzip extends JoomGalleryView
 
     $zipname = $this->_mainframe->getUserState('joom.favourites.zipname');
 
-    if(!$zipname || !file_exists(JPath::clean(JPATH_ROOT.DIRECTORY_SEPARATOR.$zipname)))
+    if(!$zipname || !file_exists(JPath::clean(JPATH_ROOT.'/'.$zipname)))
     {
       $this->_mainframe->redirect(JRoute::_('index.php?view=favourites', false), JText::_('COM_JOOMGALLERY_DOWNLOADZIP_ZIPFILE_NOT_FOUND'), 'error');
     }

@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/views/comments/view.html.php $
-// $Id: view.html.php 3780 2012-05-13 09:34:11Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/views/comments/view.html.php $
+// $Id: view.html.php 4361 2014-02-24 18:03:18Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -30,23 +30,17 @@ class JoomGalleryViewComments extends JoomGalleryView
    */
   public function display($tpl = null)
   {
-    JHTML::_('behavior.tooltip');
-
     // Get data from the model
-    $state      = $this->get('State');
-    $items      = $this->get('Comments');
-    $pagination = $this->get('Pagination');
-
-    $this->assignRef('items',       $items);
-    $this->assignRef('pagination',  $pagination);
-    $this->assignRef('state',       $state);
-
-    if($state->get('filter.inuse') && !$this->get('Total'))
-    {
-      $this->_mainframe->enqueueMessage(JText::_('COM_JOOMGALLERY_COMMAN_MSG_NO_COMMENTS_FOUND_MATCHING_YOUR_QUERY'));
-    }
+    $this->items         = $this->get('Comments');
+    $this->state         = $this->get('State');
+    $this->pagination    = $this->get('Pagination');
+    $this->filterForm    = $this->get('FilterForm');
+    $this->activeFilters = $this->get('ActiveFilters');
 
     $this->addToolbar();
+
+    $this->sidebar = JHtmlSidebar::render();
+
     parent::display($tpl);
   }
 
@@ -59,14 +53,12 @@ class JoomGalleryViewComments extends JoomGalleryView
    */
   public function addToolbar()
   {
-    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_COMMAN_COMMENTS_MANAGER'));
+    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_COMMAN_COMMENTS_MANAGER'), 'comments-2');
     JToolbarHelper::publishList('publish', 'COM_JOOMGALLERY_COMMAN_TOOLBAR_PUBLISH_COMMENT');
     JToolbarHelper::unpublishList('unpublish', 'COM_JOOMGALLERY_COMMAN_TOOLBAR_UNPUBLISH_COMMENT');
     JToolbarHelper::custom('approve', 'upload.png', 'upload_f2.png', 'COM_JOOMGALLERY_COMMAN_TOOLBAR_APPROVE_COMMENT');
     JToolbarHelper::divider();
     JToolbarHelper::deleteList('', 'remove', 'COM_JOOMGALLERY_COMMAN_TOOLBAR_REMOVE_COMMENT');
     JToolbarHelper::divider();
-    JToolbarHelper::custom('cpanel', 'options.png', 'options.png', 'COM_JOOMGALLERY_COMMON_TOOLBAR_CPANEL', false);
-    JToolbarHelper::spacer();
   }
 }

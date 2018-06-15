@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/models/maintenancecheck.php $
-// $Id: maintenancecheck.php 3831 2012-08-07 10:10:28Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/maintenancecheck.php $
+// $Id: maintenancecheck.php 4324 2013-09-03 13:07:49Z erftralle $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -12,6 +12,8 @@
 \****************************************************************************************/
 
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+
+jimport('joomla.filesystem.file');
 
 /**
  * Maintenance check model
@@ -196,7 +198,7 @@ class JoomGalleryModelMaintenancecheck extends JoomGalleryModel
       {
         foreach($files as $file)
         {
-          if(in_array(JFile::getExt($file), $img_types))
+          if(in_array(strtolower(JFile::getExt($file)), $img_types))
           {
             $type = $types[0];
           }
@@ -398,7 +400,7 @@ class JoomGalleryModelMaintenancecheck extends JoomGalleryModel
     for($limitstart = $start; $limitstart < $total; $limitstart += $this->limit)
     {
       $categories = $this->_getList($query, $limitstart, $this->limit);
-     
+
       foreach($categories as $category)
       {
         // Skip ROOT category
@@ -431,7 +433,7 @@ class JoomGalleryModelMaintenancecheck extends JoomGalleryModel
           if(JFolder::exists($folder))
           {
             $category->$type = $folder;
-            
+
             // Delete the corresponding entry in orphans table
             $delete_query = $this->_db->getQuery(true)
                   ->delete()
@@ -540,7 +542,7 @@ class JoomGalleryModelMaintenancecheck extends JoomGalleryModel
       {
         $query->where("a.imgfilename = '".$filename."'");
       }
-      
+
       $this->_db->setQuery($query);
       if($suggestion = $this->_db->loadObject())
       {
@@ -669,7 +671,7 @@ class JoomGalleryModelMaintenancecheck extends JoomGalleryModel
               ->from(_JOOM_TABLE_CATEGORIES.' AS c')
               ->leftJoin(_JOOM_TABLE_MAINTENANCE.' AS m ON c.cid = m.refid')
               ->where('c.cid = '.$category_id);
-        
+
         $this->_db->setQuery($query);
         if($suggestion = $this->_db->loadObject())
         {

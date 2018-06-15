@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/controllers/categories.php $
-// $Id: categories.php 3651 2012-02-19 14:36:46Z mab $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/controllers/categories.php $
+// $Id: categories.php 4405 2014-07-02 07:13:31Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                      **
+**   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -170,15 +170,13 @@ class JoomGalleryControllerCategories extends JoomGalleryController
    */
   function remove()
   {
+    $ids = JRequest::getVar('cid', array(), '', 'array');
+
     $model = $this->getModel('categories');
-    if(!$count = $model->delete())
+    try
     {
-      $msg  = $model->getError();
-      $type = 'error';
-    }
-    else
-    {
-      $type = 'message';
+      $count = $model->delete($ids);
+
       if($count == 1)
       {
         $msg  = JText::_('COM_JOOMGALLERY_CATMAN_MSG_CATEGORY_DELETED');
@@ -187,10 +185,14 @@ class JoomGalleryControllerCategories extends JoomGalleryController
       {
         $msg  = JText::sprintf('COM_JOOMGALLERY_CATMAN_MSG_CATEGORIES_DELETED', $count);
       }
-    }
 
-    // Some messages are enqueued by the model
-    $this->setRedirect($this->_ambit->getRedirectUrl(), $msg, $type);
+      // Some messages are enqueued by the model
+      $this->setRedirect($this->_ambit->getRedirectUrl(), $msg);
+    }
+    catch(RuntimeException $e)
+    {
+      $this->setRedirect($this->_ambit->getRedirectUrl(), $e->getMessage(), 'error');
+    }
   }
 
   /**
@@ -214,7 +216,7 @@ class JoomGalleryControllerCategories extends JoomGalleryController
       return;
     }
 
-    require_once JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'refresher.php';
+    require_once JPATH_COMPONENT.'/helpers/refresher.php';
 
     $refresher = new JoomRefresher(array('msg' => true));
 
@@ -242,10 +244,13 @@ class JoomGalleryControllerCategories extends JoomGalleryController
         // to delete as well as their sub-categories.
         if($row->load($image))
         {
-          JRequest::setVar('cid', array($image));
-          if(!$model->delete())
+          try
           {
-            JFactory::getApplication()->enqueueMessage($model->getError(), 'error');
+            $model->delete(array($image));
+          }
+          catch(RuntimeException $e)
+          {
+            JLog::add($e->getMessage(), JLog::ERROR, 'jerror');
             $error = true;
             break;
           }
@@ -278,10 +283,13 @@ class JoomGalleryControllerCategories extends JoomGalleryController
         // to delete as well as their sub-categories.
         if($row->load($category))
         {
-          JRequest::setVar('cid', array($category));
-          if(!$model->delete())
+          try
           {
-            JFactory::getApplication()->enqueueMessage($model->getError(), 'error');
+            $model->delete(array($category));
+          }
+          catch(RuntimeException $e)
+          {
+            JLog::add($e->getMessage(), JLog::ERROR, 'jerror');
             break;
           }
 
@@ -451,15 +459,15 @@ class JoomGalleryControllerCategories extends JoomGalleryController
    */
   function saveOrder()
   {
-		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+    JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-		// Get the arrays from the request
-		$pks	          = JRequest::getVar('cid',	null,	'post',	'array');
-		$order          = JRequest::getVar('order',	null, 'post', 'array');
-		$originalOrder  = explode(',', JRequest::getString('original_order_values'));
+    // Get the arrays from the request
+    $pks            = JRequest::getVar('cid',  null,  'post',  'array');
+    $order          = JRequest::getVar('order',  null, 'post', 'array');
+    $originalOrder  = explode(',', JRequest::getString('original_order_values'));
 
-		// Make sure something has changed
-		if($order !== $originalOrder)
+    // Make sure something has changed
+    if($order !== $originalOrder)
     {
       // Create and load the categories table object
       $table = JTable::getInstance('joomgallerycategories', 'Table');
@@ -473,12 +481,40 @@ class JoomGalleryControllerCategories extends JoomGalleryController
       {
         $this->setRedirect($this->_ambit->getRedirectUrl(), $table->getError(), 'error');
       }
-		}
+    }
     else
     {
-			// Nothing to reorder
-			$this->setRedirect(JRoute::_($this->_ambit->getRedirectUrl(), false));
-		}
+      // Nothing to reorder
+      $this->setRedirect(JRoute::_($this->_ambit->getRedirectUrl(), false));
+    }
+  }
+
+  /**
+   * Method to run batch operations
+   *
+   * @return  void
+   * @since   3.0
+   */
+  public function batch()
+  {
+    JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+  
+    $vars = $this->input->post->get('batch', array(), 'array');
+    $cid  = $this->input->post->get('cid', array(), 'array');
+
+    $model = $this->getModel('category');
+
+    // Attempt to run the batch operation
+    if($model->batch($vars, $cid))
+    {
+      $this->setMessage(JText::_('JLIB_APPLICATION_SUCCESS_BATCH'));
+    }
+    else
+    {
+      $this->setMessage(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_FAILED', $model->getError()), 'error');
+    }
+
+    $this->setRedirect(JRoute::_($this->_ambit->getRedirectUrl(), false));
   }
 
   /**

@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/components/com_joomgallery/models/category.php $
-// $Id: category.php 3745 2012-04-06 18:05:29Z chraneco $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/category.php $
+// $Id: category.php 4345 2013-11-16 05:53:14Z chraneco $
 /****************************************************************************************\
-**   JoomGallery 2                                                                   **
+**   JoomGallery 3                                                                   **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -342,6 +342,86 @@ class JoomGalleryModelCategory extends JoomGalleryModel
   }
 
   /**
+   * Method to unlock a password protected category
+   *
+   * @param   int     $catid    ID of the category to unlock
+   * @param   string  $password Password of the category to check
+   * @return  boolean True on success, false otherwise
+   * @since   3.1
+   */
+  public function unlock($catid, $password)
+  {
+    $query = $this->_db->getQuery(true)
+          ->select('cid, password')
+          ->from($this->_db->quoteName(_JOOM_TABLE_CATEGORIES))
+          ->where('cid = '.(int) $catid);
+    $this->_db->setQuery($query);
+
+    if(!$category = $this->_db->loadObject())
+    {
+      throw new Exception($this->_db->getErrorMsg());
+    }
+
+    if(!$category->password)
+    {
+      throw new Exception('Category is not protected.');
+    }
+
+    $match = false;
+    if(substr($category->password, 0, 4) == '$2y$')
+    {
+      // BCrypt passwords are always 60 characters, but it is possible that salt is appended although non standard.
+      $password60 = substr($category->password, 0, 60);
+
+      if(JCrypt::hasStrongPasswordSupport())
+      {
+        $match = password_verify($password, $password60);
+      }
+    }
+    else
+    {
+      if(substr($category->password, 0, 8) == '{SHA256}')
+      {
+        // Check the password
+        $parts  = explode(':', $category->password);
+        $crypt  = $parts[0];
+        $salt   = @$parts[1];
+        $testcrypt = JUserHelper::getCryptedPassword($password, $salt, 'sha256', false);
+
+        if($category->password == $testcrypt)
+        {
+          $match = true;
+        }
+      }
+      else
+      {
+        // Check the password
+        $parts  = explode(':', $category->password);
+        $crypt  = $parts[0];
+        $salt   = @$parts[1];
+
+        $testcrypt = JUserHelper::getCryptedPassword($password, $salt, 'md5-hex', false);
+
+        if($crypt == $testcrypt)
+        {
+          $match = true;
+        }
+      }
+    }
+
+    if(!$match)
+    {
+      throw new Exception(JText::_('COM_JOOMGALLERY_CATEGORY_WRONG_PASSWORD'));
+    }
+
+    $categories = $this->_mainframe->getUserState('joom.unlockedCategories', array(0));
+    $categories = array_unique(array_merge($categories, array($catid)));
+    $this->_mainframe->setUserState('joom.unlockedCategories', $categories);
+
+    return true;
+  }
+
+  /**
    * Method to load the data of the current category
    *
    * @return  boolean   True on success, false otherwise
@@ -351,17 +431,18 @@ class JoomGalleryModelCategory extends JoomGalleryModel
   {
     // Check whether the requested category exists and
     // whether the current user is allowed to see it
+    $allowed = true;
     $categories = $this->_ambit->getCategoryStructure();
     if(!isset($categories[$this->_id]))
     {
-      JError::raiseError(500, JText::sprintf('Category with ID %d not found', $this->_id));
+      $allowed = false;
     }
 
     // Let's load the data if it doesn't already exist
     if(empty($this->_category))
     {
       $query = $this->_db->getQuery(true)
-            ->select('cid, name, parent_id, description, metakey, metadesc, params')
+            ->select('cid, name, parent_id, description, password, owner, metakey, metadesc, params')
             ->from(_JOOM_TABLE_CATEGORIES)
             ->where('cid       = '.$this->_id)
             ->where('published = 1')
@@ -375,6 +456,17 @@ class JoomGalleryModelCategory extends JoomGalleryModel
       }
 
       $this->_category = $row;
+    }
+
+    if(!$allowed)
+    {
+      $this->_category->protected = true;
+      if(     (!$this->_category->password || in_array($this->_id, $this->_mainframe->getUserState('joom.unlockedCategories', array(0))))
+          &&  $this->_category->parent_id > 1
+          &&  !isset($categories[$this->_category->parent_id]))
+      {
+        JError::raiseError(500, JText::sprintf('Category with ID %d not found', $this->_id));
+      }
     }
 
     return true;

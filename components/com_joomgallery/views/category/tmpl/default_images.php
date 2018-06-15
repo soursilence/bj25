@@ -17,11 +17,7 @@
     <?php echo $this->pagination->getPagesLinks(); ?>
   </div>
 <?php endif;
-      if($this->_config->get('jg_coolirislink')): ?>
-  <a id="jg_cooliris" href="javascript:PicLensLite.start({feedUrl:'<?php echo JRoute::_('index.php?view=category&amp;catid='.$this->category->cid.'&amp;page='.$this->page.'&amp;format=raw', true); ?>',maxScale:0});">
-    <?php echo JText::_('COM_JOOMGALLERY_CATEGORY_COOLIRISLINK_TEXT'); ?></a>
-<?php endif; ?>
-<?php if($this->params->get('show_all_in_popup')):
+      if($this->params->get('show_all_in_popup')):
         echo $this->popup['before'];
       endif;
       $count_pics = count($this->images);
@@ -30,7 +26,7 @@
       $index      = 0;
       $this->i    = 0;
       for($row_count = 0; $row_count < $num_rows; $row_count++): ?>
-  <div class="jg_row sectiontableentry<?php $this->i++; echo ($this->i%2)+1; ?>">
+  <div class="jg_row jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
 <?php   for($col_count = 0; ($col_count < $column) && ($index < $count_pics); $col_count++):
           $row = $this->images[$index]; ?>
     <div class="jg_element_cat">
@@ -59,6 +55,11 @@
           if($this->_config->get('jg_showhits')): ?>
           <li>
             <?php echo JText::sprintf('COM_JOOMGALLERY_COMMON_HITS_VAR', $row->hits); ?>
+          </li>
+<?php     endif;
+          if($this->_config->get('jg_showdownloads')): ?>
+          <li>
+            <?php echo JText::sprintf('COM_JOOMGALLERY_COMMON_DOWNLOADS_VAR', $row->downloads); ?>
           </li>
 <?php     endif;
           if($this->_config->get('jg_showcatrate')): ?>
@@ -139,7 +140,7 @@
         echo $this->popup['after'];
       endif;
       if($this->_config->get('jg_showcathead')): ?>
-  <div class="sectiontableheader">
+  <div class="jg-footer">
     &nbsp;
   </div>
 <?php endif;

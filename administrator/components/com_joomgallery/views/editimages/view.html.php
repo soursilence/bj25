@@ -1,10 +1,10 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/JG/trunk/administrator/components/com_joomgallery/views/editimages/view.html.php $
-// $Id: view.html.php 3675 2012-03-04 14:58:48Z erftralle $
+// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/views/editimages/view.html.php $
+// $Id: view.html.php 4361 2014-02-24 18:03:18Z erftralle $
 /******************************************************************************\
-**   JoomGallery  2                                                           **
+**   JoomGallery 3                                                            **
 **   By: JoomGallery::ProjectTeam                                             **
-**   Copyright (C) 2008 - 2012  JoomGallery::ProjectTeam                      **
+**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                      **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                  **
 **   Released under GNU GPL Public License                                    **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look             **
@@ -37,7 +37,10 @@ class JoomGalleryViewEditimages extends JoomGalleryView
     $cids = implode(',', $cids);
 
     // Get the form and fill the fields
-    $form =& $this->get('Form');
+    $form = $this->get('Form');
+
+    // Set maximum allowed user count to switch from listbox to modal popup selection
+    $form->setFieldAttribute('owner', 'useListboxMaxUserCount', $this->_config->get('jg_use_listbox_max_user_count'));
 
     // Bind the data to the form
     $form->bind($items[0]);
@@ -45,6 +48,7 @@ class JoomGalleryViewEditimages extends JoomGalleryView
     // Set some form fields manually
     $form->setValue('txtclearhits', null, JText::_('COM_JOOMGALLERY_IMGMAN_CLEAR_HITS_FOR_ALL_IMAGES'));
     $form->setValue('txtclearvotes', null, JText::_('COM_JOOMGALLERY_IMGMAN_CLEAR_VOTES_FOR_ALL_IMAGES'));
+    $form->setValue('txtcleardownloads', null, JText::_('COM_JOOMGALLERY_IMGMAN_CLEAR_DOWNLOADS_FOR_ALL_IMAGES'));
 
     $this->assignRef('items', $items);
     $this->assignRef('cids',  $cids);
@@ -64,7 +68,8 @@ class JoomGalleryViewEditimages extends JoomGalleryView
    */
   function addToolbar()
   {
-    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_IMGMAN_IMAGE_MANAGER'), 'mediamanager');
+    JToolBarHelper::title(JText::_('COM_JOOMGALLERY_IMGMAN_IMAGE_MANAGER').' :: '.JText::_('COM_JOOMGALLERY_FIELDSET_EDITIMAGES'), 'images');
+
     JToolbarHelper::apply('apply');
     JToolbarHelper::save('save');
     JToolbarHelper::cancel('cancel');
