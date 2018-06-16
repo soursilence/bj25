@@ -24,7 +24,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <script src="<?php echo JURI::root(); ?>media/system/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo JURI::root(); ?>templates/bazylianie2013/js/all.js"></script>
 <script type="text/javascript">
-//var ile = 3;
+<?php //var ile = 3;
 //var ktory = 1;
 //jQuery.noConflict();
 //		(function($) {
@@ -86,7 +86,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 //        return false;
 //      });
 //    }
-//  );       })(jQuery);      
+//  );       })(jQuery);     
+?>
 </script>
 <jdoc:include type="head" />
 

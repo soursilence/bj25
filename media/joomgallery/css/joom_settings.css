@@ -29,7 +29,7 @@ joom_local.css.README umbenennen und anpassen
 
 /* Category view */
 .jg_element_cat {
-  width:49%;
+  width:33%;
   float:left;
 }
 .jg_catelem_cat a{
@@ -44,7 +44,7 @@ joom_local.css.README umbenennen und anpassen
 
 /* Subcategory view */
 .jg_subcatelem_cat, .jg_subcatelem_cat_r{
-  width:49%;
+  width:33%;
   float:left;
   text-align:center !important;
 }

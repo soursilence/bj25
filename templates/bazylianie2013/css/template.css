@@ -13,7 +13,7 @@
 .promo_new a{ text-decoration: none;}
 .promo_tresc{ font-family: "Times New Roman"; font-size: 16px; color: #444; font-style: italic;}
 
-#topnews{ float:left; display:block; clear: both; border: 1px solid #ededed; background: #fff; -moz-border-radius: 7px; -webkit-border-radius: 7px; -khtml-border-radius: 7px; border-radius: 7px;}
+#topnews{ width: 100%; float:left; display:block; clear: both; border: 1px solid #ededed; background: #fff; -moz-border-radius: 7px; -webkit-border-radius: 7px; -khtml-border-radius: 7px; border-radius: 7px;}
 #topnews .title, .blog .page-header, .item-page .page-header{display:block; width: 100%; border-left: 8px solid #333; color: #333; padding-left: 8px; text-decoration:none; font-family:"Segoe UI 32 SemiBold", "Segoe UI Light", Arial, Helvetica;   font-size:15px;float:left;}
 #topnews .red { color:#aa0d00; border-left: 8px solid #aa0d00;}
 #topnews .title  a{text-decoration:none; font-family:"Segoe UI", "Segoe UI Light", Arial, Helvetica;  color:#333;  font-size:20px;}
