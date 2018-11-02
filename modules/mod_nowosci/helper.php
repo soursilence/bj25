@@ -7,7 +7,7 @@ defined('_JEXEC') or die ('Brak dostępu');
 
 class modNowosciHelper
 {
-	function getSomething($params)
+	public static function getSomething($params)
 	{
 	  $db =& JFactory::getDBO();
 	  $r = null;
@@ -21,4 +21,3 @@ class modNowosciHelper
 	  return $r;
 	}
 }
-?>

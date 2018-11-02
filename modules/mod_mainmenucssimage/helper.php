@@ -6,9 +6,9 @@
 
 defined('_JEXEC') or die('go away stranger');
 
-class modMainmenucssimageHelper {
+class modMainmenucssimageHelper { 
 
-    function getMenu($params) {
+    public static function getMenu($params) {
         $db = & JFactory::getDBO();
         $r = null;
         $query = "SELECT id,title,link FROM #__menu WHERE menutype = 'mainmenu' AND published=1  ORDER BY lft";
@@ -17,7 +17,7 @@ class modMainmenucssimageHelper {
         return $r;
     }
 
-    function getCategories($parent_id) {
+    public static function getCategories($parent_id) {
 
         $zap = "SELECT id,title FROM #__categories WHERE published=1 AND parent_id=$parent_id ORDER BY lft";
         $db = & JFactory::getDBO();
@@ -29,5 +29,3 @@ class modMainmenucssimageHelper {
     }
 
 }
-
-?>

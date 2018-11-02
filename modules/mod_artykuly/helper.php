@@ -7,7 +7,7 @@ defined('_JEXEC') or die ('Brak dostępu');
 
 class modArtykulyHelper
 {
-	function getSomething($params)
+	public static function getSomething($params)
 	{
 	  $db =& JFactory::getDBO();
 	  $r = null;
@@ -22,4 +22,3 @@ class modArtykulyHelper
 	  return $r;
 	}
 }
-?>

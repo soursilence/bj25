@@ -8,7 +8,7 @@ defined('_JEXEC') or die ('go away stranger');
 class modButtonmenuHelper
 {
 
-	function getMenu($params)
+	public static function getMenu($params)
 	{
 	  $db =& JFactory::getDBO();
 	  $r = null;
@@ -19,5 +19,3 @@ class modButtonmenuHelper
 	}
 
 }
-
-?>

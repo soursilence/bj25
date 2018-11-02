@@ -7,7 +7,7 @@ defined('_JEXEC') or die ('Brak dostępu');
 
 class modPromonewHelper
 {
-	function getSomething($params)
+	public static function getSomething($params)
 	{
 	  $db =& JFactory::getDBO();
 	  $r = null;
@@ -19,4 +19,3 @@ class modPromonewHelper
 	  return $r;
 	}
 }
-?>

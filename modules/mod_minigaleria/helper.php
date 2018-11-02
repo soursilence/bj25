@@ -7,7 +7,7 @@ defined('_JEXEC') or die ('Brak dostępu');
 
 class modMinigaleriaHelper
 {
-	function getSomething($params)
+	public static function getSomething($params)
 	{
 	  $db =& JFactory::getDBO();
 	  $r = null;
@@ -31,4 +31,3 @@ class modMinigaleriaHelper
 	  return $zdj;
 	}
 }
-?>

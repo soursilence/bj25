@@ -461,7 +461,7 @@ class JApplicationCms extends JApplicationWeb
 			$session = JFactory::getSession();
 			$sessionQueue = $session->get('application.queue');
 
-			if (count($sessionQueue))
+			if (!empty($sessionQueue) && count($sessionQueue))
 			{
 				$this->_messageQueue = $sessionQueue;
 				$session->set('application.queue', null);

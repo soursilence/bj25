@@ -7,7 +7,7 @@ defined('_JEXEC') or die ('Brak dostępu');
 
 class modMojaparafiaHelper
 {
-	function getSomething($params)
+	public static function getSomething($params)
 	{
 	  $db =& JFactory::getDBO();
 	  $r = null;
@@ -44,4 +44,3 @@ class modMojaparafiaHelper
 	  return $dane;
 	}
 }
-?>
