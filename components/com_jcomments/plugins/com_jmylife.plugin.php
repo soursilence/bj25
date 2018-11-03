@@ -28,11 +28,11 @@ class jc_com_jmylife extends JCommentsPlugin
 		$_Itemid = '';
 
 		if($data = $db->loadObject()) {
-			if( !defined( 'JPATH_JMYLIFE' ) ) define( 'JPATH_JMYLIFE', JPATH_ROOT.DS.'components'.DS.'com_jmylife' );
-			if( !defined( 'JPATH_JMYLIFELIBS' ) ) define( 'JPATH_JMYLIFELIBS', JPATH_JMYLIFE.DS.'libraries' );
-			if (is_file(JPATH_JMYLIFELIBS.DS.'common.php')) {
-				require_once( JPATH_JMYLIFELIBS.DS.'common.php' );
-				require_once( JPATH_JMYLIFELIBS.DS.'configuration.php' );
+			if( !defined( 'JPATH_JMYLIFE' ) ) define( 'JPATH_JMYLIFE', JPATH_ROOT.'/components/com_jmylife' );
+			if( !defined( 'JPATH_JMYLIFELIBS' ) ) define( 'JPATH_JMYLIFELIBS', JPATH_JMYLIFE.'/libraries' );
+			if (is_file(JPATH_JMYLIFELIBS.'/common.php')) {
+				require_once( JPATH_JMYLIFELIBS.'/common.php' );
+				require_once( JPATH_JMYLIFELIBS.'/configuration.php' );
 				$_Itemid = '&Itemid='.JmylifeCommon::getStoryItemid($data);
 			}
 		}

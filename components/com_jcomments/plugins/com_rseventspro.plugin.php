@@ -17,7 +17,7 @@ class jc_com_rseventspro extends JCommentsPlugin
 	function getObjectInfo($id, $language = null)
 	{
 		$db = JFactory::getDBO();
-		$db->setQuery('SELECT id, name, owner FROM #__rseventspro_eventsWHERE id = ' . $id);
+		$db->setQuery('SELECT id, name, owner FROM #__rseventspro_events WHERE id = ' . $id);
 		$row = $db->loadObject();
 
 		$info = new JCommentsObjectInfo();

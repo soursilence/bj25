@@ -1,6 +1,6 @@
 <?php
 /**
- * JComments plugin for Cobalt 7
+ * JComments plugin for Cobalt 7 & 8
  *
  * @version 2.3
  * @package JComments
@@ -19,6 +19,11 @@ class jc_com_cobalt extends JCommentsPlugin
 		$info = new JCommentsObjectInfo();
 
 		$helper = JPATH_ROOT.'/components/com_cobalt/library/php/helper.php';
+
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$helper = JPATH_ROOT.'/components/com_cobalt/library/php/helpers/helper.php';
+		}
 
 		if (is_file($helper)) {
 			require_once($helper);

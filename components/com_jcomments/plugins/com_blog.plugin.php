@@ -24,7 +24,7 @@ class jc_com_blog extends JCommentsPlugin
 	{
 		$link = 'index.php?option=com_blog&view=comments&pid='. $id;
 
-		require_once(JPATH_SITE.DS.'includes'.DS.'application.php');
+		require_once(JPATH_SITE.'/includes/application.php');
 
 		$component = JComponentHelper::getComponent('com_blog');
 		$menus = JApplication::getMenu('site');

@@ -1,10 +1,10 @@
 <?php
 /**
- * @version    3.6.x
+ * @version    3.7.0
  * @package    Disqus Comments (for Joomla)
- * @author     JoomlaWorks - http://www.joomlaworks.net
- * @copyright  Copyright (c) 2006 - 2016 JoomlaWorks Ltd. All rights reserved.
- * @license    GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+ * @author     JoomlaWorks - https://www.joomlaworks.net
+ * @copyright  Copyright (c) 2006 - 2018 JoomlaWorks Ltd. All rights reserved.
+ * @license    https://www.joomlaworks.net/license
  */
 
 // no direct access
@@ -15,29 +15,28 @@ defined('_JEXEC') or die;
 <a id="startOfPage"></a>
 
 <?php if($disqusArticleCounter): ?>
-<!-- DISQUS comments counter and anchor link -->
+<!-- Disqus comments counter and anchor link -->
 <div class="jwDisqusArticleCounter">
-	<span>
-		<a class="jwDisqusArticleCounterLink" href="#disqus_thread" data-disqus-identifier="<?php echo $output->disqusIdentifier; ?>"><?php echo JText::_("JW_DISQUS_VIEW_COMMENTS"); ?></a>
-	</span>
-	<div class="clr"></div>
+    <span>
+        <a class="jwDisqusArticleCounterLink" href="<?php echo $output->itemURL; ?>#disqus_thread" title="<?php echo JText::_("JW_DISQUS_ADD_A_COMMENT"); ?>">
+            <?php echo JText::_("JW_DISQUS_VIEW_COMMENTS"); ?>
+        </a>
+    </span>
+    <div class="clr"></div>
 </div>
 <?php endif; ?>
 
 <?php echo $row->text; ?>
 
-<!-- DISQUS comments block -->
+<!-- Disqus comments block -->
 <div class="jwDisqusForm">
-	<?php echo $output->comments; ?>
-	<div id="jwDisqusFormFooter">
-		<a target="_blank" href="http://disqus.com" class="dsq-brlink">
-			<?php echo JText::_("JW_DISQUS_BLOG_COMMENTS_POWERED_BY"); ?> <span class="logo-disqus">DISQUS</span>
-		</a>
-		<a id="jwDisqusBackToTop" href="#startOfPage">
-			<?php echo JText::_("JW_DISQUS_BACK_TO_TOP"); ?>
-		</a>
-		<div class="clr"></div>
-	</div>
+    <?php echo $output->comments; ?>
+    <div id="jwDisqusFormFooter">
+        <a id="jwDisqusBackToTop" href="#startOfPage">
+            <?php echo JText::_("JW_DISQUS_BACK_TO_TOP"); ?>
+        </a>
+        <div class="clr"></div>
+    </div>
 </div>
 
 <div class="clr"></div>

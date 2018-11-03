@@ -24,7 +24,7 @@ class jc_com_quickfaq extends JCommentsPlugin
 	{
 	        $link = '';
 
-	        $quickFaqRouterPath = JPATH_SITE.DS.'components'.DS.'com_quickfaq'.DS.'helpers'.DS.'route.php';
+	        $quickFaqRouterPath = JPATH_SITE.'/components/com_quickfaq/helpers/route.php';
 	        
 	        if (is_file($quickFaqRouterPath)) {
 			require_once ($quickFaqRouterPath);

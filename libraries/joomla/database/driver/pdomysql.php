@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  Database
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -12,7 +12,7 @@ defined('JPATH_PLATFORM') or die;
 /**
  * MySQL database driver supporting PDO based connections
  *
- * @see    https://secure.php.net/manual/en/ref.pdo-mysql.php
+ * @link   https://secure.php.net/manual/en/ref.pdo-mysql.php
  * @since  3.4
  */
 class JDatabaseDriverPdomysql extends JDatabaseDriverPdo
@@ -324,7 +324,7 @@ class JDatabaseDriverPdomysql extends JDatabaseDriverPdo
 		{
 			foreach ($fields as $field)
 			{
-				$result[$field->Field] = preg_replace("/[(0-9)]/", '', $field->Type);
+				$result[$field->Field] = preg_replace('/[(0-9)]/', '', $field->Type);
 			}
 		}
 		// If we want the whole field data object add that to the list.
@@ -378,20 +378,6 @@ class JDatabaseDriverPdomysql extends JDatabaseDriverPdo
 		$tables = $this->loadColumn();
 
 		return $tables;
-	}
-
-	/**
-	 * Get the version of the database connector.
-	 *
-	 * @return  string  The database connector version.
-	 *
-	 * @since   3.4
-	 */
-	public function getVersion()
-	{
-		$this->connect();
-
-		return $this->getOption(PDO::ATTR_SERVER_VERSION);
 	}
 
 	/**
@@ -456,12 +442,18 @@ class JDatabaseDriverPdomysql extends JDatabaseDriverPdo
 	 */
 	public function escape($text, $extra = false)
 	{
-		$this->connect();
-
-		if (is_int($text) || is_float($text))
+		if (is_int($text))
 		{
 			return $text;
 		}
+
+		if (is_float($text))
+		{
+			// Force the dot as a decimal point.
+			return str_replace(',', '.', $text);
+		}
+
+		$this->connect();
 
 		$result = substr($this->connection->quote($text), 1, -1);
 

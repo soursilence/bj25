@@ -1,0 +1,499 @@
+AWSTATS DATA FILE 7.3 (build 20140126)
+# If you remove this file, all statistics for date 201810 will be lost/reset.
+# Last config file used to build this data file was /home/klient.dhosting.pl/bazylianie/bazylianie.pl/awstats/conf/awstats.bazylianie.dkonto.pl.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 27
+POS_GENERAL 2053                
+POS_TIME 2736                
+POS_VISITOR 12862               
+POS_DAY 16820               
+POS_DOMAIN 3378                
+POS_LOGIN 3611                
+POS_ROBOT 3766                
+POS_WORMS 4433                
+POS_EMAILSENDER 4564                
+POS_EMAILRECEIVER 4707                
+POS_SESSION 16982               
+POS_SIDER 17188               
+POS_FILETYPES 4842                
+POS_DOWNLOADS 5113                
+POS_OS 5196                
+POS_BROWSER 5465                
+POS_SCREENSIZE 6416                
+POS_UNKNOWNREFERER 6490                
+POS_UNKNOWNREFERERBROWSER 6803                
+POS_ORIGIN 6885                
+POS_SEREFERRALS 7027                
+POS_PAGEREFS 7184                
+POS_SEARCHWORDS 8444                
+POS_KEYWORDS 8596                
+POS_MISC 2399                
+POS_ERRORS 8655                
+POS_CLUSTER 3467                
+POS_SIDER_404 8790                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20181023223255 135 36301 27168614706071
+FirstTime 20181020212338
+LastTime 20181023223254
+LastUpdate 20181023223652 135 0 135 0 0
+TotalVisits 103                 
+TotalUnique 94                  
+MonthHostsKnown 0                   
+MonthHostsUnknown 101                 
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+QuickTimeSupport 0 0 0
+JavaEnabled 0 0 0
+JavascriptDisabled 0 0 0
+PDFSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+AddToFavourites 0 43 0
+RealPlayerSupport 0 0 0
+TotalMisc 0 0 0
+DirectorSupport 0 0 0
+FlashSupport 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 0 0 0 0 0 0
+1 0 0 0 0 0 0
+2 0 0 0 0 0 0
+3 0 0 0 0 0 0
+4 0 0 0 0 0 0
+5 1 1 16616 0 0 0
+6 0 0 0 0 0 0
+7 0 0 0 0 0 0
+8 0 0 0 0 0 0
+9 0 0 0 0 0 0
+10 0 0 0 0 0 0
+11 0 0 0 0 0 0
+12 0 0 0 0 0 0
+13 2 61 665427 1 10 11218
+14 2 2 174 0 2 0
+15 28 298 25456459 310 360 8797463
+16 13 265 20359457 388 448 11116401
+17 28 362 34763914 110 144 9810884
+18 41 365 24820790 29 36 571053
+19 61 334 29939537 26 35 608726
+20 84 733 55603313 67 85 1796722
+21 19 91 476710 3 4 2791
+22 11 102 583184 4 55 76993
+23 9 66 2548737 0 29 34468
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 1
+ip 299 2680 195234318
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 14
+mj12bot 514 8698184 20181023205654 6
+bingbot 184 3024437 20181023205539 2
+googlebot 135 2226575 20181023205030 1
+facebook 52 9825227 20181023175751 0
+bingpreview 45 4462658 20181023163617 0
+semrushbot 38 533996 20181023205429 6
+^java\/[0-9] 30 1764850 20181023170253 0
+bot[\s_+:,\.\;\/\\-] 16 941262 20181023204424 0
+yandex 10 134632 20181023191150 2
+no_user_agent 8 352978 20181023153536 0
+python 7 125295 20181023201532 0
+favicon 1 16610 20181023165435 0
+googlebot\-image 1 16615 20181023173425 0
+ahrefsbot 2 33228 20181023180156 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 11
+eot 1 20056 0 0
+css 430 1430768 0 0
+png 427 5337918 0 0
+ttf 1 23384 0 0
+woff2 32 522812 0 0
+woff 1 25424 0 0
+php 262 3328325 0 0
+jpg 1031 179754366 0 0
+js 463 4771634 0 0
+Unknown 2 174 0 0
+gif 30 19457 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 1
+/.well-known/dhosting.pl.txt 2 0 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 15
+linuxandroid 747 90
+winxp 44 7
+winlong 13 13
+unix 1 1
+ios_iphone 177 10
+winnt 742 68
+linuxubuntu 48 3
+linux 6 6
+win7 671 58
+macosx 157 15
+winunknown 13 13
+win2003 5 5
+win8.1 50 4
+Unknown 4 4
+win2008 2 2
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 44
+chrome69.0.3497.91 43 1
+safari11.0 63 4
+chrome70.0.3538.64 147 16
+opera42.9.4580.9218 4 4
+msie4.00 4 4
+chrome69.0.3497.81 48 3
+safari12.0 177 15
+firefox34.0 1 1
+chrome12.0.742.112 1 1
+chrome43.0.2357.174 39 2
+chrome57.4.9494.4121 10 10
+msie6.00 4 4
+iphone 39 1
+firefox62.0 922 71
+chrome27.0.1453.93 2 2
+chrome2.0.157.0 1 1
+opera42.0.5449.0276 2 2
+chrome66.0.3359.181 2 2
+chrome66.0.3359.158 64 5
+chrome70.0.3538.67 25 2
+chrome66.0.3359.126 58 4
+chrome65.0.3325.181 48 48
+msie3.00 4 4
+chrome40.0.2214.109 43 1
+chrome18.0.1025.46 1 1
+chrome54.0.2840.43 1 1
+firefox7.0.1 4 4
+msie5.00 1 1
+chrome53.6.1275.5903 4 4
+msie2.00 3 3
+chrome51.0.2704.103 1 1
+firefox61.0 138 21
+msie11.0 44 2
+mozilla 3 3
+netscape5.0 1 1
+chrome68.0.3440.91 44 2
+msie7.00 2 2
+chrome69.0.3497.100 541 29
+chrome4.0.222.3 1 1
+opera45.1.2246.125351 81 6
+chrome61.0.3163.98 1 1
+firefox36.0 1 1
+safari11.1.2 55 5
+opera42.0.5591.0229 2 2
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 3
+Mozilla/5.0_(compatible;_Let's_Encrypt_validation_server;__https://www.letsencrypt.org) 20181021144532
+Mozilla/5.0_(Wappalyzer) 20181021175831
+Mozilla/5.0_(compatible;_GroupHigh/1.0;__http://www.grouphigh.com/) 20181023155610
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 147 148
+From1 2 2
+From2 14 14
+From3 45 45
+From4 91 2471
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 1
+google 14 14
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 23
+http://bazylianie.pl/administrator/index.php 22 22
+http://www.bazylianie.pl/index.php 2 2
+http://womenis.ru/category/makiyazh/ 1 1
+http://www.grekokatolicy-baniemazurskie.pl/index/main_pl.php 1 1
+https://uk.wikipedia.org 1 1
+http://domkrat.org/category/linol/ 1 1
+http://euroelectrica.ru/category/soveti/ 1 1
+https://yutnoff.ru/biokaminy 1 1
+http://postroyka.org/category/rem/stroymat/ 1 1
+https://sushi-dragon.ru/menu/sety/ 1 1
+http://top-shina.od.ua/shini/---daytona/ 1 1
+http://stroybud.com/category/zapchasti/ 1 1
+http://myogorod.ru 1 1
+http://vegetableshome.ru/category/vegetables/%d0%ba%d0%b0%d1%80%d1%82%d0%be%d1%84%d0%b5%d0%bb%d1%8c/ 1 1
+http://mister-sushi.ru/menu/spetspredlozheniem/ 1 1
+http://m.facebook.com 1 1
+http://potsy.ru 1 1
+http://auto-zapchasti.com.ua/category/poleznoe/shini/ 1 1
+https://geocenter-rf.ru/service/formirovanie-uchastka/ 1 1
+https://www.beresh.ru/product-category/krupy-bakaleya/sukhie-zavtraki-kashi/ 1 1
+http://mrokna.ru/steklopaketi 1 1
+https://shina-moskva24.ru/catalog/tires/michelin/ 1 1
+http://securos.org.ua/category/security/vosstanovlenie-sistemy-posle-vzloma/ 1 1
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 5
+401 1 1143
+206 4 504487
+500 4 1037
+301 1 617
+404 111 124597
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referer
+BEGIN_SIDER_404 44
+/sitemap.xml 1 -
+/images/Uspennia-20-08-2018/IMGP0402_filtered.jpg 2 http://bazylianie.dkonto.pl/
+/images/stories/Igor/PRAPOR_-_Loho.jpg 1 http://bazylianie.dkonto.pl/
+/images/1%20riczn%20Jewromajdanu1.jpg 1 http://bazylianie.dkonto.pl/
+/apple-touch-icon.png 2 -
+/images/banners/shop-ad.jpg 1 -
+/images/41454892_1836438909804021_1526960474019594240_n.jpg 2 http://bazylianie.dkonto.pl/
+/images/joomgallery/thumbnails/_xviii___2018_2_408/_xviii___2018_8_20181013_1181470892.jpg 1 http://bazylianie.dkonto.pl/
+/images/joomgallery/thumbnails/_____________________-______-___15__2018__________2018_2_406/_____________________-______-___15__2018__________2018_9_20180830_1291321940.jpg 1 http://bazylianie.dkonto.pl/
+/images/AD_ok%C5%82adka-300x449.jpg 2 http://bazylianie.dkonto.pl/
+/images/stories/Swiato_prowincii_-_2018/IMGP0567_filtered.jpg 3 -
+/images/stories/imenyny/1046-4.jpg 1 http://bazylianie.dkonto.pl/
+/images/2018-08-27_panachyda3.jpg 3 http://bazylianie.dkonto.pl/
+/images/joomgallery/thumbnails/_xviii___2018_2_408/_xviii___2018_7_20181013_1822320263.jpg 1 http://bazylianie.dkonto.pl/
+/images/stories/2018_09_30warszawa/01.jpg 10 http://bazylianie.dkonto.pl/
+/images/241481.x.jpg 3 http://bazylianie.dkonto.pl/
+/images/stories/wiolnius_2014.jpg 1 http://bazylianie.dkonto.pl/
+/images/stories/Swiato_prowincii_-_2018/IMGP0560_filtered.jpg 18 http://bazylianie.dkonto.pl/
+/images/39162794_502785346850340_29074875599552512_n.jpg 2 http://bazylianie.dkonto.pl/
+/images/stories/prezydent.jpg 1 http://bazylianie.dkonto.pl/
+/images/joomgallery/thumbnails/_xviii___2018_2_408/_xviii___2018_3_20181013_1597724840.jpg 1 http://bazylianie.dkonto.pl/
+/images/stories/Igor/TZ-loho-dorosli.jpg 12 http://bazylianie.dkonto.pl/
+/images/joomgallery/thumbnails/_____________________-______-___15__2018__________2018_2_406/_____________________-______-___15__2018__________2018_10_20180830_1460662300.jpg 1 http://bazylianie.dkonto.pl/
+/images/TZ-loho-dorosli.jpg 2 http://bazylianie.dkonto.pl/
+/images/SDM%202014_LOG%20Warszawa%203.JPG 1 http://bazylianie.dkonto.pl/
+/images/43878764_284311608866857_874154732409585664_n.jpg 2 http://bazylianie.dkonto.pl/
+/images/joomgallery/thumbnails/______-_2018-09-02_2_407/______-_2018_2_20180902_1250787915.jpg 1 http://bazylianie.dkonto.pl/
+/images/joomgallery/thumbnails/______-_2018-09-02_2_407/______-_2018_16_20180902_1783591811.jpg 1 http://bazylianie.dkonto.pl/
+/images/joomgallery/thumbnails/_____________________-______-___15__2018__________2018_2_406/_____________________-______-___15__2018__________2018_1_20180830_1850239465.jpg 1 http://bazylianie.dkonto.pl/
+/images/stories/Igor/loho_1.JPG 14 http://bazylianie.dkonto.pl/
+/images/joomgallery/thumbnails/_xviii___2018_2_408/_xviii___2018_5_20181013_1643115118.jpg 1 http://bazylianie.dkonto.pl/
+/images/stories/IMG_1111.jpg 1 http://bazylianie.dkonto.pl/
+/images/stories/parafie/asuny.jpg 3 -
+/images/joomgallery/thumbnails/______-_2018-09-02_2_407/______-_2018_18_20180902_1709330534.jpg 1 http://bazylianie.dkonto.pl/
+/images/joomgallery/thumbnails/_____________________-______-___15__2018__________2018_2_406/_____________________-______-___15__2018__________2018_6_20180830_1774129908.jpg 1 http://bazylianie.dkonto.pl/
+/apple-touch-icon-120x120.png 1 -
+/images/Loho_Cerkwa.JPG 1 http://bazylianie.dkonto.pl/
+/images/2014.01.26%20Bohorodycja.JPG 1 http://bazylianie.dkonto.pl/
+/images/Uspennia-20-08-2018/Tytulna-28-08-2018.jpg 2 http://bazylianie.dkonto.pl/
+/admin 1 -
+/images/original-1225189670.jpg 2 http://bazylianie.dkonto.pl/
+/images/joomgallery/thumbnails/______-_2018-09-02_2_407/______-_2018_6_20180902_1950522126.jpg 1 http://bazylianie.dkonto.pl/
+/apple-touch-icon-120x120-precomposed.png 1 -
+/images/01_woskr.jpg 1 http://bazylianie.dkonto.pl/
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 101
+89.64.7.16 36 336 10248749 20181021171544
+85.93.20.248 22 22 365646 20181023193907
+83.6.97.177 21 138 9490344 20181023180107
+31.183.163.139 15 104 9083064 20181023181020
+31.183.204.206 14 218 8789923 20181023221615 20181023215444 /
+83.9.138.173 11 146 8521766 20181023223254 20181023223254 /
+78.10.207.126 8 58 4282861 20181021233417
+220.243.135.83 7 7 0 20181023200936
+220.243.136.83 6 6 0 20181023200936
+220.243.135.146 6 6 0 20181023200935
+192.162.234.95 1 1 18028 20181023183854
+81.190.129.214 2 44 4140329 20181023161818
+38.130.180.14 1 1 16616 20181022055307
+220.243.135.200 1 1 0 20181023200938
+220.243.135.178 1 1 0 20181023200937
+107.167.108.171 3 22 223125 20181023192913
+104.238.54.100 1 1 16625 20181021191529
+31.183.158.227 1 43 4121008 20181023201626
+31.202.198.73 1 43 3955825 20181023201417
+220.243.136.22 0 4 58545 
+131.220.6.94 1 1 16622 20181021175831
+194.96.125.173 1 43 4123828 20181023205331
+107.167.108.73 2 16 182535 20181023180127
+207.174.130.114 1 1 16610 20181023155610
+213.186.75.4 1 3 66535 20181023153715
+83.31.154.204 5 55 4251790 20181023202852
+220.243.136.57 0 2 3611 
+37.47.83.29 3 62 8518454 20181023150402
+185.212.131.112 1 1 16613 20181023170823
+220.243.136.20 5 5 0 20181023200936
+220.243.136.178 1 1 0 20181023200937
+77.220.215.153 1 1 0 20181023190209
+194.67.210.77 1 1 0 20181023193313
+185.154.13.6 1 1 0 20181023192100
+185.203.240.129 1 1 0 20181023190200
+193.124.179.180 1 1 0 20181023193348
+81.15.177.178 1 1 16610 20181023171338
+95.132.43.18 2 43 4109461 20181023203040
+178.159.39.237 1 1 0 20181023190947
+220.243.136.138 1 1 0 20181023200936
+77.220.214.180 1 1 0 20181023191051
+220.243.136.146 2 2 0 20181023200935
+212.86.109.31 1 1 0 20181023190201
+89.228.104.166 2 44 4142972 20181023183402
+13.57.248.233 1 1 16625 20181021162526
+95.135.93.231 2 39 2754218 20181023192622
+185.209.20.147 1 1 0 20181023190200
+180.191.87.11 1 1 16610 20181023182441
+83.6.80.171 2 44 4143255 20181023182145
+178.92.250.197 1 43 4122568 20181023183502
+194.67.207.9 1 1 0 20181023193310
+37.52.68.29 5 75 13878630 20181023192807
+220.243.135.20 2 2 0 20181023200936
+188.20.224.94 4 82 8178497 20181023170507
+220.243.136.233 1 1 16614 20181023200941
+83.6.197.216 4 88 8282417 20181023204713
+89.64.5.79 5 56 4356930 20181023201209
+84.10.44.234 1 28 1389001 20181023205140
+69.112.116.213 2 44 4140217 20181023162652
+185.125.219.134 1 1 0 20181023193311
+220.243.136.46 1 1 16615 20181023194627
+220.243.135.11 1 1 0 20181023200938
+193.124.176.156 1 1 0 20181023193310
+107.167.109.92 1 43 4125277 20181023171418
+220.243.136.200 2 2 0 20181023200939
+178.95.70.9 2 43 4110696 20181023181842
+178.159.43.212 1 1 0 20181023191957
+213.251.20.247 2 2 117656 20181023171914
+185.5.249.185 1 1 0 20181023193310
+220.243.136.40 0 1 21 
+220.243.135.138 1 1 0 20181023200936
+46.200.16.129 2 44 4142319 20181023160421
+46.149.218.139 3 46 4175348 20181023154248
+220.243.135.209 5 5 0 20181023200936
+206.189.17.48 4 4 0 20181023150659
+66.102.9.3 0 23 583588 
+78.111.190.46 2 25 2536827 20181023184213
+66.133.109.36 2 2 174 20181021144532
+193.106.30.98 1 1 16611 20181023150701
+83.9.166.234 1 43 4123071 20181023201927
+66.102.9.147 0 1 6931 
+37.47.215.22 5 64 4316727 20181023170147
+77.220.213.173 1 1 0 20181023191237
+220.243.135.201 1 1 0 20181023200936
+220.243.136.12 1 1 0 20181023200937
+83.9.67.254 3 49 4176484 20181023155050
+66.102.9.145 0 1 8755 
+83.24.42.48 2 44 4142238 20181023192838
+194.67.207.94 1 1 0 20181023193310
+185.125.219.13 1 1 0 20181023193312
+220.243.136.28 0 4 62814 
+220.243.136.201 2 2 0 20181023200937
+95.163.107.70 2 2 117656 20181023154323
+37.47.60.138 4 58 4266855 20181023205234
+66.102.9.29 3 37 2813645 20181023193604
+66.102.9.31 1 29 4893695 20181023183854
+193.124.190.64 1 1 0 20181023193321
+220.243.136.75 1 1 0 20181023200936
+185.25.103.30 4 4 235312 20181023153537
+83.12.22.142 3 51 4178930 20181023201046
+5.173.176.180 1 39 1972396 20181021155247
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 4
+20181020 24 116 2974320 1
+20181021 26 322 13579732 10
+20181022 1 1 16616 1
+20181023 248 2241 178663650 91
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 7
+1h+ 2
+5mn-15mn 3
+15mn-30mn 1
+30s-2mn 6
+0s-30s 81
+2mn-5mn 3
+30mn-1h 5
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 8
+/ 257 3321902 98 81
+/media/system/fonts/glyphicons-halflings-regular.woff2 32 522812 4 17
+/administrator/ 5 6423 0 0
+/.well-known/acme-challenge/b9P1ifjQa68e_-tJ6fOEfCq0y5kfCqhdYYI6OZJhPF4 1 87 0 1
+/.well-known/acme-challenge/C52CDMWWBvIopnfdOCyDqi5aPA7J-PxoKITANePMoxQ 1 87 1 0
+/media/system/fonts/glyphicons-halflings-regular.eot 1 20056 0 1
+/media/jui/fonts/IcoMoon.woff 1 25424 0 0
+/media/system/fonts/glyphicons-halflings-regular.ttf 1 23384 0 1
+END_SIDER

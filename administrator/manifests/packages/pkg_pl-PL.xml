@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="package" version="3.8" method="upgrade">
+<extension type="package" version="3.9" method="upgrade">
 	<name>Polish (Poland) (pl-PL) Language Pack</name>
 	<packagename>pl-PL</packagename>
-	<version>3.8.8.2</version>
-	<creationDate>maj 2018</creationDate>
+	<version>3.9.0.1</version>
+	<creationDate>październik 2018</creationDate>
 	<author>Polskie Centrum Joomla</author>
 	<authorEmail>zwiastun@joomla.pl</authorEmail>
 	<authorUrl>http://www.joomla.pl</authorUrl>
@@ -14,7 +14,7 @@
 	<packagerurl>www.joomla.org</packagerurl>
 	<description>	<![CDATA[
 		<div class="text-center span12"> 
-		<h3>Joomla! - pakiet języka polskiego - 3.8.8</h3>
+		<h3>Joomla! - pakiet języka polskiego - 3.9.0</h3>
 		<p><span style="font-weight: normal">Polskie Centrum Joomla zapewnia społeczności kompletne tłumaczenia Joomla!<br />Ich przygotowanie kosztuje wiele czasu i pracy.</span></p>
 		<div class="alert alert-info">
 		<h3>Wspieramy Ciebie, więc wesprzyj i nas.</h3>
@@ -24,9 +24,8 @@
 		<a class="btn btn-info" href="http://bit.ly/przekaz-darowizne-pcj">Przelew bankowy</a>
 		<p>&nbsp;</p>
 		<h3>Dziękujemy</h3>
-		<p>Od 1 stycznia 2018 otrzymaliśmy 78 darowizn od 66 osób i 5 firm, razem: 4002 złote.</p>
-		<p>Serdeczne podziękowania dla osób i firm, które w okresie od 19 kwietnia  przekazały nam darowizny na kwotę 2320 złotych: 
-		Andrzeja K., Anety B-R., Arkadiusza G., Arkadiusza P., Artura S., Barbary L., Błażeja C.,  Edwarda M.P., Grzegorza K., Grzegorza Z., Jakuba T., Janusza Rz., Janusza S., Jarosława B., Jarosława S., Krystiana K., Krzysztofa B., Krzysztofa M., Leszka Sz., Łukasza G., Macieja S., Marcina W., Mariusza D., Mateusza R., Piotra K., Roberta C., Roberta K., Roberta P. Stefana O., Wojciecha K. i firm: AB-Com, Cedrowa Grupa Agencja Multimedialna, MK GADGETS Sp. z&nbsp;o.o.	
+		<p>Od 1 stycznia 2018 otrzymaliśmy 143 darowizny od 113 osób i 9 firm, razem: 6940 złotych.</p>
+		<p>Serdeczne podziękowania dla Darczyńców, którzy w okresie od 31 lipca  przekazali nam darowizny na kwotę 1350 złotych: Grzegorz B., Jacek B., Łukasz Dz., Anna G., Piotr J.A. Elżbieta K.S., Krzysztof K., Leszek K., Michał K, Janusz M., Grzegorz N., Paweł O., Daniel P;, Artur S., Artur S., Janusz S., Kazimierz S., Ewa Sz., Malwina T., Mieczysław T., Piotr T., Aneta U., Michał W., <br/>oraz firm: Autorska Pracownia Informatyki CD, Cedrowa Grupa - Agencja Multimedialna, IT-Creative, Konarex.pl.
 		</p> 
 		</div>
 		</div>

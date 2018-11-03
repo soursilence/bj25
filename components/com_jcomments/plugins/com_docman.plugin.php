@@ -33,7 +33,7 @@ class jc_com_docman extends JCommentsPlugin
 			}
 		}
 
-		include_once(JPATH_SITE.DS.'includes'.DS.'application.php');
+		include_once(JPATH_SITE.'/includes/application.php');
 
 		$link = 'index.php?option=com_docman&task=doc_details&gid=' . $id;
 
@@ -41,7 +41,7 @@ class jc_com_docman extends JCommentsPlugin
 			$link .= '&Itemid=' . $_Itemid;
 		};
 
-		$router = JPATH_SITE . DS . 'components' . DS . 'com_docman' . DS . 'router.php';
+		$router = JPATH_SITE.'/components/com_docman/router.php';
 		if (is_file($router)) {
 			include_once($router);
 		}

@@ -24,7 +24,7 @@ class jc_com_moofaq extends JCommentsPlugin
 	{
 	        $link = '';
 
-		require_once(JPATH_ROOT.DS.'components'.DS.'com_moofaq'.DS.'helpers'.DS.'route.php');
+		require_once(JPATH_ROOT.'/components/com_moofaq/helpers/route.php');
 		
 		$query = 'SELECT a.id, a.sectionid, a.access,' .
 				' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug,'.

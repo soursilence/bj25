@@ -22,7 +22,7 @@ class jc_com_resource extends JCommentsPlugin
 
 	function getObjectLink($id)
 	{
-		include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resource'.DS.'library'.DS.'helper.php');
+		include_once(JPATH_ROOT.'/administrator/components/com_resource/library/helper.php');
 		if (class_exists('MEUrl')) {
 			$link = MEUrl::link_record($id);
 		} else {

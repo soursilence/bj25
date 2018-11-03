@@ -30,9 +30,9 @@ class jc_com_lyftenbloggie extends JCommentsPlugin
 		if (!empty($entry)) {
 			$routerHelper = JPATH_ROOT.'/components/com_lyftenbloggie/helpers/route.php';
 			if (is_file($routerHelper)) {
-				include_once(JPATH_SITE.DS.'includes'.DS.'application.php');
-				include_once(JPATH_SITE.DS.'components'.DS.'com_lyftenbloggie'.DS.'helpers'.DS.'route.php');
-				include_once(JPATH_SITE.DS.'components'.DS.'com_lyftenbloggie'.DS.'router.php');
+				include_once(JPATH_SITE.'/includes/application.php');
+				include_once(JPATH_SITE.'/components/com_lyftenbloggie/helpers/route.php');
+				include_once(JPATH_SITE.'/components/com_lyftenbloggie/router.php');
 
 				$entry->archive	= JHTML::_('date', $entry->created, '&year=%Y&month=%m&day=%d');
 

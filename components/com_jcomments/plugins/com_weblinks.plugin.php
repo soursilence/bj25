@@ -29,7 +29,7 @@ class jc_com_weblinks extends JCommentsPlugin
 		
 		$link = 'index.php?option=com_weblinks&view=category&id='. $id.':'.$alias;
 
-		require_once(JPATH_SITE.DS.'includes'.DS.'application.php');
+		require_once(JPATH_SITE.'/includes/application.php');
 
 		$component = JComponentHelper::getComponent('com_weblinks');
 		$menus = JApplication::getMenu('site');

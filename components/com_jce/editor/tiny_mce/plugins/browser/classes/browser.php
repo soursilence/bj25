@@ -1,93 +1,112 @@
 <?php
 
 /**
- * @package   	JCE
- * @copyright 	Copyright (c) 2009-2015 Ryan Demmer. All rights reserved.
- * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @copyright     Copyright (c) 2009-2017 Ryan Demmer. All rights reserved
+ * @license       GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
+ * other free or open source software licenses
  */
 defined('_JEXEC') or die('RESTRICTED');
 
-require_once(WF_EDITOR_LIBRARIES . '/classes/manager.php');
+require_once WF_EDITOR_LIBRARIES.'/classes/manager.php';
 
-final class WFFileBrowserPlugin extends WFMediaManager {
+class WFFileBrowserPlugin extends WFMediaManager
+{
     /*
      * @var string
      */
+    protected $_filetypes = 'doc,docx,ppt,pps,pptx,ppsx,xls,xlsx,gif,jpeg,jpg,png,pdf,zip,tar,gz,swf,rar,mov,mp4,qt,wmv,asx,asf,avi,wav,mp3,aiff,odt,odg,odp,ods,odf,rtf,txt,csv';
 
-    protected $_filetypes = 'word=doc,docx;powerpoint=ppt,pptx;excel=xls,xlsx;image=gif,jpeg,jpg,png;acrobat=pdf;archive=zip,tar,gz;flash=swf;winrar=rar;quicktime=mov,mp4,qt;windowsmedia=wmv,asx,asf,avi;audio=wav,mp3,aiff;openoffice=odt,odg,odp,ods,odf;text=rtf,txt,csv';
+    public function __construct($config = array())
+    {
+        $config = array(
+            'layout' => 'browser',
+            'can_edit_images' => 1,
+            'show_view_mode' => 1,
+        );
 
-    /**
-     * @access	protected
-     */
-    public function __construct() {
-        parent::__construct();
+        parent::__construct($config);
 
-        $browser = $this->getBrowser();
+        // get the plugin that opened the file browser
+        $caller = $this->get('caller', 'browser');
 
-        if (JRequest::getWord('type', 'file') == 'file') {
-            // Add all files
-            $browser->addFileTypes(array('WF_FILEGROUP_ALL' => '*.*'));
+        // get mediatype from xml
+        $mediatype = JRequest::getVar('mediatype', JRequest::getVar('filter', 'files'));
+
+        // clean filter value
+        $mediatype = (string) preg_replace('/[^\w_,]/i', '', $mediatype);
+
+        // get filetypes from params
+        $filetypes = $this->getParam('browser.extensions', $this->get('_filetypes'));
+
+        $map = array(
+            "images" => "jpg,jpeg,png,gif",
+            "media"  => "avi,wmv,wm,asf,asx,wmx,wvx,mov,qt,mpg,mpeg,m4a,m4v,swf,dcr,rm,ra,ram,divx,mp4,ogv,ogg,webm,flv,f4v,mp3,ogg,wav,xap",
+            "html"   => "html,htm,txt",
+            "files"  => $filetypes
+        );
+
+        // add svg support to images if it is allowed in filetypes
+        if (in_array('svg', explode(",", $filetypes))) {
+            $map['images'] = "jpg,jpeg,png,gif,svg";
+        }
+
+        if (array_key_exists($mediatype, $map)) {
+            $filetypes = $map[$mediatype];
         } else {
-            $browser->setFileTypes('images=jpg,jpeg,png,gif');
+            $filetypes = $mediatype;
         }
-        
-        $filter = JRequest::getString('filter');
 
-        if ($filter) {
-            if ($filter === "images") {
-                $browser->setFileTypes('images=jpg,jpeg,png,gif');
-            } else {
-                $browser->setFileTypes('files=' . JRequest::getString('filter'));
-            }
-        }
-        // remove insert button
-        $browser->removeButton('file', 'insert');
+        // set filetypes
+        $this->setFileTypes($filetypes);
+
+        $browser = $this->getFileBrowser();
+        
+        $upload = $browser->get('upload', array());
+        $upload['filetypes'] = $browser->getFileTypes('list', $filetypes);
+        
+        $browser->setProperties(array('upload' => $upload));
     }
 
     /**
-     * Display the plugin
-     * @access public
+     * Display the plugin.
      */
-    public function display() {
+    public function display()
+    {
         parent::display();
 
         $document = WFDocument::getInstance();
-        $settings = $this->getSettings();
-        
-        $document->addScript(array('browser'), 'plugins');
+        $layout = JRequest::getCmd('layout', 'plugin');
 
         if ($document->get('standalone') == 1) {
-            $document->addScript(array('browser'), 'component');
-            
-            $element = JRequest::getCmd('element', JRequest::getCmd('fieldid', ''));
+            if ($layout === 'plugin') {
+                $document->addScript(array('window.min'), 'plugins');
 
-            $options = array(
-                'plugin' => array(
-                    'root' => JURI::root(),
-                    'site' => JURI::base(true) . '/'
-                ),
-                'manager' => $settings,
-                'element' => $element
-            );
+                $element = JRequest::getCmd('element', JRequest::getCmd('fieldid', ''));
+                $callback = JRequest::getCmd('callback', '');
 
-            $document->addScriptDeclaration('jQuery(document).ready(function($){$.WFBrowserWidget.init(' . json_encode($options) . ');});');
+                $settings = array(
+                    'site_url' => JURI::base(true).'/',
+                    'language' => WFLanguage::getCode(),
+                    'element' => $element,
+                    'token' => WFToken::getToken(),
+                );
 
-        } else {
-            $document->addScriptDeclaration('BrowserDialog.settings=' . json_encode($settings) . ';');
+                if ($callback) {
+                    $settings['callback'] = $callback;
+                }
+
+                $document->addScriptDeclaration('tinymce.settings='.json_encode($settings).';');
+            }
+
+            $document->addScript(array('popup.min'), 'plugins');
+            $document->addStyleSheet(array('browser.min'), 'plugins');
+        }
+
+        if ($layout === 'plugin') {
+            $document->addScript(array('browser'), 'plugins');
         }
     }
-
-    /**
-     * @see WFMediaManager::getSettings()
-     */
-    function getSettings() {
-        return parent::getSettings();
-    }
-
 }
-
-?>
