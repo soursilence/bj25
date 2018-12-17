@@ -1,0 +1,5289 @@
+AWSTATS DATA FILE 7.3 (build 20140126)
+# If you remove this file, all statistics for date 201812 will be lost/reset.
+# Last config file used to build this data file was /home/klient.dhosting.pl/bazylianie/bazylianie.pl/awstats/conf/awstats.bazylianie.pl.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 27
+POS_GENERAL 2046                
+POS_TIME 2732                
+POS_VISITOR 97859               
+POS_DAY 181813              
+POS_DOMAIN 3885                
+POS_LOGIN 4122                
+POS_ROBOT 4277                
+POS_WORMS 5955                
+POS_EMAILSENDER 6086                
+POS_EMAILRECEIVER 6229                
+POS_SESSION 182421              
+POS_SIDER 182638              
+POS_FILETYPES 6364                
+POS_DOWNLOADS 6764                
+POS_OS 6833                
+POS_BROWSER 7328                
+POS_SCREENSIZE 42828               
+POS_UNKNOWNREFERER 42902               
+POS_UNKNOWNREFERERBROWSER 44874               
+POS_ORIGIN 45690               
+POS_SEREFERRALS 45845               
+POS_PAGEREFS 46028               
+POS_SEARCHWORDS 56113               
+POS_KEYWORDS 56332               
+POS_MISC 2393                
+POS_ERRORS 56458               
+POS_CLUSTER 3978                
+POS_SIDER_404 56644               
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20181217225721 544 138577 14753069956355
+FirstTime 20181201000122
+LastTime 20181217225702
+LastUpdate 20181217225725 544 0 544 0 0
+TotalVisits 3635                
+TotalUnique 1988                
+MonthHostsKnown 0                   
+MonthHostsUnknown 2102                
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+QuickTimeSupport 0 0 0
+JavaEnabled 0 0 0
+JavascriptDisabled 0 0 0
+PDFSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+AddToFavourites 0 1042 0
+RealPlayerSupport 0 0 0
+TotalMisc 0 0 0
+DirectorSupport 0 0 0
+FlashSupport 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 280 1103 54919720 14076 14303 354185585
+1 1802 2510 62857703 16638 16851 398443440
+2 3443 3802 50351563 14984 15180 378106156
+3 3 3 17816 684 685 10474961
+4 141 395 20596620 13546 13732 254264969
+5 901 1173 23499797 15652 15833 260814538
+6 1620 2551 69799784 14810 14989 184863705
+7 482 2035 111890697 13657 13881 148941251
+8 620 2635 141339079 13497 13777 188676823
+9 1426 3842 136955149 10342 10606 104508253
+10 1886 5003 204458816 7937 8314 212286607
+11 490 2667 154784897 8256 8485 130420832
+12 488 2893 129644287 9593 9882 123850367
+13 513 2648 118963780 11186 11532 140329486
+14 313 2421 120102089 13605 13875 281069638
+15 4064 7052 210564186 13824 14100 256068111
+16 4197 8544 280512346 14175 14514 341517901
+17 1904 4690 177065514 14954 15247 339676002
+18 710 3771 176641476 11858 12142 197829428
+19 1301 4652 195905037 10079 10413 200838021
+20 690 4535 240535838 8879 9222 208236793
+21 774 5402 285450878 15769 16162 230265706
+22 816 4701 251920687 10650 11013 286370442
+23 291 2079 115163002 15462 15747 314283055
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 1
+ip 29155 81107 3333932976
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 40
+crawl 74308 1981234819 20181217194347 17
+ahrefsbot 73865 1154970584 20181217225721 58
+bot[\s_+:,\.\;\/\\-] 49157 1203899101 20181217214522 45
+mj12bot 34395 628254231 20181217200336 272
+bingbot 8494 118278135 20181217224956 365
+semrushbot 8005 81089893 20181217225550 696
+yandex 5068 63138984 20181217213612 241
+mail\.ru 1563 15456330 20181217215539 295
+facebook 947 132606377 20181217220115 0
+^java\/[0-9] 825 26722426 20181213095710 0
+powermarks 2 118424 20181202200622 0
+no_user_agent 506 81238596 20181216232752 2
+googlebot 780 8476221 20181217225345 58
+yeti 2 14412 20181206002908 1
+seznambot 20 180775 20181217100940 10
+bingpreview 265 7801199 20181217220033 0
+[\s_+:,\.\;\/\\-]bot 1 399 20181213004942 1
+curl 14 841539 20181209234349 0
+360spider 237 3925997 20181216223803 1
+wget 10 600295 20181213003101 0
+^mozilla\/5\.0$ 1 0 20181202104230 0
+cfnetwork 9 46460 20181211200918 0
+baiduspider 36 559939 20181216181647 0
+core 3 47468 20181216172542 0
+ruby\/ 3 0 20181211063908 0
+exabot 46 374458 20181217013156 17
+ia_archiver 27 797680 20181208183016 8
+googlebot\-image 52 588465 20181214020220 0
+seokicks\.de 72 2279990 20181216162416 8
+unknown 112 47018 20181217224039 112
+infobot 254 6736123 20181214151053 10
+filterdb\.iss\.net 5 122959 20181208105951 3
+robot 2 18153 20181205004533 1
+dataprovider\.com 12 381598 20181214092432 1
+python 154 380775 20181217222124 1
+favicon 40 863193 20181217190149 0
+archive\.org_bot 4 205970 20181217181734 2
+bbot 1 60170 20181204212934 0
+sogou 7 40059 20181214101432 5
+netcraft 1 60362 20181210130146 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 17
+htc 42 38206 0 0
+css 9815 34178007 0 0
+ttf 2 36313 0 0
+woff 42 1312536 0 0
+woff2 743 12331152 0 0
+ini 5 280038 0 0
+map 1 542194 0 0
+php 28248 387573866 0 0
+html 5 239750 0 0
+xml 2 1470 0 0
+jpg 21999 2668116341 0 0
+eot 58 1143192 0 0
+png 8270 96079847 0 0
+js 11639 131274557 0 0
+jpeg 1 53279 0 0
+Unknown 9 538744 0 0
+gif 226 185699 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 1
+/robots.txt 0 9 7785
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 29
+blackberry 53 4
+linuxandroid 13579 2151
+winxp 1933 657
+macosx6 4 4
+winlong 444 154
+ios_iphone 2987 469
+winphone 104 10
+win2000 39 39
+win95 2 2
+winunknown 165 165
+win2003 59 59
+win8 446 60
+macosx9 49 6
+ios_ipad 1337 121
+unix 4 4
+java 77 77
+winnt 31068 19705
+macosx5 12 12
+linuxubuntu 5 5
+linux 2109 427
+win7 22856 4096
+macosx 849 252
+winme 1 1
+bsdnetbsd 1 1
+macosx4 16 16
+win8.1 2619 423
+Unknown 265 202
+macosx8 2 2
+win2008 31 31
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 1520
+chrome58.0.9296.222 1 1
+webcapture 1 1
+chrome51.0.7782.971 1 1
+chrome41.0.9425.415 1 1
+chrome50.0.6224.94 1 1
+chrome54.0.3011.501 1 1
+chrome39.0.5203.12 1 1
+chrome52.0.1734.389 1 1
+chrome41.0.5989.987 1 1
+msie8.0 134 5
+chrome51.0.2000.26 1 1
+chrome58.0.9692.117 1 1
+chrome50.0.5527.366 1 1
+chrome60.0.9290.641 1 1
+chrome53.0.2785.124 257 20
+opera44.5.0569.6831 2 2
+chrome46.0.2606.974 1 1
+chrome59.0.7499.370 1 1
+chrome42.0.1320.310 1 1
+chrome31.0.1650.59 105 13
+chrome42.0.9356.18 1 1
+chrome52.0.6124.573 1 1
+opera44.6.1359.6621 3 3
+chrome57.0.3837.648 1 1
+chrome69.0.3497.76 1 1
+chrome49.0.7545.348 1 1
+firefox40.0 1 1
+chrome48.0.1947.341 1 1
+chrome54.0.2174.59 1 1
+chrome60.0.5346.443 1 1
+chrome53.6.1112.7484 2 2
+chrome58.0.1746.692 1 1
+chrome55.0.7691.511 1 1
+chrome47.0.9522.724 1 1
+chrome41.0.7888.950 1 1
+chrome49.0.6689.792 1 1
+chrome42.0.8169.165 1 1
+chrome51.0.9579.327 1 1
+chrome54.0.9040.370 1 1
+chrome56.0.1724.492 1 1
+chrome45.0.5968.678 1 1
+chrome49.0.8088.511 1 1
+opera44.6.1334.6606 2 2
+chrome55.0.3669.474 1 1
+chrome43.0.6375.163 1 1
+chrome42.0.1295.791 1 1
+chrome56.0.4090.193 1 1
+chrome57.0.2322.939 1 1
+chrome67.0.2526.73 1 1
+chrome22.0.1229.79 8 8
+chrome23.0.1271.6 14 14
+chrome42.0.3236.685 1 1
+chrome41.0.9803.662 1 1
+chrome54.0.4884.24 1 1
+chrome26.0.1410.33 50 3
+firefox24.0 1 1
+chrome49.0.6491.292 1 1
+chrome42.0.6578.754 1 1
+chrome39.0.0.0 74 8
+chrome50.0.9396.469 1 1
+chrome42.0.6777.664 1 1
+chrome42.0.6662.413 1 1
+chrome41.0.3329.216 1 1
+msie5.0 2 2
+msie9.0 79 30
+chrome60.0.1593.793 1 1
+firefox20.6.14 61 61
+chrome53.6.1457.6729 1 1
+safari4.6.1 2 2
+chrome47.0.2876.843 1 1
+chrome49.0.8113.970 1 1
+chrome57.0.4508.150 1 1
+chrome48.0.3453.183 1 1
+chrome57.0.6937.769 1 1
+chrome57.0.5330.741 1 1
+opera53.0.2907.99 37 15
+chrome60.0.1073.460 1 1
+chrome54.0.6632.431 1 1
+opera9.27 17 17
+chrome44.0.5622.329 1 1
+chrome71.0.3542.0 2 2
+chrome47.0.2524.739 1 1
+chrome52.0.5247.265 1 1
+opera56.0.3051.116 1435 261
+chrome57.0.6004.865 1 1
+chrome50.0.8015.729 1 1
+chrome40.0.5537.773 1 1
+msie7.00 39 39
+chrome42.0.3689.742 1 1
+opera50.0.2762.58 1 1
+opera54.0.2952.64 36 10
+chrome50.0.3757.860 1 1
+chrome46.0.5098.778 1 1
+chrome44.0.1899.537 1 1
+chrome54.0.6234.420 1 1
+opera44.5.0853.5126 2 2
+chrome50.0.9919.215 1 1
+chrome49.0.9777.894 1 1
+chrome48.0.2107.158 1 1
+opera42.0.5159.0887 2 2
+chrome59.0.5719.496 1 1
+chrome58.0.9300.127 1 1
+chrome46.0.8661.121 1 1
+opera9.20 1 0
+chrome44.0.8900.211 1 1
+chrome55.0.6027.620 1 1
+chrome64.0.3282.167 12 12
+chrome57.0.4704.161 1 1
+netscape3.0 5 5
+chrome48.0.4059.621 1 1
+chrome46.0.3949.235 1 1
+safari5.6.1 4 4
+chrome42.0.9170.607 1 1
+chrome52.0.7569.588 1 1
+chrome49.0.7559.90 1 1
+chrome68.0.3440.106 66 17
+chrome40.0.2214.109 27 3
+chrome44.0.6771.953 1 1
+chrome50.0.4064.429 1 1
+firefox47.0 127 16
+chrome57.5.0252.5524 2 2
+chrome42.0.8003.310 1 1
+chrome52.0.6238.497 1 1
+chrome53.0.9019.143 1 1
+chrome53.0.5558.719 1 1
+chrome42.0.2311.135 3 3
+chrome47.0.4037.521 1 1
+chrome44.0.8204.807 1 1
+chrome55.0.3005.147 1 1
+chrome44.0.2403.133 65 4
+chrome57.4.9480.4118 2 2
+chrome39.0.6871.216 1 1
+chrome47.0.8875.620 1 1
+chrome66.0.3359.139 6 6
+chrome57.5.9364.4091 2 2
+chrome53.0.6358.756 1 1
+chrome49.0.5564.506 1 1
+chrome54.0.6110.902 1 1
+chrome43.0.6165.58 1 1
+chrome53.0.2785.34 1 1
+opera44.5.0913.5286 2 2
+chrome43.0.8963.993 1 1
+chrome56.0.4953.475 1 1
+chrome40.0.9686.897 1 1
+chrome52.0.2815.732 1 1
+chrome48.0.1625.191 1 1
+chrome50.0.1874.563 1 1
+chrome54.0.3138.638 1 1
+chrome42.0.8198.862 1 1
+chrome47.0.8141.276 1 1
+chrome52.0.1612.207 1 1
+chrome48.0.8881.438 1 1
+chrome57.0.8749.807 1 1
+chrome59.0.5458.317 1 1
+chrome42.0.9508.184 1 1
+chrome53.0.8363.348 1 1
+chrome57.0.8483.92 1 1
+chrome44.0.7953.863 1 1
+chrome42.0.7120.289 1 1
+chrome47.0.8861.369 1 1
+chrome58.0.4478.574 1 1
+chrome42.0.1067.488 1 1
+chrome56.0.8456.589 1 1
+chrome40.0.7774.53 1 1
+chrome45.0.9041.53 1 1
+chrome52.0.1096.614 1 1
+chrome41.0.3873.553 1 1
+chrome55.1.6891.0529 2 2
+safari4.7.2 15 15
+chrome52.0.4109.93 1 1
+chrome45.0.7385.487 1 1
+chrome60.0.7919.970 1 1
+chrome54.8.3334.8606 2 2
+chrome60.0.3608.598 1 1
+safari9.1.3 45 2
+chrome50.0.2661.89 222 31
+chrome71.0.3578.62 4 4
+chrome47.0.7031.299 1 1
+chrome50.0.6447.670 1 1
+chrome34.0.1847.137 1 1
+chrome52.0.5225.680 1 1
+firefox15.0.2 1 1
+chrome50.0.5685.840 1 1
+chrome50.0.3199.520 1 1
+msie6.00 43 43
+chrome49.0.8999.17 1 1
+chrome45.0.8579.48 1 1
+chrome40.0.1240.379 1 1
+chrome60.0.6756.130 1 1
+chrome52.0.3571.178 1 1
+chrome52.0.9799.402 1 1
+chrome50.0.2661.86 44 1
+chrome45.0.5212.960 1 1
+chrome57.0.8072.914 1 1
+chrome57.0.8358.112 1 1
+chrome42.0.8336.812 1 1
+chrome52.0.2293.813 1 1
+chrome52.0.2735.604 1 1
+chrome58.0.8263.634 1 1
+chrome44.0.6319.850 1 1
+chrome58.0.2298.991 1 1
+chrome71.0.3578.83 938 58
+chrome55.0.9823.527 1 1
+chrome57.5.9357.4085 2 2
+msie2.00 39 39
+chrome48.0.6116.887 1 1
+chrome53.0.7794.689 1 1
+safari12.0.2 93 15
+netscape5.0 99 16
+chrome44.0.9972.622 1 1
+chrome40.0.6048.81 1 1
+chrome39.0.9104.439 1 1
+chrome48.0.6597.926 1 1
+chrome55.0.7218.11 1 1
+chrome58.0.8471.201 1 1
+opera56.0.3051.104 51 3
+chrome60.0.9374.509 1 1
+safari 606 29
+safari9.0.2 6 3
+chrome52.0.8756.913 1 1
+chrome59.0.6569.753 1 1
+chrome60.0.7578.813 1 1
+chrome24.0.1309.0 7 7
+chrome68.0.3440.75 4 4
+chrome57.0.1445.86 1 1
+chrome57.0.9247.456 1 1
+chrome42.0.5460.222 1 1
+chrome39.0.4006.372 1 1
+chrome40.0.4530.231 1 1
+chrome71.0.3578.98 1648 195
+chrome43.0.6120.991 1 1
+chrome54.0.1805.868 1 1
+safari5.3.8 10 10
+chrome61.0.3163.128 329 13
+chrome54.8.4225.9597 2 2
+chrome40.0.5531.560 1 1
+chrome57.0.5151.205 1 1
+chrome45.0.5548.589 1 1
+chrome34.0.1847.116 12 12
+chrome40.0.7981.706 1 1
+chrome44.0.4640.633 1 1
+opera11.01 1 1
+chrome60.0.3112.116 1 1
+chrome53.0.8080.794 1 1
+chrome40.0.2427.270 1 1
+chrome59.0.9109.765 1 1
+chrome60.0.5578.610 1 1
+opera56.0.3051.52 1 1
+chrome53.0.2232.373 1 1
+chrome53.0.9880.409 1 1
+chrome43.0.3697.312 1 1
+firefox52.62.15 2 2
+chrome56.0.9785.537 1 1
+chrome44.0.6927.892 1 1
+chrome48.0.1684.482 1 1
+chrome41.0.9837.471 1 1
+chrome57.0.5695.48 1 1
+nokia 57 7
+chrome68.0.3409.2 1 1
+chrome57.4.0778.5940 2 2
+chrome50.0.6584.675 1 1
+chrome55.0.9221.368 1 1
+chrome41.0.5511.204 1 1
+chrome53.0.1700.224 1 1
+chrome58.0.1531.65 1 1
+chrome39.0.9161.883 1 1
+chrome40.0.5320.164 1 1
+chrome43.0.2857.530 1 1
+chrome48.0.6731.177 1 1
+chrome45.0.7820.646 1 1
+chrome47.0.2580.608 1 1
+chrome60.0.5454.701 1 1
+chrome56.0.7020.824 1 1
+chrome70.0.3538.64 152 8
+chrome36.0.1944.0 4 4
+chrome58.0.1822.520 1 1
+chrome57.0.1101.969 1 1
+chrome44.0.7045.242 1 1
+chrome60.0.2630.858 1 1
+chrome43.0.8086.271 1 1
+chrome50.0.5565.80 1 1
+firefox59.0 1 1
+chrome59.0.8147.675 1 1
+chrome70.0.3538.80 1362 167
+chrome55.0.6414.571 1 1
+chrome51.0.2058.638 1 1
+chrome54.0.6363.499 1 1
+chrome46.0.1548.805 1 1
+chrome49.0.2623.112 762 98
+chrome56.0.4506.112 1 1
+opera9.0 19 19
+chrome40.0.8990.197 1 1
+chrome57.0.3726.328 1 1
+chrome65.0.3325.181 49 6
+chrome41.0.2224.3 2 2
+chrome50.0.5711.777 1 1
+chrome55.0.9642.331 1 1
+chrome63.0.3239.132 330 64
+chrome54.0.2154.911 1 1
+chrome42.0.6173.151 1 1
+chrome39.0.7810.304 1 1
+chrome54.0.5061.846 1 1
+chrome43.0.9360.24 1 1
+chrome54.0.2339.123 1 1
+chrome40.0.9985.649 1 1
+chrome39.0.4250.313 1 1
+chrome53.6.1674.6946 2 2
+chrome52.0.8789.855 1 1
+chrome48.0.3357.737 1 1
+chrome48.0.6564.201 1 1
+chrome54.0.5160.676 1 1
+chrome40.0.2016.960 1 1
+chrome56.0.9641.838 1 1
+chrome49.0.6143.684 1 1
+chrome46.0.3333.197 1 1
+opera44.5.0110.6482 2 2
+chrome45.0.3422.194 1 1
+chrome41.0.5859.176 1 1
+chrome55.0.7454.263 1 1
+chrome46.0.6041.496 1 1
+chrome48.0.5332.634 1 1
+firefox45.69.22 2 2
+chrome69.0.3497.86 1 1
+chrome44.0.8534.607 1 1
+chrome46.0.3546.453 1 1
+chrome44.0.7205.876 1 1
+chrome46.0.7945.599 1 1
+chrome51.0.7752.473 1 1
+chrome45.0.7846.860 1 1
+chrome49.0.1383.774 1 1
+chrome46.0.3136.401 1 1
+chrome50.0.6278.763 1 1
+chrome49.0.7918.271 1 1
+chrome41.0.4383.513 1 1
+chrome47.0.5098.356 1 1
+chrome43.0.3356.960 1 1
+chrome39.0.9687.404 1 1
+chrome49.0.8541.335 1 1
+chrome41.0.6008.363 1 1
+chrome57.0.2987.137 27 1
+chrome46.0.8870.581 1 1
+firefox32.1 4 4
+chrome46.0.2136.215 1 1
+chrome39.0.3170.43 1 1
+chrome63.0.3239.111 62 5
+chrome50.0.4602.523 1 1
+chrome50.0.5816.347 1 1
+safari10.0 352 20
+chrome48.0.8759.346 1 1
+chrome58.0.7232.376 1 1
+chrome54.0.2840.99 2 2
+chrome60.0.8828.268 1 1
+chrome40.0.6923.462 1 1
+chrome52.0.7483.806 1 1
+chrome60.0.7028.818 1 1
+chrome59.0.3071.125 676 41
+chrome60.0.5345.610 1 1
+chrome46.0.7634.324 1 1
+firefox45.69.06 2 2
+chrome55.0.5025.998 1 1
+chrome60.0.1606.445 1 1
+chrome49.0.7417.711 1 1
+chrome46.0.6091.454 1 1
+chrome47.0.8210.54 1 1
+chrome51.0.3985.800 1 1
+msie10.0 281 57
+chrome54.0.8313.606 1 1
+chrome51.0.5927.753 1 1
+chrome58.0.9473.478 1 1
+chrome55.0.9858.811 1 1
+opera45.1.2246.125351 358 47
+chrome43.0.3182.539 1 1
+chrome53.0.2392.801 1 1
+chrome60.0.2132.842 1 1
+chrome52.0.2743.116 42 13
+safari5.0 53 6
+chrome53.0.1648.563 1 1
+chrome54.0.8911.709 1 1
+safari10.0.1 1 1
+chrome48.0.9575.577 1 1
+chrome43.0.7070.882 1 1
+chrome59.0.6876.315 1 1
+chrome54.0.3233.715 1 1
+chrome59.0.7830.830 1 1
+chrome53.8.3427.8799 2 2
+chrome43.0.5274.885 1 1
+chrome55.0.3774.321 1 1
+opera44.5.1454.6727 2 2
+chrome51.0.5003.471 1 1
+chrome40.0.4595.552 1 1
+chrome45.0.2321.789 1 1
+chrome40.0.3055.526 1 1
+chrome42.0.7409.759 1 1
+chrome44.0.7953.160 1 1
+chrome49.0.3987.67 1 1
+chrome49.0.5550.105 1 1
+chrome44.0.1736.634 1 1
+chrome42.0.5884.913 1 1
+chrome46.0.4434.263 1 1
+chrome62.0.3202.94 21 21
+chrome48.0.5619.590 1 1
+chrome43.0.7281.446 1 1
+chrome50.0.4384.965 1 1
+chrome56.2.7144.1872 2 2
+chrome58.0.9203.961 1 1
+chrome39.0.7974.496 1 1
+chrome54.0.7318.608 1 1
+safari5.0.4 1 1
+chrome39.0.7360.537 1 1
+chrome40.0.9751.157 1 1
+chrome60.0.3112.90 8 8
+chrome45.0.1359.616 1 1
+chrome56.0.2283.547 1 1
+chrome45.0.4070.520 1 1
+chrome54.0.7368.124 1 1
+chrome42.0.2058.283 1 1
+chrome56.0.1110.643 1 1
+opera44.6.1780.6052 2 2
+chrome54.0.3295.109 1 1
+chrome40.0.7394.584 1 1
+opera44.5.0118.5480 2 2
+opera49.0.2725.64 1 1
+chrome44.0.6248.418 1 1
+firefox3.5.3 1 1
+chrome50.0.2887.784 1 1
+chrome50.0.6226.424 1 1
+chrome48.0.9108.788 1 1
+iphone 282 17
+chrome58.0.3785.428 1 1
+chrome56.0.5819.703 1 1
+chrome43.0.6417.449 1 1
+chrome42.0.9732.255 1 1
+chrome47.0.1953.459 1 1
+chrome39.0.2818.456 1 1
+chrome53.0.5662.156 1 1
+chrome44.0.8905.24 1 1
+chrome51.0.6848.194 1 1
+chrome47.0.6002.209 1 1
+opera40.6.1946.7218 2 2
+chrome60.0.2550.126 1 1
+chrome60.0.8812.297 1 1
+chrome40.0.6505.959 1 1
+chrome51.0.3230.543 1 1
+chrome43.0.8095.757 1 1
+msie5.5 8 8
+chrome39.0.8391.234 1 1
+chrome45.0.5794.997 1 1
+chrome51.0.6953.984 1 1
+chrome45.0.2833.565 1 1
+firefox61.0 384 58
+opera40.6.1953.6225 2 2
+opera53.0.2907.106 1 1
+safari5.2.7 5 5
+chrome52.0.9507.200 1 1
+firefox3.6.8 15 15
+chrome64.0.3282.140 449 38
+firefox57.0 10 10
+chrome39.0.6789.918 1 1
+chrome42.0.2784.859 1 1
+chrome54.0.4986.319 1 1
+chrome46.0.2946.529 1 1
+firefox26.0 2 2
+chrome48.0.2225.394 1 1
+chrome50.0.3633.79 1 1
+firefox18.0 1 1
+firefox34.0 3 3
+chrome48.0.7388.501 1 1
+chrome57.5.0262.5534 2 2
+chrome51.0.2704.81 88 8
+chrome53.0.2518.822 1 1
+chrome56.0.4526.505 1 1
+chrome55.0.6387.797 1 1
+chrome60.0.1106.200 1 1
+chrome60.0.7292.838 1 1
+chrome42.0.9175.929 1 1
+chrome54.0.2050.230 1 1
+chrome53.0.3792.658 1 1
+chrome58.0.1082.487 1 1
+chrome47.0.2454.407 1 1
+chrome39.0.1236.926 1 1
+chrome56.2.6791.1429 2 2
+chrome50.0.4150.274 1 1
+chrome39.0.5243.454 1 1
+chrome39.0.2227.112 1 1
+chrome50.0.8566.114 1 1
+chrome39.0.4844.621 1 1
+chrome56.2.6618.1346 2 2
+chrome51.0.4676.715 1 1
+chrome59.0.9876.143 1 1
+chrome34.0.1847.131 4 4
+chrome64.0.3282.119 3 3
+chrome61.0.3163.140 1 0
+opera42.0.5635.0363 2 2
+chrome42.0.2257.413 1 1
+chrome41.0.7251.313 1 1
+chrome41.0.4867.161 1 1
+chrome58.0.9554.250 1 1
+chrome60.0.3112.113 2 2
+chrome56.0.2543.948 1 1
+chrome55.0.3913.734 1 1
+firefox3.5.5 4 4
+chrome59.0.6074.41 1 1
+chrome39.0.4979.182 1 1
+chrome41.0.9733.874 1 1
+chrome42.0.5017.918 1 1
+chrome55.0.2468.621 1 1
+chrome51.0.6680.364 1 1
+chrome43.0.1912.139 1 1
+chrome55.0.3420.787 1 1
+chrome45.0.4770.879 1 1
+chrome44.0.1811.595 1 1
+chrome55.0.7494.631 1 1
+chrome57.5.0275.5547 2 2
+chrome55.0.8946.627 1 1
+chrome46.0.7250.536 1 1
+chrome59.0.6243.354 1 1
+chrome47.0.6927.900 1 1
+chrome52.0.8437.314 1 1
+chrome60.0.2604.22 1 1
+opera55.0.2994.44 7 7
+chrome54.0.2239.752 1 1
+opera12.11 1 1
+opera12.14 2 2
+chrome41.0.9525.621 1 1
+chrome39.0.8336.728 1 1
+chrome51.0.5740.957 1 1
+chrome48.0.5886.856 1 1
+chrome46.0.8126.102 1 1
+chrome39.0.9771.553 1 1
+chrome39.0.6542.160 1 1
+chrome45.0.3963.195 1 1
+firefox16.0 1 1
+chrome66.0.3359.158 233 70
+chrome46.0.4403.145 1 1
+chrome49.0.8163.375 1 1
+opera42.0.5543.0271 2 2
+opera42.0.5088.0716 2 2
+msie3.00 46 46
+chrome70.0.3538.77 265 15
+chrome43.0.6859.881 1 1
+chrome44.0.8083.787 1 1
+chrome55.0.2518.617 1 1
+safari5.4.8 2 2
+chrome52.0.7317.18 1 1
+chrome54.0.3843.207 1 1
+chrome42.0.9623.552 1 1
+chrome46.0.2306.569 1 1
+chrome44.0.5046.487 1 1
+chrome60.0.9316.75 1 1
+chrome45.0.8601.855 1 1
+chrome58.0.5039.535 1 1
+chrome48.0.4585.101 1 1
+chrome50.0.1370.567 1 1
+chrome42.0.7119.130 1 1
+chrome59.0.7832.731 1 1
+msie11.0 1448 143
+chrome49.0.1173.641 1 1
+chrome50.0.2668.74 1 1
+chrome52.0.2777.35 1 1
+chrome56.2.6529.1357 1 1
+chrome48.0.2886.550 1 1
+chrome41.0.3593.579 1 1
+chrome60.0.1975.628 1 1
+chrome59.0.1424.406 1 1
+chrome46.0.3937.712 1 1
+chrome49.0.1685.147 1 1
+chrome39.0.4251.295 1 1
+chrome57.5.0063.4891 1 1
+chrome57.0.4260.300 1 1
+chrome45.0.8555.140 1 1
+chrome47.0.2481.734 1 1
+opera9.23 3 0
+chrome56.0.8281.26 1 1
+chrome47.0.5840.512 1 1
+chrome39.0.4339.105 1 1
+chrome57.0.2698.550 1 1
+chrome58.0.7718.105 1 1
+firefox49.0 1 1
+chrome47.0.8202.253 1 1
+chrome55.0.2070.505 1 1
+chrome46.0.4454.460 1 1
+safari5.0.2 1 1
+chrome60.0.5751.202 1 1
+chrome47.0.4005.955 1 1
+chrome57.0.9467.456 1 1
+chrome39.0.6285.329 1 1
+chrome55.0.4520.18 1 1
+chrome42.0.4871.166 1 1
+chrome53.0.6663.384 1 1
+chrome39.0.7601.371 1 1
+chrome40.0.6778.126 1 1
+chrome54.8.3980.8252 2 2
+chrome52.0.1684.5 1 1
+chrome40.0.4448.754 1 1
+chrome47.0.9788.732 1 1
+chrome60.0.4760.901 1 1
+firefox13.0 1 1
+chrome55.0.3673.122 1 1
+chrome46.0.7040.526 1 1
+chrome59.0.8925.256 1 1
+chrome58.0.9880.354 1 1
+chrome41.0.2033.233 1 1
+chrome43.0.3897.824 1 1
+chrome48.0.6144.343 1 1
+chrome53.0.2834.76 1 1
+chrome55.0.3784.697 1 1
+chrome53.0.2824.917 1 1
+chrome48.0.9777.581 1 1
+chrome55.0.5299.883 1 1
+chrome52.0.2743.98 22 1
+chrome40.0.9881.425 1 1
+chrome39.0.9057.963 1 1
+chrome47.0.8643.299 1 1
+chrome57.0.8277.460 1 1
+chrome41.0.2228.0 2 2
+chrome40.0.5856.541 1 1
+chrome44.0.3336.129 1 1
+chrome47.0.6049.455 1 1
+chrome67.0.3396.87 151 28
+opera42.0.2393.94 3 2
+chrome47.0.6673.296 1 1
+chrome52.0.2376.65 1 1
+chrome40.0.9535.543 1 1
+chrome43.0.8203.994 1 1
+opera40.6.1499.6761 2 2
+chrome57.0.9352.962 1 1
+chrome43.0.4134.817 1 1
+opera42.9.4807.9534 2 2
+chrome59.0.4789.940 1 1
+firefox45.63.16 2 2
+chrome53.0.9690.93 1 1
+chrome60.0.5383.200 1 1
+chrome52.0.1072.906 1 1
+chrome51.0.4529.702 1 1
+chrome45.0.7049.478 1 1
+chrome52.0.7857.257 1 1
+chrome41.0.6799.590 1 1
+chrome56.0.1827.606 1 1
+chrome45.0.1096.359 1 1
+chrome55.0.4369.496 1 1
+chrome53.0.8686.966 1 1
+chrome66.0.3359.126 127 76
+chrome40.0.1136.917 1 1
+chrome43.0.2788.475 1 1
+chrome58.0.9008.178 1 1
+chrome44.0.9163.788 1 1
+chrome60.0.7920.570 1 1
+chrome54.0.4322.353 1 1
+chrome23.0.1271.17 6 6
+chrome60.0.4699.852 1 1
+chrome57.0.7423.99 1 1
+firefox39.0 1 1
+chrome56.0.5420.983 1 1
+chrome51.0.2704.106 1 1
+chrome49.0.9317.77 1 1
+chrome56.0.9674.223 1 1
+chrome45.0.7653.116 1 1
+chrome46.0.2745.822 1 1
+chrome53.6.1024.5752 2 2
+chrome51.0.1065.4 1 1
+chrome42.0.4954.904 1 1
+chrome54.0.7604.430 1 1
+chrome43.0.2230.861 1 1
+chrome42.0.3130.216 1 1
+chrome57.0.1601.763 1 1
+chrome41.0.1376.166 1 1
+chrome59.0.1771.749 1 1
+chrome44.0.3721.245 1 1
+chrome50.0.6288.185 1 1
+chrome54.0.2306.38 1 1
+chrome58.0.7140.237 1 1
+chrome52.0.4811.13 1 1
+chrome41.0.1707.627 1 1
+safari5.5.0 4 4
+chrome24.0.1290.1 10 10
+chrome51.0.4660.560 1 1
+chrome50.0.8491.60 1 1
+chrome57.0.8263.476 1 1
+chrome71.0.3578.80 1189 277
+chrome49.0.3540.149 1 1
+chrome53.0.5083.951 1 1
+chrome70.0.3538.102 117 13
+chrome56.0.3648.667 1 1
+chrome58.0.8357.337 1 1
+chrome39.0.8829.45 1 1
+chrome41.0.5597.309 1 1
+chrome57.5.0493.5765 2 2
+firefox3.0 3 3
+chrome53.7.2780.8052 2 2
+firefox21.0 9 2
+chrome58.0.6610.936 1 1
+chrome55.0.9911.922 1 1
+chrome55.0.6790.763 1 1
+chrome60.0.4082.949 1 1
+chrome39.0.6263.805 1 1
+chrome42.0.3713.889 1 1
+chrome56.0.2045.334 1 1
+chrome46.0.7628.519 1 1
+chrome44.0.9639.30 1 1
+chrome17.0.963.12 5 5
+chrome53.0.4478.28 1 1
+chrome39.0.4443.536 1 1
+chrome47.0.5240.869 1 1
+chrome54.0.9944.635 1 1
+chrome59.0.3860.554 1 1
+chrome55.0.4125.889 1 1
+chrome53.0.6765.101 1 1
+firefox2.0.0.12 1 1
+chrome63.0.3239.0 82 0
+chrome54.0.2311.866 1 1
+chrome43.0.7030.423 1 1
+opera10.01 1 1
+chrome56.0.2676.462 1 1
+chrome57.0.8384.988 1 1
+chrome54.0.5208.854 1 1
+chrome40.0.2214.85 6 6
+chrome55.0.2883.95 1 0
+chrome54.0.4345.479 1 1
+chrome58.0.1510.382 1 1
+opera41.9.3687.8314 2 2
+chrome59.0.2792.224 1 1
+chrome45.0.8803.176 1 1
+chrome59.0.8750.381 1 1
+chrome44.0.8767.141 1 1
+firefox14.0.12011 8 8
+chrome51.0.8902.831 1 1
+chrome57.0.6798.959 1 1
+netscape9.1.0285 1 1
+chrome59.0.1783.28 1 1
+chrome56.0.2822.708 1 1
+chrome56.0.8153.814 1 1
+chrome44.0.2806.361 1 1
+chrome60.0.6449.447 1 1
+opera56.0.3051.36 1146 158
+chrome10.0.649.0 244 244
+firefox37.0 4 4
+chrome48.0.2564.109 1 1
+chrome55.0.7923.344 1 1
+chrome65.0.3325.162 2 2
+chrome54.0.5271.546 1 1
+chrome56.0.9841.26 1 1
+chrome41.0.8472.213 1 1
+chrome57.0.6394.602 1 1
+opera11.50 3 3
+chrome47.0.8044.67 1 1
+chrome47.0.5006.741 1 1
+chrome51.0.9988.958 1 1
+chrome56.0.2486.163 1 1
+firefox52.58.95 2 2
+firefox28.0 1 0
+chrome50.0.5847.545 1 1
+chrome55.0.8084.277 1 1
+opera40.0.2308.81 1 1
+chrome47.0.7912.534 1 1
+chrome59.0.2532.219 1 1
+firefox2.0.0.15 2 0
+chrome56.0.9738.465 1 1
+chrome59.0.2744.773 1 1
+chrome55.0.3798.305 1 1
+chrome40.0.4792.516 1 1
+chrome59.0.3150.622 1 1
+chrome43.0.8313.541 1 1
+chrome50.0.5010.720 1 1
+chrome56.0.5473.25 1 1
+chrome60.0.7101.710 1 1
+chrome54.0.5940.43 1 1
+chrome48.0.8044.670 1 1
+chrome50.0.9465.880 1 1
+chrome41.0.6998.552 1 1
+chrome54.0.7792.41 1 1
+chrome53.0.9899.823 1 1
+chrome49.0.7536.22 1 1
+chrome27.0.1453.93 114 114
+chrome58.0.1569.674 1 1
+chrome59.0.8573.685 1 1
+chrome43.0.7678.412 1 1
+chrome40.0.6641.407 1 1
+chrome50.0.6934.19 1 1
+chrome47.0.1590.741 1 1
+chrome42.0.6237.720 1 1
+chrome43.0.1431.424 1 1
+chrome56.0.7516.680 1 1
+chrome45.0.2750.871 1 1
+firefox52.56.09 2 2
+opera9.01 3 3
+chrome46.0.4959.697 1 1
+chrome55.0.4279.980 1 1
+chrome59.0.4044.583 1 1
+chrome48.0.9756.799 1 1
+chrome51.0.2704.103 100 100
+chrome57.0.6753.507 1 1
+safari11.0.3 1 1
+opera42.0.4381.9019 2 2
+chrome58.0.2513.724 1 1
+chrome45.0.1572.656 1 1
+chrome56.0.5875.608 1 1
+chrome51.0.6446.260 1 1
+chrome59.0.6385.599 1 1
+chrome57.0.4817.316 1 1
+chrome51.0.7243.884 1 1
+chrome42.0.9663.757 1 1
+chrome54.0.1259.757 1 1
+chrome50.0.5721.612 1 1
+chrome54.0.8717.32 1 1
+chrome59.0.3517.777 1 1
+chrome53.6.1515.7887 2 2
+chrome57.0.3747.973 1 1
+firefox62.0 538 63
+chrome40.0.1953.993 1 1
+chrome55.0.7040.499 1 1
+chrome42.0.3734.973 1 1
+opera59.0.3167.0 59 5
+chrome52.0.5952.38 1 1
+chrome50.0.2443.982 1 1
+chrome58.0.6477.717 1 1
+chrome44.0.6187.700 1 1
+firefox52.9 2 2
+chrome60.0.2633.885 1 1
+chrome43.0.8077.428 1 1
+chrome59.0.3071.115 17 17
+chrome48.0.5521.289 1 1
+chrome57.0.5704.973 1 1
+chrome42.0.8544.675 1 1
+chrome43.0.7283.257 1 1
+chrome39.0.2144.387 1 1
+chrome52.0.2424.52 1 1
+chrome40.0.4687.577 1 1
+firefox30.0 4 4
+chrome60.0.9200.958 1 1
+firefox56.0 1 1
+chrome50.0.2787.25 1 1
+chrome55.0.5904.49 1 1
+chrome45.0.2454.94 1 1
+chrome59.0.4333.323 1 1
+opera44.5.0725.6097 2 2
+firefox51.0 8 8
+chrome52.0.4151.858 1 1
+chrome70.0.3538.110 13946 1832
+chrome60.0.8192.978 1 1
+chrome20.0.1115.1 1 1
+chrome40.0.2299.861 1 1
+chrome69.0.3497.100 569 138
+chrome50.0.9754.760 1 1
+chrome59.0.3071.104 29 3
+msie6.0 181 181
+chrome50.0.2307.511 1 1
+chrome45.0.3542.432 1 1
+chrome58.0.3554.235 1 1
+chrome53.0.4868.937 1 1
+chrome57.0.4464.802 1 1
+opera57.0.3098.76 28 2
+chrome55.0.6045.536 1 1
+chrome39.0.9814.70 1 1
+chrome58.0.3029.110 25 25
+safari12.0.1 220 20
+chrome59.0.6774.118 1 1
+chrome44.0.6755.101 1 1
+opera11.52 2 2
+firefox40.1 90 90
+opera44.5.0162.5434 1 1
+firefox45.62.15 2 2
+chrome59.0.8374.39 1 1
+chrome50.0.4607.399 1 1
+chrome52.0.9733.871 1 1
+chrome47.0.3660.897 1 1
+chrome49.0.4194.386 1 1
+chrome50.0.1659.192 1 1
+chrome47.0.7984.591 1 1
+chrome58.0.9466.31 1 1
+chrome48.0.2934.191 1 1
+chrome56.0.4324.902 1 1
+cloudflare 3 3
+chrome48.0.8697.656 1 1
+chrome59.0.3212.775 1 1
+chrome49.0.1827.957 1 1
+chrome53.6.1731.5469 2 2
+chrome55.0.8558.72 1 1
+chrome50.0.4241.284 1 1
+chrome57.0.5507.393 1 1
+chrome55.0.3414.631 1 1
+chrome45.0.9246.56 1 1
+chrome40.0.2538.130 1 1
+chrome57.0.9195.498 1 1
+chrome43.0.3106.235 1 1
+chrome41.0.8487.79 1 1
+chrome40.0.4936.361 1 1
+chrome50.0.1351.303 1 1
+chrome68.0.3440.84 102 49
+chrome57.0.2987.133 2 2
+chrome39.0.8703.157 1 1
+chrome42.0.9353.534 1 1
+chrome41.0.9998.489 1 1
+chrome49.0.5004.866 1 1
+chrome55.0.9635.639 1 1
+chrome61.0.3163.98 191 31
+chrome49.0.5077.280 1 1
+chrome56.0.9436.934 1 1
+chrome53.0.3128.69 1 1
+chrome53.6.1424.7796 2 2
+chrome54.0.3742.514 1 1
+chrome55.0.4576.124 1 1
+chrome51.0.9837.440 1 1
+chrome40.0.5666.924 1 1
+chrome56.0.1660.262 1 1
+opera9.00 12 12
+chrome56.0.8436.536 1 1
+chrome59.0.7133.839 1 1
+chrome51.0.9335.151 1 1
+firefox31.0 5 5
+chrome65.0.3325.209 1 1
+chrome57.0.5115.302 1 1
+chrome58.0.2491.784 1 1
+chrome54.0.6459.683 1 1
+chrome58.0.3798.3 1 1
+chrome49.0.8746.267 1 1
+chrome47.0.7964.880 1 1
+chrome43.0.6567.71 1 1
+chrome30.0.1599.66 62 62
+chrome40.0.9117.234 1 1
+safari11.1 50 3
+firefox52.59.12 2 2
+chrome54.0.7427.484 1 1
+chrome53.0.8879.781 1 1
+chrome59.0.9047.785 1 1
+chrome42.0.5190.95 1 1
+chrome55.0.5135.284 1 1
+chrome55.0.5911.293 1 1
+chrome58.0.7109.476 1 1
+opera53.0.2907.68 3 3
+chrome41.0.2272.118 179 7
+chrome52.0.2328.394 1 1
+chrome52.0.1294.629 1 1
+chrome55.0.6062.142 1 1
+chrome57.0.5942.151 1 1
+chrome57.5.0731.6003 2 2
+chrome58.0.2381.442 1 1
+chrome58.0.6408.474 1 1
+chrome48.0.8630.873 1 1
+chrome40.0.5070.467 1 1
+chrome52.0.2877.42 1 1
+chrome52.0.3826.50 1 1
+chrome59.0.2707.929 1 1
+chrome40.0.8279.442 1 1
+chrome27.0.1453.116 1 1
+chrome65.0.3325.146 1 1
+chrome40.0.9669.368 1 1
+opera10.54 1 1
+chrome45.0.6739.442 1 1
+chrome55.0.6203.1 1 1
+chrome39.0.3443.599 1 1
+chrome52.0.1382.807 1 1
+firefox54.0 1 1
+chrome55.0.4535.989 1 1
+chrome50.0.9474.808 1 1
+chrome54.0.8036.750 1 1
+chrome52.0.7119.626 1 1
+chrome53.0.1516.797 1 1
+msie7.0 113 35
+chrome47.0.3511.286 1 1
+chrome48.0.3902.925 1 1
+chrome53.6.1734.6007 2 2
+safari5.4.9 2 2
+chrome47.0.2345.368 1 1
+chrome54.0.6879.471 1 1
+firefox50.0 627 39
+chrome44.0.8590.260 1 1
+chrome54.0.2915.391 1 1
+chrome49.0.6819.870 1 1
+chrome43.0.3016.841 1 1
+chrome58.0.4799.421 1 1
+chrome47.0.4198.469 1 1
+chrome43.0.5670.970 1 1
+chrome48.0.2077.806 1 1
+chrome57.0.9647.29 1 1
+chrome60.0.4256.990 1 1
+firefox7.0.1 78 78
+chrome46.0.6775.650 1 1
+chrome47.0.2526.73 1 1
+chrome43.0.5146.660 1 1
+chrome41.0.3313.320 1 1
+chrome45.0.7324.555 1 1
+firefox52.55.92 1 1
+chrome42.0.1889.948 1 1
+chrome49.0.4547.608 1 1
+chrome45.0.1595.736 1 1
+chrome39.0.7505.53 1 1
+chrome55.0.5764.350 1 1
+firefox16.0.1 2 2
+chrome57.5.0826.6098 2 2
+chrome45.0.9548.4 1 1
+chrome52.0.2835.81 1 1
+chrome56.2.7956.2684 2 2
+chrome57.4.0346.5618 2 2
+android 651 47
+chrome53.0.5202.107 1 1
+chrome41.0.6781.303 1 1
+firefox52.0 771 131
+chrome53.0.7056.129 1 1
+chrome28.0.1500.95 1 1
+chrome49.0.8030.662 1 1
+chrome40.0.9852.422 1 1
+chrome44.0.8743.380 1 1
+chrome53.5.0894.5522 2 2
+chrome73.0.3636.0 44 1
+chrome52.0.6423.693 1 1
+chrome26.0.1410.65 1 1
+chrome39.0.4369.460 1 1
+chrome43.0.1778.287 1 1
+chrome53.0.3501.920 1 1
+chrome53.0.7557.233 1 1
+chrome47.0.7407.84 1 1
+chrome43.0.9189.364 1 1
+chrome54.0.2840.98 1 1
+chrome56.0.9476.410 1 1
+chrome55.0.2897.98 2 2
+opera12.15 32 3
+chrome49.0.7823.518 1 1
+chrome43.0.3905.526 1 1
+chrome43.0.4482.78 1 1
+opera40.6.1179.7441 2 2
+chrome52.0.5679.60 1 1
+chrome58.0.1004.781 1 1
+chrome53.0.7681.173 1 1
+chrome47.0.8907.224 1 1
+chrome48.0.3558.59 1 1
+chrome59.0.4843.420 1 1
+chrome52.0.3175.163 1 1
+chrome50.0.1267.650 1 1
+chrome40.0.3564.514 1 1
+chrome44.0.6620.99 1 1
+chrome38.0.2125.102 28 2
+chrome46.0.6807.644 1 1
+chrome56.0.3603.996 1 1
+chrome60.0.9995.752 1 1
+chrome41.0.9676.468 1 1
+chrome55.0.7673.954 1 1
+chrome39.0.2635.55 1 1
+chrome60.0.2074.125 1 1
+chrome51.0.3799.908 1 1
+chrome50.0.5352.843 1 1
+chrome54.0.6733.834 1 1
+chrome56.0.7986.276 1 1
+chrome59.0.1293.561 1 1
+chrome58.0.3499.507 1 1
+firefox45.68.21 2 2
+opera40.6.1779.6041 2 2
+chrome49.0.3156.130 1 1
+safari10.1.2 38 4
+chrome51.0.8463.102 1 1
+chrome49.0.9672.916 1 1
+chrome40.0.4538.279 1 1
+chrome43.0.5574.731 1 1
+chrome48.0.9589.102 1 1
+chrome40.0.8156.134 1 1
+chrome43.0.8425.711 1 1
+chrome45.0.8952.630 1 1
+firefox45.61.08 2 2
+chrome55.0.7465.697 1 1
+chrome57.0.4864.151 1 1
+chrome39.0.2595.722 1 1
+firefox3.6.1 1 1
+chrome53.6.1279.5907 2 2
+chrome60.0.3112.101 4 4
+chrome48.0.4206.275 1 1
+chrome62.0.3202.89 1 1
+chrome56.2.7056.1784 2 2
+chrome43.0.8238.600 1 1
+chrome40.0.8082.223 1 1
+chrome59.0.3096.854 1 1
+chrome50.0.2186.119 1 1
+chrome42.0.1878.139 1 1
+chrome51.0.4933.265 1 1
+chrome41.0.5824.325 1 1
+chrome59.0.8189.838 1 1
+chrome53.0.2896.198 1 1
+chrome58.0.8087.529 1 1
+opera12.16 115 12
+chrome45.0.3611.716 1 1
+firefox52.52.09 2 2
+chrome58.0.8154.159 1 1
+chrome58.0.3029.83 82 4
+firefox55.0 57 5
+chrome52.0.7912.462 1 1
+chrome44.0.8250.40 1 1
+firefox2.0.0.6 6 3
+chrome51.0.4733.456 1 1
+chrome53.0.6375.652 1 1
+chrome43.0.9737.864 1 1
+msie5.00 42 42
+chrome42.0.1842.264 1 1
+chrome43.0.9421.389 1 1
+mozilla 711 635
+chrome48.0.1866.361 1 1
+chrome43.0.6265.496 1 1
+chrome48.0.1621.263 1 1
+chrome60.0.2384.210 1 1
+chrome50.0.7314.509 1 1
+chrome58.0.5224.1 1 1
+chrome43.0.2312.446 1 1
+chrome44.0.9223.975 1 1
+chrome59.0.6228.5 1 1
+chrome56.0.8682.751 1 1
+chrome47.0.1317.354 1 1
+chrome54.0.2765.874 1 1
+chrome69.0.3497.91 22 1
+chrome51.0.1209.248 1 1
+chrome55.0.8373.140 1 1
+chrome42.0.7697.712 1 1
+chrome59.0.3051.43 1 1
+chrome59.0.9692.739 1 1
+chrome53.0.2568.77 1 1
+chrome56.0.6864.84 1 1
+chrome41.0.6620.536 1 1
+chrome59.0.7638.273 1 1
+chrome56.0.8972.648 1 1
+chrome40.0.4578.977 1 1
+chrome39.0.9306.118 1 1
+chrome57.0.7678.27 1 1
+chrome42.0.9513.144 1 1
+chrome48.0.6228.838 1 1
+chrome42.0.6625.536 1 1
+chrome49.0.8890.112 1 1
+chrome40.0.2394.96 1 1
+chrome56.0.5154.835 1 1
+chrome39.0.6272.855 1 1
+chrome44.0.4312.173 1 1
+chrome58.0.6890.878 1 1
+chrome49.0.8795.121 1 1
+chrome46.0.3172.815 1 1
+chrome49.0.8543.340 1 1
+chrome59.0.7967.894 1 1
+chrome47.0.2526.83 18 1
+chrome55.0.2845.552 1 1
+chrome57.5.0860.5132 2 2
+chrome47.0.4867.750 1 1
+chrome47.0.6884.172 1 1
+chrome59.0.3087.516 1 1
+chrome54.0.5854.880 1 1
+chrome54.0.3539.198 1 1
+chrome57.0.5563.87 1 1
+chrome59.0.3300.983 1 1
+chrome58.0.6000.542 1 1
+chrome55.0.4801.380 1 1
+chrome58.0.8463.503 1 1
+chrome47.0.8986.82 1 1
+chrome55.1.6484.0112 2 2
+chrome40.0.8532.702 1 1
+safari6.0.3 2 2
+chrome40.0.2180.489 1 1
+chrome65.0.3325.109 208 30
+chrome46.0.4014.218 1 1
+chrome57.4.9671.4309 1 1
+chrome42.0.1962.906 1 1
+chrome56.0.3894.835 1 1
+chrome65.0.3325.230 2 0
+chrome42.0.8539.579 1 1
+chrome57.0.6319.348 1 1
+chrome46.0.5648.525 1 1
+chrome40.0.6072.730 1 1
+firefox64.0 3306 257
+chrome42.0.6362.690 1 1
+chrome40.0.4009.102 1 1
+firefox52.53.90 2 2
+chrome56.0.7032.223 1 1
+chrome60.0.4092.750 1 1
+chrome55.0.9223.199 1 1
+opera54.0.2952.51 8 8
+chrome45.0.5929.839 1 1
+chrome46.0.4265.843 1 1
+chrome59.0.6752.598 1 1
+chrome51.0.4200.301 1 1
+chrome50.0.1836.328 1 1
+chrome56.3.7324.2052 2 2
+chrome44.0.6520.353 1 1
+chrome43.0.1199.244 1 1
+chrome42.0.6339.993 1 1
+firefox38.0 3 3
+chrome60.0.2780.467 1 1
+chrome48.0.2335.758 1 1
+chrome51.0.1833.974 1 1
+chrome44.0.8713.592 1 1
+opera19.0.1326.56 3 3
+chrome46.0.4580.10 1 1
+chrome53.7.2880.8052 2 2
+firefox14.0.1 1 1
+chrome39.0.2115.795 1 1
+chrome59.0.1231.667 1 1
+chrome54.0.5220.403 1 1
+chrome53.0.1485.686 1 1
+chrome55.0.4681.379 1 1
+chrome40.0.5740.711 1 1
+chrome46.0.5555.951 1 1
+chrome54.0.8254.462 1 1
+chrome46.0.4884.581 1 1
+chrome59.0.3831.757 1 1
+chrome59.0.4517.26 1 1
+chrome44.0.5925.214 1 1
+firefox63.0 31954 18992
+chrome51.0.7238.515 1 1
+chrome46.0.2490.76 331 23
+chrome60.0.2462.947 1 1
+chrome61.0.3163.100 791 682
+chrome46.0.1453.742 1 1
+chrome24.0.1312.57 1 1
+chrome42.0.6088.783 1 1
+chrome55.0.1488.750 1 1
+chrome53.0.8932.270 1 1
+firefox3.0.2 2 2
+chrome54.0.3603.303 1 1
+chrome54.8.3854.9127 1 1
+chrome59.0.8573.376 1 1
+chrome44.0.6565.411 1 1
+chrome53.0.2785.143 95 86
+chrome56.2.7855.2582 2 2
+firefox45.65.02 2 2
+chrome55.0.9837.440 1 1
+chrome59.0.8017.49 1 1
+chrome60.0.8853.643 1 1
+chrome45.0.4607.110 1 1
+chrome54.0.9677.874 1 1
+chrome49.0.1207.53 1 1
+chrome44.0.2438.794 1 1
+chrome58.0.2544.474 1 1
+chrome51.0.7195.664 1 1
+chrome44.0.9464.416 1 1
+chrome44.0.9888.708 1 1
+chrome49.0.3870.973 1 1
+chrome68.0.3440.91 294 13
+chrome44.0.7890.800 1 1
+chrome43.0.3083.996 1 1
+chrome43.0.7319.602 1 1
+chrome50.0.5388.189 1 1
+chrome49.0.4097.298 1 1
+chrome39.0.8811.710 1 1
+chrome61.0.3163.69 32 3
+chrome23.0.1271.97 6 6
+chrome58.0.4678.810 1 1
+chrome57.0.3902.681 1 1
+konqueror4.9 2 2
+chrome55.0.7145.730 1 1
+chrome42.0.8106.829 1 1
+firefox52.40.97 3 3
+chrome56.0.2160.717 1 1
+chrome39.0.1664.872 1 1
+chrome59.0.1606.912 1 1
+chrome47.0.9357.855 1 1
+chrome46.0.2167.580 1 1
+chrome57.4.9850.4122 1 1
+chrome48.0.3598.520 1 1
+firefox45.61.24 2 2
+chrome45.0.1481.726 1 1
+chrome68.0.3398.0 1 1
+chrome51.0.3398.711 1 1
+chrome52.0.8209.403 1 1
+chrome53.0.1935.683 1 1
+chrome46.0.2526.684 1 1
+chrome66.0.3359.181 25 25
+chrome51.0.5431.959 1 1
+chrome54.0.1536.455 1 1
+chrome53.7.3363.8635 2 2
+chrome42.0.1582.960 1 1
+chrome51.0.5308.185 1 1
+firefox48.0 47 18
+chrome55.0.2883.87 2 2
+chrome41.0.1641.728 1 1
+chrome50.0.9970.606 1 1
+chrome66.0.3359.117 2 2
+chrome53.0.8767.715 1 1
+chrome49.0.1846.72 1 1
+chrome56.2.7946.2674 1 1
+chrome60.0.3112.107 61 2
+chrome53.0.3253.405 1 1
+firefox3.5.2 8 8
+chrome54.0.2460.928 1 1
+chrome57.0.1186.611 1 1
+chrome41.0.6141.110 1 1
+chrome53.6.1121.7493 2 2
+firefox45.0 4 4
+chrome44.0.2403.157 45 2
+firefox60.0 540 45
+chrome55.0.2321.254 1 1
+chrome59.0.8291.103 1 1
+chrome54.0.5267.95 1 1
+chrome53.0.8642.843 1 1
+chrome49.0.8547.197 1 1
+chrome59.0.7062.151 1 1
+chrome55.0.2883.91 352 31
+chrome58.0.4211.193 1 1
+chrome40.0.6339.435 1 1
+chrome50.0.8908.46 1 1
+chrome48.0.3397.305 1 1
+chrome57.0.7246.195 1 1
+chrome39.0.7986.919 1 1
+chrome50.0.1886.172 1 1
+chrome46.0.3077.6 1 1
+chrome56.0.2958.19 2 2
+chrome53.0.9669.923 1 1
+chrome53.0.2449.102 1 1
+chrome67.0.3396.0 1 1
+chrome49.0.7982.822 1 1
+Unknown 189 187
+chrome58.0.3578.360 1 1
+chrome45.0.5313.147 1 1
+chrome41.0.6962.651 1 1
+chrome55.0.3270.84 1 1
+chrome42.0.4961.52 1 1
+chrome56.0.7389.888 1 1
+chrome48.0.4808.951 1 1
+firefox58.0 3 3
+chrome43.0.7145.650 1 1
+chrome49.0.8580.12 1 1
+firefox1.0.7 3 3
+chrome57.0.1702.60 1 1
+safari9.0 442 56
+chrome67.0.3396.99 24 24
+chrome45.0.2454.101 9 7
+chrome59.0.3868.943 1 1
+chrome53.0.5534.678 1 1
+chrome41.0.7012.700 1 1
+chrome53.0.5872.523 1 1
+chrome50.0.2684.47 2 2
+opera36.0.2130.32 1 1
+chrome59.0.8656.813 1 1
+chrome47.0.7215.705 1 1
+chrome57.5.0117.5845 2 2
+chrome39.0.8317.404 1 1
+chrome56.0.9230.810 1 1
+chrome46.0.7756.224 1 1
+chrome50.0.1231.77 1 1
+chrome49.0.9664.643 1 1
+chrome40.0.5005.553 1 1
+chrome51.0.9742.149 1 1
+chrome56.0.1906.766 1 1
+chrome48.0.7104.658 1 1
+chrome50.0.9226.632 1 1
+msie4.00 39 39
+chrome60.0.3112.50 40 6
+chrome58.0.6920.509 1 1
+chrome57.4.9878.4505 2 2
+chrome52.0.7502.522 1 1
+chrome57.0.4010.336 1 1
+firefox2.0.0.13 11 11
+chrome56.0.9002.91 1 1
+chrome60.0.3112.78 31 3
+chrome47.0.7509.154 1 1
+chrome60.0.5652.820 1 1
+chrome54.0.2993.521 1 1
+chrome52.0.4962.953 1 1
+chrome55.0.4440.673 1 1
+chrome46.0.8662.910 1 1
+chrome59.0.6913.265 1 1
+chrome56.0.6569.764 1 1
+chrome51.0.9271.626 1 1
+chrome59.0.1085.997 1 1
+chrome60.0.5939.934 1 1
+chrome59.0.7483.655 1 1
+chrome40.0.5090.789 1 1
+chrome55.0.2994.690 1 1
+chrome58.0.6682.590 1 1
+chrome39.0.3997.448 1 1
+chrome58.0.6030.529 1 1
+chrome58.0.9518.28 1 1
+opera40.6.1183.6455 2 2
+chrome54.0.4995.28 1 1
+opera36.0.2130.80 248 99
+chrome55.0.6576.398 1 1
+chrome40.0.5889.89 1 1
+chrome41.0.9024.308 1 1
+chrome43.0.3892.907 1 1
+chrome57.0.6687.197 1 1
+chrome46.0.7455.691 1 1
+chrome49.0.4760.842 1 1
+chrome43.0.7551.377 1 1
+chrome50.0.8951.640 1 1
+chrome57.0.6223.755 1 1
+chrome58.0.1199.475 1 1
+chrome54.0.6727.233 1 1
+chrome50.0.7589.88 1 1
+chrome51.0.2522.754 1 1
+chrome57.0.7521.393 1 1
+chrome53.0.9021.549 1 1
+chrome43.0.4568.575 1 1
+chrome51.0.5881.940 1 1
+chrome34.0.1847.76 48 3
+safari11.0 711 39
+chrome53.0.4614.626 1 1
+chrome65.0.3325.183 2 2
+chrome43.0.7911.913 1 1
+chrome39.0.1006.247 1 1
+chrome46.0.4462.502 1 1
+chrome57.5.0342.5614 1 1
+chrome47.0.8438.814 1 1
+chrome43.0.3640.569 1 1
+epiphany 1 1
+chrome47.0.2666.924 1 1
+chrome56.0.8843.102 1 1
+chrome67.0.3381.1 1 1
+chrome58.0.2193.920 1 1
+chrome56.0.3081.313 1 1
+chrome40.0.9564.640 1 1
+chrome47.0.1085.738 1 1
+chrome50.0.9892.399 1 1
+chrome45.0.3498.715 1 1
+chrome58.0.9674.673 1 1
+chrome26.0.1410.43 3 3
+chrome58.0.1184.744 1 1
+chrome4.0.202.2 1 1
+chrome44.0.3706.780 1 1
+chrome46.0.6395.95 1 1
+chrome49.0.2079.661 1 1
+opera8.01 21 21
+chrome55.1.6955.1683 2 2
+chrome54.0.3375.40 1 1
+chrome53.6.1976.6248 2 2
+opera44.5.1539.6801 1 1
+chrome56.0.9608.237 1 1
+firefox22.0 10 10
+firefox3.6.28 5 5
+chrome59.0.4277.927 1 1
+chrome57.0.7804.896 1 1
+chrome60.0.5982.370 1 1
+chrome46.0.6537.986 1 1
+chrome58.0.5544.492 1 1
+chrome54.0.3084.550 1 1
+chrome67.0.3396.62 5 5
+chrome40.0.4271.728 1 1
+chrome58.0.2737.390 1 1
+chrome51.0.9878.266 1 1
+chrome60.0.8888.328 1 1
+chrome60.0.6629.530 1 1
+chrome44.0.4696.279 1 1
+chrome44.0.6571.331 1 1
+chrome53.0.6740.115 1 1
+opera49.0.2361.133821 31 2
+chrome43.0.7714.306 1 1
+chrome63.0.3239.84 2 2
+chrome46.0.9151.970 1 1
+chrome49.0.5551.48 1 1
+chrome54.0.2555.656 1 1
+chrome45.0.1409.221 1 1
+chrome55.0.9900.122 1 1
+chrome45.0.8413.286 1 1
+chrome42.0.8127.210 1 1
+chrome59.0.7209.97 1 1
+opera44.4.0915.5288 2 2
+chrome57.0.3863.612 1 1
+chrome47.0.9918.73 1 1
+chrome53.6.1447.6719 1 1
+chrome47.0.8800.118 1 1
+chrome58.0.8805.110 1 1
+chrome57.0.6759.529 1 1
+chrome42.0.9522.560 1 1
+chrome43.0.9994.586 1 1
+chrome60.0.6679.597 1 1
+chrome45.0.6061.191 1 1
+chrome55.0.6065.973 1 1
+chrome41.0.4892.87 1 1
+chrome52.0.6806.35 1 1
+chrome59.0.4391.344 1 1
+chrome42.0.4786.242 1 1
+chrome54.0.1259.334 1 1
+chrome57.0.6800.253 1 1
+chrome41.0.2693.141 1 1
+chrome53.0.2062.719 1 1
+chrome45.0.1168.51 1 1
+chrome41.0.8295.320 1 1
+firefox52.60.12 2 2
+chrome46.0.9585.690 1 1
+chrome47.0.3419.496 1 1
+chrome47.0.4972.123 1 1
+chrome54.0.9990.895 1 1
+firefox15.0.1 3 3
+chrome56.1.6678.1306 2 2
+opera37.3.2254.133321 48 1
+chrome51.0.7063.306 1 1
+safari12.0 1701 137
+opera56.0.3051.43 27 1
+chrome52.0.6674.283 1 1
+chrome50.0.2859.616 1 1
+chrome59.0.5725.858 1 1
+chrome47.0.1954.318 1 1
+chrome48.0.1585.417 1 1
+chrome39.0.4939.650 1 1
+chrome52.0.1322.122 1 1
+chrome53.0.7641.907 1 1
+chrome57.0.9383.458 1 1
+safari8.0 13 3
+chrome52.0.4563.301 1 1
+chrome42.0.7184.303 1 1
+chrome44.0.4935.799 1 1
+chrome59.0.1144.137 1 1
+chrome49.0.9428.102 1 1
+firefox11.0 2 0
+chrome58.0.6301.849 1 1
+chrome43.0.2147.184 1 1
+chrome59.0.6290.508 1 1
+netscape4.61 3 3
+chrome39.0.9890.519 1 1
+chrome56.0.4781.231 1 1
+chrome53.0.1912.641 1 1
+opera44.5.1920.6292 1 1
+chrome45.0.6903.307 1 1
+firefox46.0 1 1
+chrome60.0.7746.846 1 1
+chrome47.0.9537.426 1 1
+chrome50.0.9935.382 1 1
+chrome43.0.1972.713 1 1
+chrome44.0.7777.948 1 1
+chrome54.0.2259.885 1 1
+chrome49.0.5454.660 1 1
+chrome60.0.5711.209 1 1
+firefox52.64.17 2 2
+chrome44.0.6697.682 1 1
+chrome30.0.1599.103 19 1
+chrome53.0.2032.159 1 1
+chrome51.0.3778.223 1 1
+chrome57.0.8596.166 1 1
+chrome48.0.4746.980 1 1
+chrome50.0.8676.381 1 1
+chrome42.0.8148.905 1 1
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 27
+Mozilla/5.0_(compatible;_evc-batch/2.0) 20181213142929
+Opera/9.80_(Android;_Opera_Mini/7.5.35199/125.45;_U;_uk)_Presto/2.12.423_Version/12.16 20181216191629
+Mozilla/5.0_zgrab/0.x_(compatible;_Researchscan/t12sns;__http://researchscan.comsys.rwth-aachen.de) 20181217023050
+Xenu_Link_Sleuth/1.3.8 20181210230748
+Mozilla/5.0_()_AppleWebKit/533.05.57_(KHTML,_like_Gecko)_Chrome/53.6.1674.6946_Safari/530.75_Edge/34.71255 20181204182324
+Mozilla/5.0_zgrab/0.x_(compatible;_Researchscan/t13rl;__http://researchscan.comsys.rwth-aachen.de) 20181216195809
+Mozilla/5.0_(compatible;_YandexImages/3.0;__http://yandex.com/bots) 20181205131513
+Mozilla/5.0_zgrab/0.x 20181213155547
+}__test|O:21: 20181211202137
+ltx71_-_(http://ltx71.com/) 20181217224112
+Opera/9.27 20181213114406
+HTTPing_v2.5 20181217120739
+Mozilla/5.0_(compatible;_AhrefsBot/5.2;__http://ahrefs.com/robot/) 20181205211045
+Disqus/1.0 20181217124452
+Mozilla/5.0_(compatible;_U;_AnyEvent-HTTP/2.24;__http://software.schmorp.de/pkg/AnyEvent) 20181207000928
+WhatsApp/2.18.361_A 20181216174656
+weborama-fetcher_(_http://www.weborama.com) 20181213181041
+Mozilla/5.0_(compatible;_Google-Site-Verification/1.0) 20181212021122
+Visited_by_http://tools.geek-tools.org 20181208194406
+Mozilla/5.0_zgrab/0.x_(compatible;_Researchscan/t12ca;__http://researchscan.comsys.rwth-aachen.de) 20181213041349
+Mozilla/5.0_(compatible;_Cloudflare-AMP/1.0;__https://amp.cloudflare.com/doc/fetcher.html)_AppleWebKit/534.34 20181211152335
+Scrapy/1.4.0_(_http://scrapy.org) 20181201181912
+win7ie80 20181203214325
+Validator.nu/LV_http://validator.w3.org/services 20181204152835
+Mozilla/5.0_(compatible;_Seekport_Crawler;_http://seekport.com/) 20181204180940
+Mozilla/5.0_()_AppleWebKit/533.03.56_(KHTML,_like_Gecko)_Chrome/53.6.1447.6719_Safari/530.73_Edge/34.79986 20181211132445
+Mozilla/5.0_(compatible;_GroupHigh/1.0;__http://www.grouphigh.com/) 20181216005535
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 17
+Apache-HttpClient/4.5.2_(Java/1.8.0_151) 20181214110539
+Apache-HttpClient/4.4.1_(Java/1.8.0_91) 20181212141116
+Xenu_Link_Sleuth/1.3.8 20181210230748
+ltx71_-_(http://ltx71.com/) 20181217224112
+}__test|O:21: 20181211202137
+Microsoft_Office_Word_2014 20181217104220
+ipad 20181214051844
+HTTPing_v2.5 20181217120739
+Disqus/1.0 20181217124452
+WhatsApp/2.18.361_A 20181216174656
+weborama-fetcher_(_http://www.weborama.com) 20181213181041
+Visited_by_http://tools.geek-tools.org 20181208194406
+Apache-HttpClient/4.5.2_(Java/1.8.0_181) 20181202175307
+Scrapy/1.4.0_(_http://scrapy.org) 20181201181912
+Validator.nu/LV_http://validator.w3.org/services 20181204152835
+win7ie80 20181203214325
+Apache-HttpClient/4.4.1_(Java/1.8.0_45) 20181210092107
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 21796 22611
+From1 65 65
+From2 834 835
+From3 754 996
+From4 5706 56609
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 3
+google 814 814
+mailru 3 3
+yandex 17 18
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 243
+http://grekokatolicy-baniemazurskie.pl/index/main_pl.php 47 47
+http://fialka.tomsk.ru 25 25
+http://www.harazd.net/index.php 21 21
+http://disq.us/t/397g3fp 20 20
+http://m.facebook.com 15 15
+https://translate.googleusercontent.com/translate_c 15 257
+http://skinali.photo-clip.ru 12 12
+http://www.grekokatolicy-baniemazurskie.pl/index/main_pl.php 12 12
+https://beclean-nn.ru 12 12
+https://vodabur.by/index.php 12 12
+http://www.bitcoinsxt.com/bitpay-ico-nahodyatsya-pod-ugrozoj-pri-slabom-bitkoine/ 1 1
+https://nastol.net 1 1
+http://localprint.ru/listovki 1 1
+https://nastol.net/interer/ 2 2
+https://tonerbox.kz/g3632115-batarejnye-bloki-meike 1 1
+https://pl.m.wikipedia.org 3 3
+http://narosty.com 6 6
+https://deutsche-poesie.com 3 3
+https://musicnotes.info/noty-dlya-violoncel-skachat-bestplatno 1 1
+http://time-japan.ru/pages/kak-vybrat-chasy 1 1
+http://grekokatolicy-baniemazurskie.pl/index/main_uk.php 8 8
+http://www.bitcoinsxt.com 1 1
+https://uznat-okato.ru/yuzhnyij-federalnyij-okrug/ 1 1
+http://konsulat-ukraina.pl/najwazniejsze/ 1 1
+http://poshukach.com 1 1
+https://videotop.biz 3 3
+https://spb.60minut.ru/hotel/sh-na-mayakovskogo17 1 1
+http://besedka-hotel.ru 4 4
+https://ledflux.ru/svetodiodnye-lenty/ 1 1
+https://bathhousepro.ru/catalog/bannye_veniki/ 1 1
+https://shop.weststyle.company/cholovichyi-odiah/futbolky 2 2
+https://konica.kz/printers-epson/ 1 1
+http://www.drugstoreforyou.com 2 2
+https://pills24h.com 2 2
+http://tattoonavigator.ru/tatu-polinezii.html 1 1
+https://mir-peska.com.ua/scheben/ 1 1
+http://sta-grand.ru 3 3
+http://b.bazylianie.pl 4 4
+https://workdoma.ru 1 1
+http://osbm.info 2 2
+https://moyparnik.com 3 3
+https://carivka.com.ua 2 2
+https://kabinet-tricolor.ru 3 3
+http://stuppler.net 1 1
+http://localprint.ru/flaiery 1 1
+http://www.kosciol.pl/article.php 3 3
+http://medicaltranslate.ru/category/novosti/ 2 2
+http://remkompov.ru/remont-kompyuterov-novo-peredelkino.htm 2 2
+https://spb.60minut.ru/elizarovskaya 1 1
+http://hochukredit.com/kreditnye-karty-s-lgotnym-periodom/ 1 1
+https://www.eurocredit.xyz 3 3
+http://belreferatov.net 6 6
+http://medicaltranslate.ru 1 1
+http://100krokiv.info/2017/02/truh-hryhorij-andrij-chsvv/ 2 2
+http://kinostar.online 3 3
+https://kkedr.com 1 1
+https://tonerbox.kz/g3632123-zaryadnye-ustrojstva-dlya 1 1
+https://prolp24.ru/catalog/raznoe/ 1 1
+https://sharestory.me/body-positive/ 1 1
+https://workdoma.ru/category/samoobrazovanie/ 2 2
+https://bikra-m.ru/catalog/georeshetki/ 1 1
+https://nastol.net/oruzhie/ 1 1
+http://magnetic-bracelets.ru 11 11
+https://prorab59.ru/p283421661-aurora-maximma-1800.html 1 1
+https://bathhousepro.ru/catalog/ 1 1
+https://nastol.net/rendering/ 1 1
+https://prorab59.ru/p340112688-suntek-1500-stabilizator.html 1 1
+https://iskussnica.ru 3 3
+http://otelinachas.ru/semenovskay 1 1
+http://remkompov.ru/kompyuternaya-pomosch-odincovo.htm 1 1
+http://www.poljot.pro/catalog/vostok_europe/ 1 1
+https://coscat.su 1 1
+https://www.facebook.com 6 6
+https://kabinet-tinkoff.ru 3 3
+http://vector.peskostryi.ru 2 2
+http://hochukredit.com/mangomoney-lichnyj-kabinet-online-zaim/ 1 1
+https://mir-peska.com.ua/keramzit/ 1 1
+https://luchshierecepty.ru/video-recepty 2 2
+https://translate.googleusercontent.com/translate_p 1 1
+https://workdoma.ru/category/vidy-zarabotka/ 1 1
+http://dojki-devki.ru 3 3
+https://mybuh.kz/useful/bukhgalterskiy-konsalting.html 4 4
+http://www.tsatu.edu.ua 3 3
+http://time-japan.ru/categories/casio-g-shock-aviator 2 2
+https://expertnews.info/greece/ 1 1
+http://remkompov.ru/kompyuternaya-pomosch-novo-peredelkino.htm 1 1
+http://worldtranslation.org/news/7-art/ 1 1
+https://partizan19.ru 1 1
+http://remkompov.ru/remont-noutbukov-novo-peredelkino.htm 1 1
+http://kozhniebolezni.com 9 9
+https://www.systim.pl/program-do-kadr-i-plac.php 8 8
+https://kabinet-lk-megafon.ru 3 3
+https://news-in.top 4 4
+https://prorab59.ru/p18578136-resanta-ach-800003.html 1 1
+https://mybuh.kz/internet-banking/ 1 1
+http://tattoonavigator.ru/vremennye-tatuirovki.html 1 1
+https://konica.kz/printers/ 2 2
+https://kabinet-online-sberbank.ru 4 4
+http://archwwa.pl/zakony-i-zgromadzenia/ 2 2
+http://sauna-brizgi.ru 5 5
+https://partizan19.ru/catalog/odezhda/mayki-futbolki/polo-pike-multikam.html 1 1
+http://www.kamilianie-zabrze.pl/!old/index.php 1 1
+http://pornobest.su 6 6
+http://b.bazylianie.pl/index.php 1 1
+https://pamjatnik.com.ua 3 3
+http://uzinform.com.ua/index.php 5 5
+https://ledflux.ru/transformatory/bloki-12-volt-ip20/ 1 1
+https://bitcoin-ua.top 4 4
+https://engpoetry.com 3 3
+http://night.60minut.ru/hotel/minima-dinamo-1 1 1
+http://rumamba.com 10 10
+http://otelinachas.ru/okrugvao 1 1
+https://spb.60minut.ru/otely-municipalniy-okrug-ekateringofskiy 1 1
+http://spbnight.60minut.ru/hotel/otel-pestelya-d3 1 1
+https://konica.kz 1 1
+https://tonerbox.kz/g3348367-myshki 1 1
+http://www.so.com/link 1 1
+http://mnogabukaff.net 3 3
+https://konica.kz/remont/ 1 1
+http://3mhotel.ru 1 1
+https://bpro1.top 3 3
+http://night.60minut.ru/hotel/de_art_13_profsojusnaja 1 1
+http://trefnhotel.ru 1 1
+https://okoshkah.com 3 3
+https://luchshierecepty.ru/hudej-vkusno 1 1
+https://prorab59.ru/p18526442-resanta-spn-9000.html 1 1
+https://online-vtb.ru 3 3
+https://spb.60minut.ru/otely-municipalniy-okrug-pulkovskiy-meridian-spb 1 1
+https://coscat.su/sabrina/ 1 1
+http://archwwa.pl 1 1
+https://englishtopic.ru 3 3
+https://slabakam.net 3 3
+https://porndl.org 6 6
+https://web.facebook.com 1 1
+https://pl-pl.facebook.com 2 2
+http://artlife.rv.ua 6 6
+http://zakony-na-swiecie.blogspot.com/2013/10/bazylianie.html 1 1
+https://pamjatnik.com.ua/productions 4 4
+https://spb.60minut.ru/admiralteyskiy 1 1
+http://worldtranslation.org/news/16-religion/ 1 1
+https://m.facebook.com 8 8
+http://ugcc.ua/official/ugcc-today/%D0%86nternetresursi_ukrainskoi_grekokatolitskoi_tserkvi_70056.html 1 1
+http://www.poljot.pro/catalog/chasy_s_mekhanizmom_avtopodzavoda/ 1 1
+https://termokruzhki.com.ua 5 5
+https://termoshop.com.ua 7 7
+http://ruuspeh.ru 4 4
+https://prorab59.ru/p18473243-resanta-ach-1000n1.html 1 1
+https://uk.wikipedia.org 9 9
+https://buyclomidonlaine.com 2 2
+http://medicaltranslate.ru/stoimost/ 2 2
+https://kkedr.com/ebay-gift-cards 1 1
+https://kkedr.com/goldwot 1 1
+http://www.poljot.pro/catalog/nemetskie_chasy/ 1 1
+http://disq.us/t/38xyq6h 12 12
+https://www.seo-tips.top/how-to-search-engine-optimize-your-blog-content/39948320/ 1 1
+https://zhenskiespletni.ru/relationship/unmarried-as-interesting/ 1 1
+http://otelinachas.ru/okrugzao 1 1
+https://ledflux.ru/svetilniki/ 1 1
+https://spb.60minut.ru/moskovskii 1 1
+http://sweet.tv 4 4
+http://remkompov.ru/remont-noutbukov-v-aprelevke.htm 1 1
+http://3mhotel.ru/nomera 3 3
+http://warszawa.wikia.com/wiki/Parafia_Za%C5%9Bni%C4%99cia_Naj%C5%9Bwi%C4%99tszej_Bogurodzicy 5 5
+http://trefnhotel.ru/nomera 1 1
+https://uk.m.wikipedia.org 1 1
+https://expertnews.info/latvija/ 1 1
+https://x-lime.com 8 8
+https://www.blogping.xyz/increase-traffic-to-your-website-with-seo/59206680/ 1 1
+http://doxysexy.com 3 3
+http://allvacancy.ru 5 5
+https://tonerbox.kz/g3632122-akkumulyatory-dlya-fotovideo 1 1
+http://pomoce.lubgens.eu/articles.php 2 2
+http://medicaltranslate.ru/primery-perevodov/ 2 2
+https://kabinet-my-pochtabank.ru 3 3
+http://cerkiew.org/duchowienstwo/ 1 1
+https://zhenskiespletni.ru/beauty/hair-care/ 1 1
+https://www.prjadko.kiev.ua/ritualnye-uslugi/pominalnye-obedy.html 4 4
+https://www.seobook.top/how-to-get-more-traffic-to-website-or-blog-by-doing-seo/39948320/ 2 2
+http://www.bitcoinsxt.com/interesnye-fakty-o-kriptovalyute-bitkoin/ 1 1
+https://xn--80aaif6bu.xn--p1ai/forum/ 1 1
+http://hochukredit.com/platiza-lichnyj-kabinet-online-zaim/ 1 1
+https://g00d.pro/ustanovka-avtorskoj-zashhity-ot-ugona/ 2 2
+https://mir-peska.com.ua/pesok/ 1 1
+https://g00d.pro/autolis-nadezhnyj-kompleks/ 4 4
+https://kkedr.com/prem-world-of-tanks 1 1
+http://worldtranslation.org/news/18-countries-travel/ 1 1
+https://prorab59.ru/p18526417-resanta-spn-5500.html 1 1
+https://lm.facebook.com 12 12
+http://www.kosciol.pl 1 1
+https://www.seobook.top/how-to-get-more-traffic-to-website-or-blog-by-doing-seo/59206680/ 1 1
+https://uznat-okato.ru/privolzhskij-federalnyij-okrug/ 1 1
+http://8xv8.com 4 4
+https://bikra-m.ru/catalog/geomaty/ 1 1
+https://sowhoz.ru 3 3
+https://beauty-lesson.com 4 4
+https://pornhive.org 5 5
+http://localprint.ru/kraftvizitki 1 1
+http://l.facebook.com/l.php 2 2
+https://supermama.top 6 6
+https://partizan19.ru/catalog/binokli-i-monokli/ 1 1
+https://nastol.net/minimalizm/ 1 1
+https://sharestory.me/au-pair-life/ 1 1
+https://med-dopomoga.com 6 6
+https://doggyhealthy.com 6 6
+http://5elementov.ru 6 6
+https://kazlenta.kz 2 2
+http://remkompov.ru/remont-noutbukov-odincovo.htm 1 1
+http://medicaltranslate.ru/otzyvy/ 1 1
+http://elementspluss.ru 10 10
+https://shop.weststyle.company/zhinochyi-odiah 3 3
+https://painting-planet.com 3 3
+http://serialsx.ru 4 4
+http://sssexxx.net 3 3
+http://localprint.ru 1 1
+https://carivka.com.ua/hotels.html 5 5
+http://www.cerkiew.net.pl/index.php 1 1
+https://kkedr.com/accounts-World-of-Tanks-Blitz 1 1
+http://spbnight.60minut.ru/hotel/namarata10 1 1
+https://furor.store/catalog/moccasins-for-women 1 1
+https://eliza-taro.ru 4 4
+http://otelinachas.ru/vdn 1 1
+https://60minut.ru/hotel/eliton 1 1
+https://expertnews.info/hrvatska/ 1 1
+http://trefnhotel.ru/akcii 1 1
+http://remkompov.ru/remont-noutbukov-solncevo.htm 1 1
+https://mybuh.kz/egov-kz/ 1 1
+https://coscat.su/liza/ 2 2
+https://nastol.net/tsvety/ 1 1
+https://tonerbox.kz/p22302622-zamena-matritsy-ekrana.html 1 1
+https://business-online-sberbank.ru 2 2
+http://spbnight.60minut.ru/exibitions 1 1
+https://www.blogping.xyz/increase-traffic-to-your-website-with-seo/39948320/ 1 1
+http://trefnhotel.ru/pravila-razmesheniya 1 1
+http://worldtranslation.org/news/2-auto/ 1 1
+http://tattoonavigator.ru/tatuirovka-zmeya.html 1 1
+http://otelinachas.ru/kyrskaja 1 1
+https://kabinet-my-beeline.ru 2 2
+http://otelinachas.ru/arbatskaya 1 1
+https://rus-lit.com 4 4
+https://fs28.ru 3 3
+https://pl.wikipedia.org 11 11
+https://cattyhealth.com 6 6
+https://l.facebook.com 3 3
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 2
+%d1%83%d0%bb%d1%8c%d0%b3%d1%96%d0%b2%d0%be%d0%ba 3
+bazylianie.pl 1
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 2
+%d1%83%d0%bb%d1%8c%d0%b3%d1%96%d0%b2%d0%be%d0%ba 3
+bazylianie.pl 1
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 8
+403 4 3334
+503 73 100405
+206 135 17164668
+303 33590 0
+401 11 14694
+302 16 2464
+500 233 176989
+404 5842 5530669
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referer
+BEGIN_SIDER_404 1016
+/index.php/owmi-viagra_order_online_pharmacy 1 -
+/blog/wp-includes/wlwmanifest.xml 6 -
+/mysql.sql 4 -
+/index/klasztory/uk_przemysl.php 8 -
+/index.php/owmi-purchase_fasigyne_online 3 -
+/index.php/owmi-hoodia_on_line 3 -
+/index.php/owmi-use_avalide_coupon_online 1 -
+/index.php/owmi-viagra_varata 10 -
+/index.php/owmi-viagra_soft_in_croatia 7 -
+/mysql.sql.gz 4 -
+/index.php/owmi-purchase_lotrisone_in_australia 1 -
+/index.php/owmi-depakote_reviews_for_men 3 -
+/install/ 2 -
+/index.php/owmi-what_is_lipothn 8 -
+/index.php/owmi-female_cialis_usa_sale 8 -
+/media/wp-up.php 1 -
+/index.php/owmi-cheapest_place_to_buy_ginette_35 1 -
+/administrator/images/Koncert_w_Peremyszli_-_Oresta_Kinasz-Commendo_i_Gratia-2018.jpg 10 http://www.bazylianie.pl/administrator/index.php
+/xmlrpc.php 9 -
+/index.php/owmi-mircette_online_australia 1 -
+/index.php/owmi-vagifem_max_dose 10 -
+/index.php/owmi-grifulvin_v_pills_buy_online 1 -
+/index/swieci/uk_welamin.php 7 -
+/index.php/owmi-plavix_shop 3 -
+/press/ 1 -
+/index.php/owmi-tretinoin_0,05_mg_order 2 -
+/index.php/owmi-all_types_clomid_pills 6 -
+/dump.sql.xz 4 -
+/index.php/owmi-prilosec_40_mg_cost 5 -
+/DATABASE.sql 1 -
+/index.php/owmi-suppliers_of_trimox_in_us 1 -
+/test/ 1 -
+/index.php/index/swieci/uk_teodor.php 6 -
+/index.php/owmi-what_does_alti_doxycycline 1 -
+/index.php/owmi-can_vytorin_cause_weight_gain 1 -
+//wp-login.php 3 http://www.google.com.hk
+/index.php/owmi-generic_chloramphenicol_for_sale_on_line 1 -
+/cache/wp-up.php 1 -
+/index.php/owmi-tadalafil_side_effects_treatment 1 -
+/index.php/owmi-thyrox_tablets_online 9 -
+/index.php/owmi-canada_and_amoxycillin 8 -
+/index.php/owmi-rogaine_5_online_in_usa 3 -
+/index.php/owmi-discount_diamox_mg 9 -
+/payload.php 1 -
+/apple-touch-icon-152x152-precomposed.png 2 -
+/index.php/owmi-tegretol_india_pharmacy 3 -
+/index.php/owmi-aciclovir_medicine_online 1 -
+/tmp/vuln2.php 1 -
+/index.php/owmi-order_percocet_on_line_uk 1 -
+/wp-content/plugins/wp-vertical-gallery/readme.txt 1 http://www.bazylianie.pl/wp-content/plugins/wp-vertical-gallery/readme.txt
+/config.sql 1 -
+/index.php/owmi-can_order_amlodipinbesilat_online 1 -
+/index.php/images/oldbazylianie/swieci/images/oldbazylianie/swieci/uk_bazyli.php 2 -
+/index.php/owmi-non_prescription_adalat 5 -
+/components/wp-up.php 1 -
+/ghfhvvaw.php 1 -
+/index.php/owmi-cheap_buy_generic_accutane 1 -
+/index.php/owmi-buspar_online_kaufen 13 -
+/mlolytownyk/pisni.htm 12 http://www.pisni.org.ua/songs/2118498.html
+/index.php/owmi-purchase_beta_val_in_usa 2 -
+/index.php/owmi-baby_aspirin_sale 5 -
+/localhost.sql.gz 4 -
+/index.php/owmi-bisoprololi_fumaras_legal_us 1 -
+/index.php/owmi-beconase_aq_pill_canadian 1 -
+/index.php/owmi-benicar_costco 8 -
+/index.php/owmi-toradol_mg_order 7 -
+/consystem.php 1 -
+/index.php/owmi-seroquel_xr_maximum_dosage 1 -
+/index.php/owmi-metformin_buy_online_india 1 -
+/db_backup.sql 4 -
+/WinSCP.ini 1 -
+/index.php/owmi-wellbutrin_10_mg_cost 6 -
+/backup.sql 4 -
+/images/vuln2.php 1 -
+/users.sql.xz 4 -
+/indes.php 1 -
+/components/com_sexycontactform/fileupload/ 1 -
+/index.php/owmi-tinidazole_for_daily_use_canada 1 -
+/components/com_facileforms/libraries/jquery/uploadify.php 1 -
+/index.php/index/swieci/uk_pawlo.php 16 -
+/index.php/owmi-does_the_alli_weight_loss_pill_work 1 -
+/index.php/owmi-glucophage_dosage_information 1 -
+/index.php/owmi-salbumol_medicine_children 1 -
+/index.php/owmi-amoxiline_pharmacy_order 4 -
+/index.php/owmi-how_to_get_prednisolona_in_australia 1 -
+/db.sql.gz 4 -
+/index.php/aaa-insurance-car-sales-net-ensr 1 -
+/yt.php 1 -
+/index.php/owmi-methotrexate_refill_pack 2 -
+/test1/wp-login.php 1 -
+/index.php/guardian-furniture-protection-phone-number-ensr 1 -
+/index.php/owmi-compazine_compatibility 4 -
+/dnqyvzea.htm 1 -
+/Wisnyk/Wisnyk_holowna.htm 1 -
+/wordpress/wp-includes/wlwmanifest.xml 6 -
+/index.php/owmi-liv_52_usa 9 -
+/index.php/owmi-reviews_on_xenical_120mg 4 -
+/index.php/owmi-plavix_dose_missed 6 -
+/index.php/owmi-western_drug_zyprexa 8 -
+/sql.sql.xz 4 -
+/index.php/owmi-broad_spectrum_antibiotics_side_effects 1 -
+/index.php/owmi-lanoxin_generic_mexico 6 -
+/index.php/owmi-best_site_to_get_viagra 4 -
+/index.php/owmi-prednisone_no_script_canada 1 -
+/index.php/owmi-lamictal_weight_gain_women 1 -
+/lkhvflvyzhi.html 1 -
+/index.php/owmi-etodolac_400_mg_tablet 5 -
+/index.php/owmi-zertalin_pct_buy 5 -
+/index.php/owmi-buy_betoptic_uk 7 -
+/index.php/owmi-what_is_tinidazolum_used_for 1 -
+/index.php/owmi-priligy_generic_australia 1 -
+/index.php/owmi-life_shelf_of_viagra 6 -
+/index.php/owmi-buy_singulair_with_no_script 1 -
+/rzjgbssouilhaal.html 1 -
+/wp-content/plugins/php-event-calendar/readme.txt 1 http://www.bazylianie.pl/wp-content/plugins/php-event-calendar/readme.txt
+/mysqldump.sql 4 -
+/localhost.sql 4 -
+/WS_FTP.ini 1 -
+/index.php/owmi-low_cost_amantadine_online 1 -
+/kbp.htm 4 -
+/index.php/owmi-printable_coupons_for_maxalt 1 -
+/index.php/owmi-permethrin_cats_poisoning 1 -
+/index.php/owmi-what_is_pilex_for 13 -
+/index.php/owmi-levitra_fast_india 5 -
+/index.php/index/swieci/images/oldbazylianie/swieci/index/swieci/uk_teodor.php 1 -
+/index.php/owmi-canadian_drug_company_micardis 1 -
+/wordpress1/wp-login.php 1 -
+/index.php/images/oldbazylianie/swieci/index/swieci/uk_jozafatkoc.php 2 -
+/wp-load-5b7a23c0744615b7a23c0744af.php 1 -
+/index.php/owmi-how_much_is_metronidazol_tablets 1 -
+/mlolytownyk/Molytwy.htm 2 -
+/tmp/.jindex.php 1 -
+/index.php/owmi-over_the_counter_noroxin 2 -
+/.ftpconfig 1 -
+/index.php/owmi-raloxifeno_from_mexico 4 -
+/index.php/owmi-what_is_key_pred_mg_used_to_treat 1 -
+/shell.php 1 -
+/index.php/owmi-pilex_cost 9 -
+/components/com_b2jcontact/b2jcontact.php 1 -
+/index.php/owmi-depakote_on_line_purchase 1 -
+/index.php/owmi-trileptal_over_the_couter 1 -
+/index.php/owmi-how_to_use_viagra_for_best_results 1 -
+/index/archnews/2008/grafika/2008/122/foto.jpg 9 -
+/index/swieci/uk_teodozjusz.php 7 -
+/translate.sql 4 -
+/index.php/owmi-nexium_40_mg_uk 8 -
+/cms/index/index 2 -
+/index.php/index/klasztory/index/swieci/images/oldbazylianie/klasztory/uk_ketrzyn.php 1 -
+/bazylianie.pl 1 -
+/aqchmesl.php 1 -
+/index.php/owmi-prescription_drug_acivir_pills 1 -
+/index.php/owmi-zenegra_canada 7 -
+/index.php/owmi-prevacid_echeck 7 -
+/index.php/owmi-strattera_shop 7 -
+/index.php/owmi-probalan_side_effects_uk 2 -
+/index.php/owmi-femara_daily_use_reviews 1 -
+/index.php/owmi-24_hour_drugstore_hong_kong 6 -
+/index.php/owmi-safe_endep_no_precription 1 -
+/index.php/owmi-probalan_buy_india 4 -
+/index.php/owmi-silagra_canada_head_office 1 -
+/index.php/owmi-generic_advair_available 2 -
+/index.php/owmi-cialis_sublingual_from_canada 1 -
+/index.php/owmi-generic_drug_proventil 6 -
+/modules/mod_simplefileuploadv1.3/mod_simplefileupload.css 1 -
+/index.php/owmi-tetracycline_40_mg_pharmacy 1 -
+/index.php/owmi-cheap_motrin_40_mg 7 -
+/index.php/owmi-voltaren_50_mg_e.c 12 -
+/.vscode/sftp.json 1 -
+/seo_script.php 2 -
+/index.php/owmi-ventolin_hfa_canada 4 -
+/1.sql.xz 4 -
+/po.htm 6 -
+/index.php/aa-how-much-do-extended-warranties-for-cars-cost-ensr 1 -
+/dbdump.sql.gz 4 -
+/ytt.php 1 -
+/index.php/owmi-buy_abana_with_drugs_pharmacy 1 -
+/apple-touch-icon.png 22 -
+/index.php/owmi-dapoxetine_buy_canada 1 -
+/dir.php 1 -
+/index.php/owmi-salbutamol_medicine_children 1 -
+/index.php/owmi-medication_management_online_courses 1 -
+/index.php/index/swieci/uk_jakym.php 17 -
+/index.php/owmi-generic_kelnor_cost 8 -
+/index.php/owmi-nootropil_100_mg 1 -
+/code.php 1 -
+/index.php/owmi-nizoral_no_prescription 3 -
+/components/com_jbcatalog/libraries/jsupload/server/php 1 -
+/index.php/images/oldbazylianie/swieci/index/swieci/uk_andrzej.php 1 -
+/index.php/owmi-trimox_tablets_purchase_on_line 1 -
+/index.php/component/users/ 6 -
+/index.php/owmi-amoxil_medication_uses 1 -
+/wp/ 1 -
+/index.php/owmi-phexin_tablets 8 -
+/cms/wp-includes/wlwmanifest.xml 6 -
+/siz.htm 2 -
+/index.php/owmi-2nd_dose_of_methotrexate_for_ectopic_pregnancy 58 -
+/index.php/index/swieci/index/swieci/images/oldbazylianie/klasztory/index/swieci/uk_jozafatkoc.php 2 -
+//bazylianie.disqus.com/count.js 4 -
+/index.php/owmi-prednisolone_5_mg_tablet 4 -
+/index.php/images/oldbazylianie/swieci/index/swieci/uk_jakym.php 1 -
+/user/registration 4 -
+/index.php/owmi-is_duetact_legal_in_uk 5 -
+/apple-touch-icon-precomposed.png 20 -
+/index.php/owmi-generic_for_ 3 -
+/backups/ 1 -
+/index.php/owmi-como_comprar_inderal 8 -
+/1.sql.gz 4 -
+/index.php/owmi-prometrium_during_pregnancy_safe 1 -
+/index.php/owmi-buy_diovan_inhaler_canada 1 -
+/wp-rdf.php 1 -
+/images/stories/temattygodnia/studnia1.jpg 3 -
+/modules/wp-up.php 1 -
+/index.php/owmi-over_the_counter_tegretol 1 -
+/swieta_liturgia.htm 1 -
+/index.php/owmi-can_i_get_effexor_xr 12 -
+/index.php/owmi-how_to_get_plavix 7 -
+/index.php/owmi-coreg_purchase_in_canada_no_prescription 1 -
+/FileZilla.xml 1 -
+/site.sql.xz 4 -
+/sites/all/libraries/plupload/examples/upload.php 2 http://bazylianie.pl/sites/all/libraries/plupload/examples/upload.php
+/admin 1 -
+/sitemap_index.xml 1 -
+/index.php/owmi-list_of_tesco_stores_selling_lasilix 1 -
+/index.php/owmi-how_to_use_bupropionum 4 -
+/index.php/owmi-intrathecal_baclofen_pump 1 -
+/index.php/owmi-purchase_flagyl_in_canada 1 -
+/index.php/owmi-trileptal_pill_canadian 2 -
+/index.php/owmi-pill_rx_health_order_premarin_products 1 -
+/index.php/owmi-levitra_super_active_barato 1 -
+/dump.sql.gz 4 -
+/index.php/owmi-prednisone_asthma_exacerbation 1 -
+/index.php/owmi-allopurinol_where_to_purchase 1 -
+/b.php 1 -
+/index.php/owmi-voveran_100_review 8 -
+/wp-version.php 1 -
+/images/vuln.php 1 -
+/ 527 -
+/index.php/owmi-onde_comprar_lasix 8 -
+/administrator/wp-up.php 1 -
+/index.php/owmi-citalopram_rx 3 -
+/index.php/owmi-risperdal_mg_order 15 -
+/modules/mod_simplefileuploadv1.3/elements/udd.php 1 http://www.bazylianie.pl/modules/mod_simplefileuploadv1.3/elements/udd.php
+/wp-conde.php 1 -
+/index.php/owmi-how_to_take_orlistat_60 2 -
+/index.php/owmi-how_can_i_buy_viagra_in_bangladesh 1 -
+/index.php/owmi-ponstel_pills_buy_online 3 -
+/index.php/owmi-purchase_reglan_mg 5 -
+/index.php/owmi-suhagra_online_ordering 4 -
+/index.php/owmi-what_is_meclizine_pills_used_for 1 -
+/backup.sql.gz 4 -
+/index.php/owmi-best_site_get_citalopram 2 -
+/index.php/owmi-adalat_buy_online_uk 3 -
+/index.php/owmi-tetracycline_for_dogs_uk 3 -
+/index.php/owmi-buy_over_the_counter_zovirax_online 1 -
+/index.php/owmi-sale_bactrim 9 -
+/index.php/owmi-no_prescription_ivenox_sale 1 -
+/index.php/owmi-images_for_bactrum_pills 2 -
+/index.php/owmi-research_grade_bupron_sr 3 -
+/index.php/index/klasztory/uk_ketrzyn.php 54 -
+/index.php/owmi-generic_for_nizoral_cream 1 -
+/mlolytownyk/slowo%20patriarxa.htm 2 -
+/index.php/owmi-buy_yasmin_visa 8 -
+/log.php 1 -
+/index.php/owmi-what_is_suprax_used_to_treat 1 -
+/translate.sql.gz 4 -
+/user/register 1 -
+/index.php/owmi-donde_comprar_levothroid 3 -
+/index.php/owmi-combining_cialis_and_levitra 1 -
+/index.php/owmi-premarin_generic_for 9 -
+/data.sql.gz 4 -
+/index/swieci/uk_jozafatkoc.php 7 -
+/index.php/owmi-sialis_tablets 5 -
+/mysqldump.sql.gz 4 -
+/index/swieci/uk_teodor.php 10 -
+/components/com_hdflvplayer/hdflvplayer/download.php 1 -
+/filezilla.xml 1 -
+/index.php/owmi-ordering_low_dose_paroxetine 1 -
+/index.php/owmi-use_duprost_coupon_online 1 -
+/conns.php 1 -
+/winscp.ini 1 -
+/index.php/owmi-buy_skelaxin_tablets_usa 4 -
+/index.php/images/oldbazylianie/swieci/index/swieci/uk_teodor.php 2 -
+/index.php/owmi-generic_adalat_usa 1 -
+/ws_ftp.ini 1 -
+/wp/wp-admin/ 2 -
+/index.php/owmi-a_list_of_pills_that_can_get_you_high 1 -
+/index.php/owmi-misoprostol_uk 7 -
+/index.php/index/klasztory/index.php 11 -
+/component/comprofiler/registers.html 4 -
+/index.php/owmi-zebeta_buy_online_canada 1 -
+/index.php/owmi-abilify_prescription_online_drugstore 3 -
+/index/swieci/uk_andrzej.php 7 -
+/data.sql 5 -
+/index.php/images/oldbazylianie/swieci/index/swieci/uk_antoni.php 2 -
+/index.php/owmi-quanto_costa_periactin_sciroppo 1 -
+/ukr/b_w_swi.htm 1 -
+/index.php/images/oldbazylianie/klasztory/uk_warszawa.php 20 -
+/index.php/owmi-medrol_dosepak_cheap_uk 4 -
+/test2/wp-login.php 1 -
+/index.php/owmi-list_of_tesco_stores_selling_ephedraxin 1 -
+/index.php/owmi-purchase_flagyl_er_on_line_in_canada 1 -
+/index.php/owmi-actos_price_india 8 -
+/index.php/owmi-prevacid_online_coupon_s 3 -
+/index.php/owmi-should_i_order_clomid_online 1 -
+/wp-content/plugins/dzs-zoomsounds/admin/upload.php 1 http://www.bazylianie.pl/wp-content/plugins/dzs-zoomsounds/admin/upload.php
+/index.php/owmi-aricept_and_alcohol_consumption 1 -
+/index.php/owmi-chloroquine_10_mg 8 -
+/wp-admin/admin-ajax.php 1 -
+/index.php/owmi-discount_code_for_furosemide 1 -
+/index.php/owmi-deltasone_over_counter 1 -
+/index.php/owmi-beat_way_to_order_anafranil 1 -
+/index.php/owmi-purchase_zanaflex_mg 5 -
+/htcnpgng.htm 1 -
+/index.php/owmi-silagra_in_india 8 -
+/index.php/owmi-glucotrol_with_no_rx 1 -
+/gtde.php 1 -
+/index.php/owmi-free_coupon_for_vytorin 4 -
+/db.php 1 -
+/index.php/images/oldbazylianie/klasztory/index/klasztory/index/swieci/uk_andrzej.php 1 -
+/rss 1 -
+/1.sql 4 -
+/index.php/owmi-buy_retino_a_cream_online_overnight 1 -
+/index.php/owmi-cardura_xl_4mg_side_effects 1 -
+/xmlrpz.php 1 -
+/index.php/owmi-india_ponstel_price 5 -
+/index.php/owmi-prilosec_online_india 6 -
+/option=com_joomgallery 1 -
+/index.php/index/klasztory/index/swieci/images/oldbazylianie/klasztory/uk_warszawa.php 2 -
+/yt2.php 1 -
+/index.php/owmi-quibron_t_medication_side_effects 1 -
+/temp.sql.gz 4 -
+/backup.sql.xz 4 -
+/Wisnyk/Archiw_2004/03_388_2004.htm 5 -
+/index.php/owmi-better_than_aleve 5 -
+/index.php/owmi-splitting_aricept_tablets 1 -
+/index.php/owmi-himcolin_birth_control_online_us 1 -
+/index/grafika/2009/174/foto.jpg 3 -
+/index.php/owmi-potatoes_not_prozac_ebook_free_download 1 -
+/index.php/owmi-who_has_aleve_on_sale 9 -
+/wordpress/wp-config.php.backup 2 -
+/index.php/images/oldbazylianie/swieci/index/swieci/uk_pawlo.php 1 -
+/index.php/owmi-uso_ciprofloxacina_clorhidrato 1 -
+/tdmudqhhnjj.html 1 -
+/index.php/owmi-comprar_augmentine_online 1 -
+/wp-logos.php 1 -
+/wordpress/wp-admin/ 1 -
+/wp-icoud.php 1 -
+/index.php/owmi-singulair_paediatric 6 -
+/WS_FTP.INI 1 -
+/sql.sql.bz2 4 -
+/index.php/owmi-claravis_prices_usa 9 -
+/administrator/components/com_extplorer/uploadhandler.php 1 -
+/blog2/wp-login.php 1 -
+/index.php/owmi-azurette_uk_brand_name 6 -
+/index.php/index/klasztory/index/klasztory/index/swieci/uk_sewerian.php 1 -
+/index.php/owmi-requip_next_day_delivery 3 -
+/index.php/images/oldbazylianie/swieci/index/swieci/uk_sewerian.php 1 -
+/.vscode/ftp-sync.json 1 -
+/wp3/wp-login.php 1 -
+/cache/joomlacache.php 1 -
+/index.php/owmi-januvia_price_philippines 1 -
+/index.php/owmi-where_to_get_vermox 8 -
+/sitemap.xml 27 -
+/index.php/owmi-ponstel_pharmacy 7 -
+/db.sql.xz 4 -
+/mysqldump.sql.bz2 4 -
+/index.php/owmi-keflex_italiano 7 -
+/wso.php 1 -
+/index.php/owmi-cheapest_drug_amaryl 8 -
+/index.php/owmi-elocon_cream_used_for_face 1 -
+/index.php/owmi-what_is_a_natural_viagra 4 -
+/index.php/owmi-duetact_delivery 7 -
+/index.php/owmi-deltasone_40mg 11 -
+/index.php/owmi-polpa_de_acai_usa 5 -
+/writebab.php 1 -
+/index/grafika/2009/166/foto.jpg 1 -
+/google940f6556bb282721.html 1 -
+/index.php/owmi-walmart_lipitor_price 5 -
+/index.php/owmi-walmart_24_hour_pharmacy_locator 1 -
+/images/stories/3xp.php 1 -
+/index.php/owmi-tretinoin_0_05_cheap_uk 5 -
+/index.php/owmi-buy_cabgolin_pills 9 -
+/index.php/owmi-lov_cost_chloromycetin 5 -
+/temp.php 1 -
+/index.php/owmi-cost_of_mail_cafergot 8 -
+/index.php/index/klasztory/images/oldbazylianie/klasztory/images/oldbazylianie/klasztory/uk_warszawa.php 1 -
+/kbp_pliki/przemysl_osbm.jpg 1 -
+/index.php/owmi-abana_himalaya_herbal_healthcare 7 -
+/tmp/xmlrpc.php 1 -
+/index.php/index/klasztory/uk_przemysl.php 39 -
+/index.php/owmi-prometrium_with_no_perscription 1 -
+/index.php/owmi-vardenafil_10mg_us_pharmacy 1 -
+/index.php/owmi-triamterenum_billig_kaufen 1 -
+/index.php/owmi-tetracycline_legal_in_england 1 -
+/index.php/owmi-purchase_nitrofurantoin_cheap 1 -
+/sites/default/files/payload.php 2 -
+/index.php/owmi-dilantin_mg_uk 5 -
+/cache.php 1 -
+/index.php/owmi-ultra_low_dose_lasix 8 -
+/index.php/owmi-seroquel_withdrawal_insomnia_how_long 1 -
+/index.php/owmi-is_generic_viramune_effective 1 -
+/apple-touch-icon-120x120.png 2 -
+/index.php/owmi-valacyclovir_hcl_500mg 9 -
+/index.php/owmi-drugstore_publicis_brunch 1 -
+/index.php/index/swieci/uk_jozafatkoc.php 40 -
+/index.php/owmi-top_10_online_chloromycetin_sites 1 -
+/administrator/components/com_alberghi/upload.alberghi.php 1 -
+/index.php/owmi-research_grade_benicar 7 -
+/index.php/owmi-a_good_web_page_to_buy_neurontin_with_no_script 20 -
+/images/Koncert_w_Peremyszli_-_Oresta_Kinasz-Commendo_i_Gratia-2018.jpg%3F1543936029 2 http://www.bazylianie.pl/administrator/index.php
+/blog/wp-admin/ 2 -
+/blog/wp-login.php 1 -
+/index.php/owmi-20mg_levitra_vs_100mg_viagra 1 -
+/index.php/owmi-speman_generic_2013_drugs 1 -
+/index.php/owmi-purchase_allegra_cheap 5 -
+/images/stories/Gorlice_04.jpg 1 -
+/modx.php 1 -
+/index.php/owmi-cutting_crestor_pills 11 -
+/index/swieci/uk_jozafatkun.php 6 -
+/index.php/owmi-buy_trial_erection_packs_3_cheap 1 -
+/show.php 1 -
+/users.sql.gz 4 -
+/index.php/owmi-purchase_singulair_on_line_in_india 1 -
+/index.php/owmi-purchase_shallaki_mg 11 -
+/wp2/wp-login.php 1 -
+/modules/mod_simplefileuploadv1.3/index.html 1 -
+/index.php/owmi-purchase_mentat_in_australia 1 -
+/index.php/index/swieci/index/klasztory/images/oldbazylianie/swieci/index/swieci/uk_teodor.php 1 -
+/index.php/owmi-what_does_dramamine_do_to_your_body 1 -
+/index.php/owmi-how_to_purchase_isoptin_online 1 -
+/index.php/owmi-seroquel_xr_300mg_tablets 1 -
+/index.php/owmi-minocin_online_sales 5 -
+/index.php/owmi-propecia_finasteride_price 1 -
+/index.php/owmi-can_you_purchase_viagra_over_the_counter_uk_another 1 -
+/index.php/owmi-purchase_viagra_100mg 9 -
+/index.php/owmi-stediril_mg_india 6 -
+/index.php/owmi-trental_medication_on_line 1 -
+/index.php/owmi-buy_esperal_tablets_mexico 1 -
+/index.php/owmi-floxin_with_prescription 3 -
+/index.php/owmi-tadalis_cheap_australia_pharmacy 1 -
+/index.php/owmi-10_mg_prozac_and_weight_gain 80 -
+/index.php/owmi-purchase_cytotec_pills 12 -
+/.env 4 -
+/index.php/owmi-xeloda_mg_buy 8 -
+/sql.sql.gz 4 -
+/index.php/owmi-viagra_patent_expiration_uk 1 -
+/registratsiya/registers 4 -
+/web.sql 1 -
+/dump.sql.bz2 4 -
+/index.php/owmi-prescription_online_buy_allopurinol 1 -
+/index.php/owmi-tegretol_medication_children 1 -
+/index.php/owmi-pravachol_doctors_online 3 -
+/temp.sql.xz 4 -
+/images/stories/ks_Leon.jpg 3 -
+/index/klasztory/uk_wegorzewo.php 7 -
+/index.php/owmi-malegra_dxt_online_order 1 -
+/index.php/owmi-order_dostinex_pill 5 -
+/index.php/owmi-oxybutyninum_india_no_prescription 1 -
+/index.php/owmi-can_i_make_zyban 6 -
+/search.php 2 -
+/CHANGELOG.txt 1 -
+/index.php/owmi-ovral_l_canada_sale 6 -
+/database.sql.bz2 4 -
+/blog/robots.txt 1 -
+/.cpanel_config.php 2 -
+/index.php/owmi-brand_aricept_buy 6 -
+/sites/default/files/info.php 1 -
+/wp/wp-includes/wlwmanifest.xml 6 -
+/includes/js/jquery.js 92 http://b.bazylianie.pl/
+/index.php/owmi-generic_uk_paypal_aviane_28 1 -
+/index.php/owmi-purchase_prednisolone_online 1 -
+/index.php/owmi-viagra_prescription_drugs 1 -
+/index.php/index/swieci/uk_sewerian.php 54 -
+/index.php/owmi-pyridium_prescription_only 1 -
+/index.php/owmi-dose_maxi_ginseng 5 -
+/index/parafie/pl_warszawa.php 1 -
+/index.php/owmi-purchase_proscar_on_line_in_the_uk 1 -
+/index.php/owmi-venlafaxina_buy_uk 6 -
+/modules/modules/path.php 1 -
+/tmp/vuln.php 1 -
+/index.php/owmi-erexor_phone_orders 3 -
+/index.php/images/oldbazylianie/swieci/images/oldbazylianie/klasztory/uk_ketrzyn.php 1 -
+/index.php 691 -
+//blog/ 1 http://bazylianie.pl/
+/index.php/owmi-cephalexin_non_perscription_countries 1 -
+/blog/wp-config.php.backup 2 -
+/includes/wp-up.php 1 -
+/sitemanager.xml 1 -
+/db_backup.sql.xz 4 -
+/index.php/owmi-cost_of_mail_raciper 1 -
+/index.php/owmi-discount_brahmi_mg 8 -
+/index.php/index/swieci/index/swieci/uk_teodozjusz.php 1 -
+/index.php/owmi-what_is_actos_drugs 11 -
+/index.php/owmi-viagara_falls_broadway 10 -
+/index.php/owmi-prometrium_usa_sale 4 -
+/wordpress/ 1 -
+/images/stories/NOWOSIELSKIEGO_pogrzeb2.jpg 1 -
+/admin.php 1 -
+/ftpsync.settings 1 -
+/temp.sql.bz2 4 -
+/index.php/owmi-walmart_pharmacy_refill_order 1 -
+/site/wp-includes/wlwmanifest.xml 6 -
+/index.php/owmi-6_mercaptopurine_metabolism 4 -
+/index.php/owmi-tadacip_order_in_the_us 2 -
+/wp1/wp-login.php 1 -
+/index.php/owmi-acnetane_over_counter_uk 1 -
+/index.php/owmi-viagra_professional_buy_canada 1 -
+/plugins/content/s5_media_player/helper.php 1 -
+/index.php/owmi-get_claravis_online 8 -
+/index.php/owmi-oristal_purchase 1 -
+/webconfig.txt.php 1 -
+/index.php/owmi-doksazosin_lek_mg_india 1 -
+/fckeditor/editor/filemanager/connectors/php/upload.php 1 -
+/index/archiwum/pw_pliki/mon.jpg 2 -
+/index.php/owmi-the_online_drugstore_confido 1 -
+/index.php/owmi-luvox_online 5 -
+/index.php/owmi-use_minocin_coupon_online 1 -
+/index.php/owmi-can_you_buy_duprost_in_ireland 1 -
+/index.php/owmi-methocarbamol_750_mg_uk 2 -
+/index.php/owmi-can_you_buy_norvasc_without_drugs 1 -
+/components/a.php 1 -
+/index.php/owmi-5_mg_cialis_price 7 -
+/index.php/owmi-wigraine_over_the_counter 1 -
+/index.php/owmi-metformin_er_coupons 3 -
+/index.php/owmi-warafin_on_line_in_the_uk 1 -
+/index.php/images/oldbazylianie/klasztory/index.php 71 -
+/[IMG]http://www.bazylianie.pl/index.php 16 -
+/localhost.sql.xz 4 -
+/index.php/owmi-tinidazole_online_in_usa 2 -
+/images/stories/Gorowo_0088.jpg 1 -
+/index.php/owmi-can_you_buy_etodolac_online 1 -
+/index.php/owmi-the_chepest_curacne 13 -
+/error.php 1 -
+/db_backup.sql.bz2 4 -
+/index.php/owmi-wellbutrin_sr_online_legally 1 -
+/language/wp-up.php 1 -
+/index.php/owmi-where_do_i_colchicine_in_usa 1 -
+/img.caption 1 -
+/index.php/owmi-cipro_dosage_for_uti_500mg 1 -
+/index.php/owmi-zyvox_generic_reviews 7 -
+/wp-login.php 62 -
+/index.php/owmi-lozol_tablet_sale 1 -
+/administrator/components/com_rokdownloads/assets/uploadhandler.php 1 -
+/tmp/hello.php 1 -
+/users.sql 4 -
+/index.php/owmi-geriforte_online_order 7 -
+/index.php/owmi-to_buy_orlistat_in_uk 7 -
+/WP.sql 1 -
+/1.sql.bz2 4 -
+/index.php/owmi-where_can_i_buy_priligy 3 -
+/index.php/owmi-suhagra_over_counter 8 -
+/index.php/owmi-the_online_drugstore_reminyl 1 -
+/templates/class.php 1 -
+/index.php/owmi-trazodone_without_script 4 -
+/images/Swiata_bez_tata.jpg%3F1543870819 1 http://www.bazylianie.pl/administrator/index.php
+/index.php/images/oldbazylianie/klasztory/index/swieci/index/swieci/index/swieci/uk_jakym.php 1 -
+/index.php/images/oldbazylianie/swieci/uk_bazyli.php 58 -
+/index.php/owmi-best_generic_benicar_sites 1 -
+/index.php/images/oldbazylianie/klasztory/index/klasztory/index/klasztory/index/swieci/uk_jozafatkoc.php 1 -
+/index.php/owmi-what_is_allopurinol_drugs 1 -
+/index.php/owmi-relafen_side_effects_uk 4 -
+/index.php/images/oldbazylianie/klasztory/uk_wegorzewo.php 102 -
+/index.php/owmi-ranitidine_discount_coupons 1 -
+/images/banners/banner.php 1 -
+/index.php/index/klasztory/index/klasztory/images/oldbazylianie/klasztory/index/swieci/uk_sewerian.php 1 -
+/index.php/owmi-medrol_pack_discontinued 6 -
+/index.html 1 -
+/uploadify/com/adobe/images/admins.php 3 -
+/index.php/owmi-how_to_import_promethazine 1 -
+/administrator///wp-login.php 2 http://www.google.com.hk
+/index.php/images/oldbazylianie/swieci/index/swieci/uk_jozafatkun.php 1 -
+/index.php/owmi-buy_clozaril_bulk 5 -
+/index.php/owmi-skelaxin_no_prescription_required 1 -
+/images/Ð 32 -
+/index.php/owmi-minocin_antibiotico 1 -
+/license.php 8 -
+/index.php/owmi-generic_lasilix_canada 7 -
+/index/archiwum/siz.htm 2 -
+/index.php/owmi-can_i_buy_cozaar_in_canada 1 -
+/index.php/owmi-staxyn_10_mg_vs_viagra 8 -
+/ads.txt 44 -
+/index.php/owmi-silagra_pill_canadian 8 -
+/...ekokatolicy.htm 2 -
+/temp.sql 4 -
+/wordpress.sql 1 -
+/index/klasztory/uk_ketrzyn.php 8 -
+/index.php/index/swieci/uk_witalij.php 32 -
+/up.php 1 -
+/index.php/owmi-starlix_prices_usa 7 -
+/index.php/owmi-vermox_tablets_pregnancy 3 -
+/index.php/owmi-florinef_tablets_price 7 -
+/index.php/owmi-side_effects_of_serpina 3 -
+/index.php/owmi-phone_in_order_for_tadalis_sx 1 -
+/index.php/owmi-prozac_cheapest_rate 7 -
+/index.php/owmi-moduretic_overnight 5 -
+/index.php/owmi-aciclovir_tablets_40mg 8 -
+/index.php/owmi-what_do_robaxin_pills_look_like 1 -
+/index.php/owmi-kamagra_uk_companies_only 1 -
+/index.php/owmi-where_do_i_buy_elocon 5 -
+/component/users/ 5 -
+/index.php/extended-vehicle-toyota-warranty-problems-ensr 1 -
+/backup.sql.bz2 4 -
+/index.php/owmi-side_effects_of_zocor_80_mg 1 -
+/index.php/owmi-feldene_on_line_no_script 1 -
+/index.php/index/swieci/index/swieci/index/swieci/uk_sewerian.php 1 -
+/index.php/owmi-buy_mestinon_from_canada 2 -
+/index.php/owmi-buy_avodart_cheap 8 -
+/index.php/owmi-order_mircette_generic 6 -
+/index.php/owmi-aafp_coumadin_dose_adjustment 3 -
+/index.php/owmi-buy_retin_pills_in_the_canada 1 -
+/index.php/owmi-differin_xp_gel_reviews 3 -
+/index.php/owmi-premarin_drug_store_online 1 -
+/index.php/owmi-pediatric_prilosec_dose 4 -
+/wp-caches.php 1 -
+/index.php/owmi-rumalaya_dosage_recommended 1 -
+/DB.sql 1 -
+/index.php/owmi-alesse_missed_2_pills 9 -
+/index.php/owmi-trileptal_with_american_express 1 -
+/index.php/owmi-500_mg_valtrex_valacyclovir_hydrochloride 39 -
+/components/com_fabrik/views/visualization/tmpl/default.xml 1 -
+/index.php/owmi-cialis_with_dapoxetine_review 1 -
+/index.php/owmi-pamelor_by_mail_order 9 -
+/index.php/owmi-suppliers_of_shallaki_in_us 1 -
+/index.php/owmi-ventolin_salbutamol_bp 6 -
+/index.php/owmi-zyrtec_on_line_in_the_usa 1 -
+/wordpress/wp-login.php 1 -
+/index.php/owmi-viagra_vrai_pas_cher 5 -
+/index.php/owmi-order_colospa_online_uk 3 -
+/index.php/owmi-what_drug_category_is_cymbalta 1 -
+/index.php/owmi-can_we_trust_cyklokapron_online 1 -
+/index.php/owmi-best_site_to_buy_betapace 1 -
+/images/def.gif 1 -
+/index.php/owmi-buy_reminyl_boots_pharmacy 1 -
+/smalls.php 1 -
+/index.php/owmi-nordette_buy_without 15 -
+/index.php/owmi-how_to_order_albenza 6 -
+/index.php/owmi-buy_zyprexa_without_a_script 1 -
+/wp/test/ 1 -
+/index.php/owmi-provera_bonus_pills 10 -
+/wordpress2/wp-login.php 1 -
+/media/vuln.txt 1 -
+/index.php/owmi-zetia_prescription 8 -
+/https://bazylianie.pl/index.php 2 -
+/index.php/owmi-purchase_proscar_5_mg 8 -
+/index.php/owmi-buy_ciproxin_500mg 10 -
+/images/stories/Gorlice_01.jpg 2 -
+/index.php/owmi-what_does_tetracycline_target 1 -
+/index.php/owmi-lozol_mg_mexico 7 -
+/index.php/index.php 76 -
+/index.php/owmi-canadian_pharmacies_safety 1 -
+/index.php/owmi-rocaltrol_next_day_delivery 1 -
+/qvwaivoy.htm 1 -
+/index.php/owmi-zyvox_over_counter 9 -
+/index.php/owmi-rocaltrol_generico_italiano 1 -
+/index.php/index/swieci/index/swieci/images/oldbazylianie/klasztory/index/swieci/uk_teodor.php 1 -
+/database.sql.xz 4 -
+/index.php/images/oldbazylianie/swieci/index/swieci/uk_teodozjusz.php 2 -
+/index.php/owmi-viagra_in_ukraine 10 -
+/database.sql.gz 4 -
+/index.php/owmi-canadian_family_history 2 -
+/test3/wp-login.php 1 -
+/index.php/owmi-celapram_lawsuit 5 -
+/index.php/owmi-buy_himcocid_online_amazon 1 -
+/lieats.php 1 -
+/index.php/owmi-moduretic_uk_companies_only 1 -
+/index.php/owmi-safe_flagyl_er_no_precription 2 -
+/index.php/owmi-ordering_luvox_india 8 -
+/index.php/owmi-nitrofurantoin_with_no_rx 1 -
+/index.php/owmi-duoc_my_pham_tenamyd 7 -
+/index.php/owmi-buy_colchicina_pills_in_the_india 1 -
+/admin/images/cal_date_over.gif 1 -
+/wp-content/plugins/wp-homepage-slideshow/readme.txt 1 http://www.bazylianie.pl/wp-content/plugins/wp-homepage-slideshow/readme.txt
+/newsite/wp-admin/ 2 -
+/index.php/owmi-100_mg_hoodia 5 -
+/index.php/owmi-safe_diflucan_buy 7 -
+/index.php/owmi-sildenafila_on_line_in_the_usa 1 -
+/index.php/owmi-buy_neurontin_40 6 -
+/test/wp-admin/ 2 -
+/index.php/owmi-cheap_neurontin_usa 11 -
+/index.php/owmi-fasigyn_buy_uk 3 -
+/x.php 1 -
+/index.php/owmi-zyprexa_without_food 8 -
+/index.php/owmi-endep_online_in_usa 7 -
+/index.php/index/klasztory/uk_wegorzewo.php 5 -
+/index.php/owmi-retin_a_0_025_for_dogs_buy 1 -
+/index.php/owmi-stieva_a_shortage 6 -
+/index.php/owmi-purchase_etabus_mg 7 -
+/database.sql 4 -
+/index.php/owmi-buying_cafergot_in_manchester 1 -
+/index.php/owmi-propecia_india_safe 8 -
+/index.php/owmi-how_to_get_calan_drug 7 -
+/site.sql.gz 4 -
+/test/wp-login.php 1 -
+/index.php/owmi-voltaren_sr_100_tabletki 4 -
+/index.php/owmi-vagifem_discount_voucher 2 -
+/bishop_pliki/medvit.jpg 1 -
+/index.php/owmi-abilify_related_drugs 8 -
+/index.php/images/oldbazylianie/klasztory/uk_ketrzyn.php 40 -
+/blog/ 1 -
+/sql.sql 4 -
+/index.php/owmi-prandin_canadian_online 1 -
+/cache/gadeyuvz.php 1 -
+/index/swieci/uk_jakym.php 7 -
+/index.php/owmi-levlen_looking_for 6 -
+/index.php/owmi-mexico_pharmaceuticals_progreso 1 -
+/index.php/owmi-western_drug_betnovate 8 -
+/index.php/owmi-canadian_pharmacy_cefixime 1 -
+/index.php/index/swieci/uk_welamin.php 69 -
+/index.php/owmi-cytoxan_sale 6 -
+/others.html 15 http://bazylianie.pl
+/index.php/owmi-100mg_of_clomid_success 10 -
+/index.php/owmi-other_pills_that_work_like_viagra 1 -
+/index.php/owmi-purchase_propranolol_no_prescription 1 -
+/index.php/owmi-tamsulozin_roche_precio_argentina 1 -
+/swiatynia.htm 1 -
+/index.php/owmi-buy_cheap_viagra_jelly_pills 1 -
+/mlolytownyk/weczirnia.htm 5 -
+/backup/ 1 -
+/mlolytownyk/xreszczenniai%20myropomazannia.htm 1 -
+/index.php/index/swieci/uk_teodozjusz.php 80 -
+/index.php/owmi-amantadine_medication_online 1 -
+/images/stories/Baszkowscy_0015.jpg 1 -
+/index.php/owmi-diclofenaco_cinfa_para_que_sirve 1 -
+/index.php/owmi-voltaren_medicine_is_for 2 -
+/index.php/owmi-ordering_keppra_usa 5 -
+/index.php/owmi-simvastatina_spain 2 -
+/index.php/index/swieci/index.php 20 -
+/index.php/index/klasztory/index/swieci/index/swieci/images/oldbazylianie/swieci/uk_bazyli.php 1 -
+/data.sql.xz 4 -
+/Molytownyk.htm 1 -
+/index.php/owmi-isoptin_drug_classification 1 -
+/index.php/owmi-lopressor_iv_push 6 -
+/includes/litecache.php 2 -
+/ckeditor/post.php 1 -
+/index.php/owmi-prescription_drug_moduretic 1 -
+/index.php/owmi-discount_bystolic 5 -
+/index.php/owmi-prometrium_buy_online_uk 3 -
+/index.php/owmi-buy_abilify_5mg_mg_price 3 -
+/libraries/wp-up.php 1 -
+/site.sql 4 -
+/components/com_jdownloads/jdownloads.js 1 -
+/index.php/owmi-silagra_daily_use_reviews 1 -
+/index.php/owmi-zetia_no_script 10 -
+/index.php/owmi-cytotec_in_singapore 5 -
+/sftp-config.json 1 -
+/index.php/owmi-non_generic_alavert 4 -
+/showthread.php 1 -
+/registration 4 -
+/index.php/owmi-premarin_cheap_uk 3 -
+/index.php/owmi-tegretol_buy_australia 1 -
+/index.php/owmi-cheap_sominex_sale_uk 7 -
+/index.php/owmi-risperdal_online_bestellen 1 -
+/index.php/owmi-come_comprare_cialis_sicuro 1 -
+/index.php/owmi-flunil_fast_canada 8 -
+/data.sql.bz2 4 -
+/modules/modules/joomla-resize.php 1 -
+/wp-feed.php 1 -
+/index.php/owmi-lasilix_online_in_us 6 -
+/bitrix/modules/main/include/prolog.php 1 -
+/index.php/owmi-saglam_dietalar 8 -
+/index.php/owmi-viagra_without_a_rx 8 -
+/index.php/owmi-tadalis_20mg_tablets 7 -
+/localhost.sql.bz2 4 -
+/index.php/index/swieci/images/oldbazylianie/klasztory/index/klasztory/index/swieci/uk_teodor.php 1 -
+/index.php/owmi-cefadroxil_from_china 8 -
+/index.php/owmi-v_gel_cost_per_month 7 -
+/index.php/owmi-buy_amitriptyline_paypal_accepted 1 -
+/index.php/owmi-seroquel_xr_300_mg_cost 1 -
+/component/option,com_comprofiler/task,registers/ 4 -
+/index.php/owmi-tramadol_side_effects_anger 1 -
+/index/swieci/uk_witalij.php 8 -
+/index.php/owmi-abilify_commercial_voice 2 -
+/index.php/owmi-testosterone_therapy_for_women_dosage 1 -
+/index/swieci/uk_sewerian.php 7 -
+/index.php/index/swieci/uk_antoni.php 60 -
+/index.php/index/swieci/images/oldbazylianie/klasztory/uk_przemysl.php 23 -
+/components/com_banners/metadata.php 1 bazylianie.pl
+/index.php/owmi-soft_viagra_online 6 -
+/website.sql 1 -
+/index.php/owmi-ventolin_generic_alternative 2 -
+/index.php/owmi-vantin_antibiotic_dosing 1 -
+/index.php/owmi-diprolene_online_canada 3 -
+/index.php/owmi-safe_to_buy_generic_seasonique_from_usa 1 -
+/index.php/index/swieci/uk_andrzej.php 33 -
+/index.php/owmi-top_10_online_vagifem_sites 1 -
+/index.php/owmi-where_can_i_get_zebeta_from 1 -
+/index.php/owmi-sildenafila_no_prescription 1 -
+/index.php/owmi-noble_drugs_coupon_code 2 -
+/index.php/owmi-vistaril_mg_tablet 5 -
+/index.php/owmi-singulair_lawsuits 7 -
+/index.php/owmi-nexium_40_mg_price_canada 1 -
+/templates/att.php 1 -
+/index.php/owmi-6_mercaptopurine_crohns 4 -
+/index.php/owmi-no_prescription_and_bactrim 1 -
+/index.php/owmi-cheap_tinidazole_sale_uk 5 -
+/index.php/owmi-cheap_starlix_100_mg 5 -
+/dump.sql 4 -
+/translate.sql.xz 4 -
+/apple-touch-icon-152x152.png 2 -
+/index.php/owmi-cheap_evecare_buy_online 3 -
+/index.php/owmi-purchase_salbutamol_in_usa 1 -
+/index.php/owmi-how_to_get_albenza_drug 1 -
+/index.php/owmi-norvasc_delivery 7 -
+/db.sql.bz2 4 -
+/index.php/images/oldbazylianie/swieci/index.php 2 -
+/cache/qlxlykva.php 1 -
+/index.php/owmi-johannesburg_viagra 5 -
+/images/jdownloads/screenshots/yo.gif 1 -
+/wp-loadsnew.php 1 -
+/index.php/owmi-revia_buy_australia 5 -
+/LICENSE.php 1 -
+/index.php/images/oldbazylianie/swieci/index/klasztory/uk_ketrzyn.php 1 -
+/index.php/owmi-zertalin_spain 6 -
+/index/swieci/uk_pawlo.php 9 -
+/index.php/owmi-lozol_buy_usa 11 -
+/index.php/owmi-skelaxin_cost_comparison 1 -
+/sites/default/files/up.php 1 -
+/dbdump.sql 4 -
+/index.php/owmi-vagifem_prescription_only 1 -
+/index.php/owmi-purchase_dostinex_0.5_mg 2 -
+/index.php/owmi-promethazine_no_rx 7 -
+/index.php/owmi-how_much_is_accutane_tablets 1 -
+/dbdump.sql.bz2 4 -
+/index.php/owmi-side_effects_of_disulfiram 1 -
+/index.php/owmi-buy_floxin_online_overnight_delivery 1 -
+/index.php/owmi-buy_baclofen_online_usa 1 -
+/agivzxxaytktq.html 1 -
+/index.php/owmi-ampicillin_for_purchase 1 -
+/wp-ajax-hook.php 1 -
+/index.php/owmi-viagra_super_active_germany 1 -
+/index.php/owmi-metformin_limited_india 3 -
+/libraries/sfn.php 1 -
+/wp-includes/wlwmanifest.xml 6 -
+/index.php/owmi-pantoprazole_20_mg_price 2 -
+/index.php/owmi-vardenafilum_lawsuit_canada 1 -
+/index.php/owmi-the_chepest_ciprofloxacina 1 -
+/index.php/owmi-ophthacare_drugstore.com 2 -
+/index.php/owmi-triamterene_pills_drugstore 1 -
+/administrator///xmlrpc.php 2 http://www.google.com.hk
+/site.sql.bz2 4 -
+/index.php/owmi-what_is_rosuvastatin_mg_used_to_treat 1 -
+/index/swieci/uk_antoni.php 8 -
+/index.php/owmi-priligy_review_blogs 13 -
+/db_backup.sql.gz 4 -
+/index.php/owmi-where_do_i_ciplox_in_uk 4 -
+/index.php/owmi-how_to_import_premarin 6 -
+/index.php/owmi-proscar_canada_no_prescription 1 -
+/index.php/owmi-clomid_international 6 -
+/index.php/owmi-dipyridamole_without_prescription_pills 1 -
+/index.php/owmi-bactrim_discount_no_prescription 1 -
+/index.php/owmi-vente_de_chloroquine_au_quebec 1 -
+/index.php/owmi-buy_depo_provera_shot_no_prescription 1 -
+/index.php/owmi-to_buy_endep_in_uk 5 -
+/1.php 2 -
+/index.php/owmi-birth_control_pills_buspar 1 -
+/index.php/owmi-3_main_types_of_drugs 3 -
+/index.php/owmi-buy_advair_greece 5 -
+/index.php/owmi-buy_clavamox_without_a_subscription 1 -
+/index.php/owmi-do_you_need_rx_arava 2 -
+/index.php/owmi-to_buy_amoxycillin_in_uk 3 -
+/wp-cache.php 1 -
+/index.php/owmi-noroxin_400mg_dose 9 -
+/.joomla.system.php 1 -
+/wp-register.php 1 -
+/deployment-config.json 1 -
+/index.php/owmi-tofranil_online_without_rx 1 -
+/index.php/owmi-prednisolone_100mg 4 -
+/modules/modules/modules.php 1 -
+/index.php/owmi-what_does_the_drug_reglan_do 1 -
+/index.php/owmi-serpina_uk_online 8 -
+/index.php/owmi-phenergan_drugs_online_purchases 1 -
+/index.php/owmi-abilify_class_action_lawsuit_lawyers 1 -
+/index.php/owmi-vagifem_from_uk 6 -
+/index.php/owmi-citalopram_generic_pictures 1 -
+/index.php/owmi-buy_rocaltrol_without_rx 3 -
+/pw.htm 1 -
+/index.php/owmi-venlafaxina_maximum_dosage 1 -
+//xmlrpc.php 2 http://www.google.com.hk
+/index.php/owmi-purchase_benadryl_on_line_in_mexico 1 -
+/index.php/owmi-wellbutrin_sr_drug_in_canada_pharmacy 1 -
+/console/integration/execute/name/GoogleSitemap 1 -
+/users.sql.bz2 4 -
+/index.php/owmi-top_10_online_ceftin_sites 1 -
+/index/uk_index.php 5 -
+/index.php/owmi-purchase_zertalin_in_india 1 -
+/index.php/owmi-bactrim_with_prescription 1 -
+/index.php/owmi-purchase_imitrex_online 4 -
+/index.php/owmi-medrol_in_canada 8 -
+/index.php/owmi-levitra_medication_assistance_program 1 -
+/index.php/owmi-non_generic_doxazosin 6 -
+/index.php/owmi-buying_motrin_in_manchester 1 -
+/index.php/owmi-phone_in_ 11 -
+/dpwxidvr.htm 1 -
+/index.php/owmi-buy_advair_online_without_prescription 1 -
+/index.php/owmi-tadapox_sale_ed_drugs 6 -
+/admin/login.php 1 -
+/index.php/owmi-reviews_on_anteovin 8 -
+/index.php/owmi-us_tadifill 6 -
+/[URL]http://www.bazylianie.pl/index.php 16 -
+/ukr/index.htm 5 -
+/index.php/owmi-silagra_over_the_couter 3 -
+/index.php/owmi-my_quetiapinum_coupons 7 -
+/index.php/owmi-fucidin_to_buy 7 -
+/index.php/owmi-curacne_limited_india 3 -
+/index.php/owmi-sale_estro 8 -
+/index.php/index/klasztory/index/swieci/images/oldbazylianie/klasztory/uk_wegorzewo.php 1 -
+/hook-filters.php 1 -
+/index.php/owmi-vermox_no_prescription_needed 1 -
+/modules/mod_feed/tmpl/mod_feed.php 1 -
+/phpmyadmin/ 1 http://bazylianie.pl/phpmyadmin/
+/xml.php 1 -
+/index.php/owmi-thyrohormone_coupons 8 -
+/index.php/owmi-canadian_online_doctor_prescriptions 1 -
+/wordpress3/wp-login.php 1 -
+/index.php/owmi-what_is_viagra_yahoo_levitra 1 -
+/index.php/owmi-isoniazid_uses_medication 1 -
+/feed 1 -
+/index.php/owmi-robaxin_spain_over_counter 1 -
+/index.php/owmi-order_ophthacare_cheap 7 -
+/dbdump.sql.xz 4 -
+/index.php/images/oldbazylianie/swieci/index/swieci/uk_witalij.php 2 -
+/index.php/owmi-ordering_diabecon_complex_rx 1 -
+/index.php/owmi-generic_hyzaar_100_25 7 -
+/index.php/owmi-cialis_pas_chere 6 -
+/index.php/owmi-viagra_in_lagos_nigeria 3 -
+/index.php/owmi-western_drug_oestrogel 6 -
+/index.php/owmi-prograf_brands_india 10 -
+/index.php/owmi-abana_tablets_himalaya 6 -
+/index.php/owmi-tindamax_from_india 7 -
+/mysql.sql.bz2 4 -
+/index.php/owmi-sepibest_online_in_us 10 -
+/mysqldump.sql.xz 4 -
+//.env 1 -
+/index.php/owmi-how_to_take_clarinex 6 -
+/index.php/owmi-tadacip_uk_pharmacy 7 -
+/plugins/.joomla.system.php 1 -
+/index.php/owmi-tinidazole_shopping 3 -
+/apple-touch-icon-120x120-precomposed.png 2 -
+/index.php/owmi-online_pharmacy_buy_serpina 1 -
+/index.php/owmi-purchase_flagyl_in_usa 5 -
+/index.php/owmi-purchase_mometasona_in_uk 1 -
+/index.php/owmi-we_need_to_talk_about_kevin_trailer 2 -
+/index/parafie/pl_gizycko.php 1 -
+/index.php/owmi-renagel_refill_pack 9 -
+/index.php/owmi-lowest_price_prilosec 5 -
+/index.php/owmi-purchase_lipitor_on_line_in_india 1 -
+/.config.php 2 -
+/index.php/owmi-uk_drugs_policy_history 2 -
+/translate.sql.bz2 4 -
+/images/.jindex.php 1 -
+/index.php/owmi-viagra_plus 8 -
+/index.php/owmi-nymphomax_from_canada 7 -
+/index.php/owmi-aldactone_next_day_delivery_buy 1 -
+/index.php/owmi-purchase_kamagra_gold_cheap 1 -
+/connectors/system/phpthumb.php 6 -
+/assets/images/search.php 1 -
+/index.php/owmi-mometasona_mg_mexico 9 -
+/index.php/owmi-retino_a_cream_0_025_order 1 -
+/index.php/owmi-100_mg_wellbutrin_sr 43 -
+/index.php/owmi-purchase_levitra_on_line_in_india 1 -
+/index.php/owmi-what_is_metronidazole_pills_used_for 1 -
+/.remote-sync.json 1 -
+/index.php/owmi-alli_diet_pills_price 8 -
+/index.php/owmi-mometasona_without_prescrip 1 -
+/index.php/owmi-protonix_pills 9 -
+/index.php/owmi-glucophage_buy_on_line 6 -
+/index.php/index/swieci/index/swieci/index/klasztory/images/oldbazylianie/klasztory/uk_warszawa.php 1 -
+/index.php/owmi-etodolac_canada_paypal 7 -
+/index.php/owmi-trileptal_online_price 8 -
+/index.php/owmi-diclofenac_gel_italiano 3 -
+/index.php/owmi-without_order_aciphex_online 1 -
+/index.php/owmi-buy_generic_desyrel_with_bonus 1 -
+/index.php/owmi-will_buspar_cause_weight_gain 1 -
+/index.php/owmi-renova_from_canada 7 -
+/newsleter.php 1 bazylianie.pl
+/index.php/owmi-inderal_without_rx 7 -
+/readme.php 1 -
+/index.php/owmi-cipla_viagra_online 1 -
+/wp/wp-login.php 1 -
+/index.php/owmi-xanax_overdose_dosage 9 -
+/index.php/owmi-finax_sublingual_dosage 3 -
+/index.php/owmi-purchase_key_pred_pills 2 -
+/index.php/owmi-rimonabant_reviews_2010 4 -
+/index.php/owmi-zyprexa_price_india 1 -
+/index.php/owmi-isotretin_buy_online_australia 1 -
+/index.php/owmi-emsam_generic 6 -
+/blog1/wp-login.php 2 -
+/libs.php 2 -
+/administrator/images/Swiata_bez_tata.jpg 11 http://www.bazylianie.pl/administrator/index.php
+/index.php/owmi-how_to_take_revatio 1 -
+/templates/wp-up.php 1 -
+/index.php/owmi-100_mg_allegra 9 -
+/wp-cahce.php 1 -
+/index.php/owmi-boots_chemist_zyrtec 5 -
+/db.sql 4 -
+/cod.php 1 -
+/index.php/owmi-cialis_tablete 5 -
+/index.php/owmi-sale_tizanidina 8 -
+/index.php/owmi-lipothin_purchase 6 -
+/index.php/owmi-tenormin_buy_india 9 -
+/index.php/owmi-aciclovir_40_mg 5 -
+/index.php/owmi-what_does_mobic_make_you_feel_like 1 -
+/wp-logs.php 1 -
+/index.php/owmi-study_pharmacy_in_canada 3 -
+/index.php/owmi-buy_pravachol_greece 7 -
+/index.php/owmi-tricor_suppliers_overseas 1 -
+/portal/ 1 -
+/index.php/owmi-the_chepest_simvastatina 4 -
+/index.php/owmi-olistat_where_to_get 4 -
+/index.php/index/swieci/uk_jozafatkun.php 47 -
+/index.php/owmi-what_is_nexium_esomeprazole 1 -
+/index.php/owmi-reliable_rx_pharmacy_coupons 1 -
+/index.php/owmi-side_effects_of_prevacid_medication 1 -
+/blog3/wp-login.php 1 -
+/index.php/owmi-tetracycline_available_australia 1 -
+/mysql.sql.xz 4 -
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 2102
+202.29.30.204 12417 12417 93942598 20181215062348
+40.68.47.17 4949 4949 37623533 20181205023141
+178.56.1.21 660 660 20326079 20181211193825
+191.177.181.66 546 546 4155394 20181205154507
+91.121.79.180 244 244 9641304 20181206082052
+83.24.124.225 210 1352 69892128 20181204024040
+83.12.22.142 198 1281 65984263 20181217221003 20181217212259 /
+193.238.180.150 168 725 28457506 20181216151626
+195.136.29.56 158 1146 67524623 20181217212253
+176.221.123.33 140 244 5819579 20181216180727
+83.31.199.120 2 20 716554 20181213205351
+193.19.165.96 1 8 2460257 20181205210110
+46.219.229.91 1 22 159796 20181212173521
+83.6.111.106 2 27 212505 20181211113912
+220.243.136.226 2 2 20780 20181214073648
+109.80.43.8 1 23 288427 20181205190119
+37.73.157.91 1 22 186286 20181216165043
+83.9.33.92 3 51 3235944 20181203101434
+188.146.107.148 2 45 3580887 20181216145401
+37.47.227.164 5 44 1068217 20181210191116
+31.42.57.237 1 27 275477 20181217124203
+46.211.50.17 1 43 3540105 20181213110707
+88.156.137.146 1 44 3558165 20181215163147
+220.243.136.53 2 2 14225 20181212210616
+46.211.110.244 1 27 226332 20181216125821
+191.101.54.2 28 28 900813 20181216101942
+220.243.136.146 2 2 7977 20181215003636
+82.145.208.163 4 31 467233 20181216191228
+220.243.136.113 3 3 16501 20181213075945
+220.243.136.206 1 1 10348 20181214053401
+185.100.87.206 1 1 8571 20181206003457
+220.243.135.118 1 1 8863 20181212204852
+188.147.3.237 5 60 3678624 20181209052239
+171.13.14.26 0 2 34325 
+171.13.14.21 0 14 492620 
+83.31.137.50 29 98 4634755 20181206084733
+220.243.136.234 1 1 7863 20181212185838
+188.32.170.16 1 1 12976 20181206130550
+109.237.89.11 2 2 120529 20181211131739
+91.124.21.116 6 65 838866 20181212130343
+37.47.241.246 11 16 166202 20181206223542
+176.121.7.38 3 32 363918 20181201105934
+153.19.3.52 2 45 3575595 20181206105234
+46.133.9.150 1 26 188411 20181214123741
+94.250.249.41 6 6 64394 20181209121201
+220.243.136.212 1 1 8304 20181214053400
+5.173.152.49 5 59 4146859 20181216084750
+37.248.165.213 2 48 3213770 20181203155250
+88.156.140.110 6 81 9578914 20181209204603
+83.24.129.49 3 48 3230414 20181202170239
+220.243.136.217 14 14 35590 20181215003637
+37.128.2.0 1 28 344427 20181204160225
+220.243.136.68 5 5 66152 20181215013553
+220.243.135.115 3 3 37535 20181213064422
+37.120.155.233 1 1 60170 20181205082240
+220.243.135.10 4 4 37880 20181213072144
+185.220.101.1 0 1 60170 
+83.28.254.128 7 58 3425800 20181202095255
+141.0.12.100 2 27 212464 20181216112756
+220.243.136.186 5 5 46729 20181214071602
+185.217.171.7 2 2 20688 20181201062738
+83.31.71.100 5 95 6509038 20181202210802
+54.172.90.103 1 1 54558 20181201103142
+111.202.101.94 1 1 7604 20181203064145
+220.243.135.87 1 1 7773 20181212210650
+220.243.135.155 10 10 80236 20181215013553
+86.149.48.101 2 2 118398 20181202101308
+54.87.139.146 1 1 54705 20181214024513
+220.243.135.178 6 6 49306 20181213082646
+14.231.125.123 1 1 2865 20181211120433
+176.221.120.131 2 28 614433 20181210025402
+188.146.169.134 24 106 4394711 20181215204459
+185.203.242.190 1 1 17864 20181206190729
+83.24.141.23 41 53 2390152 20181205154951
+220.243.136.25 1 1 7473 20181213081440
+14.186.38.14 1 1 2734 20181211035952
+220.243.135.211 1 1 7598 20181212184738
+220.243.135.220 2 2 15378 20181214185315
+220.243.136.106 1 1 8916 20181213010437
+194.44.36.115 1 27 277429 20181213182645
+123.125.71.100 0 1 1001 
+176.105.208.160 2 2 35518 20181214162622
+220.243.135.136 4 4 28369 20181213072144
+46.211.73.126 1 22 154876 20181211122351
+35.204.247.131 1 1 32477 20181215093828
+95.49.197.96 2 5 2380268 20181216205925
+82.145.221.193 1 2 23862 20181202200519
+83.24.140.118 12 111 8349621 20181207171523
+220.243.136.19 4 4 34518 20181214102126
+213.5.192.225 2 27 204361 20181213191128
+66.249.91.235 1 1 17380 20181203221016
+195.250.228.14 2 24 195925 20181216213754
+95.28.230.119 1 26 194219 20181209041310
+220.243.136.197 1 1 7031 20181212202200
+220.243.135.75 1 1 7427 20181212183137
+5.184.241.16 1 1 17267 20181201194935
+220.243.135.51 1 1 7555 20181214091009
+188.146.160.234 3 54 4149516 20181205003254
+220.243.135.194 10 10 95567 20181215013553
+93.76.96.233 1 1 59211 20181201123158
+109.248.149.161 1 1 46707 20181205192528
+171.13.14.19 0 21 2733408 
+220.243.136.223 1 1 176 20181213070137
+37.73.91.38 1 26 191451 20181209152152
+220.243.136.5 1 1 7710 20181215013553
+159.205.9.168 6 39 394701 20181204163510
+93.178.255.197 2 2 120364 20181214025501
+185.234.217.140 1 1 60333 20181217010841
+82.145.221.242 4 7 83494 20181209104244
+83.6.45.29 18 156 7005304 20181201073447
+217.99.253.52 7 103 5333065 20181216095013
+54.86.66.252 1 1 18828 20181207011427
+220.243.136.173 3 3 31517 20181214185313
+220.243.135.77 1 1 12194 20181213074200
+220.243.136.155 5 5 33984 20181215013553
+46.119.115.103 27 27 1625894 20181217094855
+13.57.233.99 4 4 70783 20181216065649
+83.6.27.130 8 49 519668 20181204121025
+3.80.197.63 1 1 54705 20181217075211
+89.229.132.37 2 28 245134 20181217222943 20181217222943 /media/system/fonts/glyphicons-halflings-regular.woff2
+37.230.221.40 6 6 179527 20181215130950
+194.44.183.14 1 1 14246 20181211152153
+188.191.200.236 2 45 3581221 20181213232203
+37.214.62.84 6 60 3691977 20181217045417
+213.239.211.142 1 1 37904 20181215140749
+213.5.192.66 5 57 438006 20181210222550
+35.233.26.236 1 1 60170 20181217170406
+31.172.136.113 2 27 211701 20181210213124
+171.13.14.11 0 9 139449 
+46.171.3.2 8 100 6853107 20181213150923
+82.145.220.167 8 70 3826749 20181215152206
+178.94.30.125 1 1 28930 20181215220627
+79.184.40.198 1 34 5552572 20181201165508
+31.129.233.137 5 52 486403 20181216115847
+220.243.135.229 4 4 49860 20181213060227
+194.44.216.170 1 23 290325 20181205193457
+35.187.12.202 1 1 60170 20181206170432
+83.6.106.75 2 34 3446289 20181217174125
+220.243.136.44 1 1 10184 20181212191701
+178.36.60.100 53 107 3489335 20181204202805
+220.243.135.56 1 1 8414 20181212193447
+193.124.179.180 15 15 0 20181216083312
+14.186.177.213 1 1 2864 20181211130933
+83.9.151.23 31 139 4258431 20181201061735
+178.133.49.216 1 22 156160 20181210131003
+83.9.58.70 2 13 532689 20181210112644
+94.254.224.24 2 45 3577725 20181205141134
+171.13.14.42 0 4 204746 
+171.13.14.8 0 3 33023 
+35.241.171.206 1 1 59187 20181201170913
+220.243.136.124 11 11 89504 20181214222216
+151.68.26.221 1 27 194872 20181203141033
+220.243.135.144 4 4 27580 20181213072144
+5.173.120.32 5 58 3524505 20181208183707
+77.72.84.18 2 2 20492 20181208092357
+80.245.116.253 3 14 254060 20181213202639
+178.36.3.75 3 46 3196664 20181202192147
+220.243.135.168 1 1 0 20181213072145
+94.254.128.44 2 50 3669664 20181202085542
+52.53.201.78 7 7 123990 20181216234134
+128.69.144.84 1 27 207157 20181207063831
+173.252.87.8 0 2 1730 
+83.23.132.189 6 39 862087 20181212214855
+185.86.13.213 6 6 45246 20181216005607
+83.142.111.248 2 27 210850 20181205144727
+115.28.111.201 15 15 266502 20181207144216
+188.32.66.112 5 23 177141 20181206003616
+5.94.14.61 2 12 159482 20181204100316
+220.243.135.40 3 3 31228 20181213060227
+220.243.136.90 2 2 17805 20181214102126
+202.13.5.157 2 28 257800 20181209105048
+220.243.135.103 2 2 18334 20181213083712
+78.10.207.126 20 161 10104163 20181216220910
+125.209.235.176 0 2 114108 
+178.95.26.66 4 27 2944101 20181202173805
+5.172.255.166 3 18 39509 20181217225702 20181217225701 /media/system/fonts/glyphicons-halflings-regular.woff2
+217.64.113.197 2 2 26750 20181214144425
+14.186.39.26 1 1 2732 20181210152043
+220.243.135.2 1 1 8123 20181214094815
+46.211.74.53 1 22 159854 20181213131024
+123.125.71.114 0 1 96581 
+220.243.136.201 1 1 10303 20181214110935
+185.86.164.104 4 4 30164 20181215051207
+83.9.146.64 1 1 17714 20181212124838
+46.211.42.247 2 45 3580532 20181210092738
+220.243.136.35 1 1 9697 20181212202440
+115.28.145.231 15 15 259030 20181202175307
+220.243.135.224 1 1 7409 20181214055239
+35.241.217.177 1 1 60170 20181207170652
+128.74.247.229 5 23 176964 20181217215114
+220.243.135.139 1 1 15712 20181212185237
+171.13.14.52 0 6 475245 
+37.47.1.161 6 6 55523 20181201154232
+188.147.102.40 3 30 666258 20181216174656
+193.239.75.78 2 27 208998 20181210183911
+193.201.224.248 5 5 253219 20181213193828
+37.47.195.99 3 51 3560216 20181207102944
+178.95.43.57 0 1 9292 
+77.72.82.146 134 134 375052 20181205135107
+92.101.200.127 1 1 60357 20181206071514
+220.243.136.178 1 1 8717 20181212200142
+62.47.20.9 7 12 102861 20181215121827
+193.105.75.132 1 1 17862 20181206110912
+54.159.45.166 1 1 29058 20181216010454
+14.186.61.151 1 1 2732 20181210142403
+220.243.136.13 2 2 16169 20181213003516
+188.146.81.103 1 9 572324 20181212020601
+131.108.16.200 1 1 17752 20181214190320
+23.19.248.75 1 1 17761 20181212221526
+31.0.23.31 2 45 3574648 20181216200725
+188.146.110.252 4 57 2708535 20181217195616
+185.86.164.102 6 6 45246 20181215132756
+91.98.128.80 3 3 17815 20181207071028
+88.99.27.172 3 3 91352 20181211021401
+155.94.221.93 1 1 17747 20181209131917
+83.31.87.232 2 28 246065 20181216004831
+37.73.3.220 1 22 159833 20181204130323
+113.186.207.234 1 1 2733 20181211123959
+178.54.124.221 1 27 248926 20181209213422
+178.95.31.101 4 29 212993 20181211200901
+188.146.227.75 62 94 5034840 20181209113410
+94.178.144.3 2 28 240874 20181203131002
+213.251.20.247 114 114 4538115 20181217221906 20181217212420 /
+46.133.7.129 1 27 210303 20181203081814
+188.147.106.222 2 45 3194972 20181201222423
+54.90.172.40 1 1 54558 20181201234154
+220.243.136.213 2 2 16908 20181213051855
+198.108.67.16 1 1 17754 20181205114524
+220.243.136.238 2 2 14876 20181212195633
+220.181.108.157 0 1 1569 
+220.243.135.97 2 2 18160 20181214122920
+125.209.235.182 1 10 1084558 20181202021819
+220.243.136.139 1 1 9342 20181213022019
+31.129.232.139 2 27 198872 20181217224522 20181217224521 /media/system/fonts/glyphicons-halflings-regular.woff2
+82.145.223.76 3 68 4252433 20181216160444
+171.13.14.47 0 23 1798793 
+14.249.29.219 2 2 5465 20181211084413
+188.146.167.35 17 85 3681876 20181204100735
+5.39.49.212 1 1 57194 20181213134737
+37.47.165.192 1 44 3560683 20181214113030
+5.173.160.153 1 3 22199 20181216182932
+79.189.126.126 2 45 3575282 20181213233413
+77.120.204.243 1 27 264184 20181213013628
+83.6.208.64 32 614 32999659 20181204162314
+188.146.192.139 7 57 889635 20181209143525
+95.85.38.110 2 27 210018 20181210220427
+37.47.203.26 8 97 2157533 20181208154946
+185.125.219.13 11 11 0 20181213021205
+89.229.203.185 2 4 31993 20181201091131
+46.119.114.0 4 4 236844 20181203072919
+27.73.49.23 1 1 2734 20181211095403
+66.102.9.135 9 80 4383318 20181212094107
+198.108.66.80 1 1 17755 20181206125332
+185.197.75.104 2 2 120388 20181212070648
+31.129.232.162 3 31 293538 20181210193634
+27.76.94.135 1 1 2733 20181211080348
+113.172.206.175 1 1 2732 20181211102818
+220.243.135.84 1 1 6805 20181212210223
+54.197.36.65 1 1 17867 20181216234507
+123.25.21.254 1 1 2734 20181210150917
+92.112.164.60 2 28 611784 20181206103605
+188.147.103.199 5 159 14113682 20181216112431
+83.31.63.239 5 98 6655635 20181203142215
+38.99.62.93 7 7 123996 20181213142929
+220.243.135.252 4 4 29489 20181213074159
+220.243.136.93 2 2 16619 20181214222218
+46.133.79.159 1 1 11119 20181202015755
+118.173.232.68 12 12 33569 20181216063558
+213.5.193.1 3 31 239258 20181204154744
+77.87.3.251 2 29 255777 20181209075400
+188.147.42.115 4 53 3657793 20181207223849
+167.114.38.242 1 1 10 20181201204144
+112.5.243.243 2 2 35521 20181212225835
+83.6.110.68 17 27 274941 20181207210930
+178.159.37.55 17 17 647755 20181211140452
+94.254.240.69 2 49 3208771 20181202121907
+185.17.127.233 9 114 1026480 20181210225809
+220.243.136.135 2 2 26441 20181213041812
+222.254.16.159 1 1 2866 20181211040002
+125.209.235.173 1 8 120717 20181209070859
+45.120.5.222 1 1 17764 20181213220020
+82.145.221.111 5 16 130908 20181202164918
+220.243.136.126 7 7 35799 20181213074159
+138.186.136.45 1 1 17758 20181212234228
+178.32.158.190 1 1 8574 20181204224458
+178.94.54.87 2 2 57860 20181214214926
+46.76.22.3 3 33 302890 20181216174422
+95.49.183.113 4 15 4437628 20181201213730
+91.225.8.134 8 104 7275804 20181205075408
+83.9.233.121 2 29 802082 20181202224011
+89.64.1.62 10 76 3926207 20181201214859
+220.243.135.179 2 2 17586 20181214075625
+89.228.99.182 13 123 3536360 20181207225554
+185.93.94.40 2 45 3574854 20181212212622
+178.94.27.53 4 4 115376 20181202213509
+193.242.142.149 3 52 3631292 20181208203722
+83.6.41.97 10 38 850568 20181203214724
+220.243.135.119 1 1 7963 20181212182221
+34.229.52.70 2 2 83763 20181216142600
+151.35.202.221 2 47 409074 20181207152246
+89.67.112.33 0 1 9292 
+37.47.251.120 5 15 2629045 20181212061343
+220.243.136.133 4 4 22875 20181214052018
+220.243.135.221 8 8 47276 20181213075946
+147.75.210.225 0 1 29164 
+193.80.240.229 1 2 26123 20181206102727
+141.0.12.137 1 3 32823 20181214112431
+220.243.136.97 1 1 67008 20181213072143
+80.245.116.249 0 17 116264 
+109.173.101.59 5 23 177055 20181217045654
+89.77.104.182 2 2 120529 20181211100037
+46.229.158.109 1 44 3233710 20181203224502
+220.181.108.96 1 1 60194 20181213062548
+54.91.187.184 1 1 17269 20181201013144
+178.95.32.225 2 45 3204303 20181202163627
+220.243.136.230 3 3 33286 20181212211710
+54.242.83.116 1 1 54558 20181203145431
+37.73.105.115 1 26 192620 20181214123242
+37.47.249.81 2 49 3600833 20181216091250
+5.173.136.245 3 76 3862794 20181216113203
+113.161.62.33 1 1 2734 20181211102039
+113.161.92.93 1 1 2864 20181211051628
+37.73.40.222 1 1 11067 20181211202254
+220.243.135.214 1 1 10200 20181213054421
+14.231.189.203 1 1 2734 20181211081251
+178.36.46.155 13 30 1111544 20181216172431
+37.145.112.239 1 27 228276 20181202085630
+220.243.136.57 2 2 9802 20181214113117
+69.171.251.8 0 8 141577 
+185.220.101.15 6 6 106741 20181207043005
+104.160.31.227 1 1 17763 20181206174045
+46.149.190.53 1 22 156706 20181214085901
+83.9.163.214 31 116 4659424 20181208180013
+220.243.136.123 4 4 40864 20181214071602
+188.147.36.5 7 139 7998792 20181202204105
+31.175.160.203 2 45 3581127 20181206090303
+220.243.136.84 5 5 47478 20181214052020
+83.31.64.201 4 90 7156220 20181214112149
+220.243.135.29 5 5 38523 20181215013553
+220.243.136.253 1 1 10585 20181214083232
+173.252.87.1 0 2 1730 
+193.169.252.19 1 1 31667 20181216003245
+193.26.25.9 3 34 328064 20181206084006
+220.243.136.80 1 1 31140 20181212185953
+81.190.117.176 1 27 348080 20181206230651
+83.31.235.247 4 90 7160119 20181217160949
+134.58.253.56 4 30 224873 20181217104227
+89.229.193.229 2 45 3581174 20181204162639
+147.75.210.174 0 2 321419 
+147.75.210.229 0 1 33753 
+220.243.135.167 4 4 28815 20181214222215
+109.87.156.39 1 1 33198 20181208181259
+159.69.209.105 61 61 469087 20181205003605
+185.86.164.110 2 2 15082 20181212132708
+94.254.136.96 2 21 175426 20181213212800
+220.243.135.55 1 1 0 20181213063000
+194.44.126.10 2 27 206302 20181205140916
+83.9.196.246 3 33 747244 20181201213248
+83.24.3.71 11 153 11836655 20181216144923
+91.124.46.35 1 1 28930 20181211063704
+188.146.110.33 4 38 441499 20181204173806
+52.90.27.206 1 1 54705 20181211232651
+93.75.168.210 2 28 368658 20181212213326
+220.243.135.71 1 1 10077 20181213042930
+46.119.115.11 2 27 215850 20181202082601
+155.94.139.27 1 1 60170 20181217133632
+220.243.136.49 2 2 16605 20181212195632
+77.112.35.118 5 56 4387981 20181206175053
+123.21.99.60 1 1 2865 20181211115549
+185.41.23.12 2 28 237688 20181212184915
+188.146.193.23 2 27 208319 20181201170605
+198.108.66.224 4 4 70843 20181208144142
+212.91.12.212 5 5 86350 20181204152834
+113.173.142.250 2 2 5596 20181211131644
+191.96.252.210 1 1 17758 20181213231912
+83.9.0.46 5 26 683846 20181206090323
+220.243.136.166 4 4 24795 20181213070125
+14.187.21.19 1 1 2730 20181211054514
+35.241.244.146 1 1 60333 20181204172224
+5.58.221.192 1 27 288615 20181208133711
+213.21.53.132 2 2 14986 20181216172304
+178.140.229.88 5 23 177058 20181207231938
+189.14.70.106 2 2 15010 20181216205804
+185.60.247.122 3 49 3613078 20181205181110
+213.76.120.15 1 4 29028 20181209195935
+46.211.73.245 5 30 251406 20181213193848
+220.243.135.38 1 1 9936 20181212223534
+75.126.28.194 11 11 394000 20181212182133
+171.13.14.56 2 6 111156 20181212060002
+176.125.43.17 16 360 27787680 20181213163813
+220.243.135.5 3 3 23062 20181215013553
+220.243.135.78 5 5 46594 20181214091010
+35.246.179.77 1 1 34831 20181215141424
+37.47.221.143 1 1 17761 20181216181252
+220.243.135.162 1 1 12136 20181213055159
+82.177.39.67 7 72 3944335 20181204124741
+14.184.157.62 1 1 2734 20181211040549
+147.75.210.239 0 1 354 
+93.77.155.229 1 27 251821 20181213142531
+142.116.142.74 1 44 3563111 20181216200409
+54.204.251.57 1 1 54558 20181203015826
+123.21.103.208 1 1 2863 20181210175727
+93.75.203.182 2 27 216209 20181209132236
+83.9.148.21 53 143 5960215 20181211122511
+220.243.136.251 4 4 43574 20181213064423
+14.169.239.27 1 1 2733 20181211075311
+46.211.72.205 2 44 314691 20181205133029
+188.93.242.213 8 8 41215 20181217094929
+98.223.53.141 1 29 760596 20181207193753
+45.61.169.56 1 1 0 20181209223052
+175.42.86.92 1 1 17271 20181203073754
+125.209.235.168 0 2 109023 
+83.24.120.190 7 100 6989610 20181206123616
+192.164.253.12 1 1 17262 20181202083454
+91.218.97.25 1 27 265493 20181217104508
+150.249.214.250 2 2 34542 20181204010934
+188.146.81.69 1 4 28898 20181206141205
+83.9.3.219 10 54 3621974 20181208202444
+220.243.135.140 1 1 13225 20181212182136
+195.34.15.98 2 2 5595 20181216084222
+220.243.136.159 1 1 8017 20181213053005
+178.137.83.93 31 31 1866835 20181210234133
+176.108.99.217 3 79 590296 20181216123708
+35.205.208.125 1 1 60170 20181212170703
+117.7.97.223 1 1 2852 20181210112900
+123.125.71.57 0 1 86659 
+220.243.135.60 7 7 70324 20181214071605
+82.223.0.117 3 3 26368 20181215155243
+46.211.43.253 1 1 51096 20181216195530
+185.86.164.107 2 2 15082 20181213041648
+178.133.87.42 1 22 157387 20181214091253
+83.6.89.183 1 2 24949 20181202155839
+14.162.198.55 1 1 2863 20181211043041
+171.13.14.38 0 9 191867 
+54.226.82.213 1 1 54705 20181213143331
+95.128.3.212 2 2 0 20181214051844
+220.243.135.15 2 2 20539 20181214083232
+35.225.141.170 1 44 3561317 20181209163757
+220.243.136.88 1 1 18934 20181213081440
+147.75.210.227 0 3 46185 
+93.181.167.157 1 44 3563151 20181205074142
+220.243.135.66 2 2 16749 20181214100449
+220.243.136.116 1 1 8818 20181214110935
+188.146.18.148 3 51 3288389 20181204114119
+194.44.222.245 5 134 10719010 20181217173054
+220.243.135.244 1 1 8016 20181212183750
+173.252.87.12 0 1 865 
+91.124.8.172 4 4 115376 20181203215523
+220.243.135.34 4 4 42371 20181213081455
+171.13.14.48 0 1 33753 
+171.13.14.6 1 2 47192 20181202071316
+31.183.157.194 2 45 3579729 20181208184909
+79.191.176.165 1 1 17759 20181209130601
+5.173.176.165 1 44 3176387 20181202103020
+185.119.81.11 14 14 105574 20181216184334
+5.173.17.49 1 3 67680 20181204184731
+5.173.176.182 3 51 3287122 20181204061049
+125.209.235.185 2 21 1229206 20181209063333
+51.254.199.179 8 8 138174 20181202013830
+171.13.14.60 1 7 269817 20181213063348
+177.54.201.146 1 1 19549 20181205143828
+94.178.200.74 6 90 4115842 20181216171357
+14.186.36.200 1 1 2864 20181210195330
+31.178.148.163 3 62 9009290 20181217072504
+220.243.136.182 1 1 7851 20181212182221
+66.102.6.172 1 6 14195 20181207020059
+5.173.208.44 24 301 19481560 20181214174853
+89.76.150.100 3 52 3624844 20181209210725
+194.44.204.143 4 90 7157683 20181206133631
+36.75.140.60 1 1 60194 20181212153438
+185.209.20.147 18 18 0 20181217020949
+37.52.16.142 1 23 289937 20181211202314
+171.13.14.51 0 16 446191 
+82.102.16.137 4 4 208136 20181206231141
+213.241.1.10 22 169 8502010 20181212141623
+220.243.136.193 1 1 7777 20181212192027
+220.243.136.47 3 3 39310 20181214185314
+220.243.135.112 1 1 7113 20181213023145
+220.243.135.207 7 7 32818 20181214135918
+198.108.66.144 1 1 17760 20181206154427
+220.243.136.205 6 6 13621 20181214045919
+31.134.86.157 2 29 215701 20181203233218
+220.243.136.16 2 2 15700 20181213064424
+31.1.244.88 77 508 21207016 20181213201404
+220.243.135.185 1 1 7905 20181212204325
+83.240.186.238 1 1 40960 20181210105750
+89.228.97.149 2 39 1187573 20181203143448
+220.243.135.164 2 2 18287 20181214185314
+173.44.224.173 1 1 17858 20181211060055
+185.5.249.185 13 13 0 20181214065040
+83.6.38.63 3 46 3597500 20181206205656
+27.72.34.253 1 1 2733 20181211115547
+134.249.72.6 9 9 535280 20181206010700
+31.129.232.70 1 26 190187 20181212012439
+89.228.104.243 4 75 1416183 20181201210135
+31.128.230.82 2 24 308229 20181202230552
+191.101.113.103 1 1 17752 20181213231858
+220.243.135.123 2 2 14848 20181214071602
+220.243.135.233 3 3 35858 20181214092900
+95.49.200.23 4 5 1061268 20181212213042
+54.175.69.50 1 1 8468 20181208013104
+37.147.221.46 3 3 96582 20181215055957
+185.2.32.2 4 4 128687 20181217064155
+54.86.117.105 1 1 28972 20181201232256
+37.47.238.37 4 58 5283679 20181203182735
+147.75.210.230 0 1 1102 
+82.145.222.186 1 3 29344 20181205185617
+52.91.160.108 1 1 17274 20181201130439
+46.133.6.217 1 27 227988 20181213080157
+220.243.136.222 2 2 21992 20181212201647
+220.243.136.28 10 10 17976 20181215003637
+91.124.41.13 2 2 57860 20181207220523
+54.202.226.239 2 19 173263 20181214020825
+196.245.185.84 38 42 420851 20181215163130
+220.243.136.241 2 2 16480 20181213064422
+52.205.42.120 4 4 236806 20181203131554
+89.64.11.41 2 28 282730 20181206193635
+176.8.89.33 2 2 120388 20181207045954
+217.118.179.58 2 2 14986 20181216221641
+89.229.198.36 3 41 54466 20181212153243
+34.238.131.66 1 1 54705 20181216045259
+165.225.84.61 2 28 243368 20181204210433
+37.73.134.215 1 26 191474 20181205200336
+89.228.96.31 5 54 3652562 20181216020711
+83.9.4.247 4 51 3631755 20181213105233
+220.243.136.114 2 2 14635 20181214091010
+91.124.41.214 2 27 215483 20181214061640
+220.243.136.156 1 1 7265 20181212184240
+89.64.14.212 3 58 3938632 20181216230319
+95.47.113.249 1 1 60333 20181209040140
+46.211.67.210 2 30 220048 20181214113056
+123.21.149.184 1 1 2733 20181211025239
+83.6.87.239 1 18 17710 20181216163415
+123.21.189.119 1 1 2864 20181211143549
+5.173.184.4 2 50 3676124 20181202150107
+204.10.217.153 91 91 731330 20181206160141
+222.252.33.141 1 1 2732 20181211143548
+171.13.14.50 0 2 260661 
+194.67.210.77 10 10 0 20181213023000
+46.119.119.189 3 32 271915 20181207192452
+185.203.240.129 19 19 0 20181217020948
+46.211.69.130 0 1 9292 
+113.173.72.32 1 1 2865 20181210185534
+35.204.66.148 1 1 29354 20181215123746
+185.234.219.226 3 3 177561 20181201175552
+195.191.162.186 3 50 3617126 20181216232654
+37.47.215.93 7 26 2652643 20181205225613
+220.243.135.176 2 2 6845 20181213075945
+220.243.136.196 2 2 17024 20181214052019
+93.178.204.227 2 24 202215 20181209131317
+220.243.135.95 4 4 20757 20181213075946
+113.172.58.246 1 1 2733 20181211130932
+220.243.135.230 1 1 14643 20181213054420
+95.84.193.86 0 1 48009 
+188.146.169.92 5 26 208360 20181208161458
+77.252.47.151 3 51 3693003 20181203182451
+35.234.118.147 1 1 30587 20181214181142
+115.79.37.149 2 2 5596 20181203135744
+84.241.10.91 1 1 19590 20181203143733
+83.6.85.132 6 16 210922 20181202200019
+220.243.135.157 2 2 16634 20181213053352
+178.94.34.29 1 1 28930 20181211225700
+164.126.232.179 2 23 5552378 20181203221105
+220.243.136.162 2 2 15945 20181213081458
+83.9.1.104 3 12 643692 20181208120832
+83.9.14.59 2 22 643183 20181210212442
+148.251.237.246 3 3 119459 20181213063719
+60.217.72.16 4 4 70543 20181213105134
+220.243.135.74 2 2 8232 20181213070129
+95.160.156.190 1 27 594912 20181207095413
+37.47.224.167 4 42 772392 20181203114030
+193.33.39.74 2 24 307477 20181212180749
+220.243.135.227 2 2 15644 20181214103703
+62.170.243.131 2 28 260892 20181206192132
+46.211.54.168 1 27 204480 20181214125237
+173.232.242.34 1 1 60333 20181210151438
+220.243.136.224 1 1 8037 20181214055239
+37.115.204.89 1 2 14614 20181215200057
+220.243.136.24 3 3 25334 20181212210650
+78.111.188.11 2 26 312443 20181202152616
+220.243.136.172 5 5 0 20181214222217
+220.243.135.212 4 4 25172 20181213061747
+83.31.40.38 1 3 29408 20181214215148
+220.243.135.76 2 2 15931 20181212191621
+178.94.27.39 3 3 86790 20181217153920
+46.133.123.95 1 27 256999 20181209153606
+188.146.32.25 1 4 32206 20181202210212
+46.133.78.189 1 22 161682 20181203133022
+80.245.116.251 1 37 248403 20181212181826
+218.205.77.137 1 1 60194 20181208175500
+41.74.9.238 2 2 5600 20181216085823
+46.211.125.211 1 22 158911 20181208143039
+89.230.192.250 2 28 222864 20181217123613
+171.13.14.10 0 1 678 
+91.245.75.63 1 1 8031 20181210145850
+172.58.232.86 1 27 219784 20181203143247
+35.241.237.108 1 1 28965 20181214164237
+83.27.101.149 1 44 3562447 20181217063814
+54.196.194.63 1 1 54705 20181210204226
+77.121.175.175 1 27 234241 20181203140541
+120.92.72.147 1 2 17784 20181216172440
+220.243.136.188 4 4 51102 20181213064423
+185.85.238.244 12 12 90492 20181217171843
+220.243.135.80 1 1 10626 20181214042937
+37.52.71.109 5 52 501039 20181209172216
+37.115.186.118 5 34 262390 20181212182659
+31.148.51.139 2 28 283856 20181216150340
+73.253.254.129 0 1 60170 
+85.159.67.134 7 7 421358 20181213114406
+46.211.148.128 2 44 3578461 20181207192227
+220.243.135.243 3 3 30836 20181208112609
+178.74.195.187 1 26 191072 20181209193507
+112.5.243.233 1 1 17757 20181217194743
+220.243.135.32 5 5 18119 20181213075946
+150.249.214.251 2 2 35506 20181212084342
+188.146.12.232 5 56 3677198 20181206092024
+220.243.136.145 2 2 18056 20181214055237
+5.173.200.89 1 27 222516 20181206195534
+193.19.252.206 1 22 184906 20181209123625
+83.6.221.21 7 59 3684356 20181207103501
+220.243.135.117 5 5 63807 20181212200018
+123.21.102.157 1 1 2851 20181211041955
+89.64.17.27 2 45 3581864 20181209154041
+31.43.224.39 1 27 220988 20181205205726
+5.173.232.37 1 44 3562661 20181215231813
+5.173.184.130 2 35 5577907 20181215160139
+37.73.10.249 13 105 904275 20181206222929
+64.89.234.161 4 4 71010 20181213221250
+78.46.156.169 3 3 97681 20181214131254
+14.231.176.99 1 1 2733 20181210163531
+31.183.129.245 18 139 8669461 20181212223253
+83.6.82.44 2 27 186790 20181201201707
+178.36.36.99 4 5 39820 20181202153841
+83.3.75.85 7 80 8536091 20181217123527
+188.146.225.120 4 56 4124142 20181217003401
+185.86.164.99 8 8 60328 20181216073228
+220.243.135.11 1 1 216 20181213070128
+178.94.47.82 1 1 28930 20181214095648
+83.31.71.33 4 90 7158104 20181216193705
+178.168.99.152 4 4 173362 20181204060022
+220.243.136.54 3 3 44937 20181208112610
+178.94.62.23 1 1 28930 20181210141607
+92.82.237.225 4 4 262962 20181211162709
+223.111.254.83 3 3 96646 20181214110901
+69.171.251.10 0 4 209937 
+18.212.108.159 1 1 29058 20181210172008
+159.65.24.22 5 5 50324 20181216081050
+54.86.45.10 2 2 109410 20181216185132
+83.6.83.43 4 53 3643005 20181215231955
+123.125.71.85 0 1 121200 
+213.109.225.216 5 40 707384 20181213223834
+193.33.39.66 1 23 288769 20181212195308
+185.12.7.108 1 1 17754 20181205024534
+35.246.248.125 1 1 30884 20181214225954
+147.75.210.164 0 1 24544 
+83.9.168.208 2 11 646749 20181211114952
+51.68.112.14 2 2 35506 20181211202137
+37.47.248.8 5 6 73011 20181207212338
+220.243.136.151 3 3 30756 20181213173154
+220.243.136.78 2 2 17433 20181214083233
+83.9.167.229 2 24 186179 20181209221635
+212.129.3.60 2 2 35316 20181211200526
+220.243.136.211 1 1 12717 20181213074203
+89.75.74.118 4 65 4399800 20181216090949
+220.243.136.187 12 12 57280 20181214222216
+213.109.9.80 2 2 14986 20181217111555
+79.184.218.112 1 1 8539 20181204180536
+220.243.135.68 9 9 96360 20181215013553
+81.36.81.190 6 57 3683602 20181214200047
+220.243.135.235 2 2 9939 20181214222217
+83.9.171.206 6 60 3706912 20181214065610
+88.198.36.62 1 1 33136 20181211021405
+46.112.90.226 3 49 3608700 20181213222912
+37.47.214.219 3 3 32999 20181215182654
+14.186.193.211 1 1 2864 20181211124001
+77.111.244.146 2 27 207997 20181211212233
+83.11.188.139 5 62 4899755 20181216090021
+109.207.59.94 3 46 3271026 20181204132014
+117.1.66.182 1 1 2853 20181210230432
+94.75.66.211 2 27 216427 20181205193246
+34.229.243.238 1 1 29058 20181211193637
+188.146.166.4 1 27 348408 20181201174719
+91.124.58.109 2 28 279619 20181217000919
+5.9.17.118 1 1 45555 20181211021404
+69.171.251.32 2 21 1682723 20181205235816
+188.147.107.105 2 45 3579794 20181209155554
+196.44.226.13 2 2 5597 20181215092302
+195.200.65.163 1 22 156718 20181204125910
+178.235.185.27 4 53 3643740 20181208151711
+178.235.189.14 1 44 3557764 20181208153020
+171.13.14.45 0 1 4014 
+35.174.109.7 1 1 17867 20181213194304
+185.86.164.103 2 2 15082 20181216035954
+31.183.229.183 10 72 5063152 20181217181547
+83.31.252.239 3 86 6146696 20181212225728
+35.240.120.226 1 1 60333 20181211171412
+89.78.6.98 4 4 240941 20181213152659
+212.7.220.48 2 2 33241 20181204090303
+147.75.210.236 1 1 17759 20181209173447
+220.243.135.16 4 4 7929 20181213062959
+47.192.145.26 4 38 364059 20181216213625
+37.214.17.62 5 59 3806265 20181215124911
+107.6.156.2 1 1 0 20181213203903
+185.93.94.22 1 1 17656 20181205204709
+185.86.167.4 6 6 45246 20181216201340
+93.190.138.231 8 8 200948 20181214144425
+178.92.13.172 1 27 204569 20181214212016
+178.94.53.82 3 3 86790 20181215160425
+95.160.156.106 2 34 709214 20181206000105
+193.239.56.202 2 25 237863 20181212002222
+94.254.169.66 4 51 3711025 20181202123916
+178.159.43.212 13 13 0 20181215025415
+220.243.135.248 1 1 8006 20181212204325
+54.90.166.215 1 1 29058 20181205213007
+191.96.251.146 1 1 17759 20181213232046
+64.90.40.104 2 2 120666 20181208170315
+47.52.210.47 1 1 60194 20181205171820
+5.173.168.19 2 4 23756 20181202121205
+213.179.252.70 2 29 304693 20181210101431
+178.94.55.251 3 3 86532 20181202084103
+202.198.224.3 1 1 17868 20181211184906
+46.211.54.66 1 22 159053 20181203095602
+188.146.128.176 2 5 501507 20181201222847
+138.201.31.160 74 74 2048641 20181217193716
+220.243.135.27 2 2 21314 20181213070127
+37.47.237.184 4 72 3737789 20181217194100
+220.243.136.12 4 4 35004 20181214110935
+178.92.8.189 1 22 222449 20181208184806
+158.69.229.134 1 1 60170 20181205045843
+213.76.103.212 3 53 3614256 20181209121549
+192.164.249.229 2 22 3435434 20181217215708
+82.145.222.69 1 7 81733 20181216175503
+220.243.135.189 7 7 14062 20181214081347
+83.31.249.191 2 4 31536 20181215214317
+91.124.250.73 2 44 3573826 20181205110438
+117.6.27.132 1 1 2732 20181210101930
+208.101.7.44 2 2 64644 20181209213429
+100.24.37.133 1 1 9213 20181213181041
+66.240.236.119 1 1 59192 20181203083821
+52.200.12.174 1 1 10437 20181207193814
+220.243.135.133 1 1 9610 20181214052018
+185.212.131.159 4 4 11198 20181204041422
+159.138.21.170 2 2 5598 20181215083135
+212.115.252.229 1 26 190424 20181205211920
+220.243.136.34 1 1 10585 20181212204559
+194.44.192.203 1 27 218509 20181206194917
+62.210.215.112 35 35 1708161 20181217052855
+89.229.201.165 2 3 23725 20181216145054
+220.243.136.216 2 2 9260 20181213070128
+116.104.19.100 1 1 2864 20181211065714
+220.243.136.167 5 5 50457 20181214222215
+83.9.163.129 1 3 188317 20181204123457
+188.146.16.165 1 44 3180595 20181201154637
+220.243.135.145 2 2 15817 20181214055236
+178.36.40.13 3 32 321800 20181212104947
+171.13.14.9 0 7 751669 
+123.21.71.72 1 1 2865 20181210132844
+194.99.105.20 4 4 205131 20181201215608
+83.9.145.94 3 52 3626650 20181206182834
+171.13.14.46 1 2 18538 20181208053408
+82.145.223.35 1 13 159646 20181201122049
+52.90.102.246 1 1 29058 20181213090424
+188.230.17.44 1 27 241041 20181215190434
+125.209.235.170 1 4 30349 20181216092040
+178.94.55.186 14 85 2311524 20181204230454
+172.58.200.201 1 22 160535 20181206152818
+91.160.141.140 2 27 246442 20181202204809
+188.163.113.133 1 22 160230 20181211210927
+125.209.235.177 0 26 1321498 
+83.9.7.172 38 133 9035976 20181203062126
+220.243.136.233 2 2 18931 20181214092900
+147.75.210.231 0 1 3064 
+83.9.199.198 3 50 3614434 20181214232457
+193.201.164.7 6 69 3678394 20181212151938
+194.44.190.88 2 45 2734513 20181207161112
+52.90.46.246 1 1 29058 20181215122550
+37.47.140.8 4 54 3653555 20181211153454
+176.59.197.184 5 5 37264 20181211194337
+220.243.135.193 1 1 6778 20181214044743
+117.7.197.33 1 1 2733 20181211105131
+37.55.232.160 1 3 67838 20181207104253
+196.245.151.22 1 1 60170 20181205084406
+178.94.172.49 1 22 157636 20181206202636
+171.13.14.5 0 5 382736 
+220.243.135.223 1 1 9153 20181213005235
+37.248.213.16 4 91 3267894 20181210180826
+35.175.237.102 1 1 29058 20181208100716
+220.243.135.180 2 2 14230 20181212181935
+178.94.11.132 2 2 57860 20181217215639
+209.209.224.160 1 1 0 20181212122237
+147.75.210.166 0 1 5519 
+220.243.135.204 3 3 23470 20181214075622
+178.94.23.56 1 1 28930 20181208080857
+37.47.18.117 3 51 4076806 20181216100913
+188.146.230.29 4 50 468761 20181202150921
+62.149.7.163 4 4 100678 20181210123903
+188.147.101.227 1 44 3561014 20181210202712
+46.211.109.45 1 22 159702 20181213121450
+220.243.136.73 5 5 41623 20181213072144
+220.243.135.127 1 1 9407 20181214065307
+173.193.17.200 8 8 293230 20181216153806
+217.20.176.77 16 16 44762 20181216002902
+120.92.72.108 0 1 4014 
+5.173.176.4 1 27 346768 20181201142951
+220.243.135.156 1 1 0 20181214222217
+220.243.136.202 2 2 15342 20181212205559
+176.112.60.240 2 2 53491 20181208094817
+191.101.108.204 1 1 17373 20181204110549
+5.188.210.37 2 5 85615 20181213222129
+46.172.138.224 2 28 307755 20181213205823
+77.112.121.171 2 45 3579753 20181208151521
+66.249.81.168 3 19 199352 20181217104238
+83.6.226.239 5 56 3676582 20181216165050
+178.42.151.114 7 73 3992027 20181207163516
+89.68.176.100 3 92 7157121 20181212215444
+220.243.135.200 1 1 8820 20181213045435
+31.0.82.149 1 27 276015 20181217170927
+91.218.46.77 2 28 227178 20181203104021
+37.73.158.84 1 26 188912 20181201220708
+220.243.136.136 6 6 48179 20181213072144
+37.47.214.135 2 28 193553 20181208203825
+5.102.3.112 2 28 251216 20181205094508
+192.210.185.93 1 1 18491 20181213052324
+220.243.135.91 14 14 54162 20181215003636
+88.156.140.140 1 19 578831 20181213094058
+188.147.33.162 6 59 3062232 20181201211726
+46.211.40.93 1 22 157068 20181210135013
+123.21.65.253 1 1 2866 20181211040612
+78.154.165.135 1 26 193457 20181212164259
+71.223.26.14 4 12 100189 20181214063837
+188.146.110.254 1 3 67190 20181203214945
+34.226.221.236 1 1 29058 20181207213817
+220.243.136.50 3 3 17047 20181213075945
+37.47.214.143 27 83 5066371 20181208192720
+220.243.135.234 1 1 8707 20181212204003
+46.232.133.157 2 28 245244 20181213190423
+176.125.53.115 10 225 15978260 20181203174917
+83.31.139.158 2 3 19257 20181203102025
+179.61.146.127 1 1 17762 20181213231925
+178.93.100.119 3 33 282367 20181208101510
+37.73.6.169 2 26 185891 20181211074008
+80.238.126.97 8 40 3754039 20181202102126
+220.243.136.192 4 4 43439 20181214100451
+115.28.212.181 15 15 266362 20181214110539
+83.31.238.38 2 27 3419562 20181210212818
+83.31.179.123 4 90 7155721 20181213110015
+220.243.135.171 1 1 11950 20181213051856
+71.175.84.151 2 27 211544 20181213181035
+31.0.40.41 1 44 3561345 20181205073239
+193.19.252.210 3 49 720004 20181207090758
+31.128.253.23 5 61 3698194 20181212165245
+35.240.7.125 1 1 60170 20181205171443
+89.228.105.203 4 90 7153041 20181216153812
+83.6.41.253 35 86 375120 20181214211025
+18.234.47.99 1 1 29058 20181214105144
+88.108.171.94 3 52 3629820 20181208222054
+66.102.9.40 82 544 28385901 20181216213442
+188.147.39.98 2 45 3196831 20181201114208
+220.243.136.142 6 6 23740 20181213062959
+83.31.160.54 4 87 4817517 20181215194805
+220.243.135.28 6 6 39268 20181215003636
+83.26.251.216 2 28 243099 20181215004859
+104.219.55.77 1 1 17866 20181211062000
+220.243.136.81 2 2 7306 20181213072144
+77.254.12.172 3 50 3616534 20181211234840
+220.243.135.70 2 2 16923 20181213063007
+37.47.212.82 1 3 1956500 20181202184348
+14.161.20.194 1 1 2732 20181211092243
+83.26.224.123 2 28 241791 20181202210836
+141.0.12.142 1 2 25660 20181211105503
+84.150.75.79 4 39 487131 20181204172601
+123.21.75.17 1 1 2865 20181211061602
+185.136.163.232 1 1 40997 20181201050540
+46.169.57.248 4 53 3245009 20181202085140
+46.211.69.174 1 26 192159 20181214123639
+104.140.103.140 1 1 13115 20181205234113
+5.9.106.81 1 1 33299 20181211021349
+83.27.101.254 1 44 3558861 20181212110805
+130.180.208.150 2 26 239802 20181204134158
+220.243.135.253 2 2 17027 20181214083232
+83.6.107.181 14 26 1287451 20181205104048
+220.243.136.103 4 4 36587 20181213060227
+95.160.156.147 2 5 193354 20181206193331
+220.243.135.109 4 4 17295 20181214222216
+83.142.111.243 1 26 192366 20181205200425
+5.173.176.60 1 34 5558808 20181213221743
+95.49.196.10 1 2 48134 20181214182019
+83.6.198.54 23 281 14408328 20181217155657
+213.76.115.234 4 59 4947248 20181216145429
+83.9.65.88 8 9 82119 20181208084755
+81.190.152.87 3 52 3615647 20181214190920
+83.243.36.57 9 105 6072901 20181202184035
+69.112.116.213 39 122 3538849 20181217134706
+142.54.161.58 2 2 35517 20181205061736
+46.101.16.118 2 2 35513 20181206010439
+178.137.167.243 9 9 542074 20181217201551
+94.180.235.235 1 26 190682 20181206002554
+54.227.203.220 1 1 54705 20181213005752
+101.91.62.65 1 8 346937 20181216172536
+46.133.104.76 1 3 25672 20181206103256
+185.236.202.86 1 1 59187 20181201012211
+91.124.2.231 1 1 28844 20181201151015
+146.185.157.250 3 32 297945 20181211233043
+91.124.24.222 5 20 369843 20181213221218
+178.34.187.142 4 43 594872 20181217083110
+188.163.29.158 2 29 372966 20181216145726
+83.28.130.158 1 44 3559360 20181209094447
+220.243.135.226 3 3 32099 20181214073648
+220.243.135.199 4 4 29331 20181213072144
+194.44.50.255 2 27 223335 20181204174608
+188.163.29.142 1 27 319441 20181202220731
+14.249.146.33 1 1 2865 20181211075317
+81.163.88.160 1 23 288685 20181211175049
+220.243.135.114 3 3 24720 20181214063030
+117.0.161.61 1 1 2853 20181211091557
+89.64.15.194 1 1 3994 20181207194626
+195.29.227.18 1 1 17271 20181202131951
+220.243.136.220 1 1 9329 20181214055240
+51.75.192.150 1 1 60333 20181212125624
+220.243.136.149 2 2 16901 20181214053359
+220.243.136.64 1 1 11107 20181214065304
+89.75.47.208 4 58 3784207 20181209141504
+18.207.199.227 1 1 54558 20181202130659
+159.65.125.195 1 1 58997 20181204152842
+212.75.106.10 2 24 182649 20181205111717
+94.254.136.51 2 10 27293 20181209195345
+142.93.225.48 1 26 189074 20181205202030
+220.243.135.111 1 1 8271 20181212183512
+37.55.200.25 2 45 3581424 20181214140057
+83.9.58.62 7 104 6481689 20181201211906
+69.171.251.7 0 9 91190 
+194.44.196.164 2 32 382313 20181213155606
+171.13.14.61 0 10 214934 
+185.184.209.2 2 2 83463 20181207195111
+85.236.189.174 7 7 315973 20181212110835
+220.243.135.184 1 1 7908 20181213070130
+130.192.9.241 4 4 240796 20181209234347
+31.179.122.221 1 44 3180400 20181201180440
+188.147.105.1 3 48 3610288 20181208173142
+220.243.135.126 2 2 8099 20181213061747
+83.9.171.186 2 4 27560 20181202164310
+94.254.248.170 10 59 384491 20181205123606
+54.145.55.236 1 1 54705 20181205215421
+66.102.9.137 12 95 3103681 20181217223746 20181217223746 /
+5.173.209.11 1 19 578886 20181204150026
+66.249.81.172 0 19 191345 
+23.236.231.214 1 1 0 20181216103519
+212.87.13.104 14 237 36871432 20181213111640
+89.234.68.88 5 5 245797 20181211211545
+125.209.235.184 0 7 528043 
+147.75.210.226 0 1 72812 
+66.249.93.24 0 60 3178638 
+95.49.144.214 3 51 3742638 20181204072231
+54.208.62.38 1 1 29058 20181208224403
+83.11.117.62 2 4 84467 20181202192425
+84.177.6.143 1 1 41084 20181209163217
+217.196.173.26 2 23 201845 20181210100224
+37.248.214.105 1 23 289232 20181205183745
+83.9.232.192 2 49 3594499 20181216210529
+220.243.135.163 2 2 16121 20181214073648
+70.42.131.170 3 3 76453 20181203214325
+5.172.237.70 15 129 4528011 20181204083756
+220.243.135.152 1 1 7818 20181213000029
+35.204.50.182 1 1 47461 20181215092132
+85.222.122.174 1 1 17269 20181203144456
+14.162.169.85 1 1 2731 20181211043038
+89.250.202.218 7 82 3894963 20181217140538
+220.243.136.244 2 2 18957 20181213042255
+37.55.63.158 3 33 384741 20181213102620
+83.9.62.123 2 43 1639853 20181204225932
+178.92.8.173 1 22 156729 20181206190429
+195.211.62.160 1 27 348884 20181208055426
+220.243.135.85 1 1 8525 20181212202251
+94.224.212.110 2 28 218310 20181216212747
+77.220.213.173 12 12 0 20181215023730
+220.243.135.153 2 2 19664 20181214102126
+37.47.30.248 2 4 1964223 20181212214804
+37.47.242.229 2 3 33483 20181207151010
+87.205.23.50 1 27 351312 20181205122632
+193.124.190.64 14 14 0 20181214070021
+91.221.178.22 1 29 592157 20181202172925
+188.252.116.125 46 220 12535855 20181207110135
+178.36.41.127 7 93 3054591 20181211093950
+178.213.1.11 2 28 272408 20181209210905
+220.243.136.38 1 1 8925 20181214103704
+212.1.101.26 2 28 236359 20181214212604
+35.204.119.122 1 1 33119 20181215103734
+120.92.72.185 0 1 33753 
+35.174.17.198 1 1 29058 20181212075401
+162.225.121.82 2 27 212857 20181209053158
+220.243.136.168 5 5 40273 20181213074201
+171.13.14.39 0 17 2640505 
+188.147.66.160 2 28 241561 20181208143705
+31.129.232.36 1 26 184230 20181216174935
+5.173.176.200 2 12 45510 20181214155750
+88.99.137.13 1 2 18209 20181204053534
+37.47.19.34 6 6 75280 20181214061335
+220.243.136.41 1 1 176 20181214222216
+46.232.132.50 3 49 3234526 20181203213429
+178.94.22.2 1 1 28930 20181212095849
+220.243.135.161 3 3 27234 20181213023402
+94.254.128.57 1 44 3233194 20181204022908
+184.173.90.200 6 6 195394 20181216212750
+81.15.177.178 57 458 19086551 20181217195908
+220.243.135.89 1 1 7419 20181212192337
+125.209.235.169 0 17 289345 
+220.243.135.94 2 2 17319 20181214185314
+5.172.236.168 1 27 273888 20181214182058
+220.243.135.4 2 2 18418 20181212192026
+193.201.224.17 5 5 203790 20181212152503
+83.27.13.173 2 88 6358090 20181203091104
+113.178.16.61 1 1 2733 20181211083821
+220.243.136.252 2 2 176 20181213061748
+37.47.8.213 4 58 3715033 20181202214134
+188.147.38.175 28 97 3182050 20181206154904
+2.36.95.131 2 13 178139 20181201174610
+35.173.226.42 1 1 29058 20181212204756
+5.173.88.23 1 27 354329 20181205182732
+220.243.136.125 3 3 34773 20181213074207
+37.47.17.64 1 1 9433 20181203224911
+178.94.9.1 1 1 28930 20181214125751
+191.101.113.96 1 1 17756 20181213192029
+5.173.160.18 1 3 22751 20181203210410
+64.233.172.171 0 2 55956 
+95.132.207.58 2 54 551657 20181206235741
+188.163.114.38 3 31 268807 20181211220813
+220.243.136.33 1 1 9566 20181212203207
+185.86.164.108 2 2 15082 20181215072932
+220.243.135.12 1 1 9211 20181214110935
+192.151.196.66 1 1 17270 20181201201156
+220.243.136.46 3 3 0 20181214222217
+95.49.194.170 8 74 5545984 20181215202106
+142.4.218.156 1 1 60194 20181214092433
+83.31.20.240 23 107 5363876 20181204213717
+176.105.196.138 1 27 218684 20181207190525
+95.49.182.225 1 17 3293906 20181215154234
+220.243.135.35 1 1 8013 20181212184718
+46.149.218.139 4 75 2597864 20181211125051
+220.243.135.61 11 11 46203 20181214222216
+83.24.149.253 5 87 6320658 20181201152157
+220.243.135.43 1 1 9329 20181212185038
+147.75.210.228 0 2 969861 
+194.44.128.158 2 28 273454 20181206014442
+37.47.10.19 3 65 9027981 20181216173416
+163.172.8.158 2 2 120340 20181216235800
+220.243.136.117 2 2 17844 20181208112609
+89.228.108.10 60 369 23964727 20181217202924
+34.239.140.31 1 1 54705 20181215163040
+18.232.78.94 1 1 28650 20181204023741
+52.207.222.245 1 1 54705 20181208120259
+80.245.116.254 1 15 169197 20181206203507
+83.9.139.232 74 136 1535613 20181210133732
+220.243.135.141 2 2 17309 20181214083232
+46.119.124.124 2 2 120388 20181207082635
+217.173.198.237 2 45 3581276 20181209222239
+185.128.27.172 7 7 317582 20181216184459
+31.0.68.56 5 24 2941472 20181208142846
+188.146.164.22 11 27 301029 20181211164341
+89.228.106.179 11 134 8390576 20181214220738
+220.243.135.58 2 2 176 20181213070129
+220.243.135.217 14 14 58628 20181215003636
+154.51.131.142 1 1 17757 20181213104759
+80.245.116.250 0 16 215820 
+79.184.217.162 2 23 178576 20181206214700
+37.47.211.131 3 4 32605 20181203132135
+83.6.30.78 3 6 76148 20181213100838
+95.49.181.48 4 49 5171021 20181202200759
+83.24.130.138 2 45 3079137 20181217202903
+213.160.143.24 2 28 227272 20181217124449
+64.120.52.220 2 2 20605 20181205022500
+89.64.10.121 4 82 8734285 20181202105712
+188.163.113.86 2 25 181071 20181212174038
+91.202.128.7 6 35 354502 20181217175345
+220.243.135.62 3 3 26504 20181213064423
+91.235.152.137 2 45 3577022 20181217221527 20181217221526 /media/system/fonts/glyphicons-halflings-regular.woff2
+5.173.88.114 1 23 287656 20181216195830
+217.69.143.217 1 1 17868 20181211012517
+125.209.235.174 1 7 251780 20181216083603
+147.75.210.172 0 1 8373 
+89.64.13.19 6 58 3294374 20181203113744
+188.242.66.165 2 2 87631 20181208160612
+62.210.215.113 27 27 1292876 20181216215438
+171.13.14.49 0 28 2965231 
+173.252.87.14 0 2 1730 
+89.70.59.210 16 99 7100184 20181212214609
+14.186.58.238 1 1 2733 20181211061419
+90.44.153.125 5 37 274361 20181205134045
+188.163.37.29 8 49 536494 20181202175512
+83.6.93.214 3 50 3644549 20181216090902
+220.243.135.166 2 2 21429 20181213070125
+83.9.132.153 3 28 698141 20181209201141
+94.23.6.193 1 1 60170 20181216000450
+54.190.1.129 2 45 3579576 20181206012456
+185.86.164.106 2 2 15082 20181217144507
+220.243.136.3 3 3 40412 20181214105258
+89.64.31.188 15 89 4402282 20181208175657
+220.243.136.170 1 1 7344 20181212210724
+194.149.63.175 1 1 17757 20181212083636
+220.243.135.105 3 3 44278 20181213074201
+83.31.69.177 4 90 7160954 20181207105942
+31.183.191.57 7 76 3810877 20181214220937
+178.137.91.54 41 41 2457287 20181210093522
+95.28.26.35 5 23 177143 20181211000600
+83.9.141.111 2 4 25570 20181211180259
+220.243.136.242 3 3 28778 20181214075622
+95.135.96.76 1 22 160028 20181206182829
+220.243.136.203 2 2 7990 20181213074200
+81.161.192.180 1 18 120524 20181201211430
+89.64.5.38 2 28 615639 20181217205945
+188.147.42.2 1 27 595605 20181206170021
+37.73.5.55 1 26 187906 20181214091120
+83.31.27.128 7 85 3650924 20181204105556
+104.227.246.106 2 2 120364 20181215083151
+193.0.108.45 10 75 3767646 20181203234205
+220.243.136.31 2 2 17918 20181213053353
+220.243.136.70 1 1 9124 20181214052018
+117.169.38.52 1 1 60194 20181208175454
+81.190.129.236 35 319 14806409 20181206205719
+37.47.228.212 3 35 3203120 20181202074516
+188.146.45.0 1 27 595150 20181206074441
+168.181.170.198 1 1 14709 20181209005959
+178.94.34.231 1 1 28930 20181215072417
+163.172.251.68 1 1 60359 20181213062531
+89.64.8.151 11 81 1404621 20181206064657
+35.246.219.180 1 1 28289 20181215000333
+83.9.58.178 4 68 3312420 20181203211542
+220.243.136.194 8 8 69720 20181215013553
+176.125.46.114 6 135 10736691 20181211114153
+46.211.51.66 1 26 190455 20181204073726
+78.24.217.242 1 1 0 20181205191729
+39.111.208.132 1 1 17761 20181212084354
+14.186.239.145 1 1 2866 20181211095425
+37.47.210.133 6 8 78069 20181214200020
+162.158.65.235 1 1 17751 20181211152335
+146.120.174.75 3 27 332241 20181212165616
+83.9.206.136 2 37 3514895 20181216211212
+220.243.135.125 1 1 6767 20181208112609
+220.243.135.17 1 1 176 20181213063000
+5.173.160.41 4 78 3901131 20181215163536
+220.243.135.44 1 1 16499 20181214092900
+82.145.222.200 1 3 29377 20181206184247
+18.85.22.239 1 1 41052 20181208012413
+23.231.15.91 1 1 0 20181205112024
+89.228.104.166 47 407 41245428 20181217220627 20181217215557 /
+31.183.221.50 5 58 3696271 20181213075542
+178.94.53.203 1 1 28930 20181210065326
+109.86.205.199 2 27 208310 20181209165808
+93.76.215.155 2 27 208607 20181209181800
+188.190.43.254 1 27 256302 20181209140246
+81.18.205.134 4 69 4643416 20181206092603
+178.94.50.193 2 2 57860 20181211215058
+220.243.136.137 2 2 16401 20181212204800
+194.67.207.9 11 11 0 20181213021205
+17.58.56.21 1 1 14647 20181213130458
+173.252.87.6 0 2 1730 
+178.95.43.145 2 24 304145 20181206184923
+94.137.37.216 1 27 286985 20181216153801
+137.226.113.27 8 8 142338 20181216195809
+185.104.218.142 38 42 420739 20181209152847
+188.147.40.212 6 62 503748 20181204221141
+185.153.35.193 1 24 3439084 20181213220148
+188.147.34.205 5 29 3041443 20181207203245
+220.243.135.249 6 6 53515 20181214071602
+220.243.135.147 3 3 27678 20181213055159
+220.243.136.11 2 2 10409 20181213070128
+37.47.0.200 3 48 3612675 20181217185330
+91.33.137.102 2 29 294383 20181201010931
+54.186.9.169 2 2 35515 20181208220815
+188.147.102.201 2 45 2708019 20181209223311
+89.28.24.190 6 6 168617 20181211224016
+220.243.135.186 4 4 50748 20181213081440
+220.243.136.122 1 1 31140 20181212185953
+188.163.114.226 1 28 322267 20181207215732
+185.102.190.152 1 44 3563302 20181204190841
+177.190.243.10 2 2 3420 20181209010002
+37.73.152.23 1 27 253049 20181212195853
+220.243.136.163 7 7 65007 20181215003642
+89.64.10.213 1 38 2268411 20181204215522
+37.47.121.198 13 97 4017529 20181212201740
+137.226.113.42 5 175 17124589 20181213004111
+220.243.136.236 4 4 31455 20181214185314
+116.97.178.62 1 1 2863 20181211100101
+198.108.66.161 1 1 17761 20181213131327
+49.146.10.42 1 1 9961 20181202170855
+46.211.38.152 1 22 156512 20181214091336
+220.243.135.188 3 3 25120 20181213060926
+31.2.34.103 7 65 3334210 20181201112038
+185.212.131.163 4 4 11193 20181210100732
+46.219.229.71 1 1 28930 20181205213946
+37.248.138.67 3 48 6133386 20181203223734
+62.69.194.133 2 45 3581140 20181213101557
+46.185.117.89 7 7 421521 20181209161634
+83.217.206.249 1 1 17278 20181204094419
+91.124.10.146 2 2 57860 20181213222411
+220.243.136.189 2 2 7549 20181213074159
+185.85.239.110 4 4 30164 20181216233429
+69.171.251.2 1 8 42914 20181204163441
+93.105.176.162 4 56 4110508 20181216183812
+37.47.221.221 2 4 25463 20181217155609
+77.65.106.119 3 50 3232286 20181201163041
+150.249.214.252 2 2 35149 20181212084322
+18.234.25.214 1 1 29058 20181209130444
+198.143.133.155 1 1 17767 20181211161843
+178.94.60.60 4 4 115720 20181216230509
+220.243.135.192 2 2 16168 20181214105258
+220.243.136.27 2 2 13334 20181213070127
+178.94.61.129 2 2 57860 20181206154939
+66.249.93.25 4 62 5755103 20181211134205
+193.53.83.36 1 22 158164 20181211135855
+178.94.8.253 3 3 86790 20181213152519
+46.118.119.245 3 3 180582 20181217160710
+89.64.53.112 8 72 3566830 20181203215334
+83.31.136.23 23 129 9608059 20181216162129
+220.243.136.180 5 5 51430 20181213040727
+91.124.250.57 1 26 189572 20181202122421
+5.173.176.163 1 1 17862 20181209135517
+46.171.105.170 4 53 3372282 20181217100544
+185.85.239.195 4 4 30164 20181213062001
+188.147.104.170 11 119 7369040 20181216181035
+83.26.125.124 3 46 3594240 20181206213134
+195.150.224.155 2 45 3577853 20181211192348
+188.146.163.152 3 132 10686143 20181211195536
+37.248.215.25 1 44 3177404 20181203153341
+154.51.131.136 5 48 3581894 20181217003032
+178.95.188.167 1 2 15648 20181209224157
+212.244.190.35 6 76 9537931 20181213214304
+147.75.210.167 0 1 33360 
+188.114.89.1 8 123 7026145 20181216102115
+178.128.0.34 8 8 480703 20181213063651
+134.249.48.173 51 51 3053948 20181210084812
+123.125.71.34 0 1 13785 
+220.243.136.144 1 1 0 20181213072144
+181.177.119.165 1 1 17761 20181217064421
+14.161.26.34 1 1 2864 20181211131645
+46.211.66.124 1 26 189843 20181209165753
+94.23.58.212 1 1 12933 20181212141116
+220.243.136.229 2 2 28555 20181213083712
+31.43.44.13 1 23 285382 20181205215941
+171.224.233.150 1 1 2865 20181211083825
+220.243.135.203 1 1 291 20181213074200
+103.224.81.74 1 1 58997 20181204072214
+220.243.135.173 1 1 9888 20181214185312
+104.155.179.226 2 2 35873 20181217224112 20181217224112 /
+79.184.137.94 1 44 3560561 20181207143547
+220.243.135.90 1 1 7799 20181213070127
+79.184.30.55 3 67 6785584 20181217103946
+5.173.176.79 5 80 3768745 20181204163743
+151.80.10.50 2 2 120340 20181217061233
+83.9.151.252 10 51 2618642 20181213211957
+138.68.48.101 1 1 59350 20181202204202
+104.36.16.121 1 1 17763 20181217211938
+93.80.36.247 5 23 181167 20181207231926
+147.75.210.165 0 3 1021090 
+176.125.34.228 4 51 1456126 20181204125913
+213.179.252.64 1 27 256766 20181209175107
+83.9.183.209 4 52 3640336 20181207210806
+78.43.40.215 1 32 327055 20181204194133
+198.108.66.112 1 1 17763 20181207105425
+220.243.136.94 2 2 17438 20181214055239
+83.6.104.134 6 19 576395 20181209195252
+173.211.115.36 1 1 17759 20181213011828
+220.243.136.61 6 6 40762 20181214222216
+37.229.69.89 1 7 114427 20181209203825
+34.238.163.32 1 1 54705 20181207103406
+82.145.210.71 4 31 465534 20181216191629
+95.46.141.76 1 26 187779 20181203161319
+185.119.81.50 2 2 15082 20181217084531
+220.243.136.66 1 1 13012 20181212203751
+37.47.252.233 33 86 2951655 20181209202824
+83.9.82.22 8 27 186851 20181203125321
+220.243.136.92 4 4 31296 20181213074158
+220.243.136.199 6 6 38997 20181213072144
+195.245.221.172 44 285 3659384 20181204093116
+46.133.252.101 1 26 193003 20181214165506
+77.253.30.112 15 126 7028181 20181208201057
+220.243.135.102 1 1 0 20181213075947
+220.243.135.246 6 6 37253 20181214113117
+220.243.135.228 2 2 15846 20181213053848
+82.145.209.121 4 53 3644085 20181214211200
+109.28.76.195 16 101 4217878 20181217134126
+3.16.212.173 10 30 304295 20181213014651
+5.173.200.83 3 62 3776740 20181204110223
+220.243.135.81 3 3 0 20181213072144
+109.251.26.183 2 28 345728 20181213135714
+206.41.173.80 1 1 0 20181207183219
+66.51.238.153 2 30 357074 20181206074637
+220.243.135.26 2 2 24759 20181213055648
+82.185.36.190 2 44 3545415 20181215213659
+89.229.197.103 2 45 3579780 20181214210709
+83.9.74.246 10 36 823561 20181215201707
+220.243.135.53 2 2 15816 20181214110935
+5.173.120.83 2 28 243015 20181202184919
+178.62.106.169 2 28 223359 20181205143049
+37.47.31.59 9 81 4275842 20181208211312
+79.184.252.211 4 56 744403 20181205121313
+54.37.234.157 1 1 60170 20181213094800
+220.243.135.209 1 1 8476 20181213060924
+185.216.35.147 8 8 201616 20181212142546
+83.6.115.101 7 29 812269 20181214202158
+66.102.9.139 2 76 4211310 20181207194606
+92.253.239.186 1 27 508265 20181217212438
+31.184.238.115 3 3 96582 20181205054058
+134.249.48.255 24 24 1444986 20181216150845
+77.252.47.149 2 45 3197639 20181201232203
+46.211.132.181 1 3 24586 20181216161712
+188.146.163.94 15 98 4830737 20181210164402
+37.47.230.97 4 46 2512562 20181209201649
+220.243.135.113 1 1 8374 20181212204800
+213.81.199.2 1 44 3561810 20181208214058
+178.94.60.226 6 6 173580 20181208230202
+37.73.101.224 1 22 160812 20181212141547
+220.243.136.129 2 2 19628 20181214105258
+176.125.58.41 1 23 208772 20181208212117
+185.62.183.213 1 3 67183 20181203135309
+83.6.115.210 2 9 630616 20181216160643
+13.77.145.189 1 1 17761 20181211012654
+193.169.252.84 2 2 64902 20181214040733
+220.243.136.109 1 1 10337 20181214154426
+188.146.47.160 6 82 3475995 20181202120537
+84.243.193.102 1 44 3562747 20181212041527
+37.21.209.165 3 50 3607641 20181207103440
+220.243.135.73 4 4 55429 20181213072143
+82.145.222.241 1 4 39300 20181207232346
+220.243.135.134 1 1 8982 20181213053353
+89.64.20.5 1 27 598139 20181209225254
+220.243.136.164 1 1 8226 20181214085251
+130.180.210.200 2 28 336081 20181213202509
+113.163.20.214 1 1 2730 20181211041242
+109.248.149.160 1 1 29226 20181205192530
+82.145.221.44 1 4 39201 20181202084713
+194.44.175.254 1 1 17752 20181208213222
+220.243.136.42 3 3 24955 20181213074201
+220.243.136.86 3 3 22538 20181214091011
+35.246.140.49 1 1 28963 20181215140045
+188.146.227.83 1 34 5556715 20181204081944
+37.47.49.158 6 61 3317339 20181202123146
+37.249.29.209 6 52 1281124 20181202184007
+52.91.236.226 1 1 28972 20181201105114
+83.31.152.143 2 45 3575548 20181216164521
+77.120.68.53 2 23 176658 20181207144352
+37.47.4.94 4 65 8165069 20181216164806
+208.101.7.46 8 8 347305 20181213172207
+113.162.162.29 1 1 2733 20181210174547
+185.13.106.201 2 23 608714 20181216132524
+176.125.39.4 2 45 3248827 20181204092945
+220.243.135.64 1 1 10334 20181214083232
+134.249.49.19 18 18 1080716 20181209103349
+46.133.103.53 2 28 317719 20181202114252
+70.52.178.246 2 45 3579345 20181216023449
+82.145.222.207 1 4 39664 20181213120936
+171.13.14.4 0 1 29164 
+171.13.14.44 0 6 203160 
+188.147.108.48 2 45 3286313 20181207161523
+188.146.44.135 2 31 628140 20181206144500
+85.115.248.194 1 1 0 20181210230748
+220.243.136.118 2 2 7907 20181213063000
+83.31.247.229 24 249 15364713 20181205220312
+220.243.135.13 1 1 7064 20181212191621
+220.243.136.207 5 5 39992 20181213072144
+14.186.148.225 1 1 2734 20181210185528
+89.64.56.234 2 28 287907 20181207203609
+83.24.119.92 30 174 11205765 20181210140628
+220.243.135.36 1 1 6984 20181213055159
+220.243.136.85 2 2 18597 20181213074203
+220.243.135.42 5 5 40658 20181213091842
+185.86.164.109 4 4 30164 20181215223153
+220.243.136.32 7 7 37452 20181213075947
+52.23.221.181 1 1 54705 20181209155332
+83.9.140.62 1 1 17723 20181210183437
+5.135.46.180 1 1 8695 20181204124433
+83.31.56.219 4 90 7154917 20181206101408
+83.25.93.36 12 141 11106721 20181211134212
+83.6.49.63 4 53 3648754 20181212190151
+83.9.168.151 1 3 29673 20181217201343
+178.94.55.198 1 1 28844 20181203065150
+147.75.210.237 0 2 82859 
+125.209.235.178 0 2 949339 
+220.243.135.137 2 2 16958 20181212222858
+35.241.151.105 1 1 31924 20181215121423
+188.68.48.243 12 12 720429 20181213063601
+82.177.148.45 2 45 3576990 20181207155149
+220.243.136.237 1 1 7115 20181212183601
+188.147.39.29 5 53 426024 20181202200059
+188.190.80.130 2 2 31073 20181216134936
+220.243.135.218 5 5 22994 20181215013553
+220.243.135.142 2 2 8137 20181214045919
+51.68.115.151 1 1 66719 20181207185808
+188.147.96.242 25 196 10847942 20181206104003
+171.13.14.55 1 1 17757 20181206064318
+31.0.46.96 3 53 3624214 20181206074857
+220.243.136.51 1 1 12395 20181213041023
+220.243.135.231 6 6 51740 20181213074204
+93.74.201.248 2 2 118398 20181203010000
+37.73.90.92 1 26 183097 20181214090727
+147.75.210.168 0 1 8151 
+91.237.241.50 2 29 215565 20181204082406
+220.243.135.191 1 1 7926 20181214094815
+176.14.243.50 5 23 177052 20181206010759
+78.107.237.16 1 1 30 20181201121307
+194.96.127.129 1 4 1965361 20181213212748
+66.102.6.170 0 11 62798 
+77.247.24.230 1 26 193285 20181213164528
+93.73.103.94 1 1 39840 20181206170536
+91.237.241.88 2 44 322114 20181213201811
+194.44.241.86 6 67 1218443 20181210155253
+94.241.72.98 2 31 322523 20181204225756
+171.13.14.16 0 6 97229 
+93.170.25.34 3 48 346302 20181212134434
+83.9.97.205 8 68 6818479 20181211230304
+37.47.224.143 22 110 5034004 20181209190736
+5.172.247.37 2 45 3194171 20181201232253
+120.92.72.144 0 1 30178 
+5.173.32.56 6 57 3693224 20181207082321
+185.85.191.201 4 4 30164 20181214144556
+37.73.255.224 1 23 290764 20181216132637
+82.102.24.13 1 1 12248 20181202181318
+87.228.103.111 1 1 7399 20181213200255
+66.102.9.44 79 578 30663156 20181216175014
+125.209.235.183 2 6 1189415 20181216092047
+220.243.136.214 2 2 20317 20181213173156
+185.184.170.253 2 27 207921 20181205161747
+185.125.219.134 15 15 0 20181214070346
+89.64.5.231 4 34 485120 20181203202708
+95.49.182.231 4 50 3640929 20181207111824
+113.177.134.132 1 1 2732 20181211065705
+46.211.150.179 1 27 597270 20181206072348
+220.243.135.18 4 4 24019 20181213072144
+137.226.113.34 8 280 26627996 20181213014310
+78.46.90.120 1 1 28398 20181202022638
+188.163.19.111 2 24 303629 20181211203132
+121.42.154.116 30 30 532774 20181213133349
+95.160.157.191 0 1 9292 
+125.209.235.171 0 3 39233 
+195.211.144.36 1 1 107532 20181205082320
+123.16.169.198 1 1 2866 20181210150920
+54.92.253.20 1 1 17753 20181204174746
+14.177.183.70 2 2 2733 20181213163701
+83.6.205.207 13 183 13740644 20181212154532
+220.243.135.205 6 6 11642 20181213062959
+24.13.186.70 1 27 215902 20181201184430
+46.211.68.211 5 54 3651358 20181210211752
+94.254.232.190 30 155 6942561 20181217121740
+83.27.101.39 1 44 3558900 20181207064526
+81.190.131.3 11 144 4476027 20181213164233
+113.172.232.134 1 1 2732 20181210195253
+220.181.108.163 0 1 83893 
+188.27.148.88 2 23 218186 20181208140204
+162.158.64.67 1 1 17760 20181210235217
+220.243.136.6 2 2 17408 20181214023033
+34.244.255.144 2 19 173272 20181206124719
+185.220.101.20 0 1 60170 
+220.243.135.99 5 5 51791 20181215003637
+220.243.136.249 6 6 59009 20181214071603
+103.204.110.177 1 1 17262 20181201193842
+220.243.135.129 3 3 30130 20181213072147
+5.135.218.9 1 1 8570 20181205024715
+220.243.135.93 2 2 11978 20181214043529
+83.31.38.64 2 40 3549961 20181217184642
+185.89.100.172 1 1 59187 20181201191708
+91.233.186.129 4 55 3273557 20181202190357
+220.243.136.243 4 4 71792 20181208112610
+220.243.136.95 4 4 35736 20181213075946
+178.94.23.237 2 2 57688 20181203125356
+37.47.228.37 7 80 3364530 20181201152916
+170.80.207.43 2 2 120388 20181212003942
+188.163.26.141 2 28 272939 20181213172205
+220.243.136.98 2 2 15939 20181212184955
+91.124.56.239 3 32 289493 20181213125233
+46.161.63.31 2 2 5594 20181215002840
+131.108.16.24 1 1 17864 20181214172402
+195.254.174.10 2 24 187587 20181207211922
+220.243.136.104 1 1 173 20181214222215
+82.139.173.130 7 68 7638189 20181203143146
+31.184.238.107 3 3 96646 20181217180314
+220.243.136.128 1 1 9318 20181214094816
+171.13.14.41 0 2 49918 
+220.243.136.141 2 2 16770 20181214091010
+220.243.136.63 6 6 30632 20181213074200
+185.14.193.2 20 20 643000 20181213080304
+37.47.27.78 3 11 2184329 20181204074314
+14.177.21.5 1 1 2854 20181211144402
+82.145.223.5 11 74 3870998 20181216105516
+193.83.47.28 1 1 17262 20181201230743
+79.184.62.100 3 48 3576391 20181206200943
+213.174.0.248 2 27 226290 20181212134445
+194.228.68.252 1 26 189469 20181202193047
+123.21.119.11 1 1 2732 20181211074222
+220.243.136.195 1 1 8684 20181212210618
+220.243.135.21 1 1 8344 20181213070126
+131.108.17.209 1 1 17869 20181214043055
+112.5.243.138 1 1 17764 20181214183312
+180.153.236.165 1 1 17755 20181205160737
+79.187.127.18 57 460 24174356 20181217111500
+91.231.122.141 5 102 7269458 20181207204920
+220.243.136.210 1 1 15491 20181213055159
+194.226.61.18 1 1 7387 20181214121332
+89.228.99.225 2 45 3577620 20181217083938
+14.162.190.76 1 1 2862 20181211054555
+137.226.113.21 1 35 3424394 20181208004929
+193.238.46.254 2 2 120503 20181207221435
+220.243.135.108 3 3 28680 20181213074207
+171.13.14.13 0 2 3618 
+220.243.135.172 6 6 17521 20181214222217
+83.9.159.60 4 61 3700504 20181208060354
+113.178.74.81 1 1 2732 20181211051603
+178.94.28.27 3 3 86790 20181211154852
+220.243.135.69 1 1 9446 20181213001819
+176.221.122.70 17 130 7539309 20181213194844
+220.243.135.158 4 4 45866 20181213070125
+147.75.210.161 0 1 43506 
+220.243.136.148 1 1 7769 20181213060925
+195.140.236.147 24 113 4567502 20181217072057
+220.243.135.250 4 4 13108 20181214222216
+5.173.208.101 3 49 3597849 20181209101459
+178.133.120.38 1 20 208227 20181215194034
+37.7.175.57 3 46 1251888 20181201201553
+37.248.164.10 1 44 3562476 20181204185637
+83.31.243.217 36 199 10315002 20181210141508
+217.182.203.54 2 2 21554 20181216094549
+220.243.136.79 8 8 8821 20181213062959
+185.86.93.22 1 1 60170 20181207000928
+83.6.199.92 27 536 32533904 20181204161749
+220.243.136.183 2 2 507 20181213070132
+193.53.83.25 2 23 209052 20181209074257
+83.31.31.51 2 45 3195436 20181202152042
+223.72.46.65 1 22 159469 20181201180134
+220.243.135.177 3 3 37958 20181214091010
+5.39.26.157 1 1 8674 20181205024718
+36.224.43.156 1 1 17379 20181201181912
+83.9.206.94 5 57 3743340 20181216084340
+147.75.210.162 0 3 4650 
+185.25.103.36 2 2 57728 20181210073137
+108.168.151.15 8 8 277852 20181216123358
+146.120.225.230 3 27 206067 20181203185524
+37.47.212.148 10 10 94006 20181214211548
+5.135.137.47 11 11 635311 20181211223449
+77.220.215.153 18 18 0 20181217020948
+220.243.135.130 2 2 20700 20181212202141
+220.243.136.55 1 1 6945 20181214185317
+220.243.135.241 2 2 7567 20181213064421
+188.146.48.172 5 56 3676967 20181205103408
+89.228.105.186 15 160 11004399 20181206174353
+37.147.217.235 3 3 96584 20181211205734
+220.243.136.23 1 1 7106 20181214053400
+220.243.135.198 1 1 8792 20181212210614
+178.94.40.242 2 2 57860 20181206215109
+5.174.2.85 2 45 3580862 20181213111338
+178.92.186.203 2 28 219386 20181205133405
+113.162.145.60 1 1 2733 20181211011634
+37.72.186.158 1 1 17758 20181215220321
+171.13.14.58 0 15 1636311 
+83.28.254.125 9 149 10166332 20181215192430
+137.226.113.26 6 6 106876 20181217023050
+83.9.81.126 1 1 17761 20181209123114
+69.171.251.6 1 17 747373 20181204163443
+87.76.241.9 2 28 274347 20181208175742
+188.147.102.132 2 26 187875 20181216191219
+89.70.230.29 5 69 3696360 20181205235817
+209.251.19.87 38 42 425887 20181201091113
+220.243.135.7 2 2 20939 20181214052018
+34.209.148.42 1 1 60170 20181210054609
+194.96.119.172 1 1 17256 20181202222513
+212.87.13.103 1 27 341444 20181202163415
+220.243.136.21 2 2 11762 20181213070127
+220.243.135.196 1 1 12208 20181212200019
+95.49.198.71 9 87 4497036 20181209201006
+162.212.168.43 1 1 17762 20181216045125
+188.163.116.103 3 25 319456 20181204123945
+220.243.135.86 3 3 23265 20181213061747
+52.90.182.3 1 1 29058 20181217164118
+193.80.243.180 1 1 17264 20181203131426
+100.35.185.241 2 27 208677 20181209151449
+37.47.215.144 2 6 25563 20181212090352
+178.94.35.148 4 4 115720 20181209215648
+109.227.74.147 2 2 120527 20181216151349
+113.173.86.226 1 1 2853 20181211142819
+220.243.136.157 2 2 17440 20181214185315
+113.173.12.92 1 1 2734 20181211120409
+163.172.205.95 1 1 9793 20181201211910
+69.175.97.171 1 1 17751 20181205154401
+220.243.136.105 3 3 23367 20181213064422
+194.44.220.26 2 28 296197 20181201202913
+188.147.97.48 2 19 138254 20181211183339
+36.80.82.81 1 1 17265 20181203005156
+83.31.72.91 2 2 17275 20181202094947
+185.207.178.26 2 2 35131 20181207184637
+188.42.34.150 2 29 303683 20181209205029
+123.21.112.57 1 1 2865 20181211081314
+34.229.180.173 1 1 29058 20181210024334
+83.24.29.11 3 57 3260367 20181203164532
+89.234.68.69 5 5 245688 20181204211923
+54.172.146.181 1 1 10612 20181203143253
+54.90.219.146 1 1 29058 20181215000602
+78.189.230.165 2 2 14986 20181216121531
+123.27.14.105 1 1 2865 20181210173129
+192.3.112.47 1 1 60170 20181216201904
+54.243.8.116 1 1 17760 20181210183318
+220.243.136.147 3 3 12864 20181213070127
+213.135.40.22 7 98 12535781 20181205121217
+188.147.42.135 2 23 240859 20181213204528
+188.68.53.70 1 1 59187 20181201223334
+37.248.161.63 10 19 216865 20181210164728
+220.243.135.187 15 15 113202 20181214222216
+97.104.130.148 2 45 3579539 20181205182242
+67.247.197.47 1 1 17104 20181202101047
+5.173.136.69 7 23 1019928 20181216150437
+212.210.184.241 2 32 580460 20181216140441
+83.9.156.224 7 15 52193 20181207212253
+89.64.8.10 15 74 1537993 20181206222838
+14.176.50.132 1 1 2732 20181211100057
+201.221.153.170 2 2 15010 20181216161904
+83.12.117.241 4 52 3651625 20181207011332
+113.190.139.53 1 1 2852 20181211132445
+125.209.235.186 1 7 367481 20181209063350
+110.89.4.222 1 1 17281 20181204125225
+220.243.135.208 2 2 15948 20181214102125
+103.88.52.62 1 1 17758 20181205205347
+113.162.190.200 1 1 2865 20181210174552
+46.211.224.96 1 30 779516 20181207214410
+46.211.48.70 1 22 160266 20181214081917
+46.219.241.224 2 24 304160 20181210105133
+83.9.203.218 8 63 3728791 20181209185522
+46.175.23.29 2 2 26243 20181203232645
+83.31.35.4 4 90 7156873 20181210111322
+37.214.63.20 2 19 222483 20181215204146
+220.243.135.63 10 10 41631 20181214081345
+178.94.37.232 1 1 28844 20181201120925
+171.13.14.43 1 4 463512 20181213063345
+178.43.6.8 2 45 3578446 20181215150841
+185.244.214.243 4 4 207971 20181212102259
+83.12.140.25 2 28 255957 20181206194806
+195.160.205.79 1 23 285658 20181216172434
+220.243.136.82 2 2 17274 20181214102125
+220.243.136.40 1 1 7927 20181213055648
+220.243.136.10 6 6 28151 20181213072144
+220.243.135.50 1 1 8236 20181212205501
+31.184.238.56 2 2 60857 20181215161237
+89.70.209.221 2 50 4056280 20181216173718
+220.243.136.181 1 1 11947 20181214185315
+89.228.96.162 5 56 3275463 20181202001545
+66.249.81.170 0 18 168921 
+178.94.17.191 1 1 28930 20181216080004
+46.188.32.25 5 23 176956 20181212022756
+83.9.140.18 2 9 629725 20181205152859
+111.202.101.107 0 10 49202 
+37.47.220.73 3 7 79250 20181206144326
+46.118.154.249 21 21 1204542 20181216132200
+220.243.136.165 2 2 8032 20181213075948
+18.209.110.98 1 1 54705 20181207224613
+83.6.209.133 50 255 4152708 20181204163208
+185.184.8.8 1 1 17756 20181205182747
+80.55.121.81 13 113 4161951 20181210152910
+109.206.47.222 2 2 87679 20181217121819
+54.242.179.39 2 2 37345 20181204095801
+188.146.163.254 2 13 68071 20181217225028 20181217225027 /media/system/fonts/glyphicons-halflings-regular.woff2
+35.246.171.28 1 1 30587 20181215004331
+31.0.85.150 1 27 597957 20181206113359
+77.113.99.4 1 27 350284 20181202192914
+188.146.168.74 1 27 600042 20181206143819
+195.60.174.57 2 28 269719 20181214101323
+54.164.158.221 1 1 53833 20181204101958
+89.229.194.42 8 110 7295589 20181216221626
+14.186.61.59 1 1 2863 20181211084446
+176.118.166.51 1 1 14836 20181215224443
+194.44.192.201 2 45 3578312 20181210124829
+94.130.167.248 7 7 420696 20181213231016
+65.154.226.109 3 132 10680730 20181215104723
+14.182.249.249 1 1 2864 20181210102004
+220.243.136.36 3 3 30736 20181213055159
+220.243.136.235 2 2 9646 20181214154426
+64.185.235.234 1 1 17267 20181204134115
+162.158.64.41 1 1 17763 20181211152335
+185.86.164.101 6 6 45246 20181217120908
+35.195.24.214 1 1 30882 20181214173907
+80.245.116.252 3 29 440000 20181213202638
+83.27.13.37 1 44 3558030 20181213141514
+46.112.73.190 2 48 10976138 20181203220246
+113.169.242.46 1 1 2866 20181211102044
+89.234.68.89 5 5 215961 20181217211055
+171.13.14.12 0 5 605951 
+113.172.0.79 1 1 2731 20181210175714
+23.129.64.105 0 1 60172 
+178.94.42.145 3 3 86532 20181201203559
+220.243.136.250 19 19 78941 20181214222216
+99.225.111.99 2 23 177134 20181211185254
+213.76.98.86 10 113 4055534 20181202165523
+79.231.202.93 60 404 26763429 20181217202315
+193.124.176.156 11 11 0 20181213021205
+220.243.136.160 1 1 8616 20181213072143
+220.243.136.218 4 4 31518 20181214092903
+144.76.168.111 3 3 130250 20181216131106
+54.86.32.134 1 1 54705 20181212123303
+31.41.88.94 11 140 10785400 20181214112943
+46.219.224.209 3 31 457847 20181215143044
+220.243.136.30 2 2 13918 20181214222217
+220.243.136.39 2 2 19766 20181213090727
+83.6.81.164 3 11 633438 20181213143623
+193.106.30.98 3 3 53475 20181217100243
+14.229.150.1 1 1 2733 20181210132820
+188.146.79.20 26 70 2221269 20181205152857
+128.30.52.64 1 1 17269 20181204152835
+83.31.251.228 2 6 599138 20181211214828
+125.209.235.175 0 13 1508609 
+95.160.231.4 9 76 1010435 20181211104043
+147.75.210.234 0 2 55537 
+220.243.136.115 1 1 12711 20181213072146
+147.75.210.170 0 1 19740 
+31.0.126.207 8 74 3350207 20181201135304
+35.192.84.7 2 4 31229 20181217112419
+178.137.18.239 1 1 59211 20181201141709
+125.209.235.181 3 16 511822 20181209070851
+220.243.136.204 3 3 30909 20181214075622
+194.44.50.242 36 170 5550398 20181201214154
+188.147.102.209 2 29 256036 20181215214303
+88.135.163.87 2 45 3250148 20181204123524
+144.76.100.150 1 3 811050 20181208194406
+199.249.230.70 0 1 60170 
+220.243.135.104 3 3 8455 20181214222216
+220.243.135.219 1 1 0 20181214222217
+113.172.30.151 1 1 2863 20181211074304
+113.161.33.102 1 1 2852 20181210200642
+220.243.135.14 2 2 394 20181213074200
+79.184.38.114 3 51 3624766 20181216013050
+220.243.135.154 16 16 20073 20181215003636
+109.173.101.209 5 23 182635 20181202101534
+66.249.92.201 1 1 53 20181212021122
+52.91.105.207 1 1 28972 20181203131328
+83.9.1.14 6 75 4200475 20181216170138
+95.133.238.58 1 23 286718 20181204161331
+82.145.221.127 1 8 89708 20181217102257
+27.79.181.121 1 1 2864 20181211130140
+198.108.66.48 1 1 17270 20181202131008
+185.153.35.174 8 57 3165660 20181214180131
+171.13.14.53 1 1 17757 20181212055955
+5.188.210.62 4 4 131507 20181209161421
+185.154.13.6 12 12 0 20181215023730
+178.133.87.61 1 26 186794 20181214090423
+220.243.135.232 1 1 9225 20181212185038
+192.164.254.103 12 32 957796 20181204224826
+178.133.32.17 1 23 166228 20181213110853
+83.24.124.71 23 265 18380668 20181209184225
+109.248.149.162 1 1 7226 20181205192531
+123.21.31.94 1 1 2733 20181210144401
+83.9.65.155 1 1 17760 20181210091734
+93.105.186.7 4 51 3256375 20181203182539
+220.243.136.14 2 2 216 20181213074200
+31.0.34.243 3 50 3655394 20181213192346
+220.243.136.101 2 2 20694 20181214103703
+5.172.255.93 1 12 311910 20181209092053
+193.201.224.225 5 5 224022 20181205011359
+95.46.141.97 2 44 3548587 20181206213642
+217.65.248.175 6 135 10734979 20181214135350
+108.168.151.16 8 8 282267 20181216125825
+220.243.136.177 2 2 18240 20181214091009
+31.135.161.110 27 402 26768519 20181216091533
+220.243.135.82 4 4 30488 20181214055237
+220.243.136.131 6 6 79848 20181214061047
+46.173.115.33 2 41 377380 20181209093944
+89.229.197.73 10 46 900210 20181205101004
+142.122.100.241 16 91 4854228 20181205013833
+93.1.150.107 1 2 17922 20181205155008
+31.128.250.14 1 26 189895 20181203101622
+220.243.135.160 2 2 16076 20181214122920
+220.243.135.225 1 1 8928 20181213055159
+83.31.181.189 4 90 7157950 20181208113013
+220.243.136.239 1 1 0 20181213075945
+37.248.253.203 1 44 3561315 20181209212351
+69.171.251.19 0 4 38866 
+220.243.136.198 1 1 8434 20181212191326
+162.212.171.25 1 1 17757 20181208212527
+220.243.135.22 1 1 7598 20181212184738
+220.243.135.247 3 3 22606 20181214115908
+192.164.253.224 1 1 17761 20181214192920
+83.31.157.241 11 69 3436833 20181216213447
+220.243.136.154 12 12 27709 20181215003636
+31.0.127.126 4 54 3741343 20181208104518
+89.228.74.63 4 61 1591763 20181217162148
+220.243.135.131 11 11 101894 20181215013553
+69.171.251.28 2 9 82326 20181206143955
+220.243.135.101 2 2 24491 20181214103703
+89.228.96.231 10 108 7269704 20181215183823
+117.7.135.110 1 1 2867 20181210135420
+54.209.60.63 1 1 8324 20181205144750
+77.253.58.101 1 44 3558626 20181214013825
+69.171.251.15 0 7 279827 
+91.196.82.9 1 1 14708 20181217123517
+52.71.210.111 1 1 29058 20181213214752
+46.211.149.154 1 27 206113 20181214124353
+52.90.210.212 1 1 32641 20181209105124
+128.69.199.118 5 23 187121 20181202101536
+54.39.100.61 1 1 60333 20181213042857
+176.124.134.24 2 27 214322 20181205151606
+222.70.149.187 1 1 17763 20181214113058
+116.97.58.148 1 1 2734 20181210211738
+80.245.116.248 2 16 108190 20181217165324
+178.94.53.225 2 2 57860 20181210214601
+83.26.208.239 2 45 3195022 20181202105821
+37.73.233.173 1 26 192032 20181205193542
+185.135.2.152 5 62 4151562 20181217152904
+89.228.106.232 20 142 7745756 20181215175249
+185.85.190.132 4 4 30164 20181213014142
+83.9.147.96 1 23 166704 20181216154807
+89.229.112.12 8 93 7120893 20181215195651
+83.6.87.198 3 46 3597357 20181213205133
+150.249.214.253 1 1 17272 20181204010924
+89.64.32.173 7 73 3317897 20181201070402
+212.86.109.31 16 16 0 20181216175346
+220.243.135.165 1 1 176 20181213075948
+220.243.136.112 3 3 29164 20181214050938
+195.16.79.80 2 28 258528 20181202210343
+37.109.33.237 1 7 2385343 20181210172257
+83.24.53.75 8 39 5909500 20181201221518
+198.108.66.128 2 2 35519 20181213155547
+220.243.136.59 1 1 8426 20181212191326
+77.253.27.107 7 63 3708112 20181215200826
+220.243.136.121 2 2 14259 20181213070129
+178.92.182.172 2 45 3576147 20181208162145
+54.218.250.208 1 1 17866 20181207120710
+113.173.246.96 1 1 2864 20181211102910
+183.198.12.36 1 1 9927 20181208174929
+83.28.253.131 2 45 3578662 20181204221256
+188.146.110.194 4 43 354630 20181216195434
+83.31.142.98 6 19 206884 20181216131044
+220.243.136.91 12 12 32018 20181215003636
+83.9.233.71 2 27 695581 20181217223530 20181217223529 /media/system/fonts/glyphicons-halflings-regular.woff2
+69.171.251.39 0 2 3085 
+188.146.36.142 1 34 5559593 20181202080500
+181.214.188.140 1 1 17853 20181206055816
+220.243.136.100 4 4 31017 20181214073648
+220.243.135.169 1 1 8032 20181213081442
+54.197.222.220 1 1 28972 20181202121056
+188.146.163.100 1 42 3171469 20181203100042
+37.47.124.149 15 89 4424230 20181205093907
+220.243.136.60 4 4 52416 20181214071603
+188.146.110.120 6 135 10738328 20181215231213
+95.49.44.40 3 39 369657 20181215145108
+185.46.8.135 2 2 59187 20181202122936
+54.152.172.220 1 1 54705 20181209020304
+220.243.136.209 3 3 22320 20181213043256
+5.172.255.225 3 50 3226649 20181203184215
+46.118.155.222 2 2 120340 20181209012516
+94.45.120.40 2 27 208739 20181210172916
+188.163.4.146 2 24 305561 20181214162023
+83.31.235.38 10 82 3604434 20181202182858
+161.202.72.163 4 4 149727 20181203214310
+77.220.214.180 13 13 0 20181215064938
+37.47.75.109 1 44 3561507 20181210145758
+137.226.113.28 5 5 88645 20181213000541
+220.243.135.159 1 1 8006 20181212211924
+89.79.65.252 1 44 3233071 20181203221633
+37.52.71.84 5 59 766657 20181201225330
+83.9.72.244 4 52 3630310 20181206215323
+5.173.192.186 2 23 608781 20181202162658
+178.212.102.127 2 4 35856 20181202104229
+147.75.210.224 0 4 469865 
+193.27.208.93 2 28 299315 20181205155312
+185.222.211.40 2 2 20004 20181203143003
+220.243.136.153 2 2 8429 20181213070127
+220.243.135.190 1 1 6715 20181213020826
+93.171.243.155 1 26 196601 20181203200753
+113.173.4.64 1 1 2865 20181210144404
+1.10.189.120 2 2 5591 20181215105354
+89.79.134.146 2 45 3579901 20181214202555
+83.27.237.191 1 44 3561438 20181216130206
+220.243.135.54 2 2 26318 20181208112610
+82.145.223.152 1 6 610261 20181204232312
+46.133.143.145 1 22 159854 20181214083325
+194.44.160.182 5 59 581091 20181217132704
+82.145.223.75 1 4 39654 20181203104213
+50.66.186.57 2 28 237136 20181215225301
+220.243.136.29 8 8 75641 20181214105300
+220.243.136.221 7 7 28130 20181213075946
+83.9.76.220 38 124 5797438 20181207194953
+97.77.47.10 1 1 17751 20181214014918
+37.8.193.90 1 27 350112 20181204163747
+125.209.235.172 0 13 456374 
+192.164.250.37 1 3 34208 20181210221229
+78.11.137.35 2 37 5584547 20181201204003
+54.234.199.14 1 1 28972 20181203010747
+188.146.44.112 2 45 3580784 20181214172542
+220.243.136.110 2 2 25709 20181214185313
+220.243.135.150 2 2 16286 20181213050022
+83.23.93.97 2 45 3579157 20181210215429
+188.146.79.70 5 57 3681257 20181212104703
+220.243.136.7 2 2 22993 20181213090726
+112.25.6.12 1 1 60196 20181205171825
+88.220.150.187 1 3 67671 20181209120853
+198.108.66.240 1 1 17757 20181207110524
+14.231.235.173 1 1 2732 20181211144400
+89.228.108.71 10 91 3917306 20181215231153
+220.243.135.39 3 3 8606 20181213075947
+220.243.135.92 2 2 20198 20181213074158
+178.94.54.20 3 3 86790 20181205153810
+220.243.136.76 2 2 24471 20181212185741
+83.31.244.216 60 182 9929033 20181205090740
+78.46.94.83 1 1 46707 20181206234113
+188.146.165.206 10 60 385579 20181203100250
+178.36.24.60 6 54 3002896 20181210083843
+79.187.127.89 22 288 14729084 20181213093658
+171.13.14.57 0 7 284108 
+213.174.6.62 2 3 35096 20181213155628
+198.108.66.32 1 1 17764 20181208114043
+147.75.210.235 0 3 128462 
+220.243.136.246 4 4 819 20181213070132
+220.243.135.100 4 4 33495 20181214073647
+14.187.63.58 1 1 2733 20181210173045
+125.209.235.179 0 4 178059 
+220.243.135.41 3 3 14568 20181214222216
+178.94.6.211 1 1 28930 20181207065215
+52.90.131.91 1 1 29058 20181207092339
+188.147.37.8 38 109 1638984 20181203234640
+178.95.56.114 2 5 67315 20181214091049
+220.243.135.148 3 3 29474 20181213060925
+171.13.14.7 0 1 78845 
+94.254.144.129 8 76 3824624 20181204194528
+37.73.250.237 3 34 370297 20181204081621
+171.13.14.30 2 2 35138 20181207045007
+91.218.107.121 1 27 348628 20181204000650
+125.209.235.167 0 9 1198624 
+220.243.136.15 4 4 35488 20181214083232
+37.47.198.151 13 131 7474420 20181215101225
+222.254.34.31 1 1 2732 20181211130138
+147.75.210.238 0 2 111935 
+171.13.14.37 0 7 220483 
+220.243.136.176 3 3 376 20181213075946
+82.7.114.199 2 27 208875 20181206232637
+83.9.173.183 26 109 3961746 20181201151251
+89.64.24.72 1 44 3561822 20181215235726
+83.25.245.45 2 45 3580666 20181205113537
+220.243.135.202 1 1 8926 20181213083714
+83.24.130.154 11 196 11223645 20181203163355
+220.243.136.200 1 1 291 20181213070128
+88.99.194.48 1 1 75475 20181217193838
+66.249.93.26 3 57 5000499 20181211134204
+46.133.15.241 1 27 217213 20181217180633
+18.232.160.230 1 1 54705 20181210061512
+54.198.213.107 1 1 9211 20181209053202
+220.243.135.174 1 1 7110 20181212183600
+198.108.66.16 1 1 17759 20181212152320
+173.193.17.201 10 10 335519 20181217124452
+82.145.223.42 1 4 40041 20181201231258
+95.216.15.49 1 1 17758 20181217172354
+83.9.201.242 2 21 570529 20181208223535
+89.229.195.186 4 90 7159606 20181211230911
+37.47.204.145 4 49 1216274 20181213100953
+91.211.248.82 1 1 29834 20181210055045
+195.114.136.130 3 53 403104 20181209170011
+78.31.148.243 2 45 3581142 20181209201005
+185.220.101.47 0 1 60170 
+93.75.165.229 2 27 208447 20181211183623
+188.146.131.154 2 28 245358 20181214142120
+18.232.89.17 1 1 29058 20181211060848
+46.211.54.27 2 28 303264 20181206100705
+220.243.136.231 4 4 41554 20181213072145
+185.25.103.30 74 74 3059025 20181217135554
+83.9.96.83 24 86 4589138 20181210221211
+188.147.97.206 15 95 4043178 20181216210003
+89.228.102.27 5 25 117619 20181215224407
+109.248.149.156 1 1 60194 20181205192529
+82.145.223.97 1 44 3559545 20181212074500
+193.138.245.58 2 2 120366 20181214195928
+31.183.158.227 123 294 35004870 20181217095916
+51.15.198.132 5 5 235434 20181216122223
+46.119.122.107 3 3 180747 20181217164115
+220.243.136.22 4 4 43719 20181213074203
+75.126.120.78 6 6 190571 20181217104241
+195.189.96.147 1 1 30 20181203155759
+207.174.130.114 22 22 795072 20181216005535
+188.146.75.147 1 44 3563468 20181210164737
+185.158.103.231 1 1 17857 20181213191128
+178.94.7.167 1 1 28930 20181214065616
+144.76.102.243 2 2 80009 20181216131107
+195.150.224.110 2 45 3246691 20181204013751
+220.243.136.20 3 3 30861 20181215003635
+91.247.38.63 0 4 80859 
+178.94.192.20 2 28 248568 20181206214440
+1.20.97.31 2 2 15068 20181216103833
+94.254.176.37 1 30 1197267 20181210235531
+178.159.39.237 16 16 0 20181215064938
+195.136.28.216 48 365 19349149 20181215134643
+83.31.20.96 38 128 5489948 20181204192731
+194.44.211.169 54 298 20424256 20181215094657
+220.243.136.18 3 3 16674 20181213072144
+86.61.75.13 1 1 2734 20181202133650
+34.229.234.38 1 1 54705 20181206053859
+92.128.44.94 2 9 68829 20181210094010
+213.76.99.188 15 95 3682825 20181203162348
+104.248.183.114 91 186 10724489 20181202110746
+220.243.136.240 1 1 8791 20181214091009
+213.199.220.216 2 45 3579283 20181206210919
+83.9.205.247 6 79 3536269 20181202193938
+220.243.136.83 1 1 222 20181215003635
+188.20.224.94 53 216 5029050 20181217092541
+220.243.135.240 4 4 37111 20181214063030
+220.181.51.100 0 1 21 
+91.240.109.1 3 3 180510 20181216162927
+46.200.142.235 28 630 49346673 20181215174747
+81.133.241.97 5 5 300997 20181217211147
+83.24.7.64 14 114 7856268 20181208170412
+220.243.136.208 4 4 37583 20181214102125
+35.204.55.152 1 1 34831 20181214165551
+220.243.135.124 10 10 51338 20181214222216
+5.173.192.164 1 1 8469 20181206144648
+37.47.246.68 2 2 25103 20181207170743
+94.179.159.121 2 28 347382 20181208162221
+120.92.72.149 0 1 354 
+220.243.135.210 1 1 17299 20181213055159
+162.209.152.178 1 1 60170 20181217061247
+208.101.7.43 5 5 147608 20181210172918
+83.6.113.54 3 46 3597779 20181209172048
+220.243.136.62 2 2 24617 20181213064423
+89.64.15.35 3 54 3717313 20181202134436
+34.201.124.191 1 1 54705 20181217210146
+220.243.135.239 6 6 30242 20181213075945
+35.246.82.111 1 1 28289 20181214175914
+83.31.21.71 2 45 3579831 20181217211429
+35.153.74.56 2 2 37631 20181206052820
+173.212.204.10 4 4 71016 20181213162936
+5.173.160.166 1 44 3232683 20181204091554
+37.47.255.134 1 4 2362520 20181209172248
+167.99.211.55 2 2 24640 20181212003016
+194.67.207.94 11 11 0 20181213021205
+188.163.40.152 2 2 524069 20181211183758
+5.173.1.51 2 48 3589093 20181207074651
+5.173.128.125 11 134 7579085 20181217174849
+37.47.220.144 8 9 79207 20181208080735
+91.124.7.142 1 1 28930 20181212065743
+188.146.227.60 1 27 349784 20181207163653
+109.207.126.84 1 27 219709 20181204192922
+171.13.14.40 0 10 1399572 
+83.9.6.103 3 17 181030 20181212181816
+141.0.12.140 2 60 3764298 20181207092906
+83.6.95.68 1 1 17825 20181208172310
+220.181.108.158 0 1 37045 
+178.94.43.7 3 3 86790 20181207160226
+89.69.184.103 1 3 67676 20181212215037
+178.94.46.175 1 1 28930 20181212133932
+69.171.251.35 0 5 23568 
+178.94.7.239 3 3 86790 20181212224818
+37.54.65.85 2 28 343703 20181201145307
+66.102.6.168 0 9 112724 
+220.243.135.79 5 5 34819 20181214110939
+5.101.40.234 8 8 109935 20181209234227
+83.9.14.143 3 50 3613610 20181213121831
+188.146.160.48 14 143 7365495 20181207052540
+104.42.48.187 14 14 0 20181217120739
+95.132.3.139 2 28 280361 20181203193003
+195.136.29.177 6 71 3721135 20181205204228
+220.243.136.158 2 2 20198 20181213070125
+14.169.194.45 1 1 2853 20181211063552
+188.147.33.246 1 44 3559358 20181217140210
+123.125.71.47 0 1 8556 
+183.198.12.238 1 1 9933 20181207075147
+66.102.9.42 76 559 31083622 20181216213441
+88.156.143.158 1 27 251709 20181205162417
+69.171.251.18 0 7 1215241 
+83.26.130.242 1 44 3562076 20181206103254
+78.111.187.36 1 27 237780 20181209161313
+93.77.157.137 3 28 232148 20181204141330
+5.173.80.119 3 48 474190 20181213215839
+88.198.43.207 1 1 32014 20181213205612
+185.86.164.98 6 6 45246 20181217025212
+83.24.4.29 25 266 18185900 20181211155126
+220.243.135.107 1 1 11844 20181212211515
+35.246.137.109 2 2 60545 20181215094204
+83.9.62.237 4 82 2463419 20181205180241
+192.164.253.241 5 59 3681346 20181209193905
+220.243.136.140 2 2 13333 20181213074200
+14.248.159.106 1 1 2735 20181210135336
+148.81.194.193 3 46 3593758 20181210155614
+194.44.216.102 1 1 90112 20181215202253
+195.136.31.112 3 46 1265876 20181216171507
+31.2.26.172 7 92 3887592 20181217185938
+35.246.146.42 1 1 35695 20181215063049
+46.219.223.247 1 26 190461 20181206214035
+73.6.98.65 2 2 60194 20181211140457
+193.93.218.82 2 28 261238 20181208130904
+83.31.67.173 4 90 7158434 20181209131833
+83.24.142.243 29 196 12335875 20181215114049
+137.226.113.8 1 1 59187 20181202085638
+185.255.96.99 3 3 146818 20181207092734
+192.99.1.217 3 3 143957 20181208232339
+77.46.0.45 105 479 28690050 20181216175524
+220.243.135.236 1 1 9670 20181213053849
+176.59.200.91 5 5 53231 20181216134339
+193.107.179.69 1 27 216600 20181214212313
+188.165.255.126 1 1 17864 20181210092107
+185.230.127.165 1 1 17872 20181215091029
+120.92.72.246 0 1 26953 
+80.51.212.156 1 44 3181000 20181202004656
+83.6.97.75 19 61 819965 20181205200631
+220.243.135.222 3 3 25258 20181213055651
+147.75.210.163 0 4 49012 
+178.94.43.101 3 3 86790 20181209084620
+220.243.135.251 2 2 31722 20181213064423
+83.9.71.216 1 44 3558554 20181209134101
+46.211.112.31 1 22 181266 20181212193950
+220.243.136.99 2 2 19574 20181213082647
+220.243.135.25 1 1 11590 20181213081440
+220.243.136.96 1 1 12093 20181213021511
+37.47.254.90 3 8 71377 20181203120255
+37.248.152.64 10 104 3982860 20181208213117
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 17
+20181201 390 2746 139806137 120
+20181202 987 4997 252380823 214
+20181203 734 4989 264990362 186
+20181204 3187 7753 253280282 188
+20181205 6069 9481 254420287 210
+20181206 962 4343 197794454 187
+20181207 8466 11238 230542881 182
+20181208 529 3089 171373599 146
+20181209 547 4173 221776950 195
+20181210 397 2777 142122557 152
+20181211 1088 3275 155726689 204
+20181212 643 3347 161574977 374
+20181213 1080 3790 166774534 459
+20181214 632 2784 126925760 312
+20181215 2477 4697 168772111 175
+20181216 592 4372 241338011 195
+20181217 375 3256 184340347 136
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 7
+1h+ 26
+5mn-15mn 87
+2mn-5mn 149
+15mn-30mn 50
+30s-2mn 212
+0s-30s 2984
+30mn-1h 116
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 20
+/administrator/ 18652 140454980 172 207
+/ 9573 247041656 3424 2961
+/media/system/fonts/glyphicons-halflings-regular.woff2 743 12331152 10 394
+/media/system/fonts/glyphicons-halflings-regular.eot 58 1143192 0 31
+/templates/bazylianie/css/ie6alert.htc 42 38206 0 11
+/media/system/fonts/glyphicons-halflings-regular.woff 24 491904 0 11
+/administrator/index.php/ 21 57370 20 0
+/media/jui/fonts/IcoMoon.woff 13 330512 0 1
+/components/com_jce/editor/libraries/fonts/fontawesome-webfont.woff 5 490120 0 0
+/index.php/joomla/other-components/registration-form 5 299047 4 1
+/administrator/language/en-GB/en-GB.com_jce.ini 2 208988 0 2
+/index.php/ 2 19860 2 2
+/index.php/component/user/register.html 4 239697 0 0
+/language/en-GB/en-GB.ini 1 17076 0 1
+/language/en-GB/en-GB.com_jce.ini 2 53974 2 0
+/index.php/registration/registers 4 239697 0 0
+/media/jui/fonts/IcoMoon.ttf 1 12929 0 1
+/media/system/fonts/glyphicons-halflings-regular.ttf 1 23384 0 0
+/google3317f94e9190ef2c.html 1 53 1 1
+/media/system/css/bootstrap.min.css.map 1 542194 0 0
+END_SIDER
