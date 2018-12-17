@@ -3,4 +3,6 @@ configuration.php
 tmp/*
 cache/* 
 logs/*
+cache/*
+administrator/cache/*C
 images0/*
