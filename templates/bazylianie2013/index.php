@@ -129,10 +129,11 @@ body { behavior: url(<?php echo $this->baseurl ?>/templates/bazylianie/css/ie6al
             </div>
             <div class="row navbar navbar-inverse">
 
-                <div class="col-md-10 col-lg-9">
+                <div class="col-md-10 col-lg-10">
                     <jdoc:include type="modules" name="topmenu" style="rounded" />
                 </div>
-                <div class="col-md-2 col-lg-3 hidden-sm">
+
+                <div class="col-md-2 col-lg-2 hidden-sm">
                     <div class="input-group search-input-group">
                         <div class="search_form">
                             <form action="" method="get"  id="form1">

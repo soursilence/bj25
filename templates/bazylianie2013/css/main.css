@@ -46,6 +46,8 @@
     margin-top: 8px;
     float: right;
     margin-bottom: 5px;
+    margin-left: -10px;
+    margin-right: -10px;
 }
 #search_button_span{
     height: 20px !important;
@@ -62,12 +64,15 @@
 }
 @media (max-width: 992px) {
   #myNavbar a{
-    font-size: 14px;
+    font-size: 10px !important;
   }
 }
 @media (max-width: 1200px) {
   #searchfield {
     width: 80px;
+  }
+  #myNavbar a{
+    font-size: 12px;
   }
 }
 @media (max-width:  768px) {
